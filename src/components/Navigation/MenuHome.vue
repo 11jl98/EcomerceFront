@@ -9,12 +9,12 @@
       >
     </div>
     <div class="button-menu">
-      <b-button class="nav-button" variant="light" block href="#foo"
+      <b-button class="nav-button" variant="light" block href="/Fornecedores"
         >Cadastro De Fornecedor</b-button
       >
     </div>
     <div class="button-menu">
-      <b-button class="nav-button" variant="light" block href="#foo"
+      <b-button class="nav-button" variant="light" block href="/Funcionarios"
         >Cadastro De Funcionário</b-button
       >
     </div>
@@ -60,6 +60,6 @@ export default {
   border-radius: 10px;
   background-color: #56aafe !important;
   color: #fff;
-  border:none
+  border: none;
 }
 </style>
