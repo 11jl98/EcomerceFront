@@ -4,7 +4,7 @@
     style=""
   >
     <div class="button-menu mt-5">
-      <b-button class="nav-button" variant="light" block href="#foo"
+      <b-button class="nav-button" variant="light" block href="/Clientes"
         >Cadastro De Cliente</b-button
       >
     </div>
