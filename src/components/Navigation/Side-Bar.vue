@@ -1,0 +1,39 @@
+<template>
+  <div>
+    <b-sidebar
+      id="sidebar-variant"
+      title="Sidebar"
+      bg-variant="light"
+      text-variant="dark"
+      shadow
+      style="background-color: rgba(58, 91, 180, 1) !important"
+
+    >
+      <div class="px-3 py-2">
+        <nav class="mb-3">
+          <b-nav vertical>
+            <b-button class="nav-button mt-3" variant="light" block>Close Sidebar</b-button>
+            <b-button class="nav-button" variant="light" block>Close Sidebar</b-button>
+            <b-button class="nav-button" variant="light" block>Close Sidebar</b-button>
+            <b-button class="nav-button" variant="light" block>Close Sidebar</b-button>
+            <b-button class="nav-button" variant="light" block>Close Sidebar</b-button>
+            <b-button class="nav-button" variant="light" block>Close Sidebar</b-button>
+          </b-nav>
+        </nav>
+      </div>
+    </b-sidebar>
+  </div>
+</template>
+
+<script>
+export default {};
+</script>
+
+<style scoped>
+.nav-button{
+  background-color: #56aafe !important;
+  color: #fff;
+  border-radius: 10px!important;
+  margin: 5px 5px 5px 0px
+}
+</style>
