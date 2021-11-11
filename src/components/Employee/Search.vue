@@ -44,9 +44,16 @@
         <table class="table table-sm">
           <thead>
             <tr>
-              <th scope="col">Nome Fornecedor</th>
-              <th scope="col">CNPJ</th>
-              <th scope="col">Ações</th>
+              <th scope="col">Nome Funcionario</th>
+              <th scope="col">CPF</th>
+              <th scope="col">Telefone</th>
+              <th scope="col">Celular</th>
+            </tr>
+            <tr v-for="item in dataEmployees" :key="item.id">
+              <td>{{item.nomeFuncionario}}</td>
+              <td>{{item.cpf}}</td>
+              <td>{{item.telefone}}</td>
+              <td>{{item.celular}}</td>
             </tr>
           </thead>
         </table>
@@ -57,11 +64,31 @@
 </template>
 
 <script>
+import api from '../../services/axios'
 export default {
   components: {},
   data() {
-    return {};
+    return {
+      dataEmployees: {
+
+      }
+    };
   },
+  methods:{
+    async searchEmployee() {
+      try {
+        const { data } = await api.get(`/employees/`);
+        console.log(data);
+        this.dataEmployees = data.data;
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+  mounted(){
+   this.searchEmployee();
+  }
 };
 </script>
 <style scoped>

@@ -11,7 +11,11 @@
       <hr />
       <div class="mt-4">
         <b-row class="d-flex">
-          <b-form-input hidden class="col-sm-1" v-model="id"></b-form-input>
+          <b-form-input
+            hidden
+            class="col-sm-1"
+            v-model="dadosFuncionario.id"
+          ></b-form-input>
 
           <b-form-group
             id="input-group-1"
@@ -23,7 +27,7 @@
               id="input-1"
               placeholder="Nome"
               required
-              v-model="nomeFuncionario"
+              v-model="dadosFuncionario.nomeFuncionario"
             ></b-form-input>
           </b-form-group>
 
@@ -37,7 +41,7 @@
               id="input-1"
               placeholder="CNPJ"
               required
-              v-model="cpf"
+              v-model="dadosFuncionario.cpf"
             ></b-form-input>
           </b-form-group>
 
@@ -51,7 +55,7 @@
               id="input-1"
               placeholder="Registro Geral"
               required
-              v-model="rg"
+              v-model="dadosFuncionario.rg"
             ></b-form-input>
           </b-form-group>
         </b-row>
@@ -67,7 +71,7 @@
               id="input-1"
               placeholder="Endereço"
               required
-              v-model="comissao"
+              v-model="dadosFuncionario.endereco"
             ></b-form-input>
           </b-form-group>
 
@@ -81,7 +85,7 @@
               id="input-1"
               placeholder="Bairro"
               required
-              v-model="endereco"
+              v-model="dadosFuncionario.bairro"
             ></b-form-input>
           </b-form-group>
 
@@ -95,7 +99,7 @@
               id="input-1"
               placeholder="Número"
               required
-              v-model="numero"
+              v-model="dadosFuncionario.numero"
             ></b-form-input>
           </b-form-group>
         </b-row>
@@ -111,7 +115,7 @@
               id="input-1"
               placeholder="Cidade"
               required
-              v-model="cidade"
+              v-model="dadosFuncionario.cidade"
             ></b-form-input>
           </b-form-group>
 
@@ -125,7 +129,7 @@
               id="input-1"
               placeholder="UF"
               required
-              v-model="uf"
+              v-model="dadosFuncionario.uf"
             ></b-form-input>
           </b-form-group>
           <b-form-group
@@ -138,7 +142,7 @@
               id="input-1"
               placeholder="CEP"
               required
-              v-model="cep"
+              v-model="dadosFuncionario.cep"
             ></b-form-input>
           </b-form-group>
 
@@ -153,7 +157,7 @@
               type="email"
               placeholder="Email"
               required
-              v-model="email"
+              v-model="dadosFuncionario.email"
             ></b-form-input>
           </b-form-group>
         </b-row>
@@ -168,7 +172,7 @@
               id="input-1"
               placeholder="Telefone"
               required
-              v-model="telefone"
+              v-model="dadosFuncionario.telefone"
             ></b-form-input>
           </b-form-group>
 
@@ -182,7 +186,7 @@
               id="input-1"
               placeholder="Celular"
               required
-              v-model="celular"
+              v-model="dadosFuncionario.celular"
             ></b-form-input>
           </b-form-group>
 
@@ -196,7 +200,7 @@
               id="input-1"
               placeholder="Comissão"
               required
-              v-model="comissao"
+              v-model="dadosFuncionario.comissao"
             ></b-form-input>
           </b-form-group>
 
@@ -210,7 +214,7 @@
               id="input-1"
               placeholder="Função"
               required
-              v-model="funcao"
+              v-model="dadosFuncionario.funcao"
             ></b-form-input>
           </b-form-group>
         </b-row>
@@ -226,7 +230,7 @@
               id="input-1"
               placeholder="CTPS"
               required
-              v-model="ctps"
+              v-model="dadosFuncionario.ctps"
             ></b-form-input>
           </b-form-group>
 
@@ -240,7 +244,7 @@
               id="input-1"
               placeholder="PIS"
               required
-              v-model="pis"
+              v-model="dadosFuncionario.pis"
             ></b-form-input>
           </b-form-group>
 
@@ -255,7 +259,7 @@
               type="date"
               placeholder="Data adminissão"
               required
-              v-model="dataAdimissao"
+              v-model="dadosFuncionario.dataAdimissao"
             ></b-form-input>
           </b-form-group>
 
@@ -269,7 +273,7 @@
               id="input-1"
               placeholder="Matricula"
               required
-              v-model="matricula"
+              v-model="dadosFuncionario.matricula"
             ></b-form-input>
           </b-form-group>
         </b-row>
@@ -282,10 +286,10 @@
                   border: none !important;
                   background-color: #56aafe !important;
                 "
+                @click="saveFuncionario"
                 >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
               ></b-button>
-              <b-button
-                  variant="light"
+              <b-button variant="light"
                 >Limpar
                 <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
               ></b-button>
@@ -298,6 +302,8 @@
 </template>
 
 <script>
+import api from "../../services/axios";
+
 export default {
   components: {},
   data() {
@@ -325,7 +331,74 @@ export default {
     };
   },
   methods: {
-    
+    clear() {
+        (this.dadosFuncionario.id = ""),
+        (this.dadosFuncionario.nomeFuncionario = ""),
+        (this.dadosFuncionario.cpf = ""),
+        (this.dadosFuncionario.rg = ""),
+        (this.dadosFuncionario.comissao = ""),
+        (this.dadosFuncionario.endereco = ""),
+        (this.dadosFuncionario.numero = ""),
+        (this.dadosFuncionario.bairro = ""),
+        (this.dadosFuncionario.cidade = ""),
+        (this.dadosFuncionario.uf = ""),
+        (this.dadosFuncionario.email = ""),
+        (this.dadosFuncionario.telefone = ""),
+        (this.dadosFuncionario.celular = ""),
+        (this.dadosFuncionario.ctps = ""),
+        (this.dadosFuncionario.funcao = ""),
+        (this.dadosFuncionario.pis = ""),
+        (this.dadosFuncionario.matricula = ""),
+        (this.dadosFuncionario.dataAdimissao = "");
+    },
+    async saveFuncionario() {
+      try {
+        const { data } = await api.post("/employees", this.dadosFuncionario);
+        this.dadosFuncionario.id = data.id
+        console.log(data);
+        this.clear();
+        return this.$toast.open({
+          message: "Cliente salvo com Sucesso",
+          type: "success",
+        });
+      } catch (error) {
+        console.log(error);
+        return this.$toast.open({
+          message: "Não foi possível salvar o cliente",
+          type: "warning",
+        });
+      }
+    },
+    async updateFuncionario() {
+      try {
+        const id = this.dadosFuncionario.id;
+        const { data } = await api.put(`/employees/${id}`);
+        console.log(data);
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async searchFuncionario() {
+      try {
+        const id = this.dadosFuncionario.id;
+        const { data } = await api.put(`/employees/${id}`);
+        console.log(data);
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deleteFuncionario() {
+      try {
+        const id = this.dadosFuncionario.id;
+        const { data } = await api.delete(`/employees/${id}`);
+        console.log(data);
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>
