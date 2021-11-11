@@ -28,18 +28,18 @@
       </div>
     </div>
     <div class="container-components mb-3" id="receita" role="tablist">
-      <Costumer />
+      <Customer />
       <Search />
     </div>
   </div>
 </template>
 
 <script>
-import Costumer from "./Costumer.vue";
+import Customer from "./Customer.vue";
 import Search from "./Search.vue";
 export default {
   components: {
-    Costumer,
+    Customer,
     Search,
   },
   data() {
