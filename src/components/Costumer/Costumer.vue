@@ -14,6 +14,7 @@
             <b-form-input
               hidden
               class="col-sm-1"
+
             ></b-form-input>
 
             <b-form-group
@@ -26,6 +27,7 @@
                 id="input-1"
                 placeholder="Nome"
                 required
+                v-model="dataCostumer.nome"
               ></b-form-input>
             </b-form-group>
 
@@ -39,6 +41,7 @@
                 id="input-1"
                 placeholder="CNPJ/CPF"
                 required
+                v-model="dataCostumer.cpfCnpj"
               ></b-form-input>
             </b-form-group>
 
@@ -52,6 +55,7 @@
                 id="input-1"
                 placeholder="Endereço"
                 required
+                v-model="dataCostumer.endereco"
               ></b-form-input>
             </b-form-group>
           </b-row>
@@ -66,6 +70,7 @@
                 id="input-1"
                 placeholder="Número"
                 required
+                v-model="dataCostumer.numero"
               ></b-form-input>
             </b-form-group>
             <b-form-group
@@ -78,6 +83,7 @@
                 id="input-1"
                 placeholder="Complemento"
                 required
+                v-model="dataCostumer.complemento"
               ></b-form-input>
             </b-form-group>
              <b-form-group
@@ -90,6 +96,7 @@
                 id="input-1"
                 placeholder="Bairro"
                 required
+                v-model="dataCostumer.bairro"
               ></b-form-input>
             </b-form-group>
           </b-row>
@@ -104,6 +111,7 @@
                 id="input-1"
                 placeholder="Cidade"
                 required
+                v-model="dataCostumer.cidade"
               ></b-form-input>
             </b-form-group>
 
@@ -117,6 +125,7 @@
                 id="input-1"
                 placeholder="UF"
                 required
+                v-model="dataCostumer.uf"
               ></b-form-input>
             </b-form-group>
             <b-form-group
@@ -129,6 +138,7 @@
                 id="input-1"
                 placeholder="CEP"
                 required
+                v-model="dataCostumer.cep"
               ></b-form-input>
             </b-form-group>
             <b-form-group
@@ -233,7 +243,7 @@ export default {
       dataCostumer:{
         nome:"",
         cpfCnpj:"",
-        endereço: "",
+        endereco: "",
         numero: "",
         complemento: "",
         bairro: "",
