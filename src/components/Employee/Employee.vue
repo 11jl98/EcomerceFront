@@ -11,7 +11,7 @@
       <hr />
       <div class="mt-4">
         <b-row class="d-flex">
-          <b-form-input hidden class="col-sm-1"></b-form-input>
+          <b-form-input hidden class="col-sm-1" v-model="id"></b-form-input>
 
           <b-form-group
             id="input-group-1"
@@ -23,6 +23,7 @@
               id="input-1"
               placeholder="Nome"
               required
+              v-model="nomeFuncionario"
             ></b-form-input>
           </b-form-group>
 
@@ -36,6 +37,7 @@
               id="input-1"
               placeholder="CNPJ"
               required
+              v-model="cpf"
             ></b-form-input>
           </b-form-group>
 
@@ -49,6 +51,7 @@
               id="input-1"
               placeholder="Registro Geral"
               required
+              v-model="rg"
             ></b-form-input>
           </b-form-group>
         </b-row>
@@ -64,6 +67,7 @@
               id="input-1"
               placeholder="Endereço"
               required
+              v-model="comissao"
             ></b-form-input>
           </b-form-group>
 
@@ -77,24 +81,10 @@
               id="input-1"
               placeholder="Bairro"
               required
+              v-model="endereco"
             ></b-form-input>
           </b-form-group>
 
-          <b-form-group
-            id="input-group-1"
-            label="Complemento"
-            label-for="input-1"
-            class="col-sm-3"
-          >
-            <b-form-input
-              id="input-1"
-              placeholder="Complemento"
-              required
-            ></b-form-input>
-          </b-form-group>
-        </b-row>
-
-        <b-row class="d-flex">
           <b-form-group
             id="input-group-1"
             label="Número"
@@ -105,9 +95,12 @@
               id="input-1"
               placeholder="Número"
               required
+              v-model="numero"
             ></b-form-input>
           </b-form-group>
+        </b-row>
 
+        <b-row class="d-flex">
           <b-form-group
             id="input-group-1"
             label="Cidade"
@@ -118,6 +111,7 @@
               id="input-1"
               placeholder="Cidade"
               required
+              v-model="cidade"
             ></b-form-input>
           </b-form-group>
 
@@ -127,36 +121,43 @@
             label-for="input-1"
             class="col-sm-2"
           >
-            <b-form-input id="input-1" placeholder="UF" required></b-form-input>
+            <b-form-input
+              id="input-1"
+              placeholder="UF"
+              required
+              v-model="uf"
+            ></b-form-input>
           </b-form-group>
           <b-form-group
             id="input-group-1"
             label="CEP"
             label-for="input-1"
-            class="col-sm-4"
+            class="col-sm-2"
           >
             <b-form-input
               id="input-1"
               placeholder="CEP"
               required
+              v-model="cep"
             ></b-form-input>
           </b-form-group>
-        </b-row>
-        <b-row class="d-flex">
+
           <b-form-group
             id="input-group-1"
             label="Email"
             label-for="input-1"
-            class="col-sm-5"
+            class="col-sm-4"
           >
             <b-form-input
               id="input-1"
               type="email"
               placeholder="Email"
               required
+              v-model="email"
             ></b-form-input>
           </b-form-group>
-
+        </b-row>
+        <b-row class="d-flex">
           <b-form-group
             id="input-group-1"
             label="Telefone"
@@ -165,9 +166,9 @@
           >
             <b-form-input
               id="input-1"
-              type="text"
               placeholder="Telefone"
               required
+              v-model="telefone"
             ></b-form-input>
           </b-form-group>
 
@@ -179,39 +180,112 @@
           >
             <b-form-input
               id="input-1"
-              type="email"
               placeholder="Celular"
               required
+              v-model="celular"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-1"
+            label="Comissão"
+            label-for="input-1"
+            class="col-sm-3"
+          >
+            <b-form-input
+              id="input-1"
+              placeholder="Comissão"
+              required
+              v-model="comissao"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-1"
+            label="Função"
+            label-for="input-1"
+            class="col-sm-3"
+          >
+            <b-form-input
+              id="input-1"
+              placeholder="Função"
+              required
+              v-model="funcao"
+            ></b-form-input>
+          </b-form-group>
+        </b-row>
+
+        <b-row>
+          <b-form-group
+            id="input-group-1"
+            label="CTPS"
+            label-for="input-1"
+            class="col-sm-2"
+          >
+            <b-form-input
+              id="input-1"
+              placeholder="CTPS"
+              required
+              v-model="ctps"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-1"
+            label="PIS"
+            label-for="input-1"
+            class="col-sm-2"
+          >
+            <b-form-input
+              id="input-1"
+              placeholder="PIS"
+              required
+              v-model="pis"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-1"
+            label="Data adminissão"
+            label-for="input-1"
+            class="col-sm-3"
+          >
+            <b-form-input
+              id="input-1"
+              type="date"
+              placeholder="Data adminissão"
+              required
+              v-model="dataAdimissao"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-1"
+            label="Matricula"
+            label-for="input-1"
+            class="col-sm-3"
+          >
+            <b-form-input
+              id="input-1"
+              placeholder="Matricula"
+              required
+              v-model="matricula"
             ></b-form-input>
           </b-form-group>
         </b-row>
         <div>
-          <b-form-group
-            id="input-group-1"
-            label="Observação"
-            label-for="input-1"
-          >
-            <b-form-textarea
-              id="textarea"
-              rows="3"
-              max-rows="6"
-            ></b-form-textarea>
-          </b-form-group>
           <div class="d-flex justify-content-end">
             <div>
               <b-button
                 class="mr-4"
                 style="
                   border: none !important;
-                  background-color: #ff6400 !important;
+                  background-color: #56aafe !important;
                 "
                 >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
               ></b-button>
               <b-button
-                style="
-                  border: none !important;
-                  background-color: #038c5a !important;
-                "
+                  variant="light"
                 >Limpar
                 <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
               ></b-button>
@@ -227,7 +301,31 @@
 export default {
   components: {},
   data() {
-    return {};
+    return {
+      dadosFuncionario: {
+        id: "",
+        nomeFuncionario: "",
+        cpf: "",
+        rg: "",
+        comissao: "",
+        endereco: "",
+        numero: "",
+        bairro: "",
+        cidade: "",
+        uf: "",
+        email: "",
+        telefone: "",
+        celular: "",
+        ctps: "",
+        funcao: "",
+        pis: "",
+        matricula: "",
+        dataAdimissao: "",
+      },
+    };
+  },
+  methods: {
+    
   },
 };
 </script>
