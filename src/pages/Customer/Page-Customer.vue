@@ -1,15 +1,15 @@
 <template>
-    <div class="d-flex costumer">
-       <Costumer/>
+    <div class="d-flex Customer">
+       <Customer/>
     </div>
 </template>
 
 <script>
-import Costumer from '../../components/Costumer/Index-Costumer.vue'
+import Customer from '../../components/Customer/Index-Customer.vue'
 
 export default{
     components:{
-       Costumer
+       Customer
     },
     data(){
         return{

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../src/pages/Home/Page-Home.vue'
 import Schedule from '../src/pages/Schedule/Page-Schedule.vue'
-import Costumer from '../src/pages/Costumer/Page-Costumer.vue'
+import Customer from '../src/pages/Customer/Page-Customer.vue'
 import Supplier from '../src/pages/Supplier/Page-Supplier.vue'
 import Employee from '../src/pages/Employee/Page-Employee.vue'
 Vue.use(Router)
@@ -17,7 +17,7 @@ const routes = [
     },
     {
         path: '/Clientes',
-        component: Costumer
+        component: Customer
     },
     {
         path: '/Fornecedores',
