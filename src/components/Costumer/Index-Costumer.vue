@@ -15,16 +15,9 @@
         >
       </div>
       <div class="button-menu">
-<<<<<<< HEAD
+
         <b-button class="nav-button shadow" variant="light" block v-b-toggle.accordion-search
-=======
-        <b-button
-          class="nav-button"
-          variant="light"
-          block
-          href="#foo"
-          v-b-toggle.accordion-search
->>>>>>> 74fe54bb36248579477d2d31aedf0203321a9e61
+   
           >Pesquisa</b-button
         >
       </div>

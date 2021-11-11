@@ -111,7 +111,7 @@
               id="input-group-1"
               label="UF"
               label-for="input-1"
-              class="col-sm-4"
+              class="col-sm-2"
             >
               <b-form-input
                 id="input-1"
@@ -123,7 +123,7 @@
               id="input-group-1"
               label="CEP"
               label-for="input-1"
-              class="col-sm-4"
+              class="col-sm-2"
             >
               <b-form-input
                 id="input-1"
@@ -131,13 +131,11 @@
                 required
               ></b-form-input>
             </b-form-group>
-          </b-row>
-          <b-row class="d-flex justify-content-around">
             <b-form-group
               id="input-group-1"
               label="Email"
               label-for="input-1"
-              class="col-sm-3"
+              class="col-sm-4"
             >
               <b-form-input
                 id="input-1"
@@ -146,12 +144,14 @@
                 required
               ></b-form-input>
             </b-form-group>
+          </b-row>
+          <b-row class="d-flex justify-content-around">
 
             <b-form-group
               id="input-group-1"
               label="Telefone"
               label-for="input-1"
-              class="col-sm-3"
+              class="col-sm-4"
             >
               <b-form-input
                 id="input-1"
@@ -165,7 +165,7 @@
               id="input-group-1"
               label="Celular"
               label-for="input-1"
-              class="col-sm-3"
+              class="col-sm-4"
             >
               <b-form-input
                 id="input-1"
@@ -177,15 +177,13 @@
 
             <b-form-group
               id="input-group-1"
-              label="email"
+              label="Dada Nasc."
               label-for="input-1"
-              class="col-sm-3"
+              class="col-sm-4"
             >
                 <b-form-input
                 id="input-1"
-                type="email"
-                placeholder="Email"
-                required
+                type="date"
               ></b-form-input>
             </b-form-group>
           </b-row>
@@ -208,16 +206,13 @@
                   class="mr-4"
                   style="
                     border: none !important;
-                    background-color: #ff6400 !important;
+                    background-color: #56aafe !important;
                   "
                   >Salvar
                   <b-icon-person-check class="ml-1"></b-icon-person-check
                 ></b-button>
                 <b-button
-                  style="
-                    border: none !important;
-                    background-color: #038c5a !important;
-                  "
+                    variant="light"
                   >Limpar
                   <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
                 ></b-button>
@@ -234,7 +229,24 @@
 export default {
   components: {},
   data() {
-    return {};
+    return {
+      dataCostumer:{
+        nome:"",
+        cpfCnpj:"",
+        endereço: "",
+        numero: "",
+        complemento: "",
+        bairro: "",
+        cidade: "",
+        uf: "",
+        cep: "",
+        telefone: "",
+        celular: "",
+        email: "",
+        datanascimento: "",
+        observacao:""
+      }
+    };
   },
 };
 </script>

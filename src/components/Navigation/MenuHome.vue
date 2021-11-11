@@ -9,20 +9,15 @@
       >
     </div>
     <div class="button-menu">
-<<<<<<< HEAD
-      <b-button class="nav-button shadow" variant="light" block href="#foo"
-=======
+
+
       <b-button class="nav-button" variant="light" block href="/Fornecedores"
->>>>>>> 74fe54bb36248579477d2d31aedf0203321a9e61
         >Cadastro De Fornecedor</b-button
       >
     </div>
     <div class="button-menu">
-<<<<<<< HEAD
-      <b-button class="nav-button shadow" variant="light" block href="#foo"
-=======
+
       <b-button class="nav-button" variant="light" block href="/Funcionarios"
->>>>>>> 74fe54bb36248579477d2d31aedf0203321a9e61
         >Cadastro De Funcionário</b-button
       >
     </div>
