@@ -33,7 +33,7 @@
             >
               <b-form-select></b-form-select>
             </b-form-group>
-            <div style="margin: auto 20px">
+            <div style="margin:  16px">
               <b-button variant="primary" class="mt-3 mb-3">
                 <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
                 Pesquisar</b-button
@@ -48,12 +48,37 @@
               <th scope="col">CPF</th>
               <th scope="col">Telefone</th>
               <th scope="col">Celular</th>
+              <th scope="col">Ações</th>
             </tr>
             <tr v-for="item in dataEmployees" :key="item.id">
               <td>{{item.nomeFuncionario}}</td>
               <td>{{item.cpf}}</td>
               <td>{{item.telefone}}</td>
               <td>{{item.celular}}</td>
+              <td>
+                <b-button
+                  size="sm"
+                  class="mr-2"
+                  variant="info"
+                  @click="editEmployee(item)"
+                  v-b-popover.hover.left="{
+                    variant: 'info',
+                    content: 'Editar',
+                  }"
+                >
+                  <b-icon-check scale="2"></b-icon-check>
+                </b-button>
+                <b-button
+                  size="sm"
+                  variant="secondary"
+                  v-b-popover.hover.right="{
+                    variant: 'secondary',
+                    content: 'Excluir',
+                  }"
+                >
+                  <b-icon-trash scale="0.7"></b-icon-trash
+                ></b-button>
+              </td>
             </tr>
           </thead>
         </table>
@@ -66,7 +91,9 @@
 <script>
 import api from '../../services/axios'
 export default {
-  components: {},
+  components: {
+    
+  },
   data() {
     return {
       dataEmployees: {
@@ -75,7 +102,7 @@ export default {
     };
   },
   methods:{
-    async searchEmployee() {
+    async readEmployee() {
       try {
         const { data } = await api.get(`/employees/`);
         console.log(data);
@@ -85,9 +112,14 @@ export default {
         console.log(error);
       }
     },
+     async editEmployee(Employee){
+    this.$emit('readOrEditEmployees', Employee )
+      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
   },
+  },
+ 
   mounted(){
-   this.searchEmployee();
+   this.readEmployee();
   }
 };
 </script>

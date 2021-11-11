@@ -26,8 +26,8 @@
       </div>
     </div>
     <div class="container-components" id="receita" role="tablist">
-      <Employee />
-      <Search />
+      <Employee :dataEmployee="dataEmployee"/>
+      <Search @readOrEditEmployees="dataEmployee = $event"/>
     </div>
   </div>
 </template>
@@ -41,7 +41,11 @@ export default {
     Search,
   },
   data() {
-    return {};
+    return {
+      dataEmployee: {
+
+      }
+    };
   },
 };
 </script>

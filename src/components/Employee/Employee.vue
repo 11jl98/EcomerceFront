@@ -305,6 +305,11 @@
 import api from "../../services/axios";
 
 export default {
+  props: {
+    dataEmployee: {
+      type: Object,
+    },
+  },
   components: {},
   data() {
     return {
@@ -332,7 +337,7 @@ export default {
   },
   methods: {
     clear() {
-        (this.dadosFuncionario.id = ""),
+      (this.dadosFuncionario.id = ""),
         (this.dadosFuncionario.nomeFuncionario = ""),
         (this.dadosFuncionario.cpf = ""),
         (this.dadosFuncionario.rg = ""),
@@ -353,18 +358,26 @@ export default {
     },
     async saveFuncionario() {
       try {
+         if (this.dadosFuncionario.id !== "") {
+          this.updateFuncionario();
+          console.log(this.dadosFuncionario.id)
+          return this.$toast.open({
+            message: "Funcionário Atualizado com Sucesso",
+            type: "success",
+          });
+        }
         const { data } = await api.post("/employees", this.dadosFuncionario);
-        this.dadosFuncionario.id = data.id
+        this.dadosFuncionario.id = data.id;
         console.log(data);
         this.clear();
         return this.$toast.open({
-          message: "Cliente salvo com Sucesso",
+          message: "Funcionário salvo com Sucesso",
           type: "success",
         });
       } catch (error) {
         console.log(error);
         return this.$toast.open({
-          message: "Não foi possível salvar o cliente",
+          message: "Não foi possível salvar o Funcionário",
           type: "warning",
         });
       }
@@ -372,7 +385,7 @@ export default {
     async updateFuncionario() {
       try {
         const id = this.dadosFuncionario.id;
-        const { data } = await api.put(`/employees/${id}`);
+        const { data } = await api.put(`/employees/${id}`, this.dadosFuncionario);
         console.log(data);
         return data;
       } catch (error) {
@@ -398,6 +411,12 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+  },
+  watch: {
+    dataEmployee() {
+      Object.assign(this.dadosFuncionario, this.dataEmployee);
+      this.dadosFuncionario.dataAdimissao = this.dataEmployee.dataAdimissao.split('T')[0]
     },
   },
 };
