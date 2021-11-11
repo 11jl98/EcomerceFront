@@ -402,16 +402,6 @@ export default {
         console.log(error);
       }
     },
-    async deleteFuncionario() {
-      try {
-        const id = this.dadosFuncionario.id;
-        const { data } = await api.delete(`/employees/${id}`);
-        console.log(data);
-        return data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
   },
   watch: {
     dataEmployee() {
