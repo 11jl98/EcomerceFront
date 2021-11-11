@@ -222,7 +222,7 @@
                   border: none !important;
                   background-color: #56aafe !important;
                 "
-                @click="saveCustomer"
+                @click="saveOrUpdateCustomer"
                 >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
               ></b-button>
               <b-button variant="light"
@@ -241,7 +241,11 @@
 import api from "../../services/axios";
 
 export default {
-  components: {},
+    props:{
+    readOrEditCustomers:{
+      type: Object
+    }
+  },
   data() {
     return {
       dataCostumer: {
@@ -274,6 +278,7 @@ export default {
     async saveCustomer() {
       try {
         const { data } = await api.post("/customers", this.dataCostumer);
+        console.log(data)
         this.dataCostumer.id = data.id;
         return this.$toast.open({
           message: "Cliente salvo com Sucesso",
@@ -289,7 +294,7 @@ export default {
     },
     async updateCustomer() {
       try {
-        const { data } = await api.put("/customer/" + this.dataCostumer.id);
+        const { data } = await api.put("/customers/" + this.dataCostumer.id, this.dataCostumer);
         Object.assign(this.dataCostumer, data);
         this.$toast.open({
           message: "Cliente editado com Sucesso",
@@ -304,6 +309,11 @@ export default {
       }
     },
   },
+    watch:{
+    readOrEditCustomers(){
+      Object.assign(this.dataCostumer, this.readOrEditCustomers)
+    }
+  }
 };
 </script>
 <style scoped>
