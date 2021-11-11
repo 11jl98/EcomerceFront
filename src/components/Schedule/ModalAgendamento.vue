@@ -8,7 +8,7 @@
           @click="saveSchedule"
           >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
         ></b-button>
-        <b-button style="border: none !important" variant="light"
+        <b-button style="border: none !important" variant="light" @click="clear"
           >Limpar <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
         ></b-button>
       </template>

@@ -7,7 +7,7 @@
     >
       <div class="button-menu mt-5">
         <b-button
-          class="nav-button"
+          class="nav-button shadow"
           variant="light"
           block
           v-b-toggle.accordion-dadosCadastrais
@@ -15,17 +15,17 @@
         >
       </div>
       <div class="button-menu">
-        <b-button class="nav-button" variant="light" block href="#foo" v-b-toggle.accordion-search
+        <b-button class="nav-button shadow" variant="light" block v-b-toggle.accordion-search
           >Pesquisa</b-button
         >
       </div>
       <div class="button-menu">
-        <b-button class="nav-button" variant="light" block href="#foo"
+        <b-button class="nav-button shadow" variant="light" block href="#foo"
           >Cadastro De Funcionário</b-button
         >
       </div>
     </div>
-    <div class="container-components" id="receita" role="tablist">
+    <div class="container-components mb-3" id="receita" role="tablist">
       <Costumer />
       <Search />
     </div>
