@@ -77,7 +77,7 @@
                 <b-button
                   size="sm"
                   class="mr-2"
-                  variant="info"
+                  style="background-color: #56aafe; border: none!important"
                   @click="editCustomer(customer)"
                   v-b-popover.hover.left="{
                     variant: 'info',
@@ -89,6 +89,8 @@
                 <b-button
                   size="sm"
                   variant="secondary"
+                  style="border: none!important"
+                  @click="destroyCustomer(customer.id)"
                   v-b-popover.hover.right="{
                     variant: 'secondary',
                     content: 'Excluir',
@@ -132,6 +134,17 @@ export default {
       this.$emit('readOrEditCustomers', Customer )
       this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
      
+    },
+    async destroyCustomer(idCustomer){
+      try {
+        await api.delete(`/customers/${idCustomer}`)
+        return this.$toast.open({
+          message: "Cliente excluido com sucesso",
+          type: "success",
+        });
+      } catch (error) {
+        console.log(error)
+      }
     }
   },
 

@@ -294,8 +294,8 @@ export default {
     },
     async updateCustomer() {
       try {
-        const { data } = await api.put("/customers/" + this.dataCostumer.id, this.dataCostumer);
-        Object.assign(this.dataCostumer, data);
+        await api.put("/customers/" + this.dataCostumer.id, this.dataCostumer);
+    
         this.$toast.open({
           message: "Cliente editado com Sucesso",
           type: "success",
@@ -311,7 +311,9 @@ export default {
   },
     watch:{
     readOrEditCustomers(){
+      console.log(this.readOrEditCustomers)
       Object.assign(this.dataCostumer, this.readOrEditCustomers)
+      this.dataCostumer.datanascimento = this.readOrEditCustomers.datanascimento.split('T')[0]
     }
   }
 };

@@ -4,35 +4,39 @@
     style=""
   >
     <div class="button-menu mt-5">
-      <b-button class="nav-button shadow" variant="light" block href="/Clientes" 
+      <b-button class="nav-button shadow" variant="light" block to="/Clientes" 
         >Cadastro De Cliente</b-button
       >
     </div>
     <div class="button-menu">
 
 
-      <b-button class="nav-button" variant="light" block href="/Fornecedores"
+      <b-button class="nav-button" variant="light" block to="/Fornecedores"
         >Cadastro De Fornecedor</b-button
       >
     </div>
     <div class="button-menu">
 
-      <b-button class="nav-button" variant="light" block href="/Funcionarios"
+      <b-button class="nav-button" variant="light" block to="/Funcionarios"
         >Cadastro De Funcionário</b-button
+      >
+
+      <b-button class="nav-button" variant="light" block to=""
+        >Cadastro De Produto</b-button
       >
     </div>
     <div class="button-menu">
-      <b-button class="nav-button shadow" variant="light" block href="#foo"
+      <b-button class="nav-button shadow" variant="light" block to=""
         >Pedido de Venda</b-button
       >
     </div>
     <div class="button-menu">
-      <b-button class="nav-button shadow" variant="light" block href="#foo"
+      <b-button class="nav-button shadow" variant="light" block to=""
         >NF-e/ NFC-e</b-button
       >
     </div>
     <div class="button-menu">
-      <b-button class="nav-button shadow" variant="light" block href="/Agenda"
+      <b-button class="nav-button shadow" variant="light" block to="/Agenda"
         >Agenda</b-button
       >
     </div>
