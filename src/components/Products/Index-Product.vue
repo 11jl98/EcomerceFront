@@ -11,7 +11,7 @@
           variant="light"
           block
           v-b-toggle.accordion-dadosCadastrais
-          >Cadastro De Cliente</b-button
+          >Cadastro De Produtos</b-button
         >
       </div>
       <div class="button-menu">
@@ -25,27 +25,27 @@
       </div>
       <div class="button-menu">
         <b-button class="nav-button shadow" variant="light" block href="#foo"
-          >Cadastro De Funcionário</b-button
+          >Relação Produtos/fornecedor</b-button
         >
       </div>
     </div>
-    <!-- <div class="container-components mb-3" id="receita" role="tablist">
+    <div class="container-components mb-3" id="receita" role="tablist">
       <Products />
       <Search />
-    </div> -->
+    </div>
   </div>
 </template>
 
 
 <script>
-// import Products from "./Products.vue";
-// import Search from "./Search.vue";
+import Products from "./Products.vue";
+import Search from "./Search.vue";
 
 export default {
-//   components: {
-//     Products,
-//     Search,
-//   },
+  components: {
+    Products,
+    Search,
+  },
   data() {
     return {};
   },
