@@ -71,7 +71,7 @@
                 <b-button
                   size="sm"
                   variant="secondary"
-                  @click="deleteEmployee(Employee.id)"
+                  @click="destroyEmployee(Employee.id)"
                   v-b-popover.hover.right="{
                     variant: 'secondary',
                     content: 'Excluir',
@@ -115,9 +115,14 @@ export default {
     },
     async destroyEmployee(idEmployee) {
       try {
-        const { data } = await api.delete(`/employees/${idEmployee}`);
-        console.log(data);
-        return data;
+        console.log(idEmployee);
+        await api.delete(`/employees/${idEmployee}`);
+        this.readEmployee();
+        return this.$toast.open({
+          message: "Funcionário deletado!",
+          type: "success",
+        });
+        
       } catch (error) {
         console.log(error);
       }
