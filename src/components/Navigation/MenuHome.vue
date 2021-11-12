@@ -21,7 +21,7 @@
         >Cadastro De Funcionário</b-button
       >
 
-      <b-button class="nav-button" variant="light" block to=""
+      <b-button class="nav-button" variant="light" block to="/Produtos"
         >Cadastro De Produto</b-button
       >
     </div>

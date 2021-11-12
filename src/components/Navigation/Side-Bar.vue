@@ -15,7 +15,7 @@
             <b-button style="border: none!important"  class="nav-button shadow mt-3" variant="light" block to="/Clientes">Cadastro De Cliente</b-button>
             <b-button style="border: none!important"  class="nav-button shadow" variant="light" block to="/Fornecedores">Cadastro de fornecedor</b-button>
             <b-button style="border: none!important"  class="nav-button shadow" variant="light" block to="/Funcionarios">Cadastro de funcionário</b-button>
-            <b-button style="border: none!important"  class="nav-button shadow" variant="light" block to="/">Cadastro De Produto</b-button>
+            <b-button style="border: none!important"  class="nav-button shadow" variant="light" block to="/Produtos">Cadastro De Produto</b-button>
             <b-button style="border: none!important"  class="nav-button shadow" variant="light" block to="/">Pedido de Venda</b-button>
             <b-button style="border: none!important"  class="nav-button shadow" variant="light" block to="/">NF-e/ NFC-e</b-button>
             <b-button style="border: none!important"  class="nav-button shadow" variant="light" block to="/">Agenda</b-button>

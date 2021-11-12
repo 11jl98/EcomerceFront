@@ -71,7 +71,7 @@ dataReadSchedule:{
         const {data} = await api.get(`/schedules/${this.dataReadSchedule}`)
         this.teste.dataAgenda = moment(data.dataAgenda).format("YYYY-MM-DD")
         this.teste.descricao = data.descricao
-        this.tipo = data.tipo
+        this.teste.tipo = data.tipo
         this.idSchedule = data.id
         console.log(this.dataReadSchedule)
       } catch (error) {
