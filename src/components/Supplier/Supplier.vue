@@ -11,11 +11,11 @@
       <hr />
       <div class="mt-4">
         <b-row class="d-flex">
-          <b-form-input hidden class="col-sm-1"></b-form-input>
+          <b-form-input hidden class="col-sm-1" v-model="idSupplier"></b-form-input>
 
           <b-form-group
             id="input-group-1"
-            label="Nome Fornecedor"
+            label="Nome Fantasia"
             label-for="input-1"
             class="col-sm-5"
           >
@@ -23,6 +23,21 @@
               id="input-1"
               placeholder="Nome"
               required
+              v-model="dadosSupplier.nomeFantasia"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-1"
+            label="Razão Social"
+            label-for="input-1"
+            class="col-sm-4"
+          >
+            <b-form-input
+              id="input-1"
+              placeholder="Razão Social"
+              required
+              v-model="dadosSupplier.razaoSocial"
             ></b-form-input>
           </b-form-group>
 
@@ -36,24 +51,26 @@
               id="input-1"
               placeholder="CNPJ"
               required
+              v-model="dadosSupplier.cpfCnpj"
             ></b-form-input>
           </b-form-group>
+        </b-row>
 
+        <b-row>
           <b-form-group
             id="input-group-1"
             label="Inscrição Estadual"
             label-for="input-1"
-            class="col-sm-4"
+            class="col-sm-3"
           >
             <b-form-input
               id="input-1"
               placeholder="Inscrição Estadual"
               required
+              v-model="dadosSupplier.ie"
             ></b-form-input>
           </b-form-group>
-        </b-row>
 
-        <b-row class="d-flex">
           <b-form-group
             id="input-group-1"
             label="Endereço"
@@ -64,6 +81,7 @@
               id="input-1"
               placeholder="Endereço"
               required
+              v-model="dadosSupplier.endereco"
             ></b-form-input>
           </b-form-group>
 
@@ -77,19 +95,7 @@
               id="input-1"
               placeholder="Bairro"
               required
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group
-            id="input-group-1"
-            label="Complemento"
-            label-for="input-1"
-            class="col-sm-3"
-          >
-            <b-form-input
-              id="input-1"
-              placeholder="Complemento"
-              required
+              v-model="dadosSupplier.bairro"
             ></b-form-input>
           </b-form-group>
         </b-row>
@@ -105,6 +111,7 @@
               id="input-1"
               placeholder="Número"
               required
+              v-model="dadosSupplier.numero"
             ></b-form-input>
           </b-form-group>
 
@@ -118,6 +125,7 @@
               id="input-1"
               placeholder="Cidade"
               required
+              v-model="dadosSupplier.cidade"
             ></b-form-input>
           </b-form-group>
 
@@ -127,36 +135,26 @@
             label-for="input-1"
             class="col-sm-2"
           >
-            <b-form-input id="input-1" placeholder="UF" required></b-form-input>
+            <b-form-input id="input-1" placeholder="UF" required v-model="dadosSupplier.uf"></b-form-input>
           </b-form-group>
-          <b-form-group
-            id="input-group-1"
-            label="CEP"
-            label-for="input-1"
-            class="col-sm-4"
-          >
-            <b-form-input
-              id="input-1"
-              placeholder="CEP"
-              required
-            ></b-form-input>
-          </b-form-group>
-        </b-row>
-        <b-row class="d-flex">
+
           <b-form-group
             id="input-group-1"
             label="Email"
             label-for="input-1"
-            class="col-sm-5"
+            class="col-sm-4"
           >
             <b-form-input
               id="input-1"
               type="email"
               placeholder="Email"
               required
+              v-model="dadosSupplier.email"
             ></b-form-input>
           </b-form-group>
+        </b-row>
 
+        <b-row class="d-flex">
           <b-form-group
             id="input-group-1"
             label="Telefone"
@@ -168,6 +166,7 @@
               type="text"
               placeholder="Telefone"
               required
+              v-model="dadosSupplier.telefone"
             ></b-form-input>
           </b-form-group>
 
@@ -179,24 +178,15 @@
           >
             <b-form-input
               id="input-1"
-              type="email"
               placeholder="Celular"
               required
+              v-model="dadosSupplier.celular"
             ></b-form-input>
           </b-form-group>
         </b-row>
+
+        <b-row class="d-flex"> </b-row>
         <div>
-          <b-form-group
-            id="input-group-1"
-            label="Observação"
-            label-for="input-1"
-          >
-            <b-form-textarea
-              id="textarea"
-              rows="3"
-              max-rows="6"
-            ></b-form-textarea>
-          </b-form-group>
           <div class="d-flex justify-content-end">
             <div>
               <b-button
@@ -205,6 +195,7 @@
                   border: none !important;
                   background-color: #ff6400 !important;
                 "
+                @click="saveSupllier"
                 >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
               ></b-button>
               <b-button
@@ -224,11 +215,37 @@
 </template>
 
 <script>
+import api from '../../services/axios'
+
 export default {
   components: {},
   data() {
-    return {};
+    return {
+      idSupplier: '',
+      dadosSupplier: {
+        nomeFantasia: '',
+        razaoSocial: '',
+        cpfCnpj: '',
+        ie: '',
+        endereco: '',
+        numero: '',
+        bairro: '',
+        cidade: '',
+        uf: '',
+        email: '',
+        telefone: '',
+        celular: ''
+      }
+    };
   },
+  methods: {
+    async saveSupllier(){
+      const {data} = await api.post('/Provider', this.dadosSupplier)
+      console.log(data)
+      // this.idSupplier = data.id;
+      return data
+    }
+  }
 };
 </script>
 <style scoped>
