@@ -392,16 +392,6 @@ export default {
         console.log(error);
       }
     },
-    async searchFuncionario() {
-      try {
-        const id = this.dadosFuncionario.id;
-        const { data } = await api.put(`/employees/${id}`);
-        console.log(data);
-        return data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
   },
   watch: {
     dataEmployee() {

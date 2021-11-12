@@ -11,7 +11,11 @@
       <hr />
       <div class="mt-4">
         <b-row class="d-flex">
-          <b-form-input hidden class="col-sm-1" v-model="idSupplier"></b-form-input>
+          <b-form-input
+            hidden
+            class="col-sm-1"
+            v-model="dadosSupplier.idSupplier"
+          ></b-form-input>
 
           <b-form-group
             id="input-group-1"
@@ -135,7 +139,12 @@
             label-for="input-1"
             class="col-sm-2"
           >
-            <b-form-input id="input-1" placeholder="UF" required v-model="dadosSupplier.uf"></b-form-input>
+            <b-form-input
+              id="input-1"
+              placeholder="UF"
+              required
+              v-model="dadosSupplier.uf"
+            ></b-form-input>
           </b-form-group>
 
           <b-form-group
@@ -215,37 +224,64 @@
 </template>
 
 <script>
-import api from '../../services/axios'
+import api from "../../services/axios";
 
 export default {
+  props: {
+    dataSupplier: {
+      type: Object,
+    },
+  },
   components: {},
   data() {
     return {
-      idSupplier: '',
       dadosSupplier: {
-        nomeFantasia: '',
-        razaoSocial: '',
-        cpfCnpj: '',
-        ie: '',
-        endereco: '',
-        numero: '',
-        bairro: '',
-        cidade: '',
-        uf: '',
-        email: '',
-        telefone: '',
-        celular: ''
-      }
+        id: "",
+        nomeFantasia: "",
+        razaoSocial: "",
+        cpfCnpj: "",
+        ie: "",
+        endereco: "",
+        numero: "",
+        bairro: "",
+        cidade: "",
+        uf: "",
+        email: "",
+        telefone: "",
+        celular: "",
+      },
     };
   },
   methods: {
-    async saveSupllier(){
-      const {data} = await api.post('/Provider', this.dadosSupplier)
-      console.log(data)
-      // this.idSupplier = data.id;
-      return data
-    }
-  }
+    async saveSupllier() {
+      try {
+        const { data } = await api.post("/Providers", this.dadosSupplier);
+        this.dadosSupplier.id = data.id;
+        console.log(data);
+        return this.$toast.open({
+          message: "Funcionário salvo com Sucesso",
+          type: "success",
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async updateSupplier() {
+      try {
+        const id = this.dadosSupplier.idSupplier;
+        const {data} = await api.put(`/Providers/${id}`, this.dadosSupplier)
+        console.log(data)
+        return data
+      } catch (error) {
+        console.log(error)
+      }
+    },
+  },
+  watch: {
+    dataSupplier() {
+      Object.assign(this.dadosSupplier, this.dataSupplier);
+    },
+  },
 };
 </script>
 <style scoped>

@@ -95,13 +95,13 @@ export default {
   components: {},
   data() {
     return {
-      dataEmployees: {},
+      dataEmployees: [],
     };
   },
   methods: {
     async readEmployee() {
       try {
-        const { data } = await api.get(`/employees/`);
+        const { data } = await api.get(`/employees`);
         console.log(data);
         this.dataEmployees = data.data;
         return data;
