@@ -33,7 +33,7 @@
             >
               <b-form-select></b-form-select>
             </b-form-group>
-            <div style="margin:  16px">
+            <div style="margin: 16px">
               <b-button variant="primary" class="mt-3 mb-3">
                 <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
                 Pesquisar</b-button
@@ -50,17 +50,17 @@
               <th scope="col">Celular</th>
               <th scope="col">Ações</th>
             </tr>
-            <tr v-for="item in dataEmployees" :key="item.id">
-              <td>{{item.nomeFuncionario}}</td>
-              <td>{{item.cpf}}</td>
-              <td>{{item.telefone}}</td>
-              <td>{{item.celular}}</td>
+            <tr v-for="Employee in dataEmployees" :key="Employee.id">
+              <td>{{ Employee.nomeFuncionario }}</td>
+              <td>{{ Employee.cpf }}</td>
+              <td>{{ Employee.telefone }}</td>
+              <td>{{ Employee.celular }}</td>
               <td>
                 <b-button
                   size="sm"
                   class="mr-2"
                   variant="info"
-                  @click="editEmployee(item)"
+                  @click="editEmployee(Employee)"
                   v-b-popover.hover.left="{
                     variant: 'info',
                     content: 'Editar',
@@ -71,6 +71,7 @@
                 <b-button
                   size="sm"
                   variant="secondary"
+                  @click="deleteEmployee(Employee.id)"
                   v-b-popover.hover.right="{
                     variant: 'secondary',
                     content: 'Excluir',
@@ -89,19 +90,15 @@
 </template>
 
 <script>
-import api from '../../services/axios'
+import api from "../../services/axios";
 export default {
-  components: {
-    
-  },
+  components: {},
   data() {
     return {
-      dataEmployees: {
-
-      }
+      dataEmployees: {},
     };
   },
-  methods:{
+  methods: {
     async readEmployee() {
       try {
         const { data } = await api.get(`/employees/`);
@@ -112,15 +109,24 @@ export default {
         console.log(error);
       }
     },
-     async editEmployee(Employee){
-    this.$emit('readOrEditEmployees', Employee )
+    async editEmployee(Employee) {
+      this.$emit("readOrEditEmployees", Employee);
       this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
+    },
+    async destroyEmployee(idEmployee) {
+      try {
+        const { data } = await api.delete(`/employees/${idEmployee}`);
+        console.log(data);
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
+
+  mounted() {
+    this.readEmployee();
   },
- 
-  mounted(){
-   this.readEmployee();
-  }
 };
 </script>
 <style scoped>
