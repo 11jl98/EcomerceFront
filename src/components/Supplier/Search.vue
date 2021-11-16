@@ -71,7 +71,7 @@
                 <b-button
                   size="sm"
                   variant="secondary"
-                  @click="destroyEmployee(Employee.id)"
+                  @click="destroySupplier(supplier.id)"
                   v-b-popover.hover.right="{
                     variant: 'secondary',
                     content: 'Excluir',
@@ -112,6 +112,16 @@ export default {
     async editSupplier(Supplier) {
       this.$emit("readOrEditSupplier", Supplier);
       this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
+    },
+    async destroySupplier(Supplier) {
+      await api.delete(`/Providers/${Supplier}`)
+      this.readSupplier()
+      return this.$toast.open({
+          message: "Fornecedor deletado com sucesso",
+          type: "success",
+        });
+      
+         
     }
   },
   mounted(){

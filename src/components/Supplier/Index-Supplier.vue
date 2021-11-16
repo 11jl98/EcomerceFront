@@ -19,7 +19,6 @@
           class="nav-button"
           variant="light"
           block
-          href="#foo"
           v-b-toggle.accordion-search
           >Pesquisa</b-button
         >

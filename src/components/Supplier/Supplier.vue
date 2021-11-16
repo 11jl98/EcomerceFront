@@ -255,11 +255,20 @@ export default {
   methods: {
     async saveSupllier() {
       try {
+        if (this.dadosSupplier.id !== "") {
+          this.updateSupplier();
+          this.clear();
+          return this.$toast.open({
+            message: "Fornecedor atualizado com sucesso",
+            type: "success",
+          });
+        }
         const { data } = await api.post("/Providers", this.dadosSupplier);
         this.dadosSupplier.id = data.id;
         console.log(data);
+        this.clear();
         return this.$toast.open({
-          message: "Funcionário salvo com Sucesso",
+          message: "Fornecedor salvo com sucesso",
           type: "success",
         });
       } catch (error) {
@@ -268,13 +277,28 @@ export default {
     },
     async updateSupplier() {
       try {
-        const id = this.dadosSupplier.idSupplier;
-        const {data} = await api.put(`/Providers/${id}`, this.dadosSupplier)
-        console.log(data)
-        return data
+        const id = this.dadosSupplier.id;
+        const { data } = await api.put(`/Providers/${id}`, this.dadosSupplier);
+        console.log(data);
+        return data;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
+    },
+    clear() {
+      (this.dadosSupplier.id = ""),
+        (this.dadosSupplier.nomeFantasia = ""),
+        (this.dadosSupplier.razaoSocial = ""),
+        (this.dadosSupplier.cpfCnpj = ""),
+        (this.dadosSupplier.ie = ""),
+        (this.dadosSupplier.endereco = ""),
+        (this.dadosSupplier.numero = ""),
+        (this.dadosSupplier.bairro = ""),
+        (this.dadosSupplier.cidade = ""),
+        (this.dadosSupplier.uf = ""),
+        (this.dadosSupplier.email = ""),
+        (this.dadosSupplier.telefone = ""),
+        (this.dadosSupplier.celular = "");
     },
   },
   watch: {
