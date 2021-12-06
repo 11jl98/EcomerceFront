@@ -23,6 +23,7 @@
               id="input-1"
               placeholder="Nome"
               required
+              v-model="dataProducts.nome"
             ></b-form-input>
           </b-form-group>
 
@@ -36,9 +37,26 @@
               id="input-1"
               placeholder="Valor"
               required
+              v-model="dataProducts.valor"
             ></b-form-input>
           </b-form-group>
           <b-form-group
+            id="input-group-1"
+            label="Valor de venda"
+            label-for="input-1"
+            class="col-sm-3"
+          >
+            <b-form-input
+              id="input-1"
+              placeholder="Valor de venda"
+              required
+              v-model="dataProducts.valorVenda"
+            ></b-form-input>
+          </b-form-group>
+          
+        </b-row>
+        <b-row class="d-flex justify-content-around">
+        <b-form-group
             id="input-group-1"
             label="Unidade"
             label-for="input-1"
@@ -48,11 +66,9 @@
               id="input-1"
               placeholder="Unidade"
               required
+              v-model="dataProducts.unidade"
             ></b-form-input>
           </b-form-group>
-        </b-row>
-
-        <b-row class="d-flex justify-content-around">
           <b-form-group
             id="input-group-1"
             label="Código de barras"
@@ -62,11 +78,12 @@
             <b-form-input
               id="input-1"
               placeholder="Código de barras"
+              v-model="dataProducts.codBarras"
+              
               required
             ></b-form-input>
           </b-form-group>
-
-          <b-form-group
+           <b-form-group
             id="input-group-1"
             label="Código de referencia"
             label-for="input-1"
@@ -75,18 +92,7 @@
             <b-form-input
               id="input-1"
               placeholder="Código de referencia"
-              required
-            ></b-form-input>
-          </b-form-group>
-          <b-form-group
-            id="input-group-1"
-            label="Unidade"
-            label-for="input-1"
-            class="col-sm-3"
-          >
-            <b-form-input
-              id="input-1"
-              placeholder="Unidade"
+              v-model="dataProducts.codReferencia"
               required
             ></b-form-input>
           </b-form-group>
@@ -95,14 +101,16 @@
         <b-row class="d-flex justify-content-around">
           <b-form-group
             id="input-group-1"
-            label="Estoque mínimo"
+            label="Estoque"
             label-for="input-1"
             class="col-sm-2"
           >
             <b-form-input
               id="input-1"
-              placeholder="Estoque mínimo"
+              placeholder="Estoque"
               required
+              disabled
+              v-model="estoque"
               type="number"
             ></b-form-input>
           </b-form-group>
@@ -117,18 +125,21 @@
               placeholder="Estoque mínimo"
               required
               type="number"
+              v-model="dataProducts.estoqueMin"
+
             ></b-form-input>
           </b-form-group>
           <b-form-group
             id="input-group-1"
             label="Descrição"
             label-for="input-1"
-            class="col-sm-8"
+            class="col-sm-7"
           >
             <b-form-textarea
               id="textarea"
               rows="3"
               max-rows="6"
+              v-model="dataProducts.descricao"
             ></b-form-textarea>
           </b-form-group>
         </b-row>
@@ -143,6 +154,7 @@
                   border: none !important;
                   background-color: #56aafe !important;
                 "
+                @click="SaveProducts"
                 >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
               ></b-button>
               <b-button variant="light"
@@ -158,19 +170,37 @@
 </template>
 
 <script>
-// import api from "../../services/axios";
+ import api from "../../services/axios";
 
 export default {
   props: {
-    readOrEditCustomers: {
+    readOrEditProducts: {
       type: Object,
     },
   },
   data() {
-    return {};
+    return {
+      dataProducts:{},
+      estoque:0
+    };
   },
 
-  methods: {},
+  methods: {
+async SaveProducts(){
+  try{
+    const {data} = await api.post("/products", {...this.dataProducts, estoque:this.estoque})
+    console.log(data)
+    return this.$toast.open({
+            message: "Produto Salvo com Sucesso",
+            type: "success",
+          });
+  }
+  catch(error){ 
+    console.log(error.response)
+  }
+}
+
+  },
 };
 </script>
 <style scoped>

@@ -25,14 +25,6 @@
                 required
               ></b-form-input>
             </b-form-group>
-            <b-form-group
-              id="input-group-1"
-              label="Status"
-              label-for="input-1"
-              class="col-sm-3"
-            >
-              <b-form-select></b-form-select>
-            </b-form-group>
             <div style="margin: 16px">
               <b-button variant="primary" class="mt-3 mb-3">
                 <b-icon-search class="mr-2" scale="0.8"></b-icon-search>

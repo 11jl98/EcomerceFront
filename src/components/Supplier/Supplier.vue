@@ -202,16 +202,12 @@
                 class="mr-4"
                 style="
                   border: none !important;
-                  background-color: #ff6400 !important;
+                  background-color: #56aafe !important;
                 "
                 @click="saveSupllier"
                 >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
               ></b-button>
-              <b-button
-                style="
-                  border: none !important;
-                  background-color: #038c5a !important;
-                "
+              <b-button variant="light"
                 >Limpar
                 <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
               ></b-button>

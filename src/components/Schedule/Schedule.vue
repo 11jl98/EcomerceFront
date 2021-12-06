@@ -59,7 +59,7 @@ export default {
   methods: {
     async readSchedule() {
       try {
-        const {data} = await api.get("/schedules/month");
+        const {data} = await api.get("/schedules");
         console.log(data);
         data.map((resultado) => {
         this.calendarOptions.events.push(this.CreateObject(resultado));
