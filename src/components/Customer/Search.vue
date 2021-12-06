@@ -127,6 +127,7 @@ export default {
     async editCustomer(Customer){
       this.$emit('readOrEditCustomers', Customer )
       this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
+      console.log(Customer)
      
     },
     async destroyCustomer(idCustomer){

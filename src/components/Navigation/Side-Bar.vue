@@ -7,23 +7,72 @@
       text-variant="dark"
       shadow
       style="background-color: rgba(58, 91, 180, 1) !important"
-
     >
       <div class="px-3 py-2">
         <nav class="mb-3">
           <b-nav vertical>
-            <b-button style="border: none!important"  class="nav-button shadow mt-3" variant="light" block to="/Clientes">Cadastro De Cliente</b-button>
-            <b-button style="border: none!important"  class="nav-button shadow" variant="light" block to="/Fornecedores">Cadastro de fornecedor</b-button>
-            <b-button style="border: none!important"  class="nav-button shadow" variant="light" block to="/Funcionarios">Cadastro de funcionário</b-button>
-            <b-button style="border: none!important"  class="nav-button shadow" variant="light" block to="/Produtos">Cadastro De Produto</b-button>
-            <b-button style="border: none!important"  class="nav-button shadow" variant="light" block to="/">Pedido de Venda</b-button>
-            <b-button style="border: none!important"  class="nav-button shadow" variant="light" block to="/">NF-e/ NFC-e</b-button>
-            <b-button style="border: none!important"  class="nav-button shadow" variant="light" block to="/">Agenda</b-button>
+            <b-button
+              style="border: none !important"
+              class="nav-button shadow mt-3"
+              variant="light"
+              block
+              to="/Clientes"
+              >Cadastro De Cliente</b-button
+            >
+            <b-button
+              style="border: none !important"
+              class="nav-button shadow"
+              variant="light"
+              block
+              to="/Fornecedores"
+              >Cadastro de fornecedor</b-button
+            >
+            <b-button
+              style="border: none !important"
+              class="nav-button shadow"
+              variant="light"
+              block
+              to="/Funcionarios"
+              >Cadastro de funcionário</b-button
+            >
+            <b-button
+              style="border: none !important"
+              class="nav-button shadow"
+              variant="light"
+              block
+              to="/Produtos"
+              >Cadastro De Produto</b-button
+            >
+            <b-button
+              style="border: none !important"
+              class="nav-button shadow"
+              variant="light"
+              block
+              to="/Vendas"
+              >Pedido de Venda</b-button
+            >
+            <b-button
+              style="border: none !important"
+              class="nav-button shadow"
+              variant="light"
+              block
+              to="/"
+              >NF-e/ NFC-e</b-button
+            >
+            <b-button
+              style="border: none !important"
+              class="nav-button shadow"
+              variant="light"
+              block
+              to="/"
+              >Agenda</b-button
+            >
           </b-nav>
         </nav>
       </div>
-            <b-button class="home-button shadow" variant="light" block  to="/">Pagina Inicial</b-button>
-
+      <b-button class="home-button shadow" variant="light" block to="/"
+        >Pagina Inicial</b-button
+      >
     </b-sidebar>
   </div>
 </template>
@@ -33,10 +82,10 @@ export default {};
 </script>
 
 <style scoped>
-.nav-button{
+.nav-button {
   background-color: #56aafe !important;
   color: #fff;
-  border-radius: 10px!important;
-  margin: 5px 5px 5px 0px
+  border-radius: 10px !important;
+  margin: 5px 5px 5px 0px;
 }
 </style>

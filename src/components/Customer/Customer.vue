@@ -196,7 +196,7 @@
             <b-form-input
               id="input-1"
               type="date"
-              v-model="dataCostumer.datanascimento"
+              v-model="dataCostumer.dataNascimento"
             ></b-form-input>
           </b-form-group>
         </b-row>
@@ -225,8 +225,10 @@
                 @click="saveOrUpdateCustomer"
                 >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
               ></b-button>
-              <b-button variant="light"
-                >Limpar
+              <b-button 
+                variant="light"
+                @click="clearInputs"
+              >Limpar
                 <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
               ></b-button>
             </div>
@@ -262,13 +264,17 @@ export default {
         telefone: "",
         celular: "",
         email: "",
-        datanascimento: "",
+        dataNascimento: "",
         observacao: "",
       },
     };
   },
 
   methods: {
+    clearInputs(){
+      this.dataCostumer = {}
+    },
+
     saveOrUpdateCustomer() {
       if (this.dataCostumer.id === "") return this.saveCustomer();
       
@@ -313,7 +319,7 @@ export default {
     readOrEditCustomers(){
       console.log(this.readOrEditCustomers)
       Object.assign(this.dataCostumer, this.readOrEditCustomers)
-      this.dataCostumer.datanascimento = this.readOrEditCustomers.datanascimento.split('T')[0]
+      this.dataCostumer.dataNascimento = this.readOrEditCustomers.datanascimento.split('T')[0]
     }
   }
 };

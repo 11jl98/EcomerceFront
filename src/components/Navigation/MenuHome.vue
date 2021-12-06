@@ -26,7 +26,7 @@
       >
     </div>
     <div class="button-menu">
-      <b-button class="nav-button shadow" variant="light" block to=""
+      <b-button class="nav-button shadow" variant="light" block to="/Vendas"
         >Pedido de Venda</b-button
       >
     </div>

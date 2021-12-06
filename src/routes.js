@@ -6,6 +6,7 @@ import Customer from '../src/pages/Customer/Page-Customer.vue'
 import Supplier from '../src/pages/Supplier/Page-Supplier.vue'
 import Employee from '../src/pages/Employee/Page-Employee.vue'
 import Products from '../src/pages/Products/Page-Products.vue'
+import Sale from '../src/pages/Sale/Page-Sale.vue'
 Vue.use(Router)
 const routes = [
     {
@@ -31,6 +32,10 @@ const routes = [
     {
         path: '/Produtos',
         component: Products
+    },
+    {
+        path: '/Vendas',
+        component: Sale
     },
 ]
 
