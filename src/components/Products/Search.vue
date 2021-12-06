@@ -36,11 +36,58 @@
         <table class="table table-sm">
           <thead>
             <tr>
-              <th>Nome Cliente</th>
-              <th>CNPJ/CPF</th>
-              <th>Cidade</th>
-              <th>Endereço</th>
+              <th>Nome Produto</th>
+              <th>Descrição</th>
+              <th>Valor de venda</th>
+              <th>estoque</th>
               <th>Ações</th>
+            </tr>
+             <tr v-for="products in dataProducts" :key="products.id">
+              <td
+                class="textoGrande"
+                v-b-popover.hover.top="{
+                  variant: 'secondary',
+                  content: products.nome,
+                }"
+              >
+              {{products.nome}}
+              </td>
+              <td
+                class="textoGrande"
+                v-b-popover.hover.top="{
+                  variant: 'secondary',
+                  content: products.descricao,
+                }"
+              >
+              {{products.descricao}}
+              </td>
+              <td>{{ products.valorVenda }}</td>
+              <td>{{ products.estoque }}</td>
+              <td>
+                <b-button
+                  size="sm"
+                  class="mr-2"
+                  variant="info"
+                  @click="editproducts(products)"
+                  v-b-popover.hover.left="{
+                    variant: 'info',
+                    content: 'Editar',
+                  }"
+                >
+                  <b-icon-check scale="2"></b-icon-check>
+                </b-button>
+                <b-button
+                  size="sm"
+                  variant="secondary"
+                  @click="destroyproducts(products.id)"
+                  v-b-popover.hover.right="{
+                    variant: 'secondary',
+                    content: 'Excluir',
+                  }"
+                >
+                  <b-icon-trash scale="0.7"></b-icon-trash
+                ></b-button>
+              </td>
             </tr>
           </thead>
         </table>
@@ -51,12 +98,55 @@
 </template>
 
 <script>
-// import api from "../../services/axios";
+ import api from "../../services/axios";
 export default {
   data() {
-    return {};
+    return {
+      dataProducts:{},
+      productsTable:[]
+    };
   },
-  methods: {},
+  methods: {
+    async SearchProducts() {
+        try{
+          const {data} = await api.get('/products')
+          console.log(data.data)
+          this.dataProducts = data.data
+
+        }
+        catch (error) {
+          console.log(error)
+        }
+    },
+    async editproducts(products){
+        try{
+          this.$emit('dataProducts', products)
+          this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
+
+        }
+        catch (error) {
+          console.log(error)
+        }
+    },
+    async destroyproducts(idProducts){
+      try{ 
+        await api.delete('/products/'+idProducts)
+        this.SearchProducts()
+          return this.$toast.open({
+            message: "Produto deletado com sucesso",
+            type: "success",
+          });
+      }catch {
+            return this.$toast.open({
+            message: "Não foi possível deletar o produto",
+            type: "warning",
+          });
+      }
+    }
+  },
+  mounted() {
+    this.SearchProducts()
+  }
 };
 </script>
 <style scoped>

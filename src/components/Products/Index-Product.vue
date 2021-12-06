@@ -30,8 +30,8 @@
       </div>
     </div>
     <div class="container-components mb-3" id="receita" role="tablist">
-      <Products />
-      <Search />
+      <Products :readOrEditProducts = "dataProducts"/>
+      <Search @dataProducts="dataProducts = $event"/>
     </div>
   </div>
 </template>
@@ -47,7 +47,9 @@ export default {
     Search,
   },
   data() {
-    return {};
+    return {
+      dataProducts:{}
+    };
   },
 };
 </script>

@@ -154,7 +154,7 @@
                   border: none !important;
                   background-color: #56aafe !important;
                 "
-                @click="SaveProducts"
+                @click="saveOrUpdateProducts"
                 >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
               ></b-button>
               <b-button variant="light"
@@ -185,7 +185,30 @@ export default {
     };
   },
 
-  methods: {
+methods: {
+saveOrUpdateProducts(){
+  console.log(this.dataProducts.id)
+  if(this.dataProducts.id == "" || this.dataProducts.id == null) return this.SaveProducts()
+
+  this.updateProducts()
+},
+
+async updateProducts(){
+  try{
+    await api.put('/products/'+this.dataProducts.id, this.dataProducts)
+     return this.$toast.open({
+            message: "Produto Editado com Sucesso",
+            type: "success",
+          });
+  }catch (error) {
+    console.log(error)
+         return this.$toast.open({
+            message: "Não foi possível editar os dados",
+            type: "warning",
+          });
+  }
+},
+
 async SaveProducts(){
   try{
     const {data} = await api.post("/products", {...this.dataProducts, estoque:this.estoque})
@@ -197,10 +220,21 @@ async SaveProducts(){
   }
   catch(error){ 
     console.log(error.response)
+        return this.$toast.open({
+            message: "Não foi possível salvar os dados",
+            type: "warning",
+          });
   }
 }
 
-  },
+},
+watch:{
+  readOrEditProducts(){
+    console.log(this.readOrEditProducts)
+   
+   this.dataProducts = this.readOrEditProducts
+  }
+}
 };
 </script>
 <style scoped>
