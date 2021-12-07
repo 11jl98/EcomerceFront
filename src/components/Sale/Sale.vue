@@ -17,7 +17,7 @@
                   >
                     <b-form-select
                       v-model="selected"
-                      :options="options"
+                      :options="dataCustomers"
                     ></b-form-select>
                   </b-form-group>
 
@@ -30,7 +30,7 @@
                   >
                     <b-form-select
                       v-model="selected"
-                      :options="options"
+                      :options="dataEmployee"
                     ></b-form-select>
                   </b-form-group>
                 </b-row>
@@ -91,7 +91,18 @@
 export default {
   data() {
     return {
-      options: [{ value: null, text: "Please select an option" }],
+      dataCustomers: [
+        {
+          value: "cliente",
+          text: "CLIENTE TESTE",
+        },
+      ],
+      dataEmployee: [
+        {
+          value: "funcionario",
+          text: "FUNCIONARIO TESTE",
+        },
+      ],
     };
   },
 };
