@@ -140,6 +140,7 @@
               placeholder="CEP"
               required
               v-model="dataCostumer.cep"
+              v-mask="maskCep"
             ></b-form-input>
           </b-form-group>
           <b-form-group
@@ -334,6 +335,9 @@ export default {
     },
     maskTelefone() {
       return "(##) ####-####";
+    },
+    maskCep() {
+      return "#####-###";
     },
   },
 };

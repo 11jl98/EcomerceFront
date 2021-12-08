@@ -114,7 +114,6 @@ export default {
           message: "Funcionário deletado!",
           type: "success",
         });
-        
       } catch (error) {
         console.log(error);
       }

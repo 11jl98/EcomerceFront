@@ -56,6 +56,7 @@
               placeholder="CNPJ"
               required
               v-model="dadosSupplier.cpfCnpj"
+              v-mask="maskCnpj"
             ></b-form-input>
           </b-form-group>
         </b-row>
@@ -176,6 +177,7 @@
               placeholder="Telefone"
               required
               v-model="dadosSupplier.telefone"
+              v-mask="maskTelefone"
             ></b-form-input>
           </b-form-group>
 
@@ -190,6 +192,7 @@
               placeholder="Celular"
               required
               v-model="dadosSupplier.celular"
+              v-mask="maskCelular"
             ></b-form-input>
           </b-form-group>
         </b-row>
@@ -207,7 +210,7 @@
                 @click="saveSupllier"
                 >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
               ></b-button>
-              <b-button variant="light"
+              <b-button variant="light" @click="clear"
                 >Limpar
                 <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
               ></b-button>
@@ -282,24 +285,25 @@ export default {
       }
     },
     clear() {
-      (this.dadosSupplier.id = ""),
-        (this.dadosSupplier.nomeFantasia = ""),
-        (this.dadosSupplier.razaoSocial = ""),
-        (this.dadosSupplier.cpfCnpj = ""),
-        (this.dadosSupplier.ie = ""),
-        (this.dadosSupplier.endereco = ""),
-        (this.dadosSupplier.numero = ""),
-        (this.dadosSupplier.bairro = ""),
-        (this.dadosSupplier.cidade = ""),
-        (this.dadosSupplier.uf = ""),
-        (this.dadosSupplier.email = ""),
-        (this.dadosSupplier.telefone = ""),
-        (this.dadosSupplier.celular = "");
+      this.dadosSupplier = {};
     },
   },
   watch: {
     dataSupplier() {
       Object.assign(this.dadosSupplier, this.dataSupplier);
+    },
+  },
+
+  computed: {
+    maskCnpj() {
+      return "##.###.###/####-##";
+    },
+
+    maskCelular() {
+      return "(##) #####-####";
+    },
+    maskTelefone() {
+      return "(##) ####-####";
     },
   },
 };

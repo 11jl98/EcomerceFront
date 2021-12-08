@@ -42,6 +42,7 @@
               placeholder="CNPJ"
               required
               v-model="dadosFuncionario.cpf"
+              v-mask="maskCpf"
             ></b-form-input>
           </b-form-group>
 
@@ -143,6 +144,7 @@
               placeholder="CEP"
               required
               v-model="dadosFuncionario.cep"
+              v-mask="maskCep"
             ></b-form-input>
           </b-form-group>
 
@@ -173,6 +175,7 @@
               placeholder="Telefone"
               required
               v-model="dadosFuncionario.telefone"
+              v-mask="maskTelefone"
             ></b-form-input>
           </b-form-group>
 
@@ -187,6 +190,7 @@
               placeholder="Celular"
               required
               v-model="dadosFuncionario.celular"
+              v-mask="maskCelular"
             ></b-form-input>
           </b-form-group>
 
@@ -337,30 +341,13 @@ export default {
   },
   methods: {
     clear() {
-      (this.dadosFuncionario.id = ""),
-        (this.dadosFuncionario.nomeFuncionario = ""),
-        (this.dadosFuncionario.cpf = ""),
-        (this.dadosFuncionario.rg = ""),
-        (this.dadosFuncionario.comissao = ""),
-        (this.dadosFuncionario.endereco = ""),
-        (this.dadosFuncionario.numero = ""),
-        (this.dadosFuncionario.bairro = ""),
-        (this.dadosFuncionario.cidade = ""),
-        (this.dadosFuncionario.uf = ""),
-        (this.dadosFuncionario.email = ""),
-        (this.dadosFuncionario.telefone = ""),
-        (this.dadosFuncionario.celular = ""),
-        (this.dadosFuncionario.ctps = ""),
-        (this.dadosFuncionario.funcao = ""),
-        (this.dadosFuncionario.pis = ""),
-        (this.dadosFuncionario.matricula = ""),
-        (this.dadosFuncionario.dataAdimissao = "");
+      this.dadosFuncionario = {};
     },
     async saveFuncionario() {
       try {
-         if (this.dadosFuncionario.id !== "") {
+        if (this.dadosFuncionario.id !== "") {
           this.updateFuncionario();
-          console.log(this.dadosFuncionario.id)
+          console.log(this.dadosFuncionario.id);
           return this.$toast.open({
             message: "Funcionário Atualizado com Sucesso",
             type: "success",
@@ -385,7 +372,10 @@ export default {
     async updateFuncionario() {
       try {
         const id = this.dadosFuncionario.id;
-        const { data } = await api.put(`/employees/${id}`, this.dadosFuncionario);
+        const { data } = await api.put(
+          `/employees/${id}`,
+          this.dadosFuncionario
+        );
         console.log(data);
         return data;
       } catch (error) {
@@ -396,7 +386,23 @@ export default {
   watch: {
     dataEmployee() {
       Object.assign(this.dadosFuncionario, this.dataEmployee);
-      this.dadosFuncionario.dataAdimissao = this.dataEmployee.dataAdimissao.split('T')[0]
+      this.dadosFuncionario.dataAdimissao =
+        this.dataEmployee.dataAdimissao.split("T")[0];
+    },
+  },
+  computed: {
+    maskCpf() {
+      return "###.###.###-##";
+    },
+
+    maskCelular() {
+      return "(##) #####-####";
+    },
+    maskTelefone() {
+      return "(##) ####-####";
+    },
+    maskCep() {
+      return "#####-###";
     },
   },
 };
