@@ -42,6 +42,7 @@
               placeholder="CNPJ/CPF"
               required
               v-model="dataCostumer.cpfCnpj"
+              v-mask="maskCpfCnpj"
             ></b-form-input>
           </b-form-group>
 
@@ -166,6 +167,7 @@
             <b-form-input
               id="input-1"
               type="text"
+              v-mask="maskTelefone"
               placeholder="Telefone"
               require
               v-model="dataCostumer.telefone"
@@ -180,9 +182,9 @@
           >
             <b-form-input
               id="input-1"
-              type="email"
               placeholder="Celular"
               required
+              v-mask="maskCelular"
               v-model="dataCostumer.celular"
             ></b-form-input>
           </b-form-group>
@@ -225,10 +227,8 @@
                 @click="saveOrUpdateCustomer"
                 >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
               ></b-button>
-              <b-button 
-                variant="light"
-                @click="clearInputs"
-              >Limpar
+              <b-button variant="light" @click="clearInputs"
+                >Limpar
                 <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
               ></b-button>
             </div>
@@ -243,10 +243,10 @@
 import api from "../../services/axios";
 
 export default {
-    props:{
-    readOrEditCustomers:{
-      type: Object
-    }
+  props: {
+    readOrEditCustomers: {
+      type: Object,
+    },
   },
   data() {
     return {
@@ -271,20 +271,20 @@ export default {
   },
 
   methods: {
-    clearInputs(){
-      this.dataCostumer = {}
+    clearInputs() {
+      this.dataCostumer = {};
     },
 
     saveOrUpdateCustomer() {
       if (this.dataCostumer.id === "") return this.saveCustomer();
-      
+
       this.updateCustomer();
     },
 
     async saveCustomer() {
       try {
         const { data } = await api.post("/customers", this.dataCostumer);
-        console.log(data)
+        console.log(data);
         this.dataCostumer.id = data.id;
         return this.$toast.open({
           message: "Cliente salvo com Sucesso",
@@ -301,7 +301,7 @@ export default {
     async updateCustomer() {
       try {
         await api.put("/customers/" + this.dataCostumer.id, this.dataCostumer);
-    
+
         this.$toast.open({
           message: "Cliente editado com Sucesso",
           type: "success",
@@ -315,13 +315,27 @@ export default {
       }
     },
   },
-    watch:{
-    readOrEditCustomers(){
-      console.log(this.readOrEditCustomers)
-      Object.assign(this.dataCostumer, this.readOrEditCustomers)
-      this.dataCostumer.dataNascimento = this.readOrEditCustomers.datanascimento.split('T')[0]
-    }
-  }
+  watch: {
+    readOrEditCustomers() {
+      console.log(this.readOrEditCustomers);
+      Object.assign(this.dataCostumer, this.readOrEditCustomers);
+      this.dataCostumer.dataNascimento =
+        this.readOrEditCustomers.datanascimento.split("T")[0];
+    },
+  },
+  computed: {
+    maskCpfCnpj() {
+      return this.dataCostumer.cpfCnpj.length > 14
+        ? "##.###.###/####-##"
+        : "###.###.###-##";
+    },
+    maskCelular() {
+      return "(##) #####-####";
+    },
+    maskTelefone() {
+      return "(##) ####-####";
+    },
+  },
 };
 </script>
 <style scoped>

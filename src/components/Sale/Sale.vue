@@ -1,155 +1,280 @@
 <template>
-  <div>
+  <b-collapse
+    visible
+    id="accordion-dadosCadastrais"
+    accordion="my-accordion"
+    role="tabpanel"
+    class="mt-2"
+  >
     <div>
-      <b-card no-body>
-        <h2>Pedido de venda</h2>
-        <hr />
-        <b-row class="d-flex justify-content-between">
-          <div class="col-sm-6">
-            <b-form-group
-              id="input-group-1"
-              label="Data da venda"
-              label-for="input-1"
-              class="col-sm-5"
-              size="sm"
-            >
-              <b-form-input
-                value-field="id"
-                text-field="nome"
-                disabled
-                :options="dataCustomers"
-                type="date"
-                v-model="dataSale.dataVenda"
-              ></b-form-input>
-            </b-form-group>
-          </div>
-
-          <div class="col-sm-3 d-flex">
-            <b-form-group v-slot="{ ariaDescribedby }">
-              <b-form-radio
-                :aria-describedby="ariaDescribedby"
-                value="Venda"
-                name="checado"
-                v-model="dataSale.status"
-                class="mr-5 mt-3"
-                >Vendas</b-form-radio
+      <div>
+        <b-card no-body>
+          <h2>Pedido de venda</h2>
+          <hr />
+          <b-row class="d-flex justify-content-between">
+            <div class="col-sm-6">
+              <b-form-group
+                id="input-group-1"
+                label="Data da venda"
+                label-for="input-1"
+                class="col-sm-5"
+                size="sm"
               >
-            </b-form-group>
+                <b-form-input
+                  value-field="id"
+                  text-field="nome"
+                  disabled
+                  :options="dataCustomers"
+                  type="date"
+                  v-model="dataSale.dataVenda"
+                ></b-form-input>
+              </b-form-group>
+            </div>
 
-            <b-form-group v-slot="{ ariaDescribedby }">
-              <b-form-radio
-                :aria-describedby="ariaDescribedby"
-                name="checado"
-                value="Orçamento"
-                class="mt-3 testeDois"
-                v-model="dataSale.status"
-                >Orçamento</b-form-radio
-              >
-            </b-form-group>
-          </div>
-        </b-row>
-        <b-tabs card>
-          <b-tab title="Clientes">
-            <b-card-text
-              ><div class="mt-4">
-                <b-row class="d-flex justify-content-between">
-                  <b-form-input hidden class="col-sm-1"></b-form-input>
-                  <b-form-group
-                    id="input-group-1"
-                    label="Nome Cliente"
-                    label-for="input-1"
-                    class="col-sm-4"
-                    size="sm"
-                  >
-                    <b-form-select
-                      value-field="id"
-                      text-field="nome"
-                      :options="dataCustomers"
-                      v-model="dataSale.idCliente"
-                    ></b-form-select>
-                  </b-form-group>
+            <div class="col-sm-3 d-flex">
+              <b-form-group v-slot="{ ariaDescribedby }">
+                <b-form-radio
+                  :aria-describedby="ariaDescribedby"
+                  value="Venda"
+                  name="checado"
+                  v-model="dataSale.status"
+                  class="mr-5 mt-3"
+                  >Vendas</b-form-radio
+                >
+              </b-form-group>
 
-                  <b-form-group
-                    id="input-group-1"
-                    label="Funcionario"
-                    label-for="input-1"
-                    class="col-sm-4"
-                    size="sm"
-                  >
-                    <b-form-select
-                      :options="dataEmployee"
-                      value-field="id"
-                      text-field="nomeFuncionario"
-                      v-model="dataSale.idFuncionario"
-                      @change="readComissao(dataEmployee[0])"
+              <b-form-group v-slot="{ ariaDescribedby }">
+                <b-form-radio
+                  :aria-describedby="ariaDescribedby"
+                  name="checado"
+                  value="Orçamento"
+                  class="mt-3 testeDois"
+                  v-model="dataSale.status"
+                  >Orçamento</b-form-radio
+                >
+              </b-form-group>
+            </div>
+          </b-row>
+          <b-tabs card>
+            <b-tab title="Clientes">
+              <b-card-text
+                ><div class="mt-4">
+                  <b-row class="d-flex justify-content-between">
+                    <b-form-input hidden class="col-sm-1"></b-form-input>
+                    <b-form-group
+                      id="input-group-1"
+                      label="Nome Cliente"
+                      label-for="input-1"
+                      class="col-sm-4"
+                      size="sm"
                     >
-                    </b-form-select>
-                  </b-form-group>
-                  <b-form-group
-                    id="input-group-1"
-                    label="Comissão ( % )"
-                    label-for="input-1"
-                    class="col-sm-3"
-                    size="sm"
-                  >
-                    <b-form-input
-                      v-model="comissao"
-                      placeholder="Comissão"
-                    ></b-form-input>
-                  </b-form-group>
-                </b-row>
+                      <b-form-select
+                        value-field="id"
+                        text-field="nome"
+                        :options="dataCustomers"
+                        v-model="dataSale.idCliente"
+                      ></b-form-select>
+                    </b-form-group>
 
-                <b-row class="d-flex justify-content-around">
-                  <b-form-group
-                    id="input-group-1"
-                    label="Descrição"
-                    label-for="input-1"
-                    class="col-sm-12"
-                  >
-                    <b-form-textarea
-                      v-model="dataSale.dadosAdicionais"
-                      id="textarea"
-                      rows="5"
-                      max-rows="6"
-                    ></b-form-textarea>
-                  </b-form-group>
-                </b-row>
+                    <b-form-group
+                      id="input-group-1"
+                      label="Funcionario"
+                      label-for="input-1"
+                      class="col-sm-4"
+                      size="sm"
+                    >
+                      <b-form-select
+                        :options="dataEmployee"
+                        value-field="id"
+                        text-field="nomeFuncionario"
+                        v-model="dataSale.idFuncionario"
+                        @change="readComissao(dataEmployee[0])"
+                      >
+                      </b-form-select>
+                    </b-form-group>
+                    <b-form-group
+                      id="input-group-1"
+                      label="Comissão ( % )"
+                      label-for="input-1"
+                      class="col-sm-3"
+                      size="sm"
+                    >
+                      <b-form-input
+                        v-model="comissao"
+                        placeholder="Comissão"
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-row>
 
-                <b-row class="d-flex justify-content-around"> </b-row>
-                <div>
-                  <div class="d-flex justify-content-end">
-                    <div>
-                      <b-button
-                        class="mr-4"
-                        style="
-                          border: none !important;
-                          background-color: #56aafe !important;
-                        "
-                        @click="saveOrUpdateSale"
-                        >Salvar
-                        <b-icon-person-check class="ml-1"></b-icon-person-check
-                      ></b-button>
-                      <b-button variant="light"
-                        >Limpar
-                        <b-icon-arrow-clockwise
-                          class="ml-1"
-                        ></b-icon-arrow-clockwise
-                      ></b-button>
+                  <b-row class="d-flex justify-content-around">
+                    <b-form-group
+                      id="input-group-1"
+                      label="Descrição"
+                      label-for="input-1"
+                      class="col-sm-12"
+                    >
+                      <b-form-textarea
+                        v-model="dataSale.descricao"
+                        id="textarea"
+                        rows="5"
+                        max-rows="6"
+                      ></b-form-textarea>
+                    </b-form-group>
+                  </b-row>
+
+                  <b-row class="d-flex justify-content-around"> </b-row>
+                  <div>
+                    <div class="d-flex justify-content-end">
+                      <div>
+                        <b-button
+                          class="mr-4"
+                          style="
+                            border: none !important;
+                            background-color: #56aafe !important;
+                          "
+                          @click="saveOrUpdateSale"
+                          >Salvar
+                          <b-icon-person-check
+                            class="ml-1"
+                          ></b-icon-person-check
+                        ></b-button>
+                        <b-button
+                          variant="light"
+                          @click="clearinfoClientPedVenda"
+                          >Limpar
+                          <b-icon-arrow-clockwise
+                            class="ml-1"
+                          ></b-icon-arrow-clockwise
+                        ></b-button>
+                      </div>
+                    </div>
+                  </div></div
+              ></b-card-text>
+            </b-tab>
+
+            <b-tab title="Produtos">
+              <b-card-text>
+                <div class="mt-4">
+                  <b-row class="d-flex justify-content-between">
+                    <b-form-input hidden class="col-sm-1"></b-form-input>
+                    <b-form-group
+                      id="input-group-1"
+                      label="Nome Produto"
+                      label-for="input-1"
+                      class="col-sm-4"
+                      size="sm"
+                    >
+                      <b-form-select
+                        :options="products"
+                        v-model="productsSales.idProduto"
+                        value-field="id"
+                        text-field="nome"
+                        @change="readProducts(products[0])"
+                      ></b-form-select>
+                    </b-form-group>
+
+                    <b-form-group
+                      id="input-group-1"
+                      label="Fornecedor"
+                      label-for="input-1"
+                      class="col-sm-4"
+                      size="sm"
+                    >
+                      <b-form-select
+                        :options="providers"
+                        value-field="id"
+                        text-field="nomeFantasia"
+                      ></b-form-select>
+                    </b-form-group>
+
+                    <b-form-group
+                      id="input-group-1"
+                      label="Quantidade"
+                      label-for="input-1"
+                      class="col-sm-2"
+                      size="sm"
+                    >
+                      <b-form-input placeholder="Quantidade"></b-form-input>
+                    </b-form-group>
+
+                    <b-form-group
+                      id="input-group-1"
+                      label="Valor"
+                      label-for="input-1"
+                      class="col-sm-2"
+                      size="sm"
+                    >
+                      <b-form-input
+                        placeholder="Valor"
+                        v-model="productUnitaryValue"
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-row>
+
+                  <b-row class="d-flex justify-content-between">
+                    <b-form-group
+                      id="input-group-1"
+                      label="Dados adicionais"
+                      label-for="input-1"
+                      class="col-sm-4"
+                    >
+                      <b-form-textarea
+                        id="textarea"
+                        rows="5"
+                        max-rows="6"
+                      ></b-form-textarea>
+                    </b-form-group>
+
+                    <div class="col-sm-8" style="margin-top: 31px">
+                      <table class="table table-sm">
+                        <thead
+                          style="
+                            background-color: #56aafe !important;
+                            color: white;
+                          "
+                        >
+                          <tr>
+                            <th>Nome Produto</th>
+                            <th>Quantidade</th>
+                            <th>Valor</th>
+                            <th>Ações</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <td>teste</td>
+                          <td>teste</td>
+                          <td>teste</td>
+                        </tbody>
+                      </table>
+                    </div>
+                  </b-row>
+
+                  <div>
+                    <div class="d-flex justify-content-end">
+                      <div>
+                        <b-button
+                          class="mr-4"
+                          style="
+                            border: none !important;
+                            background-color: #56aafe !important;
+                          "
+                          >Adicionar
+                          <b-icon-cart-check class="ml-1"></b-icon-cart-check
+                        ></b-button>
+                      </div>
                     </div>
                   </div>
-                </div></div
-            ></b-card-text>
-          </b-tab>
-          <b-tab title="Produtos">
-            <b-card-text>Tab contents 2</b-card-text>
-          </b-tab>
-          <b-tab title="Financeiro">
-            <b-card-text>Tab contents 2</b-card-text>
-          </b-tab>
-        </b-tabs>
-      </b-card>
+                </div>
+              </b-card-text>
+            </b-tab>
+            <b-tab title="Financeiro">
+              <b-card-text>Tab contents 2</b-card-text>
+            </b-tab>
+          </b-tabs>
+        </b-card>
+      </div>
     </div>
-  </div>
+  </b-collapse>
 </template>
 
 <script>
@@ -158,20 +283,49 @@ import moment from "moment";
 export default {
   data() {
     return {
-      dataCustomers: [],
-      dataEmployee: [],
       dataSale: {
         id: "",
         idCliente: "",
         idFuncionario: "",
         dataVenda: moment().format("YYYY-MM-DD"),
-        dadosAdicionais: "",
-        status: "",
+        descricao: "",
+        status: "Orçamento",
       },
+      productsSales: {
+        idVenda: "",
+        idFornecedor: "",
+        idProduto: "",
+        quantidade: "",
+        valorTotal: "",
+        dadosAdicionais: "",
+      },
+      dataCustomers: [],
+      dataEmployee: [],
+      products: [],
+      providers: [],
       comissao: "",
+      productUnitaryValue: "",
+      fields: ["Produto", "Quantidade", "Valor"],
+      items: [
+        { Valor: 40, Produto: "Dickerson", Quantidade: "Macdonald" },
+        { Valor: 21, Produto: "Larsen", Quantidade: "Shaw" },
+        { Valor: 89, Produto: "Geneva", Quantidade: "Wilson" },
+        { Valor: 38, Produto: "Jami", Quantidade: "Carney" },
+        { Valor: 38, Produto: "Jami", Quantidade: "Carney" },
+        { Valor: 38, Produto: "Jami", Quantidade: "Carney" },
+        { Valor: 38, Produto: "Jami", Quantidade: "Carney" },
+      ],
     };
   },
   methods: {
+    clearinfoClientPedVenda() {
+      (this.comissao = ""),
+        (this.dataSale.id = ""),
+        (this.dataSale.idCliente = ""),
+        (this.dataSale.idFuncionario = ""),
+        (this.dataSale.descricao = "");
+    },
+
     async saveOrUpdateSale() {
       if (this.dataSale.id !== "") return this.UpdateSale();
       this.saveSale();
@@ -220,13 +374,30 @@ export default {
     readComissao(dataEmployee) {
       this.comissao = dataEmployee.comissao;
     },
+
+    readProducts(products) {
+      this.productUnitaryValue = products.valorVenda;
+    },
+
+    async getProdutos() {
+      const { data } = await api.get("/products");
+      this.products = data.data;
+      console.log(data);
+    },
+
+    async getProviders() {
+      const { data } = await api.get("/providers");
+      this.providers = data.data;
+    },
   },
   mounted() {
     this.listCustomersSelectBox();
     this.listEmployeesSelectBox();
+    this.getProdutos();
+    this.getProviders();
   },
 };
 </script>
 
-<style>
+<style scoped>
 </style>

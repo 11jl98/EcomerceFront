@@ -31,15 +31,18 @@
     </div>
     <div class="container-components mt-2" id="receita" role="tablist">
       <Sale />
+      <Search />
     </div>
   </div>
 </template>
 
 <script>
 import Sale from "../Sale/Sale.vue";
+import Search from "../Sale/Search.vue";
 export default {
   components: {
     Sale,
+    Search,
   },
   data() {
     return {};
