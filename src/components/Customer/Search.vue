@@ -22,12 +22,16 @@
                 id="input-1"
                 type="email"
                 placeholder="Pesquisa"
-                v-model=textPesquisa
+                v-model="textPesquisa"
                 required
               ></b-form-input>
             </b-form-group>
             <div style="margin: 16px">
-              <b-button variant="primary" class="mt-3 mb-3" @click="readCustomers">
+              <b-button
+                variant="primary"
+                class="mt-3 mb-3"
+                @click="readCustomers"
+              >
                 <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
                 Pesquisar</b-button
               >
@@ -70,7 +74,7 @@
                 <b-button
                   size="sm"
                   class="mr-2"
-                  style="background-color: #56aafe; border: none!important"
+                  style="background-color: #56aafe; border: none !important"
                   @click="editCustomer(customer)"
                   v-b-popover.hover.left="{
                     variant: 'info',
@@ -82,7 +86,7 @@
                 <b-button
                   size="sm"
                   variant="secondary"
-                  style="border: none!important"
+                  style="border: none !important"
                   @click="destroyCustomer(customer.id)"
                   v-b-popover.hover.right="{
                     variant: 'secondary',
@@ -104,17 +108,16 @@
 <script>
 import api from "../../services/axios";
 export default {
-
   data() {
     return {
       readCustomer: [],
-      textPesquisa:""
+      textPesquisa: "",
     };
   },
   methods: {
     async readCustomers() {
       try {
-        const { data } = await api.get("/customers?q="+this.textPesquisa);
+        const { data } = await api.get("/customers?q=" + this.textPesquisa);
         this.readCustomer = data.data;
         console.log(data);
       } catch (error) {
@@ -124,25 +127,23 @@ export default {
         });
       }
     },
-    async editCustomer(Customer){
-      this.$emit('readOrEditCustomers', Customer )
+    async editCustomer(Customer) {
+      this.$emit("readOrEditCustomers", Customer);
       this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
-      console.log(Customer)
-     
+      console.log(Customer);
     },
-    async destroyCustomer(idCustomer){
+    async destroyCustomer(idCustomer) {
       try {
-        await api.delete(`/customers/${idCustomer}`)
+        await api.delete(`/customers/${idCustomer}`);
         return this.$toast.open({
           message: "Cliente excluido com sucesso",
           type: "success",
         });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    },
   },
-
 };
 </script>
 <style scoped>
