@@ -60,7 +60,11 @@
               <b-card-text
                 ><div class="mt-4">
                   <b-row class="d-flex justify-content-between">
-                    <b-form-input hidden class="col-sm-1"></b-form-input>
+                    <b-form-input
+                      hidden
+                      class="col-sm-1"
+                      v-model="dataSale.id"
+                    ></b-form-input>
                     <b-form-group
                       id="input-group-1"
                       label="Nome Cliente"
@@ -179,6 +183,7 @@
                       label-for="input-1"
                       class="col-sm-4"
                       size="sm"
+                      v-model="productsSales.idFornecedor"
                     >
                       <b-form-select
                         :options="providers"
@@ -194,7 +199,10 @@
                       class="col-sm-2"
                       size="sm"
                     >
-                      <b-form-input placeholder="Quantidade"></b-form-input>
+                      <b-form-input
+                        placeholder="Quantidade"
+                        v-model="productsSales.quantidade"
+                      ></b-form-input>
                     </b-form-group>
 
                     <b-form-group
@@ -206,7 +214,7 @@
                     >
                       <b-form-input
                         placeholder="Valor"
-                        v-model="productUnitaryValue"
+                        v-model="productsSales.valorTotal"
                       ></b-form-input>
                     </b-form-group>
                   </b-row>
@@ -222,6 +230,7 @@
                         id="textarea"
                         rows="5"
                         max-rows="6"
+                        v-model="productsSales.dadosAdicionais"
                       ></b-form-textarea>
                     </b-form-group>
 
@@ -241,9 +250,15 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <td>teste</td>
-                          <td>teste</td>
-                          <td>teste</td>
+                          <tr
+                            v-for="produtoVenda in productsSales"
+                            :key="produtoVenda.idVenda"
+                          >
+                            <td>{{ produtoVenda.id }}</td>
+                            <td>{{ produtoVenda.quantidade }}</td>
+                            <td>{{ produtoVenda.valorTotal }}</td>
+                            <td></td>
+                          </tr>
                         </tbody>
                       </table>
                     </div>
@@ -258,6 +273,7 @@
                             border: none !important;
                             background-color: #56aafe !important;
                           "
+                          @click="saveProductSale"
                           >Adicionar
                           <b-icon-cart-check class="ml-1"></b-icon-cart-check
                         ></b-button>
@@ -306,15 +322,6 @@ export default {
       comissao: "",
       productUnitaryValue: "",
       fields: ["Produto", "Quantidade", "Valor"],
-      items: [
-        { Valor: 40, Produto: "Dickerson", Quantidade: "Macdonald" },
-        { Valor: 21, Produto: "Larsen", Quantidade: "Shaw" },
-        { Valor: 89, Produto: "Geneva", Quantidade: "Wilson" },
-        { Valor: 38, Produto: "Jami", Quantidade: "Carney" },
-        { Valor: 38, Produto: "Jami", Quantidade: "Carney" },
-        { Valor: 38, Produto: "Jami", Quantidade: "Carney" },
-        { Valor: 38, Produto: "Jami", Quantidade: "Carney" },
-      ],
     };
   },
   methods: {
@@ -335,12 +342,40 @@ export default {
       try {
         const { data } = await api.post(`/sales`, this.dataSale);
         this.dataSale.id = data.id;
+        this.productsSales.idVenda = data.id;
         return this.$toast.open({
           message: "Venda salva com Sucesso",
           type: "success",
         });
       } catch (error) {
         console.log(error.response);
+      }
+    },
+
+    async saveProductSale() {
+      try {
+        const { data } = await api.post(
+          "/products-of-sale",
+          this.productsSales
+        );
+        if (this.dataSale.id !== "") {
+          this.getProductSale();
+        }
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getProductSale() {
+      try {
+        const idVenda = this.productsSales.idVenda;
+        const { data } = await api.get(
+          `http://localhost:3000/sales/${idVenda}`
+        );
+        console.log("chegou aqui 1", data);
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -377,6 +412,7 @@ export default {
 
     readProducts(products) {
       this.productUnitaryValue = products.valorVenda;
+      this.productsSales.valorTotal = this.productUnitaryValue;
     },
 
     async getProdutos() {
