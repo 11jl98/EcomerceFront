@@ -169,12 +169,16 @@
                       size="sm"
                     >
                       <b-form-select
-                        :options="products"
-                        v-model="productsSales.idProduto"
-                        value-field="id"
-                        text-field="nome"
-                        @change="readProducts(products[0])"
-                      ></b-form-select>
+                        v-model="productsSelected"
+                        @change="readProducts"
+                      >
+                        <b-form-select-option
+                          v-for="produtos in products"
+                          :key="produtos.id"
+                          :value="produtos"
+                          >{{ produtos.nome }}</b-form-select-option
+                        >
+                      </b-form-select>
                     </b-form-group>
 
                     <b-form-group
@@ -314,11 +318,13 @@ export default {
         quantidade: "",
         valorTotal: "",
         dadosAdicionais: "",
+        nomeProduto: "",
       },
       dataCustomers: [],
       dataEmployee: [],
       products: [],
       providers: [],
+      productsSelected: {},
       comissao: "",
       productUnitaryValue: "",
       fields: ["Produto", "Quantidade", "Valor"],
@@ -363,17 +369,14 @@ export default {
         }
         return data;
       } catch (error) {
-        console.log(error);
+        console.log(error.response);
       }
     },
 
     async getProductSale() {
       try {
-        const idVenda = this.productsSales.idVenda;
-        const { data } = await api.get(
-          `http://localhost:3000/sales/${idVenda}`
-        );
-        console.log("chegou aqui 1", data);
+        const { data } = await api.get(`/sales/${this.productsSales.idVenda}`);
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -410,9 +413,11 @@ export default {
       this.comissao = dataEmployee.comissao;
     },
 
-    readProducts(products) {
-      this.productUnitaryValue = products.valorVenda;
+    readProducts() {
+      this.productUnitaryValue = this.productsSelected.valorVenda;
       this.productsSales.valorTotal = this.productUnitaryValue;
+      this.productsSales.nomeProduto = this.productsSelected.nome;
+      this.productsSales.idProduto = this.productsSelected.id;
     },
 
     async getProdutos() {
