@@ -187,12 +187,12 @@
                       label-for="input-1"
                       class="col-sm-4"
                       size="sm"
-                      v-model="productsSales.idFornecedor"
                     >
                       <b-form-select
                         :options="providers"
                         value-field="id"
                         text-field="nomeFantasia"
+                        v-model="productsSales.idFornecedor"
                       ></b-form-select>
                     </b-form-group>
 
@@ -255,12 +255,12 @@
                         </thead>
                         <tbody>
                           <tr
-                            v-for="produtoVenda in productsSales"
-                            :key="produtoVenda.idVenda"
+                            v-for="productsSaleTable in productsTable"
+                            :key="productsSaleTable.id"
                           >
-                            <td>{{ produtoVenda.id }}</td>
-                            <td>{{ produtoVenda.quantidade }}</td>
-                            <td>{{ produtoVenda.valorTotal }}</td>
+                            <td>{{ productsSaleTable.nome }}</td>
+                            <td>{{ productsSaleTable.quantidade }}</td>
+                            <td>{{ productsSaleTable.valorTotal }}</td>
                             <td></td>
                           </tr>
                         </tbody>
@@ -320,6 +320,7 @@ export default {
         dadosAdicionais: "",
         nomeProduto: "",
       },
+      productsTable: [],
       dataCustomers: [],
       dataEmployee: [],
       products: [],
@@ -376,9 +377,11 @@ export default {
     async getProductSale() {
       try {
         const { data } = await api.get(`/sales/${this.productsSales.idVenda}`);
+        this.productsTable = data.products;
         console.log(data);
+        return data;
       } catch (error) {
-        console.log(error);
+        console.log(error.response);
       }
     },
 
@@ -386,7 +389,6 @@ export default {
       try {
         const { data } = await api.put(`/sales/${this.dataSale.id}`);
         this.data.id = data.id;
-        console.log(data);
       } catch (error) {
         console.log(error.response);
       }
@@ -396,7 +398,7 @@ export default {
         const { data } = await api.get("/customers/combobox");
         this.dataCustomers = data.data;
       } catch (error) {
-        console.log(error);
+        console.log(error.response);
       }
     },
 
@@ -423,7 +425,6 @@ export default {
     async getProdutos() {
       const { data } = await api.get("/products");
       this.products = data.data;
-      console.log(data);
     },
 
     async getProviders() {
