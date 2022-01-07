@@ -249,7 +249,8 @@
                           <tr>
                             <th>Nome Produto</th>
                             <th>Quantidade</th>
-                            <th>Valor</th>
+                            <th>Valor Unitario</th>
+                            <th>Valor Total</th>
                             <th>Ações</th>
                           </tr>
                         </thead>
@@ -261,7 +262,35 @@
                             <td>{{ productsSaleTable.nome }}</td>
                             <td>{{ productsSaleTable.quantidade }}</td>
                             <td>{{ productsSaleTable.valorTotal }}</td>
-                            <td></td>
+                            <td>
+                              {{
+                                productsSaleTable.quantidade *
+                                productsSaleTable.valorTotal
+                              }}
+                            </td>
+                            <td>
+                              <b-button
+                                size="sm"
+                                class="mr-2"
+                                variant="info"
+                                v-b-popover.hover.left="{
+                                  variant: 'info',
+                                  content: 'Editar',
+                                }"
+                              >
+                                <b-icon-check scale="2"></b-icon-check>
+                              </b-button>
+                              <b-button
+                                size="sm"
+                                variant="secondary"
+                                v-b-popover.hover.right="{
+                                  variant: 'secondary',
+                                  content: 'Excluir',
+                                }"
+                              >
+                                <b-icon-trash scale="0.7"></b-icon-trash
+                              ></b-button>
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -339,6 +368,12 @@ export default {
         (this.dataSale.idFuncionario = ""),
         (this.dataSale.descricao = "");
     },
+    clearDataProductsSale() {
+      this.productsSelected = {};
+      this.productsSales.idFornecedor = {};
+      this.productsSales.quantidade = "";
+      this.productsSales.valorTotal = "";
+    },
 
     async saveOrUpdateSale() {
       if (this.dataSale.id !== "") return this.UpdateSale();
@@ -367,6 +402,7 @@ export default {
         );
         if (this.dataSale.id !== "") {
           this.getProductSale();
+          this.clearDataProductsSale();
         }
         return data;
       } catch (error) {
