@@ -277,9 +277,7 @@
                                   variant: 'info',
                                   content: 'Editar',
                                 }"
-                                @click="
-                                  getProductAndEdit(productsSaleTable.id)
-                                "
+                                @click="getProductAndEdit(productsSaleTable.id)"
                               >
                                 <b-icon-check scale="2"></b-icon-check>
                               </b-button>
@@ -385,13 +383,15 @@ export default {
     },
 
     async getProductAndEdit(idVenda) {
-      // const { data } = await `/products-of-sale/${idVenda}`;
-      console.log(idVenda);
+      const { data } = await api.get(`/products-of-sale/${idVenda}`);
+      console.log(data);
+      return data;
     },
 
     async deleteProductFromTableById(idVenda) {
-      // const { data } = await `/products-of-sale/${idVenda}`;
-      console.log(idVenda);
+      const { data } = await api.delete(`/products-of-sale/${idVenda}`);
+      console.log(data);
+      return data;
     },
 
     async saveOrUpdateSale() {
