@@ -277,6 +277,9 @@
                                   variant: 'info',
                                   content: 'Editar',
                                 }"
+                                @click="
+                                  getProductAndEdit(productsSaleTable.id)
+                                "
                               >
                                 <b-icon-check scale="2"></b-icon-check>
                               </b-button>
@@ -287,6 +290,11 @@
                                   variant: 'secondary',
                                   content: 'Excluir',
                                 }"
+                                @click="
+                                  deleteProductFromTableById(
+                                    productsSaleTable.id
+                                  )
+                                "
                               >
                                 <b-icon-trash scale="0.7"></b-icon-trash
                               ></b-button>
@@ -341,6 +349,7 @@ export default {
         status: "Orçamento",
       },
       productsSales: {
+        id: "",
         idVenda: "",
         idFornecedor: "",
         idProduto: "",
@@ -375,6 +384,16 @@ export default {
       this.productsSales.valorTotal = "";
     },
 
+    async getProductAndEdit(idVenda) {
+      // const { data } = await `/products-of-sale/${idVenda}`;
+      console.log(idVenda);
+    },
+
+    async deleteProductFromTableById(idVenda) {
+      // const { data } = await `/products-of-sale/${idVenda}`;
+      console.log(idVenda);
+    },
+
     async saveOrUpdateSale() {
       if (this.dataSale.id !== "") return this.UpdateSale();
       this.saveSale();
@@ -400,6 +419,7 @@ export default {
           "/products-of-sale",
           this.productsSales
         );
+        this.productsSales.id = data.id;
         if (this.dataSale.id !== "") {
           this.getProductSale();
           this.clearDataProductsSale();
@@ -414,7 +434,7 @@ export default {
       try {
         const { data } = await api.get(`/sales/${this.productsSales.idVenda}`);
         this.productsTable = data.products;
-        console.log(data);
+        console.log("merdaaaaaaaaaaaaaa", data);
         return data;
       } catch (error) {
         console.log(error.response);
