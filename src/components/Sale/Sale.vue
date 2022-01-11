@@ -118,7 +118,7 @@
                       class="col-sm-12"
                     >
                       <b-form-textarea
-                        v-model="dataSale.descricao"
+                        v-model="dataSale.dadosAdicionais"
                         id="textarea"
                         rows="5"
                         max-rows="6"
@@ -160,7 +160,9 @@
               <b-card-text>
                 <div class="mt-4">
                   <b-row class="d-flex justify-content-between">
-                    <b-form-input hidden class="col-sm-1"></b-form-input>
+                    <b-form-input
+                      v-model="productsSales.idVenda"
+                    ></b-form-input>
                     <b-form-group
                       id="input-group-1"
                       label="Nome Produto"
@@ -343,7 +345,7 @@ export default {
         idCliente: "",
         idFuncionario: "",
         dataVenda: moment().format("YYYY-MM-DD"),
-        descricao: "",
+        dadosAdicionais: "",
         status: "Orçamento",
       },
       productsSales: {
@@ -373,7 +375,7 @@ export default {
         (this.dataSale.id = ""),
         (this.dataSale.idCliente = ""),
         (this.dataSale.idFuncionario = ""),
-        (this.dataSale.descricao = "");
+        (this.dataSale.dadosAdicionais = "");
     },
     clearDataProductsSale() {
       this.productsSelected = {};
@@ -384,13 +386,23 @@ export default {
 
     async getProductAndEdit(idVenda) {
       const { data } = await api.get(`/products-of-sale/${idVenda}`);
-      console.log(data);
+      Object.assign(this.productsSales, data);
+      this.getProductById(this.productsSales.idProduto);
       return data;
     },
 
     async deleteProductFromTableById(idVenda) {
-      const { data } = await api.delete(`/products-of-sale/${idVenda}`);
-      console.log(data);
+      await api.delete(`/products-of-sale/${idVenda}`);
+      this.getProductSale();
+      return this.$toast.open({
+        message: "Produto removido da venda!",
+        type: "warning",
+      });
+    },
+
+    async getProductById(idProduct) {
+      const { data } = await api.get(`/products/${idProduct}`);
+      this.productsSelected = data;
       return data;
     },
 
@@ -424,7 +436,10 @@ export default {
           this.getProductSale();
           this.clearDataProductsSale();
         }
-        return data;
+        return this.$toast.open({
+          message: "Produto adicionado na venda!",
+          type: "success",
+        });
       } catch (error) {
         console.log(error.response);
       }
@@ -434,7 +449,6 @@ export default {
       try {
         const { data } = await api.get(`/sales/${this.productsSales.idVenda}`);
         this.productsTable = data.products;
-        console.log("merdaaaaaaaaaaaaaa", data);
         return data;
       } catch (error) {
         console.log(error.response);
@@ -443,8 +457,15 @@ export default {
 
     async UpdateSale() {
       try {
-        const { data } = await api.put(`/sales/${this.dataSale.id}`);
-        this.data.id = data.id;
+        const { data } = await api.put(
+          `/sales/${this.dataSale.id}`,
+          this.dataSale
+        );
+        this.$toast.open({
+          message: "Pedido atualizado com sucesso!",
+          type: "info",
+        });
+        return data;
       } catch (error) {
         console.log(error.response);
       }
