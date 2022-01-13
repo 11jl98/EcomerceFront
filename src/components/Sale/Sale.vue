@@ -187,6 +187,15 @@
                                         class="ml-1"
                                       ></b-icon-person-check
                                     ></b-button>
+
+                                    <b-button
+                                      class="mr-4"
+                                      size="sm"
+                                      variant="warning"
+                                      @click="proximoCard"
+                                    >
+                                      <b-icon-caret-down-fill></b-icon-caret-down-fill
+                                    ></b-button>
                                   </div>
                                 </div>
                               </div>
@@ -480,11 +489,23 @@
                 acoesBtns
               "
             >
-              <div class="btnLimpar">
-                <b-button
-                  variant="info"
-                  size="sm"
-                  @click="clearinfoClientPedVenda"
+              <div class="btnsGeral">
+                <b-button variant="dark" size="sm"
+                  >Editar Venda
+                  <b-icon-pencil-square class="ml-1"></b-icon-pencil-square
+                ></b-button>
+
+                <b-button variant="success" size="sm"
+                  >Fechar Venda
+                  <b-icon-check class="ml-1" scale="1.8"></b-icon-check
+                ></b-button>
+
+                <b-button variant="info" size="sm"
+                  >Transformar em NF-e/NFc-e
+                  <b-icon-reply-all-fill class="ml-1"></b-icon-reply-all-fill
+                ></b-button>
+
+                <b-button variant="secondary" size="sm" @click="clearSale"
                   >Limpar
                   <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
                 ></b-button>
@@ -533,18 +554,23 @@ export default {
     };
   },
   methods: {
-    clearinfoClientPedVenda() {
-      (this.comissao = ""),
-        (this.dataSale.id = ""),
-        (this.dataSale.idCliente = ""),
-        (this.dataSale.idFuncionario = ""),
-        (this.dataSale.dadosAdicionais = "");
+    proximoCard() {
+      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse");
+    },
+    clearSale() {
+      this.comissao = "";
+      this.dataSale.id = "";
+      this.dataSale.idCliente = "";
+      this.dataSale.idFuncionario = "";
+      this.dataSale.dadosAdicionais = "";
+      this.clearDataProductsSale();
     },
     clearDataProductsSale() {
       this.productsSelected = {};
       this.productsSales.idFornecedor = {};
       this.productsSales.quantidade = "";
       this.productsSales.valorTotal = "";
+      this.productsSales.dadosAdicionais = "";
     },
 
     // async getProductAndEdit(idVenda) {
@@ -720,8 +746,9 @@ export default {
   border: none;
 }
 
-.btnLimpar {
-  height: 50px;
+.btnsGeral {
+  display: flex;
+  justify-content: space-around;
 }
 
 .containerAllCard {
