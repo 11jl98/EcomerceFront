@@ -490,14 +490,14 @@
               "
             >
               <div class="btnsGeral">
+                <b-button variant="success" size="sm" @click="closeSale"
+                  >Fechar Venda
+                  <b-icon-check class="ml-1" scale="1.8"></b-icon-check
+                ></b-button>
+
                 <b-button variant="dark" size="sm"
                   >Editar Venda
                   <b-icon-pencil-square class="ml-1"></b-icon-pencil-square
-                ></b-button>
-
-                <b-button variant="success" size="sm"
-                  >Fechar Venda
-                  <b-icon-check class="ml-1" scale="1.8"></b-icon-check
                 ></b-button>
 
                 <b-button variant="info" size="sm"
@@ -555,7 +555,7 @@ export default {
   },
   methods: {
     proximoCard() {
-      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse");
+      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse2");
     },
     clearSale() {
       this.comissao = "";
@@ -573,6 +573,11 @@ export default {
       this.productsSales.dadosAdicionais = "";
     },
 
+    async closeSale() {
+      this.dataSale.status = "Venda";
+      this.UpdateSale();
+    },
+
     // async getProductAndEdit(idVenda) {
     //   const { data } = await api.get(`/products-of-sale/${idVenda}`);
     //   Object.assign(this.productsSales, data);
@@ -581,12 +586,19 @@ export default {
     // },
 
     async deleteProductFromTableById(idVenda) {
-      await api.delete(`/products-of-sale/${idVenda}`);
-      this.getProductSale();
-      return this.$toast.open({
-        message: "Produto removido da venda!",
-        type: "warning",
-      });
+      try {
+        await api.delete(`/products-of-sale/${idVenda}`);
+        this.getProductSale();
+        return this.$toast.open({
+          message: "Produto removido da venda!",
+          type: "warning",
+        });
+      } catch (error) {
+        return this.$toast.open({
+          message: `${error.response.data.message}`,
+          type: "warning",
+        });
+      }
     },
 
     async getProductById(idProduct) {
@@ -631,6 +643,10 @@ export default {
         });
       } catch (error) {
         console.log(error.response);
+        return this.$toast.open({
+          message: `${error.response.data.message}`,
+          type: "warning",
+        });
       }
     },
 
@@ -656,7 +672,11 @@ export default {
         });
         return data;
       } catch (error) {
-        console.log(error.response);
+        console.log(error.response.data.message);
+        return this.$toast.open({
+          message: `${error.response.data.message}`,
+          type: "warning",
+        });
       }
     },
     async listCustomersSelectBox() {
