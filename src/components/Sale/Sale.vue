@@ -191,11 +191,12 @@
                                     <b-button
                                       class="mr-4"
                                       size="sm"
-                                      variant="warning"
-                                      @click="proximoCard"
+                                      variant="secondary"
+                                      @click="proximoCardDadosVenda"
                                     >
                                       <b-icon-caret-down-fill></b-icon-caret-down-fill
-                                    ></b-button>
+                                      >Próximo</b-button
+                                    >
                                   </div>
                                 </div>
                               </div>
@@ -423,6 +424,15 @@
                                           class="ml-1"
                                         ></b-icon-cart-check
                                       ></b-button>
+                                      <b-button
+                                        class="mr-4"
+                                        size="sm"
+                                        variant="secondary"
+                                        @click="proximoCardAdicionarProdutos"
+                                      >
+                                        <b-icon-caret-down-fill></b-icon-caret-down-fill
+                                        >Próximo</b-button
+                                      >
                                     </div>
                                   </div>
                                 </div>
@@ -473,7 +483,22 @@
                               cardDadosVendasBorda
                             "
                           >
-                            <b-card-text>Financeiro</b-card-text>
+                            <b-card-text>
+                              <div>
+                                Financeiro
+                                <div>
+                                  <b-button
+                                    class="mr-4"
+                                    size="sm"
+                                    variant="secondary"
+                                    @click="proximoCardFinanceiro"
+                                  >
+                                    <b-icon-caret-down-fill></b-icon-caret-down-fill
+                                    >Próximo</b-button
+                                  >
+                                </div>
+                              </div>
+                            </b-card-text>
                           </b-card>
                         </b-navbar-nav>
                       </b-collapse>
@@ -495,15 +520,26 @@
                   <b-icon-check class="ml-1" scale="1.8"></b-icon-check
                 ></b-button>
 
-                <b-button variant="dark" size="sm"
+                <b-button variant="dark" size="sm" @click="editSale"
                   >Editar Venda
                   <b-icon-pencil-square class="ml-1"></b-icon-pencil-square
                 ></b-button>
 
-                <b-button variant="info" size="sm"
-                  >Transformar em NF-e/NFc-e
-                  <b-icon-reply-all-fill class="ml-1"></b-icon-reply-all-fill
-                ></b-button>
+                <b-dropdown
+                  id="dropdown-1"
+                  text="NF-e / NFc-e"
+                  class="m-md-2"
+                  variant="info"
+                  size="sm"
+                  style="
+                    margin: 0px 0px 0px 0px !important;
+                    padding: 0px 0px 0px 0px !important;
+                  "
+                >
+                  <b-dropdown-item>Transformar pedido em NF-e</b-dropdown-item>
+                  <b-dropdown-divider></b-dropdown-divider>
+                  <b-dropdown-item>Transformar pedido em NFc-e</b-dropdown-item>
+                </b-dropdown>
 
                 <b-button variant="secondary" size="sm" @click="clearSale"
                   >Limpar
@@ -554,8 +590,16 @@ export default {
     };
   },
   methods: {
-    proximoCard() {
+    proximoCardDadosVenda() {
+      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse");
       this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse2");
+    },
+    proximoCardAdicionarProdutos() {
+      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse2");
+      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse3");
+    },
+    proximoCardFinanceiro() {
+      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse3");
     },
     clearSale() {
       this.comissao = "";
@@ -563,6 +607,8 @@ export default {
       this.dataSale.idCliente = "";
       this.dataSale.idFuncionario = "";
       this.dataSale.dadosAdicionais = "";
+      this.dataSale.status = "Orçamento";
+      this.productsTable = [];
       this.clearDataProductsSale();
     },
     clearDataProductsSale() {
@@ -575,6 +621,11 @@ export default {
 
     async closeSale() {
       this.dataSale.status = "Venda";
+      this.UpdateSale();
+    },
+
+    async editSale() {
+      this.dataSale.status = "Orçamento";
       this.UpdateSale();
     },
 
@@ -632,6 +683,7 @@ export default {
           "/products-of-sale",
           this.productsSales
         );
+        console.log(data);
         this.productsSales.id = data.id;
         if (this.dataSale.id !== "") {
           this.getProductSale();
@@ -644,7 +696,7 @@ export default {
       } catch (error) {
         console.log(error.response);
         return this.$toast.open({
-          message: `${error.response.data.message}`,
+          message: `${error.response.data.erros}`,
           type: "warning",
         });
       }
