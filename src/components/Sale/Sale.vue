@@ -485,17 +485,123 @@
                           >
                             <b-card-text>
                               <div>
-                                Financeiro
                                 <div>
-                                  <b-button
-                                    class="mr-4"
-                                    size="sm"
-                                    variant="secondary"
-                                    @click="proximoCardFinanceiro"
-                                  >
-                                    <b-icon-caret-down-fill></b-icon-caret-down-fill
-                                    >Próximo</b-button
-                                  >
+                                  <b-row class="d-flex">
+                                    <b-form-input
+                                      hidden
+                                      class="col-sm-1"
+                                    ></b-form-input>
+
+                                    <b-form-group
+                                      id="input-group-1"
+                                      label-for="input-1"
+                                      class="col-sm-3"
+                                      size="sm"
+                                    >
+                                      <div class="iconFormaPagamento">
+                                        <div>
+                                          <label for="input-1"
+                                            >Forma de pagamento</label
+                                          >
+                                        </div>
+
+                                        <div
+                                          class="btnFormaPagamento mr-1"
+                                          @click="openModalFormaPagamento"
+                                        >
+                                          <b-icon-plus-square-fill
+                                            scale="1.5"
+                                            size="sm"
+                                            variant="primary"
+                                          ></b-icon-plus-square-fill>
+                                        </div>
+                                      </div>
+
+                                      <b-form-select
+                                        value-field="id"
+                                        text-field="tipo"
+                                        v-model="payment"
+                                        :options="payment"
+                                      ></b-form-select>
+                                    </b-form-group>
+
+                                    <b-form-group
+                                      id="input-group-1"
+                                      label="Funcionario"
+                                      label-for="input-1"
+                                      class="col-sm-4"
+                                      size="sm"
+                                    >
+                                      <b-form-select
+                                        :options="dataEmployee"
+                                        value-field="id"
+                                        text-field="nomeFuncionario"
+                                        disabled
+                                        v-model="
+                                          dataPaymentsBySale.idFuncionario
+                                        "
+                                      ></b-form-select>
+                                    </b-form-group>
+
+                                    <b-form-group
+                                      id="input-group-1"
+                                      label="Intervalo vencimento"
+                                      label-for="input-1"
+                                      class="col-sm-3"
+                                      size="sm"
+                                    >
+                                      <b-form-input
+                                        placeholder="Ex em dias: 30"
+                                      ></b-form-input>
+                                    </b-form-group>
+
+                                    <b-form-group
+                                      id="input-group-1"
+                                      label="Qnt. parcelas"
+                                      label-for="input-1"
+                                      class="col-sm-2"
+                                      size="sm"
+                                    >
+                                      <b-form-input></b-form-input>
+                                    </b-form-group>
+
+                                    <b-form-group
+                                      id="input-group-1"
+                                      label="Data primeiro vencimento"
+                                      label-for="input-1"
+                                      class="col-sm-3"
+                                      size="sm"
+                                    >
+                                      <b-form-input type="date"></b-form-input>
+                                    </b-form-group>
+                                  </b-row>
+                                </div>
+                                <div class="containerBotaoFinanceiro">
+                                  <div>
+                                    <b-button
+                                      class="mr-4"
+                                      size="sm"
+                                      variant="info"
+                                    >
+                                      <b-icon-cart-check
+                                        class="mr-1"
+                                      ></b-icon-cart-check
+                                      >Lançar Pagamento</b-button
+                                    >
+                                  </div>
+
+                                  <div>
+                                    <b-button
+                                      class="mr-4"
+                                      size="sm"
+                                      variant="secondary"
+                                      @click="proximoCardFinanceiro"
+                                    >
+                                      <b-icon-x scale="1.2" class="mr-1">
+                                      </b-icon-x
+                                      >Fechar</b-button
+                                    >
+                                  </div>
                                 </div>
                               </div>
                             </b-card-text>
@@ -551,13 +657,18 @@
         </b-card>
       </div>
     </div>
+    <ModalPagamento />
   </b-collapse>
 </template>
 
 <script>
 import api from "../../services/axios";
 import moment from "moment";
+import ModalPagamento from "../Sale/Modal-Forma-Pagamento.vue";
 export default {
+  components: {
+    ModalPagamento,
+  },
   data() {
     return {
       dataSale: {
@@ -587,6 +698,19 @@ export default {
       comissao: "",
       productUnitaryValue: "",
       fields: ["Produto", "Quantidade", "Valor"],
+      payment: [],
+      dataPaymentsBySale: {
+        idEmpresa: "",
+        tipo: "",
+        idCliente: "",
+        idFuncionario: "",
+        idFornecedor: "",
+        idFormaPagamento: "",
+        valorTotal: "",
+        valorPago: "",
+        valorRestante: "",
+        data: "",
+      },
     };
   },
   methods: {
@@ -751,6 +875,7 @@ export default {
 
     readComissao(dataEmployee) {
       this.comissao = dataEmployee.comissao;
+      this.dataPaymentsBySale.idFuncionario = this.dataSale.idFuncionario;
     },
 
     readProducts() {
@@ -768,6 +893,10 @@ export default {
     async getProviders() {
       const { data } = await api.get("/providers");
       this.providers = data.data;
+    },
+
+    openModalFormaPagamento() {
+      this.$bvModal.show("modalFormaPagamento");
     },
   },
   mounted() {
@@ -849,5 +978,20 @@ export default {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.containerBotaoFinanceiro {
+  display: flex;
+  float: right;
+  margin-top: 25px;
+}
+
+.iconFormaPagamento {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btnFormaPagamento {
+  cursor: pointer;
 }
 </style>
