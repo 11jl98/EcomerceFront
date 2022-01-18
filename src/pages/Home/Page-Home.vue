@@ -1,25 +1,26 @@
 <template>
-    <div class="d-flex home">
-        <MenuHome/>
-        <Dashaboard/>
-    </div>
+  <div class="d-flex home">
+    <NavBar />
+    <SidBar />
+    <Dashaboard />
+  </div>
 </template>
 
 <script>
-import MenuHome from '../../components/Navigation/MenuHome.vue'
-import Dashaboard from '../../components/Dashboard/Index-Dashboard.vue'
-export default{
-    components:{
-        MenuHome,
-        Dashaboard
-    },
-    data(){
-        return{
+import Dashaboard from "../../components/Dashboard/Index-Dashboard.vue";
+import SidBar from "../../components/Navigation/Side-Bar.vue";
+import NavBar from "../../components/Navigation/Nav-Bar.vue";
 
-        }
-    }
-}
-
+export default {
+  components: {
+    NavBar,
+    SidBar,
+    Dashaboard,
+  },
+  data() {
+    return {};
+  },
+};
 </script>
 <style scoped>
 /* .home{

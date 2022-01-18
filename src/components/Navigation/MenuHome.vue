@@ -56,7 +56,7 @@ export default {
   width: 20%;
   height: 97vh;
   margin: 1vh;
-  border-radius: 20px;
+  border-radius: 5px;
   background-color: rgba(255, 255, 255, 0.911);
 }
 .button-menu {
@@ -66,7 +66,7 @@ export default {
   margin-bottom: 10px;
 }
 .nav-button {
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: #56aafe !important;
   color: #fff;
   border: none;
