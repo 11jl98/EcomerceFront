@@ -4,49 +4,107 @@
       id="modalFormaPagamento"
       size="md"
       title="Cadastro forma de pagamento"
-      ok-only
       ok-title="Salvar"
+      centered
     >
-      <b-row class="d-flex justify-content-between">
-        <b-form-input
-          hidden
-          class="col-sm-1"
-          v-model="dataPayment.id"
-        ></b-form-input>
-
-        <b-form-input
-          hidden
-          class="col-sm-1"
-          v-model="dataPayment.idEmpresa"
-        ></b-form-input>
-
-        <b-form-group
-          id="input-group-1"
-          label="Tipo:"
-          label-for="input-1"
-          class="col-sm-12"
-          size="sm"
+      <template #modal-footer>
+        <b-button variant="info" size="sm" @click="savePayment"
+          >Salvar</b-button
         >
-          <b-form-input
-            v-model="dataPayment.id"
-            placeholder="Ex: Cartão de crédito"
-          ></b-form-input>
-        </b-form-group>
-      </b-row>
+      </template>
+      <b-tabs content-class="mt-3">
+        <b-tab title="Cadastro Tipo" active>
+          <b-row class="d-flex justify-content-between">
+            <b-form-input
+              hidden
+              class="col-sm-1"
+              v-model="dataPayment.id"
+            ></b-form-input>
+
+            <b-form-group
+              id="input-group-1"
+              label="Tipo:"
+              label-for="input-1"
+              class="col-sm-12"
+              size="sm"
+            >
+              <b-form-input
+                v-model="dataPayment.tipo"
+                placeholder="Ex: Cartão de crédito"
+              ></b-form-input>
+            </b-form-group> </b-row
+        ></b-tab>
+        <b-tab title="Pesquisar">
+          <table class="table table-sm">
+            <thead>
+              <tr style="width: 100%">
+                <th style="width: 50%">Tipo</th>
+                <th style="width: 50%">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="typePayment in dataPayment" :key="typePayment.id">
+                <td>{{ typePayment.tipo }}</td>
+                <td>
+                  <b-button
+                    size="sm"
+                    class="mr-2"
+                    style="background-color: #56aafe; border: none !important"
+                    v-b-popover.hover.left="{
+                      variant: 'info',
+                      content: 'Editar',
+                    }"
+                  >
+                    <b-icon-check scale="2"></b-icon-check>
+                  </b-button>
+
+                  <b-button
+                    size="sm"
+                    variant="secondary"
+                    style="border: none !important"
+                    v-b-popover.hover.right="{
+                      variant: 'secondary',
+                      content: 'Excluir',
+                    }"
+                  >
+                    <b-icon-trash scale="0.7"></b-icon-trash
+                  ></b-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </b-tab>
+      </b-tabs>
     </b-modal>
   </div>
 </template>
 
 <script>
+import api from "../../services/axios";
 export default {
   data() {
     return {
       dataPayment: {
         id: "",
-        idEmpresa: "",
         tipo: "",
       },
     };
+  },
+  methods: {
+    async savePayment() {
+      try {
+        const { data } = await api.post("/payments", this.dataPayment);
+        this.dataPayment.id = data.id;
+        return this.$toast.open({
+          message: "Salvo com sucesso!",
+          type: "success",
+        });
+      } catch (error) {
+        console.log(error.response);
+      }
+    },
+
+    async getPayment() {},
   },
 };
 </script>

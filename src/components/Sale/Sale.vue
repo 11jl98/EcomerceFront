@@ -916,7 +916,8 @@ export default {
 .cardDadosVendas {
   padding-bottom: 15px !important;
   border-radius: 5px !important;
-  background-color: rgba(228, 227, 227, 0.788) !important;
+  background-color: rgba(255, 255, 255, 0.788) !important;
+  box-shadow: inset 0 0 1em rgb(255, 255, 255), 0 0 1em rgba(5, 5, 5, 0.068);
 }
 .tamanhoBotaoOpenCard {
   color: black;

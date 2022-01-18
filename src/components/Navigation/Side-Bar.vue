@@ -64,6 +64,14 @@
               class="nav-button shadow"
               variant="light"
               block
+              to="/Financeiro"
+              >Financeiro</b-button
+            >
+            <b-button
+              style="border: none !important"
+              class="nav-button shadow"
+              variant="light"
+              block
               to="/"
               >Agenda</b-button
             >
