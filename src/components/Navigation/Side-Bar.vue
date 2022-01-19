@@ -122,7 +122,7 @@ export default {
       this.nomeEmpresaText = this.colapse
         ? "nomeEmpresaText"
         : "nomeEmpresaTextTwo";
-      this.iconsCenter = this.colapse ? "btnsGeraisTwo" : "btnsGerais";
+      this.iconsCenter = this.colapse ? "btnsGerais" : "btnsGeraisTwo";
     },
   },
   computed: {
@@ -153,6 +153,8 @@ export default {
   width: 270px;
   background: #0a2558;
   transition: all 0.5s ease;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
 
 .disable {
@@ -263,16 +265,34 @@ span {
   cursor: pointer;
 }
 
-.btnsGerais {
-  justify-content: center !important;
-  background: #0a2558 !important;
-  outline: none;
-  border: none;
+.btnsGeraisTwo:hover {
+  background: #081d45 !important;
+}
+
+.btnsGerais:hover {
+  background: #081d45 !important;
+}
+
+.btnsGeraisTwo:focus {
+  background-color: #dcdcdc50 !important;
+  color: #0a2558 !important;
+}
+
+.btnsGerais:focus {
+  background-color: #dcdcdc50 !important;
+  color: #0a2558 !important;
 }
 
 .btnsGeraisTwo {
+  justify-content: center !important;
   background: #0a2558 !important;
-  outline: none;
-  border: none;
+  outline: none !important;
+  border: none !important;
+}
+
+.btnsGerais {
+  background: #0a2558 !important;
+  outline: none !important;
+  border: none !important;
 }
 </style>

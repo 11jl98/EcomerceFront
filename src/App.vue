@@ -37,14 +37,8 @@ export default {
 }
 
 body {
-  background: rgb(29, 169, 253);
-  background: linear-gradient(
-      0deg,
-      rgba(29, 169, 253, 1) 9%,
-      rgba(73, 116, 231, 1) 43%,
-      rgba(58, 91, 180, 1) 82%
-    )
-    fixed;
+  background: #071c44 !important;
+
   margin: 0;
   padding: 0;
   height: auto;
