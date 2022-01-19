@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-content-around w-100">
+  <!-- <div class="d-flex justify-content-around w-100">
     <div
       class="d-flex flex-column align-items-center shadow container-home"
       style=""
@@ -30,12 +30,19 @@
       </div>
     </div>
     <div class="container-components mb-3" id="receita" role="tablist"></div>
+  </div> -->
+
+  <div>
+    <Financial />
   </div>
 </template>
 
 <script>
+import Financial from "../Financial/Financial.vue";
 export default {
-  components: {},
+  components: {
+    Financial,
+  },
   data() {
     return {};
   },

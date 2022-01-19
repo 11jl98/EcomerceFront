@@ -1,114 +1,278 @@
 <template>
-  <div>
-    <b-sidebar
-      id="sidebar-variant"
-      title="Menu principal"
-      bg-variant="light"
-      text-variant="dark"
-      shadow
-      style="background-color: rgba(58, 91, 180, 1) !important"
-    >
-      <div class="px-3 py-2">
-        <nav class="mb-3">
-          <b-nav vertical>
-            <b-button
-              style="border: none !important; text-align: left"
-              class="nav-button shadow mt-3"
-              variant="light"
-              block
-              to="/Clientes"
-            >
-              Cadastro De Cliente<b-icon-person-bounding-box
-                style="float: right"
-                scale="1.5"
-                class="mt-1"
-              ></b-icon-person-bounding-box
-            ></b-button>
-
-            <b-button
-              style="border: none !important; text-align: left"
-              class="nav-button shadow"
-              variant="light"
-              block
-              to="/Fornecedores"
-              >Cadastro de fornecedor<b-icon-arrow-up
-                style="float: right"
-              ></b-icon-arrow-up
-            ></b-button>
-            <b-button
-              style="border: none !important; text-align: left"
-              class="nav-button shadow"
-              variant="light"
-              block
-              to="/Funcionarios"
-              >Cadastro de funcionário<b-icon-arrow-up
-                style="float: right"
-              ></b-icon-arrow-up
-            ></b-button>
-            <b-button
-              style="border: none !important; text-align: left"
-              class="nav-button shadow"
-              variant="light"
-              block
-              to="/Produtos"
-              >Cadastro De Produto<b-icon-arrow-up
-                style="float: right"
-              ></b-icon-arrow-up
-            ></b-button>
-            <b-button
-              style="border: none !important; text-align: left"
-              class="nav-button shadow"
-              variant="light"
-              block
-              to="/Vendas"
-              >Pedido de Venda<b-icon-arrow-up
-                style="float: right"
-              ></b-icon-arrow-up
-            ></b-button>
-            <b-button
-              style="border: none !important; text-align: left"
-              class="nav-button shadow"
-              variant="light"
-              block
-              to="/"
-              >NF-e/ NFC-e<b-icon-arrow-up
-                style="float: right"
-              ></b-icon-arrow-up
-            ></b-button>
-            <b-button
-              style="border: none !important; text-align: left"
-              class="nav-button shadow"
-              variant="light"
-              block
-              to="/Financeiro"
-              >Financeiro<b-icon-arrow-up style="float: right"></b-icon-arrow-up
-            ></b-button>
-            <b-button
-              style="border: none !important; text-align: left"
-              class="nav-button shadow"
-              variant="light"
-              block
-              to="/"
-              >Agenda<b-icon-arrow-up style="float: right"></b-icon-arrow-up
-            ></b-button>
-          </b-nav>
-        </nav>
+  <div class="body">
+    <div :class="`sidebar ${disable}`">
+      <div class="logo-details" @click="sidBarExpand">
+        <img :src="logo" :id="logoEmpresa" />
+        <span class="logo_name" :class="sizeText" style="color: white"></span>
       </div>
-      <b-button class="home-button shadow" variant="light" block to="/"
-        >Pagina Inicial</b-button
+
+      <div
+        style="width: 100%; color: #fff"
+        class="d-flex justify-content-center"
       >
-    </b-sidebar>
+        <span :class="nomeEmpresaText">Grupo BMS</span>
+      </div>
+
+      <ul class="nav-links">
+        <li>
+          <span>
+            <b-button to="/Clientes" :class="iconsCenter">
+              <i>
+                <b-icon-person-bounding-box
+                  scale="1.5"
+                ></b-icon-person-bounding-box
+              ></i>
+              <span :class="sizeText">Clientes</span>
+            </b-button>
+          </span>
+        </li>
+
+        <li>
+          <b-button to="/Fornecedores" :class="iconsCenter">
+            <i> <b-icon-truck scale="1.5"></b-icon-truck></i>
+            <span :class="sizeText">Fornecedores</span>
+          </b-button>
+        </li>
+
+        <li>
+          <b-button to="/Funcionarios" :class="iconsCenter">
+            <i>
+              <b-icon-person-plus-fill scale="1.5"></b-icon-person-plus-fill
+            ></i>
+            <span :class="sizeText">Funcionário</span>
+          </b-button>
+        </li>
+
+        <li>
+          <b-button to="/Produtos" :class="iconsCenter">
+            <i> <b-icon-box-seam scale="1.5"></b-icon-box-seam></i>
+            <span :class="sizeText">Produtos</span>
+          </b-button>
+        </li>
+
+        <li>
+          <b-button to="/Vendas" :class="iconsCenter">
+            <i>
+              <b-icon-cart-check-fill scale="1.5"></b-icon-cart-check-fill
+            ></i>
+            <span :class="sizeText">Vendas</span>
+          </b-button>
+        </li>
+
+        <li>
+          <b-button to="/" :class="iconsCenter">
+            <i> <b-icon-reply-all scale="1.5"></b-icon-reply-all></i>
+            <span :class="sizeText">NF-e / NFC-e</span>
+          </b-button>
+        </li>
+
+        <li>
+          <b-button to="/" :class="iconsCenter">
+            <i> <b-icon-journals scale="1.5"></b-icon-journals></i>
+            <span :class="sizeText">Financeiro</span>
+          </b-button>
+        </li>
+
+        <li>
+          <b-button to="/" :class="iconsCenter">
+            <i> <b-icon-pencil-fill scale="1.5"></b-icon-pencil-fill></i>
+            <span :class="sizeText">Agenda</span>
+          </b-button>
+        </li>
+
+        <li>
+          <b-button to="/" :class="iconsCenter">
+            <i> <b-icon-gear-fill scale="1.5"></b-icon-gear-fill></i>
+            <span :class="sizeText">Configurações</span>
+          </b-button>
+        </li>
+
+        <li>
+          <b-button to="/" :class="iconsCenter">
+            <i> <b-icon-door-open scale="1.5"></b-icon-door-open></i>
+            <span :class="sizeText">Sair</span>
+          </b-button>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+import logo from "../../assets/LogoTeste.jpeg";
+export default {
+  data() {
+    return {
+      logo: logo,
+      colapse: true,
+      disable: "",
+      sizeText: "link_name",
+      logoEmpresa: "logoEmpresa",
+      nomeEmpresaText: "nomeEmpresaText",
+      iconsCenter: "btnsGerais",
+    };
+  },
+  methods: {
+    sidBarExpand() {
+      // this.colapse = !this.colapse;
+      this.disable = this.disable !== "disable" ? "disable" : "";
+      this.colapse = !this.colapse;
+      this.sizeText = this.colapse ? "link_name" : "link_nameTwo";
+      this.logoEmpresa = this.colapse ? "logoEmpresa" : "logoEmpresaTwo";
+      this.nomeEmpresaText = this.colapse
+        ? "nomeEmpresaText"
+        : "nomeEmpresaTextTwo";
+      this.iconsCenter = this.colapse ? "btnsGeraisTwo" : "btnsGerais";
+    },
+  },
+  computed: {
+    // expandSideBar() {
+    //   return `${this.colapse ? 60 : 270}px`;
+    // },
+
+    expandSideBar() {
+      return "active";
+    },
+  },
+};
 </script>
 
-<style scoped>
-.nav-button {
-  background-color: #56aafe !important;
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Poppins:500,500,500");
+
+.sidebar {
+  position: fixed;
+  height: 100%;
+  width: 270px;
+  background: #0a2558;
+  transition: all 0.5s ease;
+}
+
+.disable {
+  position: fixed;
+  height: 100%;
+  width: 80px;
+  background: #0a2558;
+  transition: all 0.5s ease;
+}
+
+.sidebar .logo-details {
+  height: 140px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.sidebar .logo-details i {
+  font-size: 28px;
+  font-weight: 500;
   color: #fff;
-  margin: 5px 5px 5px 0px;
+  min-width: 80px;
+  text-align: center;
+}
+
+.sidebar .logo-details .logo_name {
+  font-size: 28px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.sidebar .nav-links {
+  margin-top: 70px;
+}
+
+.sidebar .nav-links li {
+  height: 50px;
+  width: 100%;
+  list-style: none;
+}
+
+.sidebar .nav-links li a {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: all 0.4s ease;
+}
+
+.sidebar .nav-links li a:hover {
+  background: #081d45;
+}
+
+.sidebar .nav-links li a i {
+  min-width: 80px;
+  text-align: center;
+  color: #fff;
+  font-size: 18px;
+}
+
+.sidebar .nav-links li a .link_name {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  transition: all 0.4s ease;
+}
+
+.sidebar .nav-links li a .link_nameTwo {
+  color: #fff;
+  font-size: 0px;
+  font-weight: 500;
+  transition: all 0.4s ease;
+}
+
+#logoEmpresa {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid white;
+  object-fit: contain;
+  transition: all 0.4s ease;
+}
+
+#logoEmpresaTwo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 4px solid white;
+  object-fit: contain;
+  transition: all 0.4s ease;
+}
+
+.nomeEmpresaText {
+  font-size: 28px;
+  transition: all 0.4s ease;
+}
+
+.nomeEmpresaTextTwo {
+  font-size: 0px;
+  transition: all 0.4s ease;
+}
+
+span {
+  cursor: pointer;
+}
+
+.btnsGerais {
+  justify-content: center !important;
+  background: #0a2558 !important;
+  outline: none;
+  border: none;
+}
+
+.btnsGeraisTwo {
+  background: #0a2558 !important;
+  outline: none;
+  border: none;
 }
 </style>
