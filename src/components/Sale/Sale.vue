@@ -330,7 +330,7 @@
                                       <tr>
                                         <th>Nome Produto</th>
                                         <th>Quantidade</th>
-                                        <th>Valor Unitario</th>
+                                        <th>Valor unitario</th>
                                         <th>Valor Total</th>
                                         <th>Ações</th>
                                       </tr>
@@ -345,13 +345,13 @@
                                           {{ productsSaleTable.quantidade }}
                                         </td>
                                         <td>
-                                          {{ productsSaleTable.valorTotal }}
+                                          {{
+                                            productsSaleTable.valorTotal /
+                                            productsSaleTable.quantidade
+                                          }}
                                         </td>
                                         <td>
-                                          {{
-                                            productsSaleTable.quantidade *
-                                            productsSaleTable.valorTotal
-                                          }}
+                                          {{ productsSaleTable.valorTotal }}
                                         </td>
                                         <td>
                                           <!-- <b-button
@@ -500,8 +500,8 @@
                                     <b-form-select
                                       value-field="id"
                                       text-field="tipo"
-                                      v-model="payment"
-                                      :options="payment"
+                                      v-model="dataBillBySale.idFormaPagamento"
+                                      :options="allPaymentsTypes"
                                     ></b-form-select>
                                   </b-form-group>
 
@@ -517,7 +517,7 @@
                                       value-field="id"
                                       text-field="nomeFuncionario"
                                       disabled
-                                      v-model="dataPaymentsBySale.idFuncionario"
+                                      v-model="dataBillBySale.idFuncionario"
                                     ></b-form-select>
                                   </b-form-group>
 
@@ -530,6 +530,7 @@
                                   >
                                     <b-form-input
                                       placeholder="Ex em dias: 30"
+                                      v-model="intervaloDias"
                                     ></b-form-input>
                                   </b-form-group>
 
@@ -540,7 +541,9 @@
                                     class="col-sm-2"
                                     size="sm"
                                   >
-                                    <b-form-input></b-form-input>
+                                    <b-form-input
+                                      v-model="totalParcelas"
+                                    ></b-form-input>
                                   </b-form-group>
 
                                   <b-form-group
@@ -550,7 +553,10 @@
                                     class="col-sm-3"
                                     size="sm"
                                   >
-                                    <b-form-input type="date"></b-form-input>
+                                    <b-form-input
+                                      type="date"
+                                      v-model="dataBillBySale.data"
+                                    ></b-form-input>
                                   </b-form-group>
                                 </b-row>
                               </div>
@@ -560,6 +566,7 @@
                                     class="mr-4"
                                     size="sm"
                                     variant="info"
+                                    @click="makePaymentBySale"
                                   >
                                     <b-icon-cart-check
                                       class="mr-1"
@@ -671,19 +678,20 @@ export default {
       comissao: "",
       productUnitaryValue: "",
       fields: ["Produto", "Quantidade", "Valor"],
-      payment: [],
-      dataPaymentsBySale: {
-        idEmpresa: "",
-        tipo: "",
+      dataBillBySale: {
+        tipo: "entrada",
         idCliente: "",
         idFuncionario: "",
-        idFornecedor: "",
         idFormaPagamento: "",
+        idVenda: "",
         valorTotal: "",
         valorPago: "",
         valorRestante: "",
         data: "",
       },
+      totalParcelas: 1,
+      intervaloDias: 0,
+      allPaymentsTypes: [],
     };
   },
   methods: {
@@ -764,7 +772,7 @@ export default {
       try {
         const { data } = await api.post(`/sales`, this.dataSale);
         this.dataSale.id = data.id;
-        this.productsSales.idVenda = data.id;
+
         return this.$toast.open({
           message: "Venda salva com Sucesso",
           type: "success",
@@ -776,11 +784,13 @@ export default {
 
     async saveProductSale() {
       try {
-        console.log("aquiiiiiiiiiiiiiiiiii pourraaaaaaaa");
-        const { data } = await api.post(
-          "/products-of-sale",
-          this.productsSales
-        );
+        this.productsSales.idVenda = this.dataSale.id;
+
+        const { data } = await api.post("/products-of-sale", {
+          ...this.productsSales,
+          valorTotal:
+            this.productsSales.quantidade * this.productsSales.valorTotal,
+        });
         this.productsSales.id = data.id;
         if (this.dataSale.id !== "") {
           this.getProductSale();
@@ -801,7 +811,6 @@ export default {
 
     async getProductSale() {
       try {
-        console.log("merda aquiiiiiiiii");
         const { data } = await api.get(`/sales/${this.productsSales.idVenda}`);
         this.productsTable = data.products;
         return data;
@@ -849,7 +858,7 @@ export default {
 
     readComissao(dataEmployee) {
       this.comissao = dataEmployee.comissao;
-      this.dataPaymentsBySale.idFuncionario = this.dataSale.idFuncionario;
+      this.dataBillBySale.idFuncionario = this.dataSale.idFuncionario;
     },
 
     readProducts() {
@@ -872,12 +881,52 @@ export default {
     openModalFormaPagamento() {
       this.$bvModal.show("modalFormaPagamento");
     },
+
+    async listPaymentesTypesSelectBox() {
+      const { data } = await api.get("/payments/combobox");
+      this.allPaymentsTypes = data;
+      console.log(this.allPaymentsTypes);
+    },
+
+    async makePaymentBySale() {
+      try {
+        const array = [];
+        const valoTotalPedido = this.productsTable.reduce((total, valor) => {
+          return total + valor.valorTotal;
+        }, 0);
+        const valorPorDuplicata = valoTotalPedido / this.totalParcelas;
+        for (let i = 0; i < this.totalParcelas; i++) {
+          const dataVencimento =
+            i == 0
+              ? this.dataBillBySale.data
+              : moment(dataVencimento)
+                  .add(this.intervaloDias, "days")
+                  .format("YYYY-MM-DD");
+          array.push({
+            tipo: "entrada",
+            idCliente: this.dataSale.idCliente,
+            idFuncionario: this.dataSale.idFuncionario,
+            idFormaPagamento: this.dataBillBySale.idFormaPagamento,
+            idVenda: this.dataSale.idVenda,
+            valorTotal: valorPorDuplicata,
+            valorPago: "",
+            valorRestante: "",
+            data: dataVencimento,
+          });
+          const { data } = await api.post("/bills", array[i]);
+          console.log(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   mounted() {
     this.listCustomersSelectBox();
     this.listEmployeesSelectBox();
     this.getProdutos();
     this.getProviders();
+    this.listPaymentesTypesSelectBox();
   },
 };
 </script>
