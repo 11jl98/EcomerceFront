@@ -1,35 +1,20 @@
 <template>
-  <div class="d-flex justify-content-around w-100">
-    <div
-      class="d-flex flex-column align-items-center shadow container-home"
-      style=""
-      id="divContainer"
-    >
-      <div class="button-menu mt-5">
-        <b-button
-          class="nav-button shadow"
-          variant="light"
-          block
-          v-b-toggle.accordion-dadosCadastrais
-          >Cadastro De Cliente</b-button
-        >
-      </div>
-      <div class="button-menu">
-
-        <b-button class="nav-button shadow" variant="light" block v-b-toggle.accordion-search
-   
-          >Pesquisa</b-button
-        >
-      </div>
-      <div class="button-menu">
-        <b-button class="nav-button shadow" variant="light" block href="#foo"
-          >Cadastro De Funcionário</b-button
-        >
-      </div>
-    </div>
-    <div class="container-components mb-3" id="receita" role="tablist">
-      <Customer :readOrEditCustomers="readOrEditCustomers"/>
-      <Search @readOrEditCustomers="readOrEditCustomers = $event"/>
+  <div class="d-flex justify-content-around w-100 container-geral">
+    <div class="container-components mt-5" id="receita" role="tablist">
+      <b-card no-body>
+        <b-tabs card>
+          <b-tab title="Cadastro de clientes">
+            <b-card-text>
+              <Customer :readOrEditCustomers="readOrEditCustomers" />
+            </b-card-text>
+          </b-tab>
+          <b-tab title="Pesquisa">
+            <b-card-text>
+              <Search @readOrEditCustomers="readOrEditCustomers = $event"
+            /></b-card-text>
+          </b-tab>
+        </b-tabs>
+      </b-card>
     </div>
   </div>
 </template>
@@ -44,7 +29,7 @@ export default {
   },
   data() {
     return {
-      readOrEditCustomers:{}
+      readOrEditCustomers: {},
     };
   },
 };
@@ -69,7 +54,12 @@ export default {
   color: #fff;
   border: none;
 }
+.container-geral {
+  width: 100% !important;
+}
+
 .container-components {
-  width: 73% !important;
+  width: 90% !important;
+  margin-left: 9%;
 }
 </style>
