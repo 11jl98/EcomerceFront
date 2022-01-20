@@ -1,5 +1,5 @@
 <template>
-  <b-card class="shadow">
+  <b-card class="shadow testeeeeee">
     <h3>Dados Cadastrais</h3>
     <hr />
     <div class="mt-4">
@@ -234,7 +234,6 @@
 
 <script>
 import api from "../../services/axios";
-
 export default {
   props: {
     readOrEditCustomers: {
@@ -336,6 +335,7 @@ export default {
         ? "##.###.###/####-##"
         : "###.###.###-##";
     },
+
     maskCelular() {
       return "(##) #####-####";
     },

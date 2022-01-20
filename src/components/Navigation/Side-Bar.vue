@@ -131,6 +131,8 @@ export default {
         : "nomeEmpresaTextTwo";
       this.iconsCenter = this.colapse ? "btnsGerais" : "btnsGeraisTwo";
       this.btnSair = this.colapse ? "btnSair" : "btnSairTwo";
+      if (this.colapse) this.$store.commit("REGISTER_WIDTH", "80%");
+      else this.$store.commit("REGISTER_WIDTH", "90%");
     },
   },
   computed: {
@@ -198,7 +200,7 @@ export default {
 }
 
 .sidebar .nav-links {
-  margin-top: 70px;
+  margin-top: 35px;
 }
 
 .sidebar .nav-links li {
@@ -316,9 +318,5 @@ span {
   background: #0a2558 !important;
   outline: none !important;
   border: none !important;
-}
-
-.containerBtnSair {
-  margin-top: 200px;
 }
 </style>
