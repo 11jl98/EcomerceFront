@@ -1,5 +1,5 @@
 <template>
-  <b-card class="shadow testeeeeee">
+  <b-card class="shadow">
     <h3>Dados Cadastrais</h3>
     <hr />
     <div class="mt-4">

@@ -1,378 +1,360 @@
 <template>
-  <b-collapse
-    visible
-    id="accordion-dadosCadastrais"
-    accordion="my-accordion"
-    role="tabpanel"
-    class="mt-2"
-  >
-    <div class="containerGeralPedidoVenda">
-      <div>
-        <b-card no-body>
-          <h2>Pedido de venda</h2>
-          <hr />
-          <b-row>
-            <div
-              class="
-                col-sm-12 col-md-12 col-lg-12 col-lg-12
-                d-flex
-                justify-content-between
-              "
-            >
-              <div>
-                <b-form-group
-                  id="input-group-1"
-                  label="Data da venda"
-                  label-for="input-1"
-                  class="col-sm-12"
-                  size="sm"
-                >
-                  <b-form-input
-                    value-field="id"
-                    text-field="nome"
-                    disabled
-                    :options="dataCustomers"
-                    type="date"
-                    v-model="dataSale.dataVenda"
-                  ></b-form-input>
-                </b-form-group>
-              </div>
-
-              <div class="mr-2 containerCheckBox">
-                <b-form-group v-slot="{ ariaDescribedby }">
-                  <b-form-checkbox
-                    :aria-describedby="ariaDescribedby"
-                    name="checado"
-                    value="Venda"
-                    disabled
-                    unchecked-value="Orçamento"
-                    class="chkVendaOrçamento"
-                    v-model="dataSale.status"
-                    switch
-                  >
-                    <div style="width: 115px">
-                      {{ dataSale.status.toUpperCase() }}
-                    </div>
-                  </b-form-checkbox>
-                </b-form-group>
-              </div>
+  <div class="containerGeralPedidoVenda">
+    <div>
+      <b-card no-body>
+        <b-row>
+          <div
+            class="
+              col-sm-12 col-md-12 col-lg-12 col-lg-12
+              d-flex
+              justify-content-between
+            "
+          >
+            <div>
+              <b-form-group
+                id="input-group-1"
+                label="Data da venda"
+                label-for="input-1"
+                class="col-sm-12"
+                size="sm"
+              >
+                <b-form-input
+                  value-field="id"
+                  text-field="nome"
+                  disabled
+                  :options="dataCustomers"
+                  type="date"
+                  v-model="dataSale.dataVenda"
+                ></b-form-input>
+              </b-form-group>
             </div>
-          </b-row>
-          <b-tabs card>
-            <b-tab title="Venda/Orçamento">
-              <div class="containerAllCard">
-                <b-card-text>
-                  <div
-                    class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12"
-                  >
-                    <b-navbar toggleable class="cardDadosVendas">
-                      <b-navbar-toggle
-                        target="navbar-toggle-collapse"
-                        id="dadosVendaStyle"
-                        class="tamanhoCards"
-                      >
-                        <template #default="{ expanded }">
-                          <div class="tamanhoBotaoOpenCard">
+
+            <div class="mr-2 containerCheckBox">
+              <b-form-group v-slot="{ ariaDescribedby }">
+                <b-form-checkbox
+                  :aria-describedby="ariaDescribedby"
+                  name="checado"
+                  value="Venda"
+                  disabled
+                  unchecked-value="Orçamento"
+                  class="chkVendaOrçamento"
+                  v-model="dataSale.status"
+                  switch
+                >
+                  <div style="width: 115px">
+                    {{ dataSale.status.toUpperCase() }}
+                  </div>
+                </b-form-checkbox>
+              </b-form-group>
+            </div>
+          </div>
+        </b-row>
+        <b-tabs card>
+          <b-tab title="Venda/Orçamento">
+            <div class="containerAllCard">
+              <b-card-text>
+                <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                  <b-navbar toggleable class="cardDadosVendas">
+                    <b-navbar-toggle
+                      target="navbar-toggle-collapse"
+                      id="dadosVendaStyle"
+                      class="tamanhoCards"
+                    >
+                      <template #default="{ expanded }">
+                        <div class="tamanhoBotaoOpenCard">
+                          <div>
+                            <b-icon
+                              v-if="expanded"
+                              icon="dash-square-fill"
+                              variant="info"
+                            ></b-icon>
+                            <b-icon
+                              v-else
+                              icon="plus-square-fill"
+                              variant="info"
+                            ></b-icon>
+                          </div>
+                          <div style="margin-left: 10px">
+                            Dados do Cliente / Funcionario
+                          </div>
+                        </div>
+                      </template>
+                    </b-navbar-toggle>
+
+                    <b-collapse id="navbar-toggle-collapse" is-nav>
+                      <b-navbar-nav class="ml-auto">
+                        <b-card
+                          class="
+                            mt-2
+                            col-md-12 col-sm-12 col-lg-12 col-xl-12
+                            cardDadosVendasBorda
+                          "
+                        >
+                          <div class="mt-4">
+                            <b-row class="d-flex justify-content-between">
+                              <b-form-input
+                                hidden
+                                class="col-sm-1"
+                                v-model="dataSale.id"
+                              ></b-form-input>
+                              <b-form-group
+                                id="input-group-1"
+                                label="Nome Cliente"
+                                label-for="input-1"
+                                class="col-sm-4"
+                                size="sm"
+                              >
+                                <b-form-select
+                                  value-field="id"
+                                  text-field="nome"
+                                  :options="dataCustomers"
+                                  v-model="dataSale.idCliente"
+                                ></b-form-select>
+                              </b-form-group>
+
+                              <b-form-group
+                                id="input-group-1"
+                                label="Funcionario"
+                                label-for="input-1"
+                                class="col-sm-4"
+                                size="sm"
+                              >
+                                <b-form-select
+                                  :options="dataEmployee"
+                                  value-field="id"
+                                  text-field="nomeFuncionario"
+                                  v-model="dataSale.idFuncionario"
+                                  @change="readComissao(dataEmployee[0])"
+                                >
+                                </b-form-select>
+                              </b-form-group>
+                              <b-form-group
+                                id="input-group-1"
+                                label="Comissão ( % )"
+                                label-for="input-1"
+                                class="col-sm-3"
+                                size="sm"
+                              >
+                                <b-form-input
+                                  v-model="comissao"
+                                  placeholder="Comissão"
+                                ></b-form-input>
+                              </b-form-group>
+                            </b-row>
+
+                            <b-row class="d-flex justify-content-around">
+                              <b-form-group
+                                id="input-group-1"
+                                label="Descrição"
+                                label-for="input-1"
+                                class="col-sm-12"
+                              >
+                                <b-form-textarea
+                                  v-model="dataSale.dadosAdicionais"
+                                  id="textarea"
+                                  rows="5"
+                                  max-rows="6"
+                                ></b-form-textarea>
+                              </b-form-group>
+                            </b-row>
+
+                            <b-row class="d-flex justify-content-around">
+                            </b-row>
                             <div>
-                              <b-icon
-                                v-if="expanded"
-                                icon="dash-square-fill"
-                                variant="info"
-                              ></b-icon>
-                              <b-icon
-                                v-else
-                                icon="plus-square-fill"
-                                variant="info"
-                              ></b-icon>
-                            </div>
-                            <div style="margin-left: 10px">
-                              Dados do Cliente / Funcionario
+                              <div class="d-flex justify-content-end">
+                                <div>
+                                  <b-button
+                                    class="mr-4"
+                                    size="sm"
+                                    style="
+                                      border: none !important;
+                                      background-color: #56aafe !important;
+                                    "
+                                    @click="saveOrUpdateSale"
+                                    >Salvar
+                                    <b-icon-person-check
+                                      class="ml-1"
+                                    ></b-icon-person-check
+                                  ></b-button>
+
+                                  <b-button
+                                    class="mr-4"
+                                    size="sm"
+                                    variant="secondary"
+                                    @click="proximoCardDadosVenda"
+                                  >
+                                    <b-icon-caret-down-fill></b-icon-caret-down-fill
+                                    >Próximo</b-button
+                                  >
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </template>
-                      </b-navbar-toggle>
+                        </b-card>
+                      </b-navbar-nav>
+                    </b-collapse>
+                  </b-navbar>
+                </div>
+              </b-card-text>
 
-                      <b-collapse id="navbar-toggle-collapse" is-nav>
-                        <b-navbar-nav class="ml-auto">
-                          <b-card
-                            class="
-                              mt-2
-                              col-md-12 col-sm-12 col-lg-12 col-xl-12
-                              cardDadosVendasBorda
-                            "
-                          >
+              <b-card-text>
+                <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                  <b-navbar toggleable class="cardDadosVendas">
+                    <b-navbar-toggle
+                      target="navbar-toggle-collapse2"
+                      id="dadosVendaStyle"
+                      class="tamanhoCards"
+                    >
+                      <template #default="{ expanded }">
+                        <div class="tamanhoBotaoOpenCard">
+                          <div>
+                            <b-icon
+                              v-if="expanded"
+                              icon="dash-square-fill"
+                              variant="info"
+                            ></b-icon>
+                            <b-icon
+                              v-else
+                              icon="plus-square-fill"
+                              variant="info"
+                            ></b-icon>
+                          </div>
+                          <div style="margin-left: 10px">
+                            Adicionar Produtos
+                          </div>
+                        </div>
+                      </template>
+                    </b-navbar-toggle>
+
+                    <b-collapse id="navbar-toggle-collapse2" is-nav>
+                      <b-navbar-nav class="ml-auto">
+                        <b-card
+                          class="
+                            mt-2
+                            col-md-12 col-sm-12 col-lg-12 col-xl-12
+                            cardDadosVendasBorda
+                          "
+                        >
+                          <b-card-text>
                             <div class="mt-4">
                               <b-row class="d-flex justify-content-between">
                                 <b-form-input
                                   hidden
-                                  class="col-sm-1"
-                                  v-model="dataSale.id"
+                                  v-model="productsSales.idVenda"
                                 ></b-form-input>
                                 <b-form-group
                                   id="input-group-1"
-                                  label="Nome Cliente"
+                                  label="Nome Produto"
                                   label-for="input-1"
                                   class="col-sm-4"
                                   size="sm"
                                 >
                                   <b-form-select
+                                    v-model="productsSelected"
+                                    @change="readProducts"
+                                  >
+                                    <b-form-select-option
+                                      v-for="produtos in products"
+                                      :key="produtos.id"
+                                      :value="produtos"
+                                      >{{ produtos.nome }}</b-form-select-option
+                                    >
+                                  </b-form-select>
+                                </b-form-group>
+
+                                <b-form-group
+                                  id="input-group-1"
+                                  label="Fornecedor"
+                                  label-for="input-1"
+                                  class="col-sm-4"
+                                  size="sm"
+                                >
+                                  <b-form-select
+                                    :options="providers"
                                     value-field="id"
-                                    text-field="nome"
-                                    :options="dataCustomers"
-                                    v-model="dataSale.idCliente"
+                                    text-field="nomeFantasia"
+                                    v-model="productsSales.idFornecedor"
                                   ></b-form-select>
                                 </b-form-group>
 
                                 <b-form-group
                                   id="input-group-1"
-                                  label="Funcionario"
+                                  label="Quantidade"
                                   label-for="input-1"
-                                  class="col-sm-4"
-                                  size="sm"
-                                >
-                                  <b-form-select
-                                    :options="dataEmployee"
-                                    value-field="id"
-                                    text-field="nomeFuncionario"
-                                    v-model="dataSale.idFuncionario"
-                                    @change="readComissao(dataEmployee[0])"
-                                  >
-                                  </b-form-select>
-                                </b-form-group>
-                                <b-form-group
-                                  id="input-group-1"
-                                  label="Comissão ( % )"
-                                  label-for="input-1"
-                                  class="col-sm-3"
+                                  class="col-sm-2"
                                   size="sm"
                                 >
                                   <b-form-input
-                                    v-model="comissao"
-                                    placeholder="Comissão"
+                                    placeholder="Quantidade"
+                                    v-model="productsSales.quantidade"
+                                  ></b-form-input>
+                                </b-form-group>
+
+                                <b-form-group
+                                  id="input-group-1"
+                                  label="Valor"
+                                  label-for="input-1"
+                                  class="col-sm-2"
+                                  size="sm"
+                                >
+                                  <b-form-input
+                                    placeholder="Valor"
+                                    v-model="productsSales.valorTotal"
                                   ></b-form-input>
                                 </b-form-group>
                               </b-row>
 
-                              <b-row class="d-flex justify-content-around">
+                              <b-row class="d-flex justify-content-between">
                                 <b-form-group
                                   id="input-group-1"
-                                  label="Descrição"
+                                  label="Dados adicionais"
                                   label-for="input-1"
-                                  class="col-sm-12"
+                                  class="col-sm-4"
                                 >
                                   <b-form-textarea
-                                    v-model="dataSale.dadosAdicionais"
                                     id="textarea"
                                     rows="5"
                                     max-rows="6"
+                                    v-model="productsSales.dadosAdicionais"
                                   ></b-form-textarea>
                                 </b-form-group>
-                              </b-row>
 
-                              <b-row class="d-flex justify-content-around">
-                              </b-row>
-                              <div>
-                                <div class="d-flex justify-content-end">
-                                  <div>
-                                    <b-button
-                                      class="mr-4"
-                                      size="sm"
+                                <div class="col-sm-8" style="margin-top: 31px">
+                                  <table class="table table-sm">
+                                    <thead
                                       style="
-                                        border: none !important;
                                         background-color: #56aafe !important;
+                                        color: white;
                                       "
-                                      @click="saveOrUpdateSale"
-                                      >Salvar
-                                      <b-icon-person-check
-                                        class="ml-1"
-                                      ></b-icon-person-check
-                                    ></b-button>
-
-                                    <b-button
-                                      class="mr-4"
-                                      size="sm"
-                                      variant="secondary"
-                                      @click="proximoCardDadosVenda"
                                     >
-                                      <b-icon-caret-down-fill></b-icon-caret-down-fill
-                                      >Próximo</b-button
-                                    >
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </b-card>
-                        </b-navbar-nav>
-                      </b-collapse>
-                    </b-navbar>
-                  </div>
-                </b-card-text>
-
-                <b-card-text>
-                  <div
-                    class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12"
-                  >
-                    <b-navbar toggleable class="cardDadosVendas">
-                      <b-navbar-toggle
-                        target="navbar-toggle-collapse2"
-                        id="dadosVendaStyle"
-                        class="tamanhoCards"
-                      >
-                        <template #default="{ expanded }">
-                          <div class="tamanhoBotaoOpenCard">
-                            <div>
-                              <b-icon
-                                v-if="expanded"
-                                icon="dash-square-fill"
-                                variant="info"
-                              ></b-icon>
-                              <b-icon
-                                v-else
-                                icon="plus-square-fill"
-                                variant="info"
-                              ></b-icon>
-                            </div>
-                            <div style="margin-left: 10px">
-                              Adicionar Produtos
-                            </div>
-                          </div>
-                        </template>
-                      </b-navbar-toggle>
-
-                      <b-collapse id="navbar-toggle-collapse2" is-nav>
-                        <b-navbar-nav class="ml-auto">
-                          <b-card
-                            class="
-                              mt-2
-                              col-md-12 col-sm-12 col-lg-12 col-xl-12
-                              cardDadosVendasBorda
-                            "
-                          >
-                            <b-card-text>
-                              <div class="mt-4">
-                                <b-row class="d-flex justify-content-between">
-                                  <b-form-input
-                                    hidden
-                                    v-model="productsSales.idVenda"
-                                  ></b-form-input>
-                                  <b-form-group
-                                    id="input-group-1"
-                                    label="Nome Produto"
-                                    label-for="input-1"
-                                    class="col-sm-4"
-                                    size="sm"
-                                  >
-                                    <b-form-select
-                                      v-model="productsSelected"
-                                      @change="readProducts"
-                                    >
-                                      <b-form-select-option
-                                        v-for="produtos in products"
-                                        :key="produtos.id"
-                                        :value="produtos"
-                                        >{{
-                                          produtos.nome
-                                        }}</b-form-select-option
+                                      <tr>
+                                        <th>Nome Produto</th>
+                                        <th>Quantidade</th>
+                                        <th>Valor Unitario</th>
+                                        <th>Valor Total</th>
+                                        <th>Ações</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr
+                                        v-for="productsSaleTable in productsTable"
+                                        :key="productsSaleTable.id"
                                       >
-                                    </b-form-select>
-                                  </b-form-group>
-
-                                  <b-form-group
-                                    id="input-group-1"
-                                    label="Fornecedor"
-                                    label-for="input-1"
-                                    class="col-sm-4"
-                                    size="sm"
-                                  >
-                                    <b-form-select
-                                      :options="providers"
-                                      value-field="id"
-                                      text-field="nomeFantasia"
-                                      v-model="productsSales.idFornecedor"
-                                    ></b-form-select>
-                                  </b-form-group>
-
-                                  <b-form-group
-                                    id="input-group-1"
-                                    label="Quantidade"
-                                    label-for="input-1"
-                                    class="col-sm-2"
-                                    size="sm"
-                                  >
-                                    <b-form-input
-                                      placeholder="Quantidade"
-                                      v-model="productsSales.quantidade"
-                                    ></b-form-input>
-                                  </b-form-group>
-
-                                  <b-form-group
-                                    id="input-group-1"
-                                    label="Valor"
-                                    label-for="input-1"
-                                    class="col-sm-2"
-                                    size="sm"
-                                  >
-                                    <b-form-input
-                                      placeholder="Valor"
-                                      v-model="productsSales.valorTotal"
-                                    ></b-form-input>
-                                  </b-form-group>
-                                </b-row>
-
-                                <b-row class="d-flex justify-content-between">
-                                  <b-form-group
-                                    id="input-group-1"
-                                    label="Dados adicionais"
-                                    label-for="input-1"
-                                    class="col-sm-4"
-                                  >
-                                    <b-form-textarea
-                                      id="textarea"
-                                      rows="5"
-                                      max-rows="6"
-                                      v-model="productsSales.dadosAdicionais"
-                                    ></b-form-textarea>
-                                  </b-form-group>
-
-                                  <div
-                                    class="col-sm-8"
-                                    style="margin-top: 31px"
-                                  >
-                                    <table class="table table-sm">
-                                      <thead
-                                        style="
-                                          background-color: #56aafe !important;
-                                          color: white;
-                                        "
-                                      >
-                                        <tr>
-                                          <th>Nome Produto</th>
-                                          <th>Quantidade</th>
-                                          <th>Valor Unitario</th>
-                                          <th>Valor Total</th>
-                                          <th>Ações</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr
-                                          v-for="productsSaleTable in productsTable"
-                                          :key="productsSaleTable.id"
-                                        >
-                                          <td>{{ productsSaleTable.nome }}</td>
-                                          <td>
-                                            {{ productsSaleTable.quantidade }}
-                                          </td>
-                                          <td>
-                                            {{ productsSaleTable.valorTotal }}
-                                          </td>
-                                          <td>
-                                            {{
-                                              productsSaleTable.quantidade *
-                                              productsSaleTable.valorTotal
-                                            }}
-                                          </td>
-                                          <td>
-                                            <!-- <b-button
+                                        <td>{{ productsSaleTable.nome }}</td>
+                                        <td>
+                                          {{ productsSaleTable.quantidade }}
+                                        </td>
+                                        <td>
+                                          {{ productsSaleTable.valorTotal }}
+                                        </td>
+                                        <td>
+                                          {{
+                                            productsSaleTable.quantidade *
+                                            productsSaleTable.valorTotal
+                                          }}
+                                        </td>
+                                        <td>
+                                          <!-- <b-button
                                 size="sm"
                                 class="mr-2"
                                 variant="info"
@@ -384,281 +366,272 @@
                               >
                                 <b-icon-check scale="2"></b-icon-check>
                               </b-button> -->
-                                            <b-button
-                                              size="sm"
-                                              variant="secondary"
-                                              v-b-popover.hover.right="{
-                                                variant: 'secondary',
-                                                content: 'Excluir',
-                                              }"
-                                              @click="
-                                                deleteProductFromTableById(
-                                                  productsSaleTable.id
-                                                )
-                                              "
-                                            >
-                                              <b-icon-trash
-                                                scale="0.7"
-                                              ></b-icon-trash
-                                            ></b-button>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </b-row>
-
-                                <div>
-                                  <div class="d-flex justify-content-end">
-                                    <div>
-                                      <b-button
-                                        class="mr-4"
-                                        size="sm"
-                                        style="
-                                          border: none !important;
-                                          background-color: #56aafe !important;
-                                        "
-                                        @click="saveProductSale"
-                                        >Adicionar
-                                        <b-icon-cart-check
-                                          class="ml-1"
-                                        ></b-icon-cart-check
-                                      ></b-button>
-                                      <b-button
-                                        class="mr-4"
-                                        size="sm"
-                                        variant="secondary"
-                                        @click="proximoCardAdicionarProdutos"
-                                      >
-                                        <b-icon-caret-down-fill></b-icon-caret-down-fill
-                                        >Próximo</b-button
-                                      >
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </b-card-text>
-                          </b-card>
-                        </b-navbar-nav>
-                      </b-collapse>
-                    </b-navbar>
-                  </div>
-                </b-card-text>
-
-                <b-card-text>
-                  <div
-                    class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12"
-                  >
-                    <b-navbar toggleable class="cardDadosVendas">
-                      <b-navbar-toggle
-                        target="navbar-toggle-collapse3"
-                        id="dadosVendaStyle"
-                        class="tamanhoCards"
-                      >
-                        <template #default="{ expanded }">
-                          <div class="tamanhoBotaoOpenCard">
-                            <div>
-                              <b-icon
-                                v-if="expanded"
-                                icon="dash-square-fill"
-                                variant="info"
-                              ></b-icon>
-                              <b-icon
-                                v-else
-                                icon="plus-square-fill"
-                                variant="info"
-                              ></b-icon>
-                            </div>
-                            <div style="margin-left: 10px">Financeiro</div>
-                          </div>
-                        </template>
-                      </b-navbar-toggle>
-
-                      <b-collapse id="navbar-toggle-collapse3" is-nav>
-                        <b-navbar-nav class="ml-auto">
-                          <b-card
-                            class="
-                              mt-2
-                              col-md-12 col-sm-12 col-lg-12 col-xl-12
-                              cardDadosVendasBorda
-                            "
-                          >
-                            <b-card-text>
-                              <div>
-                                <div>
-                                  <b-row class="d-flex">
-                                    <b-form-input
-                                      hidden
-                                      class="col-sm-1"
-                                    ></b-form-input>
-
-                                    <b-form-group
-                                      id="input-group-1"
-                                      label-for="input-1"
-                                      class="col-sm-3"
-                                      size="sm"
-                                    >
-                                      <div class="iconFormaPagamento">
-                                        <div>
-                                          <label for="input-1"
-                                            >Forma de pagamento</label
-                                          >
-                                        </div>
-
-                                        <div
-                                          class="btnFormaPagamento mr-1"
-                                          @click="openModalFormaPagamento"
-                                        >
-                                          <b-icon-plus-square-fill
-                                            scale="1.5"
+                                          <b-button
                                             size="sm"
-                                            variant="primary"
-                                          ></b-icon-plus-square-fill>
-                                        </div>
-                                      </div>
-
-                                      <b-form-select
-                                        value-field="id"
-                                        text-field="tipo"
-                                        v-model="payment"
-                                        :options="payment"
-                                      ></b-form-select>
-                                    </b-form-group>
-
-                                    <b-form-group
-                                      id="input-group-1"
-                                      label="Funcionario"
-                                      label-for="input-1"
-                                      class="col-sm-4"
-                                      size="sm"
-                                    >
-                                      <b-form-select
-                                        :options="dataEmployee"
-                                        value-field="id"
-                                        text-field="nomeFuncionario"
-                                        disabled
-                                        v-model="
-                                          dataPaymentsBySale.idFuncionario
-                                        "
-                                      ></b-form-select>
-                                    </b-form-group>
-
-                                    <b-form-group
-                                      id="input-group-1"
-                                      label="Intervalo vencimento"
-                                      label-for="input-1"
-                                      class="col-sm-3"
-                                      size="sm"
-                                    >
-                                      <b-form-input
-                                        placeholder="Ex em dias: 30"
-                                      ></b-form-input>
-                                    </b-form-group>
-
-                                    <b-form-group
-                                      id="input-group-1"
-                                      label="Qnt. parcelas"
-                                      label-for="input-1"
-                                      class="col-sm-2"
-                                      size="sm"
-                                    >
-                                      <b-form-input></b-form-input>
-                                    </b-form-group>
-
-                                    <b-form-group
-                                      id="input-group-1"
-                                      label="Data primeiro vencimento"
-                                      label-for="input-1"
-                                      class="col-sm-3"
-                                      size="sm"
-                                    >
-                                      <b-form-input type="date"></b-form-input>
-                                    </b-form-group>
-                                  </b-row>
+                                            variant="secondary"
+                                            v-b-popover.hover.right="{
+                                              variant: 'secondary',
+                                              content: 'Excluir',
+                                            }"
+                                            @click="
+                                              deleteProductFromTableById(
+                                                productsSaleTable.id
+                                              )
+                                            "
+                                          >
+                                            <b-icon-trash
+                                              scale="0.7"
+                                            ></b-icon-trash
+                                          ></b-button>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
                                 </div>
-                                <div class="containerBotaoFinanceiro">
+                              </b-row>
+
+                              <div>
+                                <div class="d-flex justify-content-end">
                                   <div>
                                     <b-button
                                       class="mr-4"
                                       size="sm"
-                                      variant="info"
-                                    >
+                                      style="
+                                        border: none !important;
+                                        background-color: #56aafe !important;
+                                      "
+                                      @click="saveProductSale"
+                                      >Adicionar
                                       <b-icon-cart-check
-                                        class="mr-1"
+                                        class="ml-1"
                                       ></b-icon-cart-check
-                                      >Lançar Pagamento</b-button
-                                    >
-                                  </div>
-
-                                  <div>
+                                    ></b-button>
                                     <b-button
                                       class="mr-4"
                                       size="sm"
                                       variant="secondary"
-                                      @click="proximoCardFinanceiro"
+                                      @click="proximoCardAdicionarProdutos"
                                     >
-                                      <b-icon-x scale="1.2" class="mr-1">
-                                      </b-icon-x
-                                      >Fechar</b-button
+                                      <b-icon-caret-down-fill></b-icon-caret-down-fill
+                                      >Próximo</b-button
                                     >
                                   </div>
                                 </div>
                               </div>
-                            </b-card-text>
-                          </b-card>
-                        </b-navbar-nav>
-                      </b-collapse>
-                    </b-navbar>
-                  </div>
-                </b-card-text>
-              </div>
-            </b-tab>
-            <div
-              class="
-                form-group
-                col-sm-12 col-md-12 col-lg-12 col-xl-12
-                acoesBtns
-              "
-            >
-              <div class="btnsGeral">
-                <b-button variant="success" size="sm" @click="closeSale"
-                  >Fechar Venda
-                  <b-icon-check class="ml-1" scale="1.8"></b-icon-check
-                ></b-button>
+                            </div>
+                          </b-card-text>
+                        </b-card>
+                      </b-navbar-nav>
+                    </b-collapse>
+                  </b-navbar>
+                </div>
+              </b-card-text>
 
-                <b-button variant="dark" size="sm" @click="editSale"
-                  >Editar Venda
-                  <b-icon-pencil-square class="ml-1"></b-icon-pencil-square
-                ></b-button>
+              <b-card-text>
+                <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                  <b-navbar toggleable class="cardDadosVendas">
+                    <b-navbar-toggle
+                      target="navbar-toggle-collapse3"
+                      id="dadosVendaStyle"
+                      class="tamanhoCards"
+                    >
+                      <template #default="{ expanded }">
+                        <div class="tamanhoBotaoOpenCard">
+                          <div>
+                            <b-icon
+                              v-if="expanded"
+                              icon="dash-square-fill"
+                              variant="info"
+                            ></b-icon>
+                            <b-icon
+                              v-else
+                              icon="plus-square-fill"
+                              variant="info"
+                            ></b-icon>
+                          </div>
+                          <div style="margin-left: 10px">Financeiro</div>
+                        </div>
+                      </template>
+                    </b-navbar-toggle>
 
-                <b-dropdown
-                  id="dropdown-1"
-                  text="NF-e / NFc-e"
-                  class="m-md-2"
-                  variant="info"
-                  size="sm"
-                  style="
-                    margin: 0px 0px 0px 0px !important;
-                    padding: 0px 0px 0px 0px !important;
-                  "
-                >
-                  <b-dropdown-item>Transformar pedido em NF-e</b-dropdown-item>
-                  <b-dropdown-divider></b-dropdown-divider>
-                  <b-dropdown-item>Transformar pedido em NFc-e</b-dropdown-item>
-                </b-dropdown>
+                    <b-collapse id="navbar-toggle-collapse3" is-nav>
+                      <b-navbar-nav class="ml-auto">
+                        <b-card
+                          class="
+                            mt-2
+                            col-md-12 col-sm-12 col-lg-12 col-xl-12
+                            cardDadosVendasBorda
+                          "
+                        >
+                          <b-card-text>
+                            <div>
+                              <div>
+                                <b-row class="d-flex">
+                                  <b-form-input
+                                    hidden
+                                    class="col-sm-1"
+                                  ></b-form-input>
 
-                <b-button variant="secondary" size="sm" @click="clearSale"
-                  >Limpar
-                  <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
-                ></b-button>
-              </div>
+                                  <b-form-group
+                                    id="input-group-1"
+                                    label-for="input-1"
+                                    class="col-sm-3"
+                                    size="sm"
+                                  >
+                                    <div class="iconFormaPagamento">
+                                      <div>
+                                        <label for="input-1"
+                                          >Forma de pagamento</label
+                                        >
+                                      </div>
+
+                                      <div
+                                        class="btnFormaPagamento mr-1"
+                                        @click="openModalFormaPagamento"
+                                      >
+                                        <b-icon-plus-square-fill
+                                          scale="1.5"
+                                          size="sm"
+                                          variant="primary"
+                                        ></b-icon-plus-square-fill>
+                                      </div>
+                                    </div>
+
+                                    <b-form-select
+                                      value-field="id"
+                                      text-field="tipo"
+                                      v-model="payment"
+                                      :options="payment"
+                                    ></b-form-select>
+                                  </b-form-group>
+
+                                  <b-form-group
+                                    id="input-group-1"
+                                    label="Funcionario"
+                                    label-for="input-1"
+                                    class="col-sm-4"
+                                    size="sm"
+                                  >
+                                    <b-form-select
+                                      :options="dataEmployee"
+                                      value-field="id"
+                                      text-field="nomeFuncionario"
+                                      disabled
+                                      v-model="dataPaymentsBySale.idFuncionario"
+                                    ></b-form-select>
+                                  </b-form-group>
+
+                                  <b-form-group
+                                    id="input-group-1"
+                                    label="Intervalo vencimento"
+                                    label-for="input-1"
+                                    class="col-sm-3"
+                                    size="sm"
+                                  >
+                                    <b-form-input
+                                      placeholder="Ex em dias: 30"
+                                    ></b-form-input>
+                                  </b-form-group>
+
+                                  <b-form-group
+                                    id="input-group-1"
+                                    label="Qnt. parcelas"
+                                    label-for="input-1"
+                                    class="col-sm-2"
+                                    size="sm"
+                                  >
+                                    <b-form-input></b-form-input>
+                                  </b-form-group>
+
+                                  <b-form-group
+                                    id="input-group-1"
+                                    label="Data primeiro vencimento"
+                                    label-for="input-1"
+                                    class="col-sm-3"
+                                    size="sm"
+                                  >
+                                    <b-form-input type="date"></b-form-input>
+                                  </b-form-group>
+                                </b-row>
+                              </div>
+                              <div class="containerBotaoFinanceiro">
+                                <div>
+                                  <b-button
+                                    class="mr-4"
+                                    size="sm"
+                                    variant="info"
+                                  >
+                                    <b-icon-cart-check
+                                      class="mr-1"
+                                    ></b-icon-cart-check
+                                    >Lançar Pagamento</b-button
+                                  >
+                                </div>
+
+                                <div>
+                                  <b-button
+                                    class="mr-4"
+                                    size="sm"
+                                    variant="secondary"
+                                    @click="proximoCardFinanceiro"
+                                  >
+                                    <b-icon-x scale="1.2" class="mr-1">
+                                    </b-icon-x
+                                    >Fechar</b-button
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </b-card-text>
+                        </b-card>
+                      </b-navbar-nav>
+                    </b-collapse>
+                  </b-navbar>
+                </div>
+              </b-card-text>
             </div>
-          </b-tabs>
-        </b-card>
-      </div>
+          </b-tab>
+          <div
+            class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 acoesBtns"
+          >
+            <div class="btnsGeral">
+              <b-button variant="success" size="sm" @click="closeSale"
+                >Fechar Venda
+                <b-icon-check class="ml-1" scale="1.8"></b-icon-check
+              ></b-button>
+
+              <b-button variant="dark" size="sm" @click="editSale"
+                >Editar Venda
+                <b-icon-pencil-square class="ml-1"></b-icon-pencil-square
+              ></b-button>
+
+              <b-dropdown
+                id="dropdown-1"
+                text="NF-e / NFc-e"
+                class="m-md-2"
+                variant="info"
+                size="sm"
+                style="
+                  margin: 0px 0px 0px 0px !important;
+                  padding: 0px 0px 0px 0px !important;
+                "
+              >
+                <b-dropdown-item>Transformar pedido em NF-e</b-dropdown-item>
+                <b-dropdown-divider></b-dropdown-divider>
+                <b-dropdown-item>Transformar pedido em NFc-e</b-dropdown-item>
+              </b-dropdown>
+
+              <b-button variant="secondary" size="sm" @click="clearSale"
+                >Limpar
+                <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
+              ></b-button>
+            </div>
+          </div>
+        </b-tabs>
+      </b-card>
     </div>
     <ModalPagamento />
-  </b-collapse>
+  </div>
 </template>
 
 <script>
@@ -803,11 +776,11 @@ export default {
 
     async saveProductSale() {
       try {
+        console.log("aquiiiiiiiiiiiiiiiiii pourraaaaaaaa");
         const { data } = await api.post(
           "/products-of-sale",
           this.productsSales
         );
-        console.log(data);
         this.productsSales.id = data.id;
         if (this.dataSale.id !== "") {
           this.getProductSale();
@@ -828,6 +801,7 @@ export default {
 
     async getProductSale() {
       try {
+        console.log("merda aquiiiiiiiii");
         const { data } = await api.get(`/sales/${this.productsSales.idVenda}`);
         this.productsTable = data.products;
         return data;
@@ -969,7 +943,7 @@ export default {
 }
 
 .chkVendaOrçamento {
-  margin-top: 12px;
+  margin-top: 13px;
 }
 
 .containerGeralPedidoVenda {

@@ -1,37 +1,25 @@
 <template>
-  <div class="d-flex justify-content-around w-100">
+  <div class="d-flex justify-content-end w-100 container-geral">
     <div
-      class="d-flex flex-column align-items-center shadow container-home"
-      style=""
-      id="divContainer"
+      class="container-components mt-5"
+      id="receita"
+      role="tablist"
+      :style="{ width: width }"
     >
-      <div class="button-menu mt-5">
-        <b-button
-          class="nav-button shadow"
-          variant="light"
-          block
-          v-b-toggle.accordion-dadosCadastrais
-          >Cadastro De Produtos</b-button
-        >
-      </div>
-      <div class="button-menu">
-        <b-button
-          class="nav-button shadow"
-          variant="light"
-          block
-          v-b-toggle.accordion-search
-          >Pesquisa</b-button
-        >
-      </div>
-      <div class="button-menu">
-        <b-button class="nav-button shadow" variant="light" block href="#foo"
-          >Relação Produtos/fornecedor</b-button
-        >
-      </div>
-    </div>
-    <div class="container-components mb-3" id="receita" role="tablist">
-      <Products :readOrEditProducts = "dataProducts"/>
-      <Search @dataProducts="dataProducts = $event"/>
+      <b-card no-body>
+        <b-tabs card>
+          <b-tab title="Cadastro de produtos">
+            <b-card-text>
+              <Products :readOrEditProducts="dataProducts" />
+            </b-card-text>
+          </b-tab>
+          <b-tab title="Pesquisa">
+            <b-card-text>
+              <Search @dataProducts="dataProducts = $event" />
+            </b-card-text>
+          </b-tab>
+        </b-tabs>
+      </b-card>
     </div>
   </div>
 </template>
@@ -40,6 +28,7 @@
 <script>
 import Products from "./Products.vue";
 import Search from "./Search.vue";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -48,32 +37,24 @@ export default {
   },
   data() {
     return {
-      dataProducts:{}
+      dataProducts: {},
     };
+  },
+  computed: {
+    ...mapState({
+      width: (state) => state.widthCards,
+    }),
   },
 };
 </script>
 <style scoped>
-.container-home {
-  width: 20% !important;
-  height: 60vh;
-  margin: 1vh;
-  border-radius: 20px;
-  background-color: rgba(255, 255, 255, 0.911);
+.container-geral {
+  width: 100% !important;
+  margin-top: -20px !important;
+  margin-right: 20px !important;
 }
-.button-menu {
-  width: 90%;
-  color: #fff;
-  margin: 5px;
-  margin-bottom: 10px;
-}
-.nav-button {
-  border-radius: 10px;
-  background-color: #56aafe !important;
-  color: #fff;
-  border: none;
-}
+
 .container-components {
-  width: 73% !important;
+  transition: all 0.4s linear;
 }
 </style>

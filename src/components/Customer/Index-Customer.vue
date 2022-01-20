@@ -6,7 +6,7 @@
       role="tablist"
       :style="{ width: width }"
     >
-      <b-card no-body class="cardCliente">
+      <b-card no-body>
         <b-tabs card>
           <b-tab title="Cadastro de clientes">
             <b-card-text>

@@ -1,37 +1,25 @@
 <template>
-  <div class="d-flex justify-content-around w-100">
+  <div class="d-flex justify-content-end w-100 container-geral">
     <div
-      class="d-flex flex-column align-items-center shadow container-home"
-      style=""
-      id="divContainer"
+      class="container-components mt-5"
+      id="receita"
+      role="tablist"
+      :style="{ width: width }"
     >
-      <div class="button-menu mt-5">
-        <b-button
-          class="nav-button shadow"
-          variant="light"
-          block
-          v-b-toggle.accordion-dadosCadastrais
-          >Vendas</b-button
-        >
-      </div>
-      <div class="button-menu">
-        <b-button
-          class="nav-button shadow"
-          variant="light"
-          block
-          v-b-toggle.accordion-search
-          >Pesquisa</b-button
-        >
-      </div>
-      <div class="button-menu">
-        <b-button class="nav-button shadow" variant="light" block href="#foo"
-          >Relatórios</b-button
-        >
-      </div>
-    </div>
-    <div class="container-components mt-2" id="receita" role="tablist">
-      <Sale />
-      <Search />
+      <b-card no-body>
+        <b-tabs card>
+          <b-tab title="Pedido de venda">
+            <b-card-text>
+              <Sale />
+            </b-card-text>
+          </b-tab>
+          <b-tab title="Pesquisa">
+            <b-card-text>
+              <Search />
+            </b-card-text>
+          </b-tab>
+        </b-tabs>
+      </b-card>
     </div>
   </div>
 </template>
@@ -39,6 +27,7 @@
 <script>
 import Sale from "../Sale/Sale.vue";
 import Search from "../Sale/Search.vue";
+import { mapState } from "vuex";
 export default {
   components: {
     Sale,
@@ -47,29 +36,20 @@ export default {
   data() {
     return {};
   },
+  computed: {
+    ...mapState({
+      width: (state) => state.widthCards,
+    }),
+  },
 };
 </script>
 <style scoped>
-.container-home {
-  width: 20% !important;
-  height: 60vh;
-  margin: 1vh;
-  border-radius: 20px;
-  background-color: rgba(255, 255, 255, 0.911);
+.container-geral {
+  width: 100% !important;
+  margin-left: -20px !important;
 }
-.button-menu {
-  width: 90%;
-  color: #fff;
-  margin: 5px;
-  margin-bottom: 10px;
-}
-.nav-button {
-  border-radius: 10px;
-  background-color: #56aafe !important;
-  color: #fff;
-  border: none;
-}
+
 .container-components {
-  width: 73% !important;
+  transition: all 0.4s linear;
 }
 </style>
