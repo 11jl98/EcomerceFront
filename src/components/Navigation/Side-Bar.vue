@@ -62,7 +62,7 @@
         <li>
           <b-button to="/" :class="iconsCenter">
             <i> <b-icon-reply-all scale="1.5"></b-icon-reply-all></i>
-            <span :class="sizeText">NF-e / NFC-e</span>
+            <span :class="sizeText">NF-e / NFc-e</span>
           </b-button>
         </li>
 
@@ -86,14 +86,20 @@
             <span :class="sizeText">Configurações</span>
           </b-button>
         </li>
-
-        <li>
-          <b-button to="/" :class="iconsCenter">
-            <i> <b-icon-door-open scale="1.5"></b-icon-door-open></i>
-            <span :class="sizeText">Sair</span>
-          </b-button>
-        </li>
       </ul>
+
+      <div class="containerBtnSair">
+        <ul class="nav-links">
+          <li>
+            <b-button to="/" :class="iconsCenter">
+              <i>
+                <b-icon-door-open-fill scale="1.5"></b-icon-door-open-fill
+              ></i>
+              <span :class="btnSair">Sair</span>
+            </b-button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -110,6 +116,7 @@ export default {
       logoEmpresa: "logoEmpresa",
       nomeEmpresaText: "nomeEmpresaText",
       iconsCenter: "btnsGerais",
+      btnSair: "btnSair",
     };
   },
   methods: {
@@ -123,6 +130,7 @@ export default {
         ? "nomeEmpresaText"
         : "nomeEmpresaTextTwo";
       this.iconsCenter = this.colapse ? "btnsGerais" : "btnsGeraisTwo";
+      this.btnSair = this.colapse ? "btnSair" : "btnSairTwo";
     },
   },
   computed: {
@@ -242,6 +250,10 @@ export default {
   transition: all 0.4s ease;
 }
 
+li {
+  margin-top: 5px;
+}
+
 #logoEmpresaTwo {
   width: 70px;
   height: 70px;
@@ -257,6 +269,16 @@ export default {
 }
 
 .nomeEmpresaTextTwo {
+  font-size: 0px;
+  transition: all 0.4s ease;
+}
+
+.btnSair {
+  font-size: 23px;
+  transition: all 0.4s ease;
+}
+
+.btnSairTwo {
   font-size: 0px;
   transition: all 0.4s ease;
 }
@@ -294,5 +316,9 @@ span {
   background: #0a2558 !important;
   outline: none !important;
   border: none !important;
+}
+
+.containerBtnSair {
+  margin-top: 200px;
 }
 </style>
