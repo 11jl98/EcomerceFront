@@ -558,36 +558,88 @@
                                       v-model="dataBillBySale.data"
                                     ></b-form-input>
                                   </b-form-group>
+
+                                  <div
+                                    class="col-sm-9"
+                                    style="margin-top: 31px"
+                                  >
+                                    <table class="table table-sm">
+                                      <thead
+                                        style="
+                                          background-color: #56aafe !important;
+                                          color: white;
+                                        "
+                                      >
+                                        <tr>
+                                          <th>Data vencimento</th>
+                                          <th>Valor da parcela</th>
+                                          <th>Ações</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr
+                                          v-for="dataPayments in allPaymentsByIdSale"
+                                          :key="dataPayments.id"
+                                        >
+                                          <td>
+                                            {{ dataPayments.data | moment }}
+                                          </td>
+                                          <td>{{ dataPayments.valorTotal }}</td>
+                                          <td>
+                                            <b-button
+                                              size="sm"
+                                              variant="secondary"
+                                              v-b-popover.hover.right="{
+                                                variant: 'secondary',
+                                                content: 'Excluir',
+                                              }"
+                                              @click="
+                                                deletePaymentInstallment(
+                                                  dataPayments.id
+                                                )
+                                              "
+                                            >
+                                              <b-icon-trash
+                                                scale="0.7"
+                                              ></b-icon-trash
+                                            ></b-button>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
                                 </b-row>
                               </div>
-                              <div class="containerBotaoFinanceiro">
-                                <div>
-                                  <b-button
-                                    class="mr-4"
-                                    size="sm"
-                                    variant="info"
-                                    @click="makePaymentBySale"
-                                  >
-                                    <b-icon-cart-check
-                                      class="mr-1"
-                                    ></b-icon-cart-check
-                                    >Lançar Pagamento</b-button
-                                  >
-                                </div>
+                              <b-row class="d-flex justify-content-end mt-5">
+                                <div class="d-flex">
+                                  <div>
+                                    <b-button
+                                      class="mr-4"
+                                      size="sm"
+                                      variant="info"
+                                      @click="makingThePayment"
+                                    >
+                                      <b-icon-cart-check
+                                        class="mr-1"
+                                      ></b-icon-cart-check
+                                      >Lançar Pagamento</b-button
+                                    >
+                                  </div>
 
-                                <div>
-                                  <b-button
-                                    class="mr-4"
-                                    size="sm"
-                                    variant="secondary"
-                                    @click="proximoCardFinanceiro"
-                                  >
-                                    <b-icon-x scale="1.2" class="mr-1">
-                                    </b-icon-x
-                                    >Fechar</b-button
-                                  >
+                                  <div>
+                                    <b-button
+                                      class="mr-4"
+                                      size="sm"
+                                      variant="secondary"
+                                      @click="proximoCardFinanceiro"
+                                    >
+                                      <b-icon-x scale="1.2" class="mr-1">
+                                      </b-icon-x
+                                      >Fechar</b-button
+                                    >
+                                  </div>
                                 </div>
-                              </div>
+                              </b-row>
                             </div>
                           </b-card-text>
                         </b-card>
@@ -623,7 +675,9 @@
                   padding: 0px 0px 0px 0px !important;
                 "
               >
-                <b-dropdown-item>Transformar pedido em NF-e</b-dropdown-item>
+                <b-dropdown-item @click="getAllPaymentsByIdSale"
+                  >Transformar pedido em NF-e</b-dropdown-item
+                >
                 <b-dropdown-divider></b-dropdown-divider>
                 <b-dropdown-item>Transformar pedido em NFc-e</b-dropdown-item>
               </b-dropdown>
@@ -692,6 +746,7 @@ export default {
       totalParcelas: 1,
       intervaloDias: 0,
       allPaymentsTypes: [],
+      allPaymentsByIdSale: [],
     };
   },
   methods: {
@@ -715,13 +770,27 @@ export default {
       this.dataSale.status = "Orçamento";
       this.productsTable = [];
       this.clearDataProductsSale();
+      this.clearDataPaymentsSale();
     },
     clearDataProductsSale() {
       this.productsSelected = {};
-      this.productsSales.idFornecedor = {};
+      this.productsSales.idFornecedor = "";
       this.productsSales.quantidade = "";
       this.productsSales.valorTotal = "";
       this.productsSales.dadosAdicionais = "";
+    },
+    clearDataPaymentsSale() {
+      this.dataBillBySale.idCliente = "";
+      this.dataBillBySale.idFuncionario = "";
+      this.dataBillBySale.idFormaPagamento = "";
+      this.dataBillBySale.idVenda = "";
+      this.dataBillBySale.valorTotal = "";
+      this.dataBillBySale.valorPago = "";
+      this.dataBillBySale.valorRestante = "";
+      this.dataBillBySale.data = "";
+      this.totalParcelas = 1;
+      this.intervaloDias = 0;
+      this.allPaymentsByIdSale = [];
     },
 
     async closeSale() {
@@ -733,13 +802,6 @@ export default {
       this.dataSale.status = "Orçamento";
       this.UpdateSale();
     },
-
-    // async getProductAndEdit(idVenda) {
-    //   const { data } = await api.get(`/products-of-sale/${idVenda}`);
-    //   Object.assign(this.productsSales, data);
-    //   this.getProductById(this.productsSales.idProduto);
-    //   return data;
-    // },
 
     async deleteProductFromTableById(idVenda) {
       try {
@@ -803,7 +865,7 @@ export default {
       } catch (error) {
         console.log(error.response);
         return this.$toast.open({
-          message: `${error.response.data.erros}`,
+          message: `${error.response.data.message}`,
           type: "warning",
         });
       }
@@ -813,6 +875,16 @@ export default {
       try {
         const { data } = await api.get(`/sales/${this.productsSales.idVenda}`);
         this.productsTable = data.products;
+        return data;
+      } catch (error) {
+        console.log(error.response);
+      }
+    },
+
+    async getAllPaymentsByIdSale() {
+      try {
+        const { data } = await api.get(`/sales/${this.dataSale.id}`);
+        this.allPaymentsByIdSale = data.bills;
         return data;
       } catch (error) {
         console.log(error.response);
@@ -885,37 +957,54 @@ export default {
     async listPaymentesTypesSelectBox() {
       const { data } = await api.get("/payments/combobox");
       this.allPaymentsTypes = data;
-      console.log(this.allPaymentsTypes);
     },
 
-    async makePaymentBySale() {
+    async makingThePayment() {
       try {
-        const array = [];
-        const valoTotalPedido = this.productsTable.reduce((total, valor) => {
-          return total + valor.valorTotal;
-        }, 0);
-        const valorPorDuplicata = valoTotalPedido / this.totalParcelas;
-        for (let i = 0; i < this.totalParcelas; i++) {
-          const dataVencimento =
-            i == 0
-              ? this.dataBillBySale.data
-              : moment(dataVencimento)
-                  .add(this.intervaloDias, "days")
-                  .format("YYYY-MM-DD");
-          array.push({
-            tipo: "entrada",
-            idCliente: this.dataSale.idCliente,
-            idFuncionario: this.dataSale.idFuncionario,
-            idFormaPagamento: this.dataBillBySale.idFormaPagamento,
-            idVenda: this.dataSale.idVenda,
-            valorTotal: valorPorDuplicata,
-            valorPago: "",
-            valorRestante: "",
-            data: dataVencimento,
+        if (this.dataSale.id !== "") {
+          const array = [];
+          const valoTotalPedido = this.productsTable.reduce((total, valor) => {
+            return total + parseFloat(valor.valorTotal);
+          }, 0);
+          const valorPorDuplicata = valoTotalPedido / this.totalParcelas;
+          for (let i = 0; i < this.totalParcelas; i++) {
+            const dataVencimento =
+              i == 0
+                ? this.dataBillBySale.data
+                : moment(dataVencimento)
+                    .add(this.intervaloDias, "days")
+                    .format("YYYY-MM-DD");
+            array.push({
+              tipo: "entrada",
+              idCliente: this.dataSale.idCliente,
+              idFuncionario: this.dataSale.idFuncionario,
+              idFormaPagamento: this.dataBillBySale.idFormaPagamento,
+              idVenda: this.dataSale.id,
+              valorTotal: valorPorDuplicata,
+              valorPago: "",
+              valorRestante: "",
+              data: dataVencimento,
+            });
+            await api.post("/bills", array[i]);
+          }
+          this.getAllPaymentsByIdSale();
+          return this.$toast.open({
+            message: "Parcela adicionada na venda!",
+            type: "success",
           });
-          const { data } = await api.post("/bills", array[i]);
-          console.log(data);
         }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deletePaymentInstallment(id) {
+      try {
+        await api.delete(`/bills/${id}`);
+        this.getAllPaymentsByIdSale();
+        return this.$toast.open({
+          message: "Parcela removida da venda!",
+          type: "warning",
+        });
       } catch (error) {
         console.log(error);
       }
@@ -927,6 +1016,11 @@ export default {
     this.getProdutos();
     this.getProviders();
     this.listPaymentesTypesSelectBox();
+  },
+  filters: {
+    moment(data) {
+      return moment(data).format("DD/MM/YYYY");
+    },
   },
 };
 </script>
@@ -942,6 +1036,7 @@ export default {
   background-color: rgba(255, 255, 255, 0.788) !important;
   box-shadow: inset 0 0 1em rgb(255, 255, 255), 0 0 1em rgba(5, 5, 5, 0.068);
 }
+
 .tamanhoBotaoOpenCard {
   color: black;
   font-size: 16px;
@@ -949,6 +1044,7 @@ export default {
   display: flex;
   align-items: center;
 }
+
 .cardDadosVendasBorda {
   border-radius: 5px !important;
   margin-top: 25px !important;
@@ -1002,12 +1098,6 @@ export default {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
-
-.containerBotaoFinanceiro {
-  display: flex;
-  float: right;
-  margin-top: 25px;
 }
 
 .iconFormaPagamento {
