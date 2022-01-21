@@ -74,7 +74,7 @@
         </li>
 
         <li>
-          <b-button to="/" :class="iconsCenter">
+          <b-button to="/agenda" :class="iconsCenter">
             <i> <b-icon-pencil-fill scale="1.5"></b-icon-pencil-fill></i>
             <span :class="sizeText">Agenda</span>
           </b-button>

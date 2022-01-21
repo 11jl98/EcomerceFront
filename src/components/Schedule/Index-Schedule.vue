@@ -1,6 +1,8 @@
 <template>
   <div class="d-flex flex-column container-schedule">
-      <h2 class="mt-3 mb-5" style="color: #fff">Utilize a Agenda para eventos importantes!</h2>
+    <h2 class="mt-3 mb-5" style="color: #fff">
+      Utilize a Agenda para eventos importantes!
+    </h2>
     <Schedule />
   </div>
 </template>
