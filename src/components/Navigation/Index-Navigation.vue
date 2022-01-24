@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.$route.path != '/'">
+  <div>
     <Sidebar />
   </div>
 </template>
