@@ -71,16 +71,69 @@
               </b-form-group>
             </b-row>
 
+            <b-row class="d-flex">
+              <b-form-group
+                id="input-group-1"
+                label="Forma de pagamento"
+                label-for="input-1"
+                class="col-sm-5"
+                size="sm"
+              >
+                <b-form-select
+                  v-model="dataBillReceive.tipo"
+                  text-field="tipo"
+                  value-field="id"
+                  :options="descriptionType"
+                ></b-form-select>
+              </b-form-group>
+
+              <b-form-group
+                id="input-group-1"
+                label="Vl. Parcela"
+                label-for="input-1"
+                class="col-sm-4"
+                size="sm"
+              >
+                <b-form-input
+                  v-model="comissao"
+                  placeholder="VL. Parcela"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group
+                id="input-group-1"
+                label="Vl. Total"
+                label-for="input-1"
+                class="col-sm-3"
+                size="sm"
+              >
+                <b-form-input
+                  v-model="comissao"
+                  placeholder="VL. Parcela"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group
+                id="input-group-1"
+                label="Vl. Restante"
+                label-for="input-1"
+                class="col-sm-3"
+                size="sm"
+              >
+                <b-form-input
+                  v-model="comissao"
+                  placeholder="VL. Restante"
+                ></b-form-input>
+              </b-form-group>
+            </b-row>
+
             <div class="mt-5">
               <div class="d-flex justify-content-end">
                 <div>
                   <b-button
                     class="mr-4"
                     size="sm"
-                    style="
-                      border: none !important;
-                      background-color: #56aafe !important;
-                    "
+                    style="border: none; background-color: #56aafe !important"
                     >Salvar
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>
