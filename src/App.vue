@@ -39,7 +39,7 @@ export default {
 }
 
 body {
-  background: #071c44 !important;
+  background: #6a88bd !important;
 
   margin: 0;
   padding: 0;

@@ -67,7 +67,7 @@
         </li>
 
         <li>
-          <b-button to="/" :class="iconsCenter">
+          <b-button to="/Financeiro" :class="iconsCenter">
             <i> <b-icon-journals scale="1.5"></b-icon-journals></i>
             <span :class="sizeText">Financeiro</span>
           </b-button>
@@ -158,7 +158,8 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Poppins:500,500,500");
 
 .sidebar {
-  position: fixed;
+  position: fixed !important;
+  z-index: 1;
   height: 100%;
   width: 270px;
   background: #0a2558;
@@ -168,7 +169,8 @@ export default {
 }
 
 .disable {
-  position: fixed;
+  position: fixed !important;
+  z-index: 1;
   height: 100%;
   width: 80px;
   background: #0a2558;
