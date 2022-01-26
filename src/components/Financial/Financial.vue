@@ -61,8 +61,12 @@
               <b-tabs card>
                 <b-tab title="Cadastro de contas a receber / Pagar">
                   <div class="dadosContasReceberPagar">
-                    <div class="cardReceberPagar"><CadastroReceberPagar /></div>
-                    <div class="cardReceberPagar"></div>
+                    <div class="cardReceber">
+                      <CadastroContasReceber />
+                    </div>
+                    <div class="cardPagar">
+                      <CadastroContasPagar />
+                    </div>
                   </div>
                 </b-tab>
                 <b-tab title="Relatórios"> </b-tab>
@@ -78,10 +82,13 @@
 
 
 <script>
-import CadastroReceberPagar from "./Cadastro-Contas-Receber.vue";
+import CadastroContasReceber from "./Cadastro-Contas-Receber.vue";
+import CadastroContasPagar from "./Cadastro-Contas-Pagar.vue";
+
 export default {
   components: {
-    CadastroReceberPagar,
+    CadastroContasReceber,
+    CadastroContasPagar,
   },
 };
 </script>
@@ -111,6 +118,16 @@ export default {
 
 .dadosContasReceberPagar {
   width: 100% !important;
+  display: flex;
+}
+
+.cardReceber {
+  width: 50% !important;
+}
+
+.cardPagar {
+  width: 50% !important;
+  margin-left: 15px;
 }
 
 .titulo h3 {

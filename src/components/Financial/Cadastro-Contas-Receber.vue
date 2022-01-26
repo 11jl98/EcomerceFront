@@ -1,7 +1,7 @@
 <template>
   <b-navbar toggleable class="cardDadosContasReceber">
     <b-navbar-toggle
-      target="navbar-toggle-collapse"
+      target="navbar-toggle-collapseReceber"
       id="dadosContasStyle"
       class="tamanhoCardsContasReceber"
     >
@@ -16,7 +16,7 @@
       </template>
     </b-navbar-toggle>
 
-    <b-collapse id="navbar-toggle-collapse" is-nav>
+    <b-collapse id="navbar-toggle-collapseReceber" is-nav>
       <b-navbar-nav class="ml-auto">
         <b-card
           class="
@@ -180,7 +180,7 @@ export default {
 .tamanhoCardsContasReceber {
   width: 100% !important;
   display: flex;
-  background-color: #6a88bd !important;
+  background-color: rgb(17, 80, 17) !important;
   box-shadow: 2px 2px 4px 0px black !important ;
 }
 
@@ -195,13 +195,13 @@ export default {
 .cardDadosContasBorda {
   margin-top: 25px !important;
   margin-bottom: 20px;
-  background-color: #6a88bd !important;
+  background-color: rgb(17, 80, 17) !important;
   color: white;
   border: none !important;
 }
 
 .cardDadosContasReceber {
-  width: 50% !important;
+  width: 100% !important;
   background-color: #ffffff !important;
   box-shadow: 2px 2px 4px 0px rgb(17, 1, 1) !important ;
   border-radius: 5px;
