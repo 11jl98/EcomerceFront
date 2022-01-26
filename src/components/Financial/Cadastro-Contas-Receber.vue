@@ -1,9 +1,9 @@
 <template>
-  <b-navbar toggleable class="cardDadosContasReceberPagar">
+  <b-navbar toggleable class="cardDadosContasReceber">
     <b-navbar-toggle
       target="navbar-toggle-collapse"
       id="dadosContasStyle"
-      class="tamanhoCardsContasReceberPagar"
+      class="tamanhoCardsContasReceber"
     >
       <template #default="{ expanded }">
         <div class="tamanhoBotaoOpenCardContas">
@@ -33,7 +33,7 @@
                 id="input-group-1"
                 label="Tipo"
                 label-for="input-1"
-                class="col-sm-3"
+                class="col-sm-12 col-md-12 col-lg-5 col-xl-4"
                 size="sm"
               >
                 <b-form-select
@@ -48,7 +48,7 @@
                 id="input-group-1"
                 label="Cliente"
                 label-for="input-1"
-                class="col-sm-5"
+                class="col-sm-12 col-md-12 col-lg-7 col-xl-7"
                 size="sm"
               >
                 <b-form-select
@@ -61,7 +61,7 @@
                 id="input-group-1"
                 label="Funcionario"
                 label-for="input-1"
-                class="col-sm-4"
+                class="col-sm-12 col-md-12 col-lg-12 col-xl-6"
                 size="sm"
               >
                 <b-form-select
@@ -69,14 +69,12 @@
                   :options="options"
                 ></b-form-select>
               </b-form-group>
-            </b-row>
 
-            <b-row class="d-flex">
               <b-form-group
                 id="input-group-1"
                 label="Forma de pagamento"
                 label-for="input-1"
-                class="col-sm-5"
+                class="col-sm-12 col-md-12 col-lg-7 col-xl-6"
                 size="sm"
               >
                 <b-form-select
@@ -91,39 +89,30 @@
                 id="input-group-1"
                 label="Vl. Parcela"
                 label-for="input-1"
-                class="col-sm-4"
+                class="col-sm-12 col-md-6 col-lg-5 col-xl-4"
                 size="sm"
               >
-                <b-form-input
-                  v-model="comissao"
-                  placeholder="VL. Parcela"
-                ></b-form-input>
+                <b-form-input></b-form-input>
               </b-form-group>
 
               <b-form-group
                 id="input-group-1"
                 label="Vl. Total"
                 label-for="input-1"
-                class="col-sm-3"
+                class="col-sm-12 col-md-6 col-lg-6 col-xl-4"
                 size="sm"
               >
-                <b-form-input
-                  v-model="comissao"
-                  placeholder="VL. Parcela"
-                ></b-form-input>
+                <b-form-input></b-form-input>
               </b-form-group>
 
               <b-form-group
                 id="input-group-1"
-                label="Vl. Restante"
+                label="VL. Restante"
                 label-for="input-1"
-                class="col-sm-3"
+                class="col-sm-12 col-md-6 col-lg-6 col-xl-4"
                 size="sm"
               >
-                <b-form-input
-                  v-model="comissao"
-                  placeholder="VL. Restante"
-                ></b-form-input>
+                <b-form-input></b-form-input>
               </b-form-group>
             </b-row>
 
@@ -140,7 +129,7 @@
 
                   <b-button class="mr-4" size="sm" variant="secondary">
                     <b-icon-caret-down-fill></b-icon-caret-down-fill
-                    >Próximo</b-button
+                    >Relatórios</b-button
                   >
                 </div>
               </div>
@@ -183,16 +172,16 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #dadosContasStyle {
   border: none !important;
 }
 
-.tamanhoCardsContasReceberPagar {
+.tamanhoCardsContasReceber {
   width: 100% !important;
   display: flex;
   background-color: #6a88bd !important;
-  box-shadow: 2px 2px 4px 0px black;
+  box-shadow: 2px 2px 4px 0px black !important ;
 }
 
 .tamanhoBotaoOpenCardContas {
@@ -204,15 +193,17 @@ export default {
 }
 
 .cardDadosContasBorda {
-  border-radius: 5px !important;
   margin-top: 25px !important;
   margin-bottom: 20px;
   background-color: #6a88bd !important;
   color: white;
-  box-shadow: 2px 2px 4px 0px black;
+  border: none !important;
 }
 
-.cardDadosContasReceberPagar {
-  width: 50%;
+.cardDadosContasReceber {
+  width: 50% !important;
+  background-color: #ffffff !important;
+  box-shadow: 2px 2px 4px 0px rgb(17, 1, 1) !important ;
+  border-radius: 5px;
 }
 </style>

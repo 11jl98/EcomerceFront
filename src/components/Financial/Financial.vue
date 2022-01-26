@@ -8,41 +8,41 @@
           </div>
           <div class="containerCards">
             <div class="cardsFinancas col-sm-12 col-md-12 col-lg-12 col-xl-12">
-              <div class="col-sm-2">
+              <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
                 <b-card
                   text-variant="dark"
                   sub-title="LUCRO (MENSAIS)"
-                  class="cardsLm"
+                  class="cardsLm p-2 mt-2"
                 >
                   <b-card-text class="cardText"> R$2.000,00 </b-card-text>
                 </b-card>
               </div>
 
-              <div class="col-sm-2">
+              <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
                 <b-card
                   text-variant="dark"
                   sub-title="LUCRO (ANUAL)"
-                  class="cardsLa"
+                  class="cardsLa p-2 mt-2"
                 >
                   <b-card-text class="cardText"> R$2.000,00 </b-card-text>
                 </b-card>
               </div>
 
-              <div class="col-sm-2">
+              <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
                 <b-card
                   text-variant="dark"
                   sub-title="RECEBER (MENSAIS)"
-                  class="cardsRb"
+                  class="cardsRm p-2 mt-2"
                 >
                   <b-card-text class="cardText"> R$2.000,00 </b-card-text>
                 </b-card>
               </div>
 
-              <div class="col-sm-2">
+              <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
                 <b-card
                   text-variant="dark"
                   sub-title="VENCER (MENSAIS)"
-                  class="cardsVc"
+                  class="cardsVm p-2 mt-2"
                 >
                   <b-card-text class="cardText"> R$2.000,00 </b-card-text>
                 </b-card>
@@ -60,7 +60,10 @@
             <b-card no-body class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
               <b-tabs card>
                 <b-tab title="Cadastro de contas a receber / Pagar">
-                  <div class="cardReceberPagar"><CadastroReceberPagar /></div>
+                  <div class="dadosContasReceberPagar">
+                    <div class="cardReceberPagar"><CadastroReceberPagar /></div>
+                    <div class="cardReceberPagar"></div>
+                  </div>
                 </b-tab>
                 <b-tab title="Relatórios"> </b-tab>
               </b-tabs>
@@ -75,7 +78,7 @@
 
 
 <script>
-import CadastroReceberPagar from "../Financial/Cadastro-Receber-Pagar.vue";
+import CadastroReceberPagar from "./Cadastro-Contas-Receber.vue";
 export default {
   components: {
     CadastroReceberPagar,
@@ -106,6 +109,10 @@ export default {
   width: 100%;
 }
 
+.dadosContasReceberPagar {
+  width: 100% !important;
+}
+
 .titulo h3 {
   margin-left: 35px;
 }
@@ -117,7 +124,7 @@ export default {
 }
 
 .cardReceberPagar {
-  height: 300px !important;
+  height: auto !important;
 }
 
 .cardsLm {
@@ -129,17 +136,16 @@ export default {
 .cardsLa {
   background-color: white !important;
   border-left: 0.3rem solid #2b51a1 !important;
-
   border-radius: 0.5em !important;
 }
 
-.cardsRb {
+.cardsRm {
   background-color: white !important;
   border-left: 0.3rem solid #1cc88a !important;
   border-radius: 0.5em !important;
 }
 
-.cardsVc {
+.cardsVm {
   background-color: white !important;
   border-left: 0.3rem solid #df1818 !important;
   border-radius: 0.5em !important;
@@ -153,8 +159,7 @@ export default {
   justify-content: space-between;
 }
 
-.containerFinanceiro {
-  justify-content: end !important;
+#containerFinanceiro {
 }
 
 #containerContas {
