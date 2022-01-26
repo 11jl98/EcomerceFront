@@ -72,7 +72,8 @@
                               v-else
                               icon="plus-square-fill"
                               variant="info"
-                            ></b-icon>
+                            >
+                            </b-icon>
                           </div>
                           <div style="margin-left: 10px">
                             Dados do Cliente / Funcionario
@@ -357,7 +358,7 @@
                                           <!-- <b-button
                                 size="sm"
                                 class="mr-2"
-                                variant="info"
+                                
                                 v-b-popover.hover.left="{
                                   variant: 'info',
                                   content: 'Editar',
@@ -492,7 +493,7 @@
                                         <b-icon-plus-square-fill
                                           scale="1.5"
                                           size="sm"
-                                          variant="primary"
+                                          variant="info"
                                         ></b-icon-plus-square-fill>
                                       </div>
                                     </div>
@@ -1035,6 +1036,7 @@ export default {
   border-radius: 5px !important;
   background-color: rgba(255, 255, 255, 0.788) !important;
   box-shadow: inset 0 0 1em rgb(255, 255, 255), 0 0 1em rgba(5, 5, 5, 0.068);
+  box-shadow: 2px 2px 4px 0px rgb(17, 1, 1) !important ;
 }
 
 .tamanhoBotaoOpenCard {
@@ -1043,17 +1045,22 @@ export default {
   height: 30px;
   display: flex;
   align-items: center;
+  /* color: white; */
 }
 
 .cardDadosVendasBorda {
   border-radius: 5px !important;
   margin-top: 25px !important;
   margin-bottom: 20px;
+  /* background-color: #6a88bd !important; */
+  /* color: white; */
 }
 
 .tamanhoCards {
   width: 100%;
   display: flex;
+  /* background-color: #6a88bd !important; */
+  /* box-shadow: 2px 2px 4px 0px black !important ; */
 }
 
 .cardDadosVendas {
