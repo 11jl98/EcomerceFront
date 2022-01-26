@@ -46,7 +46,7 @@
 
               <b-form-group
                 id="input-group-1"
-                label="Cliente"
+                label="Fornecedor"
                 label-for="input-1"
                 class="col-sm-12 col-md-12 col-lg-7 col-xl-7"
                 size="sm"

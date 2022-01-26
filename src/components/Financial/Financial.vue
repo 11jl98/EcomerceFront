@@ -12,29 +12,19 @@
                 <b-card
                   text-variant="dark"
                   sub-title="LUCRO (MENSAIS)"
-                  class="cardsLm p-2 mt-2"
+                  class="cardsLm p-2 mt-2 heightCards"
                 >
-                  <b-card-text class="cardText"> R$2.000,00 </b-card-text>
-                </b-card>
-              </div>
-
-              <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
-                <b-card
-                  text-variant="dark"
-                  sub-title="LUCRO (ANUAL)"
-                  class="cardsLa p-2 mt-2"
-                >
-                  <b-card-text class="cardText"> R$2.000,00 </b-card-text>
-                </b-card>
-              </div>
-
-              <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
-                <b-card
-                  text-variant="dark"
-                  sub-title="RECEBER (MENSAIS)"
-                  class="cardsRm p-2 mt-2"
-                >
-                  <b-card-text class="cardText"> R$2.000,00 </b-card-text>
+                  <div class="containerIcons">
+                    <div>
+                      <b-card-text> R$2.000,00</b-card-text>
+                    </div>
+                    <div>
+                      <b-icon-graph-up
+                        class="ml-5"
+                        scale="1.5"
+                      ></b-icon-graph-up>
+                    </div>
+                  </div>
                 </b-card>
               </div>
 
@@ -42,9 +32,55 @@
                 <b-card
                   text-variant="dark"
                   sub-title="VENCER (MENSAIS)"
-                  class="cardsVm p-2 mt-2"
+                  class="cardsLa p-2 mt-2 heightCards"
                 >
-                  <b-card-text class="cardText"> R$2.000,00 </b-card-text>
+                  <div class="containerIcons">
+                    <div>
+                      <b-card-text> R$2.000,00 </b-card-text>
+                    </div>
+                    <div>
+                      <b-icon-graph-down scale="1.5"></b-icon-graph-down>
+                    </div>
+                  </div>
+                  <div>
+                    <b-card-text> Quantidade: 25</b-card-text>
+                  </div>
+                </b-card>
+              </div>
+
+              <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
+                <b-card
+                  text-variant="dark"
+                  sub-title="RECEBER (MENSAIS)"
+                  class="cardsRm p-2 mt-2 heightCards"
+                >
+                  <div class="containerIcons">
+                    <div>
+                      <b-card-text> R$2.000,00 </b-card-text>
+                    </div>
+
+                    <div>
+                      <b-icon-graph-down scale="1.5"></b-icon-graph-down>
+                    </div>
+                  </div>
+                </b-card>
+              </div>
+
+              <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
+                <b-card
+                  text-variant="dark"
+                  sub-title="PAGAR (MENSAIS)"
+                  class="cardsVm p-2 mt-2 heightCards"
+                >
+                  <div class="containerIcons">
+                    <div>
+                      <b-card-text> R$2.000,00 </b-card-text>
+                    </div>
+
+                    <div>
+                      <b-icon-graph-down scale="1.5"></b-icon-graph-down>
+                    </div>
+                  </div>
                 </b-card>
               </div>
             </div>
@@ -116,9 +152,19 @@ export default {
   width: 100%;
 }
 
+.heightCards {
+  height: 110px;
+}
+
 .dadosContasReceberPagar {
   width: 100% !important;
   display: flex;
+}
+
+.containerIcons {
+  display: flex !important;
+  width: 100% !important;
+  justify-content: space-between;
 }
 
 .cardReceber {
