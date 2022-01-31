@@ -37,10 +37,9 @@
                 size="sm"
               >
                 <b-form-select
-                  v-model="dataBillReceive.tipo"
+                  :options="listTypesMovement"
                   text-field="tipo"
                   value-field="id"
-                  :options="descriptionType"
                 ></b-form-select>
               </b-form-group>
 
@@ -52,8 +51,9 @@
                 size="sm"
               >
                 <b-form-select
-                  v-model="selected"
-                  :options="options"
+                  :options="listCustomersSelectBox"
+                  text-field="nome"
+                  value-field="id"
                 ></b-form-select>
               </b-form-group>
 
@@ -64,24 +64,35 @@
                 class="col-sm-12 col-md-12 col-lg-12 col-xl-6"
                 size="sm"
               >
-                <b-form-select
-                  v-model="selected"
-                  :options="options"
-                ></b-form-select>
+                <b-form-select></b-form-select>
               </b-form-group>
 
               <b-form-group
                 id="input-group-1"
-                label="Forma de pagamento"
                 label-for="input-1"
                 class="col-sm-12 col-md-12 col-lg-7 col-xl-6"
                 size="sm"
               >
+                <div class="iconFormaPagamento">
+                  <div>
+                    <label for="input-1">Forma de pagamento</label>
+                  </div>
+
+                  <div
+                    class="btnFormaPagamento mr-1"
+                    @click="openModalFormaPagamento"
+                  >
+                    <b-icon-plus-square-fill
+                      scale="1.5"
+                      size="sm"
+                    ></b-icon-plus-square-fill>
+                  </div>
+                </div>
+
                 <b-form-select
-                  v-model="dataBillReceive.tipo"
-                  text-field="tipo"
+                  :options="listTypesPaymentsSelectBox"
                   value-field="id"
-                  :options="descriptionType"
+                  text-field="tipo"
                 ></b-form-select>
               </b-form-group>
 
@@ -134,6 +145,7 @@
                 </div>
               </div>
             </div>
+            <FormaPagamento />
           </div>
         </b-card>
       </b-navbar-nav>
@@ -143,7 +155,11 @@
 
 <script>
 import api from "../../services/axios";
+import FormaPagamento from "../Sale/Modal-Forma-Pagamento.vue";
 export default {
+  components: {
+    FormaPagamento,
+  },
   data() {
     return {
       dataBillReceive: {
@@ -160,14 +176,46 @@ export default {
         dataPagamento: null,
         descricao: "",
       },
-      descriptionType: [{ tipo: "entrada", value: "id" }],
+      listTypesPaymentsSelectBox: [],
+      listTypesMovement: [
+        { tipo: "entrada", value: "id" },
+        { tipo: "saida", value: "id" },
+      ],
+      listCustomersSelectBox: [],
+      listarFuncionarioSelectBox: [],
+      listarFormaPagamentoSelectBox: [],
     };
   },
   methods: {
+    openModalFormaPagamento() {
+      this.$bvModal.show("modalFormaPagamento");
+    },
     async saveBill() {
       const { data } = await api.post("");
       console.log(data);
     },
+    async listCustomersForSelectBox() {
+      try {
+        const { data } = await api.get("/customers/combobox");
+        this.listCustomersSelectBox = data.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getTypesPaymentsSelectBox() {
+      try {
+        const { data } = await api.get("/payments/combobox");
+        this.listTypesPaymentsSelectBox = data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+
+  mounted() {
+    this.listCustomersForSelectBox();
+    this.getTypesPaymentsSelectBox();
   },
 };
 </script>
@@ -177,10 +225,19 @@ export default {
   border: none !important;
 }
 
+.iconFormaPagamento {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btnFormaPagamento {
+  cursor: pointer;
+}
+
 .tamanhoCardsContasReceber {
   width: 100% !important;
   display: flex;
-  background-color: rgb(17, 80, 17) !important;
+  background-color: rgba(0, 179, 0, 0.76) !important;
   box-shadow: 2px 2px 4px 0px black !important ;
 }
 
@@ -195,7 +252,7 @@ export default {
 .cardDadosContasBorda {
   margin-top: 25px !important;
   margin-bottom: 20px;
-  background-color: rgb(17, 80, 17) !important;
+  background-color: rgba(0, 179, 0, 0.76) !important;
   color: white;
   border: none !important;
 }

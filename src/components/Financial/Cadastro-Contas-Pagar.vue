@@ -37,10 +37,9 @@
                 size="sm"
               >
                 <b-form-select
-                  v-model="dataBillReceive.tipo"
+                  v-model="dataBillPayable.tipo"
                   text-field="tipo"
                   value-field="id"
-                  :options="descriptionType"
                 ></b-form-select>
               </b-form-group>
 
@@ -51,10 +50,7 @@
                 class="col-sm-12 col-md-12 col-lg-7 col-xl-7"
                 size="sm"
               >
-                <b-form-select
-                  v-model="selected"
-                  :options="options"
-                ></b-form-select>
+                <b-form-select></b-form-select>
               </b-form-group>
 
               <b-form-group
@@ -64,10 +60,7 @@
                 class="col-sm-12 col-md-12 col-lg-12 col-xl-6"
                 size="sm"
               >
-                <b-form-select
-                  v-model="selected"
-                  :options="options"
-                ></b-form-select>
+                <b-form-select></b-form-select>
               </b-form-group>
 
               <b-form-group
@@ -78,10 +71,9 @@
                 size="sm"
               >
                 <b-form-select
-                  v-model="dataBillReceive.tipo"
+                  v-model="dataBillPayable.tipo"
                   text-field="tipo"
                   value-field="id"
-                  :options="descriptionType"
                 ></b-form-select>
               </b-form-group>
 
@@ -146,7 +138,7 @@ import api from "../../services/axios";
 export default {
   data() {
     return {
-      dataBillReceive: {
+      dataBillPayable: {
         id: "",
         tipo: "",
         idCliente: "",
@@ -160,7 +152,10 @@ export default {
         dataPagamento: null,
         descricao: "",
       },
-      descriptionType: [{ tipo: "entrada", value: "id" }],
+      listarTipoSelectBox: [],
+      listarClienteSelectBox: [],
+      listarFuncionarioSelectBox: [],
+      listarFormaPagamentoSelectBox: [],
     };
   },
   methods: {
@@ -177,10 +172,11 @@ export default {
   border: none !important;
 }
 
+
 .tamanhoCardsContasPagar {
   width: 100% !important;
   display: flex;
-  background-color: #6d0c0c !important;
+  background-color: #ff1414 !important;
   box-shadow: 2px 2px 4px 0px black !important ;
 }
 
@@ -195,7 +191,7 @@ export default {
 .cardDadosContasPagarBorda {
   margin-top: 25px !important;
   margin-bottom: 20px;
-  background-color: #6d0c0c !important;
+  background-color: #ff1414 !important;
   color: white;
   border: none !important;
 }
