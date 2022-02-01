@@ -106,6 +106,8 @@
                   </div>
                 </b-tab>
                 <b-tab title="Relatórios"> </b-tab>
+                <b-tab title="Pesquisa"> </b-tab>
+                <b-tab title="Realizar baixas"> </b-tab>
               </b-tabs>
             </b-card>
           </div>

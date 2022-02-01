@@ -172,7 +172,6 @@ export default {
   border: none !important;
 }
 
-
 .tamanhoCardsContasPagar {
   width: 100% !important;
   display: flex;

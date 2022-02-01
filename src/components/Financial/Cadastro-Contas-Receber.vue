@@ -27,7 +27,11 @@
         >
           <div class="mt-4">
             <b-row class="d-flex">
-              <b-form-input hidden class="col-sm-1"></b-form-input>
+              <b-form-input
+                hidden
+                class="col-sm-1"
+                v-model="dataBillReceive.id"
+              ></b-form-input>
 
               <b-form-group
                 id="input-group-1"
@@ -39,7 +43,8 @@
                 <b-form-select
                   :options="listTypesMovement"
                   text-field="tipo"
-                  value-field="id"
+                  value-field="tipo"
+                  v-model="dataBillReceive.tipo"
                 ></b-form-select>
               </b-form-group>
 
@@ -54,6 +59,7 @@
                   :options="listCustomersSelectBox"
                   text-field="nome"
                   value-field="id"
+                  v-model="dataBillReceive.idCliente"
                 ></b-form-select>
               </b-form-group>
 
@@ -64,7 +70,12 @@
                 class="col-sm-12 col-md-12 col-lg-12 col-xl-6"
                 size="sm"
               >
-                <b-form-select></b-form-select>
+                <b-form-select
+                  :options="listEmployeeSelectBox"
+                  text-field="nomeFuncionario"
+                  value-field="id"
+                  v-model="dataBillReceive.idFuncionario"
+                ></b-form-select>
               </b-form-group>
 
               <b-form-group
@@ -93,17 +104,20 @@
                   :options="listTypesPaymentsSelectBox"
                   value-field="id"
                   text-field="tipo"
+                  v-model="dataBillReceive.idFormaPagamento"
                 ></b-form-select>
               </b-form-group>
 
               <b-form-group
                 id="input-group-1"
-                label="Vl. Parcela"
+                label="Vl. Pago"
                 label-for="input-1"
                 class="col-sm-12 col-md-6 col-lg-5 col-xl-4"
                 size="sm"
               >
-                <b-form-input></b-form-input>
+                <b-form-input
+                  v-model="dataBillReceive.valorPago"
+                ></b-form-input>
               </b-form-group>
 
               <b-form-group
@@ -113,7 +127,9 @@
                 class="col-sm-12 col-md-6 col-lg-6 col-xl-4"
                 size="sm"
               >
-                <b-form-input></b-form-input>
+                <b-form-input
+                  v-model="dataBillReceive.valorTotal"
+                ></b-form-input>
               </b-form-group>
 
               <b-form-group
@@ -123,7 +139,50 @@
                 class="col-sm-12 col-md-6 col-lg-6 col-xl-4"
                 size="sm"
               >
-                <b-form-input></b-form-input>
+                <b-form-input
+                  v-model="dataBillReceive.valorRestante"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group
+                id="input-group-1"
+                label="Data vencimento"
+                label-for="input-1"
+                class="col-sm-6"
+                size="sm"
+              >
+                <b-form-input
+                  type="date"
+                  v-model="dataBillReceive.data"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group
+                id="input-group-1"
+                label="Data Pagamento"
+                label-for="input-1"
+                class="col-sm-6"
+                size="sm"
+              >
+                <b-form-input
+                  type="date"
+                  v-model="dataBillReceive.dataPagamento"
+                  disabled
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group
+                id="input-group-1"
+                label="Descrição"
+                label-for="input-1"
+                class="col-sm-12"
+              >
+                <b-form-textarea
+                  id="textarea"
+                  rows="5"
+                  max-rows="6"
+                  v-model="dataBillReceive.descricao"
+                ></b-form-textarea>
               </b-form-group>
             </b-row>
 
@@ -134,14 +193,19 @@
                     class="mr-4"
                     size="sm"
                     style="border: none; background-color: #56aafe !important"
+                    @click="saveAndUpdateBill"
                     >Salvar
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>
 
-                  <b-button class="mr-4" size="sm" variant="secondary">
-                    <b-icon-caret-down-fill></b-icon-caret-down-fill
-                    >Relatórios</b-button
-                  >
+                  <b-button
+                    class="mr-4"
+                    size="sm"
+                    style="border: none"
+                    @click="clearBill"
+                    >Limpar
+                    <b-icon-person-check class="ml-1"></b-icon-person-check
+                  ></b-button>
                 </div>
               </div>
             </div>
@@ -169,38 +233,80 @@ export default {
         idFuncionario: "",
         idFormaPagamento: "",
         idVenda: "",
-        valorTotal: 0,
-        valorPago: 0,
-        valorRestante: 0,
+        valorTotal: "0.00",
+        valorPago: "0.00",
+        valorRestante: "0.00",
         data: "",
         dataPagamento: null,
         descricao: "",
       },
       listTypesPaymentsSelectBox: [],
-      listTypesMovement: [
-        { tipo: "entrada", value: "id" },
-        { tipo: "saida", value: "id" },
-      ],
+      listTypesMovement: [{ tipo: "entrada" }, { tipo: "saida" }],
       listCustomersSelectBox: [],
-      listarFuncionarioSelectBox: [],
-      listarFormaPagamentoSelectBox: [],
+      listEmployeeSelectBox: [],
     };
   },
   methods: {
     openModalFormaPagamento() {
       this.$bvModal.show("modalFormaPagamento");
     },
-    async saveBill() {
-      const { data } = await api.post("");
-      console.log(data);
+
+    clearBill() {
+      this.dataBillReceive = {
+        id: "",
+        tipo: "",
+        idCliente: "",
+        idFuncionario: "",
+        idFormaPagamento: "",
+        idVenda: "",
+        valorTotal: "0.00",
+        valorPago: "0.00",
+        valorRestante: "0.00",
+        data: "",
+        dataPagamento: null,
+        descricao: "",
+      };
     },
-    async listCustomersForSelectBox() {
+
+    saveAndUpdateBill() {
+      console.log(this.dataBillReceive.id);
+      this.dataBillReceive.id !== "" ? this.updateBill() : this.saveBill();
+    },
+
+    async saveBill() {
+      try {
+        const { data } = await api.post("/bills", this.dataBillReceive);
+        this.dataBillReceive.id = data.id;
+        console.log(data);
+      } catch (error) {
+        console.log(error.response);
+      }
+    },
+
+    async updateBill() {
+      try {
+        const { data } = await api.put(
+          `/bills/${this.dataBillReceive.id}`,
+          this.dataBillReceive
+        );
+        console.log(data, "Dados atualizados com sucesso");
+      } catch (error) {
+        console.log(error.response);
+      }
+    },
+
+    async getCustomersForSelectBox() {
       try {
         const { data } = await api.get("/customers/combobox");
         this.listCustomersSelectBox = data.data;
       } catch (error) {
         console.log(error);
       }
+    },
+
+    async getEmployeesForSelectBox() {
+      const { data } = await api.get("/employees/combobox/fill");
+      this.listEmployeeSelectBox = data.data;
     },
 
     async getTypesPaymentsSelectBox() {
@@ -214,8 +320,9 @@ export default {
   },
 
   mounted() {
-    this.listCustomersForSelectBox();
+    this.getCustomersForSelectBox();
     this.getTypesPaymentsSelectBox();
+    this.getEmployeesForSelectBox();
   },
 };
 </script>
