@@ -35,17 +35,15 @@
 
               <b-form-group
                 id="input-group-1"
-                label="Tipo"
+                label="Vl. Pago"
                 label-for="input-1"
-                class="col-sm-12 col-md-12 col-lg-5 col-xl-4"
+                class="col-sm-12 col-md-6 col-lg-5 col-xl-3"
                 size="sm"
               >
-                <b-form-select
-                  :options="listTypesMovement"
-                  text-field="tipo"
-                  value-field="tipo"
+                <b-form-input
+                  disabled
                   v-model="dataBillReceive.tipo"
-                ></b-form-select>
+                ></b-form-input>
               </b-form-group>
 
               <b-form-group
@@ -228,7 +226,7 @@ export default {
     return {
       dataBillReceive: {
         id: "",
-        tipo: "",
+        tipo: "entrada",
         idCliente: "",
         idFuncionario: "",
         idFormaPagamento: "",
@@ -241,7 +239,6 @@ export default {
         descricao: "",
       },
       listTypesPaymentsSelectBox: [],
-      listTypesMovement: [{ tipo: "entrada" }, { tipo: "saida" }],
       listCustomersSelectBox: [],
       listEmployeeSelectBox: [],
     };
