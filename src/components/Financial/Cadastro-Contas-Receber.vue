@@ -35,7 +35,7 @@
 
               <b-form-group
                 id="input-group-1"
-                label="Vl. Pago"
+                label="Tipo"
                 label-for="input-1"
                 class="col-sm-12 col-md-6 col-lg-5 col-xl-3"
                 size="sm"
@@ -82,13 +82,13 @@
                 class="col-sm-12 col-md-12 col-lg-7 col-xl-6"
                 size="sm"
               >
-                <div class="iconFormaPagamento">
+                <div class="iconFormaPagamentoReceber">
                   <div>
                     <label for="input-1">Forma de pagamento</label>
                   </div>
 
                   <div
-                    class="btnFormaPagamento mr-1"
+                    class="btnFormaPagamentoReceber mr-1"
                     @click="openModalFormaPagamento"
                   >
                     <b-icon-plus-square-fill
@@ -196,11 +196,7 @@
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>
 
-                  <b-button
-                    class="mr-4"
-                    size="sm"
-                    style="border: none"
-                    @click="clearBill"
+                  <b-button class="mr-4" size="sm" style="border: none"
                     >Limpar
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>
@@ -248,7 +244,7 @@ export default {
       this.$bvModal.show("modalFormaPagamento");
     },
 
-    clearBill() {
+    Bill() {
       this.dataBillReceive = {
         id: "",
         tipo: "",
@@ -329,12 +325,12 @@ export default {
   border: none !important;
 }
 
-.iconFormaPagamento {
+.iconFormaPagamentoReceber {
   display: flex;
   justify-content: space-between;
 }
 
-.btnFormaPagamento {
+.btnFormaPagamentoReceber {
   cursor: pointer;
 }
 

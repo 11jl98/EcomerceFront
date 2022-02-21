@@ -33,14 +33,13 @@
                 id="input-group-1"
                 label="Tipo"
                 label-for="input-1"
-                class="col-sm-12 col-md-12 col-lg-5 col-xl-4"
+                class="col-sm-12 col-md-6 col-lg-5 col-xl-3"
                 size="sm"
               >
-                <b-form-select
+                <b-form-input
+                  disabled
                   v-model="dataBillPayable.tipo"
-                  text-field="tipo"
-                  value-field="id"
-                ></b-form-select>
+                ></b-form-input>
               </b-form-group>
 
               <b-form-group
@@ -49,6 +48,7 @@
                 label-for="input-1"
                 class="col-sm-12 col-md-12 col-lg-7 col-xl-7"
                 size="sm"
+                v-model="dataBillPayable.idFornecedor"
               >
                 <b-form-select></b-form-select>
               </b-form-group>
@@ -59,32 +59,50 @@
                 label-for="input-1"
                 class="col-sm-12 col-md-12 col-lg-12 col-xl-6"
                 size="sm"
+                v-model="dataBillPayable.idFuncionario"
               >
                 <b-form-select></b-form-select>
               </b-form-group>
 
               <b-form-group
                 id="input-group-1"
-                label="Forma de pagamento"
                 label-for="input-1"
                 class="col-sm-12 col-md-12 col-lg-7 col-xl-6"
                 size="sm"
               >
+                <div class="iconFormaPagamentoPagar">
+                  <div>
+                    <label for="input-1">Forma de pagamento</label>
+                  </div>
+
+                  <div
+                    class="btnFormaPagamentoPagar mr-1"
+                    @click="openModalFormaPagamento"
+                  >
+                    <b-icon-plus-square-fill
+                      scale="1.5"
+                      size="sm"
+                    ></b-icon-plus-square-fill>
+                  </div>
+                </div>
+
                 <b-form-select
-                  v-model="dataBillPayable.tipo"
-                  text-field="tipo"
                   value-field="id"
+                  text-field="tipo"
+                  v-model="dataBillPayable.idFormaPagamento"
                 ></b-form-select>
               </b-form-group>
 
               <b-form-group
                 id="input-group-1"
-                label="Vl. Parcela"
+                label="Vl. Pago"
                 label-for="input-1"
                 class="col-sm-12 col-md-6 col-lg-5 col-xl-4"
                 size="sm"
               >
-                <b-form-input></b-form-input>
+                <b-form-input
+                  v-model="dataBillPayable.valorPago"
+                ></b-form-input>
               </b-form-group>
 
               <b-form-group
@@ -94,7 +112,9 @@
                 class="col-sm-12 col-md-6 col-lg-6 col-xl-4"
                 size="sm"
               >
-                <b-form-input></b-form-input>
+                <b-form-input
+                  v-model="dataBillPayable.valorTotal"
+                ></b-form-input>
               </b-form-group>
 
               <b-form-group
@@ -104,7 +124,50 @@
                 class="col-sm-12 col-md-6 col-lg-6 col-xl-4"
                 size="sm"
               >
-                <b-form-input></b-form-input>
+                <b-form-input
+                  v-model="dataBillPayable.valorRestante"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group
+                id="input-group-1"
+                label="Data vencimento"
+                label-for="input-1"
+                class="col-sm-6"
+                size="sm"
+              >
+                <b-form-input
+                  type="date"
+                  v-model="dataBillPayable.data"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group
+                id="input-group-1"
+                label="Data Pagamento"
+                label-for="input-1"
+                class="col-sm-6"
+                size="sm"
+              >
+                <b-form-input
+                  type="date"
+                  disabled
+                  v-model="dataBillPayable.dataPagamento"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group
+                id="input-group-1"
+                label="Descrição"
+                label-for="input-1"
+                class="col-sm-12"
+              >
+                <b-form-textarea
+                  id="textarea"
+                  rows="5"
+                  max-rows="6"
+                  v-model="dataBillPayable.descricao"
+                ></b-form-textarea>
               </b-form-group>
             </b-row>
 
@@ -119,10 +182,10 @@
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>
 
-                  <b-button class="mr-4" size="sm" variant="secondary">
-                    <b-icon-caret-down-fill></b-icon-caret-down-fill
-                    >Relatórios</b-button
-                  >
+                  <b-button class="mr-4" size="sm" style="border: none"
+                    >Limpar
+                    <b-icon-person-check class="ml-1"></b-icon-person-check
+                  ></b-button>
                 </div>
               </div>
             </div>
@@ -140,14 +203,14 @@ export default {
     return {
       dataBillPayable: {
         id: "",
-        tipo: "",
+        tipo: "saida",
         idCliente: "",
         idFuncionario: "",
         idFormaPagamento: "",
         idVenda: "",
-        valorTotal: 0,
-        valorPago: 0,
-        valorRestante: 0,
+        valorTotal: "0.00",
+        valorPago: "0.00",
+        valorRestante: "0.00",
         data: "",
         dataPagamento: null,
         descricao: "",
@@ -162,6 +225,10 @@ export default {
     async saveBill() {
       const { data } = await api.post("");
       console.log(data);
+    },
+
+    openModalFormaPagamento() {
+      this.$bvModal.show("modalFormaPagamento");
     },
   },
 };
@@ -200,5 +267,14 @@ export default {
   background-color: #ffffff !important;
   box-shadow: 2px 2px 4px 0px rgb(17, 1, 1) !important ;
   border-radius: 5px;
+}
+
+.iconFormaPagamentoPagar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btnFormaPagamentoPagar {
+  cursor: pointer;
 }
 </style>
