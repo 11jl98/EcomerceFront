@@ -132,18 +132,17 @@ export default {
 </script>
 
 <style>
-#containerGeral {
+/* #containerGeral {
   padding: 0;
   margin: 0;
   display: flex;
   justify-content: center;
   width: 100%;
   height: 100vh;
-}
+} */
 
 #containerGeralFinanceiro {
   width: 100%;
-  margin-left: 6%;
 }
 
 #dadosVendaStyle {
