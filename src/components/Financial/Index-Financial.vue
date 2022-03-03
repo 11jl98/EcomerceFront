@@ -1,7 +1,7 @@
 <template>
-  <div class="d-flex justify-content-end w-100 container-geral">
+  <div class="d-flex justify-content-end w-100 container-geral-financeiro">
     <div
-      class="container-components mt-5"
+      class="container-components-financeiro"
       id="receita"
       role="tablist"
       :style="{ width: width }"
@@ -29,11 +29,11 @@ export default {
 };
 </script>
 <style scoped>
-.container-geral {
+.container-geral-financeiro {
   width: 100% !important;
 }
 
-.container-components {
+.container-components-financeiro {
   transition: all 0.4s linear;
 }
 </style>

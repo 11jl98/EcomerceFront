@@ -1035,8 +1035,7 @@ export default {
   padding-bottom: 15px !important;
   border-radius: 5px !important;
   background-color: rgba(255, 255, 255, 0.788) !important;
-  box-shadow: inset 0 0 1em rgb(255, 255, 255), 0 0 1em rgba(5, 5, 5, 0.068);
-  box-shadow: 2px 2px 4px 0px rgb(17, 1, 1) !important ;
+  box-shadow: inset 0 0 0.5em rgb(255, 255, 255), 0 0 0.5em rgba(5, 5, 5, 0.171);
 }
 
 .tamanhoBotaoOpenCard {

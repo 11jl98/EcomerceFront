@@ -106,7 +106,7 @@
                   </div>
                 </b-tab>
                 <b-tab title="Relatórios"> </b-tab>
-                <b-tab title="Pesquisa"> </b-tab>
+                <b-tab title="Pesquisa"><Search /> </b-tab>
                 <b-tab title="Realizar baixas"> </b-tab>
               </b-tabs>
             </b-card>
@@ -122,25 +122,18 @@
 <script>
 import CadastroContasReceber from "./Cadastro-Contas-Receber.vue";
 import CadastroContasPagar from "./Cadastro-Contas-Pagar.vue";
+import Search from "./Search.vue";
 
 export default {
   components: {
     CadastroContasReceber,
     CadastroContasPagar,
+    Search,
   },
 };
 </script>
 
 <style>
-/* #containerGeral {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 100vh;
-} */
-
 #containerGeralFinanceiro {
   width: 100%;
 }
