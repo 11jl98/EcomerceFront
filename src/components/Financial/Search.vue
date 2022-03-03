@@ -4,6 +4,23 @@
       id="container-components-financial"
       class="col-md-12 col-sm-12 col-lg-12 col-xl-12"
     >
+      <div class="containerCheckBoxFinancial">
+        <div class="rdFinancialPagarReceber d-flex">
+          <b-form-radio
+            :aria-describedby="ariaDescribedby"
+            name="some-radios"
+            class="mr-3"
+            size="sm"
+            >Pagar</b-form-radio
+          >
+          <b-form-radio
+            :aria-describedby="ariaDescribedby"
+            name="some-radios"
+            size="sm"
+            >Receber</b-form-radio
+          >
+        </div>
+      </div>
       <b-row class="d-flex">
         <b-form-group
           label="Filtro"
@@ -46,7 +63,9 @@
           label-for="input-1"
           class="col-sm-4 col-md-3 col-lg-3 col-xl-2 btnPesquisar"
         >
-          <b-button size="sm" style="border: none; background-color: #56aafe !important"
+          <b-button
+            size="sm"
+            style="border: none; background-color: #56aafe !important"
             >Pesquisar <b-icon-search class="ml-1"></b-icon-search
           ></b-button>
         </b-form-group>
@@ -72,6 +91,19 @@ export default {
 <style>
 .btnPesquisar {
   color: white;
+  user-select: none;
+}
+.containerCheckBoxFinancial {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  user-select: none;
+}
+.chkFinancialReceber {
+  margin-left: 15px;
+}
+
+#container-geral-seach-financial {
   user-select: none;
 }
 </style>
