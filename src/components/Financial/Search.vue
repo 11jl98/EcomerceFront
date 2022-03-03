@@ -7,17 +7,19 @@
       <div class="containerCheckBoxFinancial">
         <div class="rdFinancialPagarReceber d-flex">
           <b-form-radio
-            :aria-describedby="ariaDescribedby"
             name="some-radios"
             class="mr-3"
             size="sm"
-            >Pagar</b-form-radio
+            v-model="tipo"
+            value="entrada"
+            >Receber</b-form-radio
           >
           <b-form-radio
-            :aria-describedby="ariaDescribedby"
             name="some-radios"
             size="sm"
-            >Receber</b-form-radio
+            value="saida"
+            v-model="tipo"
+            >Pagar</b-form-radio
           >
         </div>
       </div>
@@ -66,6 +68,7 @@
           <b-button
             size="sm"
             style="border: none; background-color: #56aafe !important"
+            @click="pesquisarTeste"
             >Pesquisar <b-icon-search class="ml-1"></b-icon-search
           ></b-button>
         </b-form-group>
@@ -78,12 +81,18 @@
 export default {
   data() {
     return {
+      tipo: "entrada",
       tipoFiltro: [
         { value: "nome", text: "Nome" },
         { value: "IDFORMAPAGAMENTO", text: "Forma Pagamento" },
       ],
       filtro: "",
     };
+  },
+  methods: {
+    pesquisarTeste() {
+      console.log(this.tipo);
+    },
   },
 };
 </script>
