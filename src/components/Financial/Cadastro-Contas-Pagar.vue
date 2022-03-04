@@ -182,7 +182,10 @@
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>
 
-                  <b-button class="mr-4" size="sm" style="border: none"
+                  <b-button
+                    class="mr-4"
+                    size="sm"
+                    style="border: none !important"
                     >Limpar
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>

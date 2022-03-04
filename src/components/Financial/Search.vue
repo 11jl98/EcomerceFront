@@ -38,7 +38,7 @@
         </b-form-group>
 
         <b-form-group label="Tipo" class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
-          <b-form-input size="sm"></b-form-input>
+          <b-form-input size="sm" v-model="typeText"></b-form-input>
         </b-form-group>
 
         <b-form-group
@@ -68,7 +68,7 @@
           <b-button
             size="sm"
             style="border: none; background-color: #56aafe !important"
-            @click="pesquisarTeste"
+            @click="readBills"
             >Pesquisar <b-icon-search class="ml-1"></b-icon-search
           ></b-button>
         </b-form-group>
@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import api from "../../services/axios";
 export default {
   data() {
     return {
@@ -87,11 +88,19 @@ export default {
         { value: "IDFORMAPAGAMENTO", text: "Forma Pagamento" },
       ],
       filtro: "",
+      typeText: "",
     };
   },
   methods: {
-    pesquisarTeste() {
-      console.log(this.tipo);
+    async readBills() {
+      try {
+        const { data } = await api.get(
+          `/bills?q=${this.filtro}&e=${this.typeText}`
+        );
+        console.log(data, 'testeeeeeeeee');
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
