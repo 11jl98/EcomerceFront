@@ -24,19 +24,6 @@
         </div>
       </div>
       <b-row class="d-flex">
-        <b-form-group
-          label="Filtro"
-          class="col-sm-6 col-md-3 col-lg-3 col-xl-2"
-        >
-          <b-form-select
-            v-model="filtro"
-            :options="tipoFiltro"
-            size="sm"
-            value-field="value"
-            text-field="text"
-          ></b-form-select>
-        </b-form-group>
-
         <b-form-group label="Tipo" class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
           <b-form-input size="sm" v-model="typeText"></b-form-input>
         </b-form-group>
@@ -74,6 +61,56 @@
         </b-form-group>
       </b-row>
     </div>
+    <div>
+      <b-card class="shadow">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>CNPJ/CPF</th>
+              <th>Tipo</th>
+              <th>Valor Total</th>
+              <th>Valor Pago</th>
+              <th>Valor Restante</th>
+              <th>Descrição</th>
+              <th>Editar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="bill in dataBill" :key="bill.id">
+              <td>
+                {{ bill.nome || bill.nomeFantasia }}
+              </td>
+              <td>{{ bill.cpfCnpj || bill.cnpjFornecedor }}</td>
+              <td>
+                <b-button
+                  size="sm"
+                  class="mr-2"
+                  style="background-color: #56aafe; border: none !important"
+                  v-b-popover.hover.left="{
+                    variant: 'info',
+                    content: 'Editar',
+                  }"
+                >
+                  <b-icon-check scale="2"></b-icon-check>
+                </b-button>
+                <b-button
+                  size="sm"
+                  variant="secondary"
+                  style="border: none !important"
+                  v-b-popover.hover.right="{
+                    variant: 'secondary',
+                    content: 'Excluir',
+                  }"
+                >
+                  <b-icon-trash scale="0.7"></b-icon-trash
+                ></b-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </b-card>
+    </div>
   </div>
 </template>
 
@@ -87,6 +124,7 @@ export default {
         { value: "nome", text: "Nome" },
         { value: "IDFORMAPAGAMENTO", text: "Forma Pagamento" },
       ],
+      dataBill: [],
       filtro: "",
       typeText: "",
     };
@@ -95,9 +133,9 @@ export default {
     async readBills() {
       try {
         const { data } = await api.get(
-          `/bills?q=${this.filtro}&e=${this.typeText}`
+          `/bills?q=${this.typeText}&type=${this.tipo}`
         );
-        console.log(data, 'testeeeeeeeee');
+        this.dataBill = data.data;
       } catch (error) {
         console.log(error);
       }

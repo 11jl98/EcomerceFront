@@ -218,16 +218,28 @@ export default {
         dataPagamento: null,
         descricao: "",
       },
-      listarTipoSelectBox: [],
-      listarClienteSelectBox: [],
-      listarFuncionarioSelectBox: [],
-      listarFormaPagamentoSelectBox: [],
+      listTypesPaymentsSelectBox: [],
+      listProviderSelectBox: [],
+      listEmployeeSelectBox: [],
     };
   },
   methods: {
     async saveBill() {
-      const { data } = await api.post("");
-      console.log(data);
+      try {
+        const { data } = await api.post("/bills", this.dataBillPayable);
+        this.dataBillPayable.id = data.id;
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getProviderForSelectBox() {
+      try {
+        const { data } = await api.get("/providers/combobox");
+        this.listProviderSelectBox = data.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     openModalFormaPagamento() {
