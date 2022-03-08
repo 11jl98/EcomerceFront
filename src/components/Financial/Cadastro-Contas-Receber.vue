@@ -338,7 +338,6 @@ export default {
   width: 100% !important;
   display: flex;
   background-color: rgba(0, 179, 0, 0.76) !important;
-  box-shadow: 2px 2px 4px 0px black !important ;
 }
 
 .tamanhoBotaoOpenCardContas {
@@ -360,7 +359,6 @@ export default {
 .cardDadosContasReceber {
   width: 100% !important;
   background-color: #ffffff !important;
-  box-shadow: 2px 2px 4px 0px rgb(17, 1, 1) !important ;
   border-radius: 5px;
 }
 </style>
