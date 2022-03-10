@@ -34,7 +34,11 @@
           label-for="input-1"
           class="col-sm-4 col-md-3 col-lg-3 col-xl-2"
         >
-          <b-form-input type="date" size="sm"></b-form-input>
+          <b-form-input
+            type="date"
+            size="sm"
+            v-model="startDate"
+          ></b-form-input>
         </b-form-group>
 
         <b-form-group
@@ -43,7 +47,7 @@
           label-for="input-1"
           class="col-sm-4 col-md-3 col-lg-3 col-xl-2"
         >
-          <b-form-input type="date" size="sm"></b-form-input>
+          <b-form-input type="date" v-model="endDate" size="sm"></b-form-input>
         </b-form-group>
 
         <b-form-group
@@ -68,12 +72,12 @@
             <tr>
               <th>Nome</th>
               <th>CNPJ/CPF</th>
-              <th>Tipo</th>
+              <th>Data Vencimento</th>
               <th>Valor Total</th>
               <th>Valor Pago</th>
               <th>Valor Restante</th>
               <th>Descrição</th>
-              <th>Editar</th>
+              <th>Editar/Excluir</th>
             </tr>
           </thead>
           <tbody>
@@ -82,15 +86,17 @@
                 {{ bill.nome || bill.nomeFantasia }}
               </td>
               <td>{{ bill.cpfCnpj || bill.cnpjFornecedor }}</td>
-              <td>
+              <td>{{ bill.data | moment }}</td>
+              <td>{{ bill.valorTotal }}</td>
+              <td>{{ bill.valorPago }}</td>
+              <td>{{ bill.valorRestante }}</td>
+              <td>{{ bill.descricao }}</td>
+              <td style="text-align: center">
                 <b-button
                   size="sm"
                   class="mr-2"
                   style="background-color: #56aafe; border: none !important"
-                  v-b-popover.hover.left="{
-                    variant: 'info',
-                    content: 'Editar',
-                  }"
+                  @click="alterTabIndexAndSearchBill(bill.id)"
                 >
                   <b-icon-check scale="2"></b-icon-check>
                 </b-button>
@@ -98,10 +104,6 @@
                   size="sm"
                   variant="secondary"
                   style="border: none !important"
-                  v-b-popover.hover.right="{
-                    variant: 'secondary',
-                    content: 'Excluir',
-                  }"
                 >
                   <b-icon-trash scale="0.7"></b-icon-trash
                 ></b-button>
@@ -116,6 +118,7 @@
 
 <script>
 import api from "../../services/axios";
+import moment from "moment";
 export default {
   data() {
     return {
@@ -127,18 +130,53 @@ export default {
       dataBill: [],
       filtro: "",
       typeText: "",
+      startDate: "",
+      endDate: "",
+      tabIndex: 0,
+      dataBillById: [],
     };
   },
   methods: {
     async readBills() {
       try {
         const { data } = await api.get(
-          `/bills?q=${this.typeText}&type=${this.tipo}`
+          `/bills?q=${this.typeText}&type=${this.tipo}&startDate=${this.startDate}&endDate=${this.endDate}`
         );
         this.dataBill = data.data;
+        console.log(this.startDate, this.endDate);
       } catch (error) {
         console.log(error);
       }
+    },
+
+    alterTabIndexAndSearchBill(idBill) {
+      this.alterValeuTabIndex();
+      this.searchBillToUpdate(idBill);
+    },
+
+    async searchBillToUpdate(idBill) {
+      try {
+        const { data } = await api.get(`/bills/${idBill}`);
+        this.dataBillById = data;
+        this.$emit("dataBillById", this.dataBillById);
+        console.log(this.dataBillById);
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    alterValeuTabIndex() {
+      try {
+        this.$emit("tabIndexFunction", this.tabIndex);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+  filters: {
+    moment: function (date) {
+      return moment(date).format("DD/MM/YYYY");
     },
   },
 };

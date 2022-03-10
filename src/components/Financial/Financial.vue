@@ -94,19 +94,28 @@
             class="containerCardsContas col-sm-12 col-md-12 col-lg-12 col-xl-12"
           >
             <b-card no-body class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-              <b-tabs card>
+              <b-tabs v-model="tabIndex" card>
                 <b-tab title="Cadastro de contas a receber / Pagar">
                   <div class="dadosContasReceberPagar">
                     <div class="cardReceber">
-                      <CadastroContasReceber />
+                      <CadastroContasReceber
+                        :dataBillReceiveById="dataBillByIdReceive"
+                      />
                     </div>
                     <div class="cardPagar">
-                      <CadastroContasPagar />
+                      <CadastroContasPagar
+                        @dataBillById="dataBillByIdPayable = $event"
+                      />
                     </div>
                   </div>
                 </b-tab>
                 <b-tab title="Relatórios"> </b-tab>
-                <b-tab title="Pesquisa"><Search /> </b-tab>
+                <b-tab title="Pesquisa"
+                  ><Search
+                    @tabIndexFunction="tabIndex = $event"
+                    @dataBillById="dataBillByIdReceive = $event"
+                  />
+                </b-tab>
                 <b-tab title="Realizar baixas"> </b-tab>
               </b-tabs>
             </b-card>
@@ -116,8 +125,6 @@
     </div>
   </div>
 </template>
-
-
 
 <script>
 import CadastroContasReceber from "./Cadastro-Contas-Receber.vue";
@@ -129,6 +136,14 @@ export default {
     CadastroContasReceber,
     CadastroContasPagar,
     Search,
+  },
+
+  data() {
+    return {
+      tabIndex: 2,
+      dataBillByIdReceive: {},
+      dataBillByIdPayable: [],
+    };
   },
 };
 </script>

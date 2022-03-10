@@ -48,9 +48,13 @@
                 label-for="input-1"
                 class="col-sm-12 col-md-12 col-lg-7 col-xl-7"
                 size="sm"
-                v-model="dataBillPayable.idFornecedor"
               >
-                <b-form-select></b-form-select>
+                <b-form-select
+                  :options="listProviderSelectBox"
+                  text-field="razaoSocial"
+                  value-field="id"
+                  v-model="dataBillPayable.idFornecedor"
+                ></b-form-select>
               </b-form-group>
 
               <b-form-group
@@ -59,9 +63,13 @@
                 label-for="input-1"
                 class="col-sm-12 col-md-12 col-lg-12 col-xl-6"
                 size="sm"
-                v-model="dataBillPayable.idFuncionario"
               >
-                <b-form-select></b-form-select>
+                <b-form-select
+                  :options="listEmployeeSelectBox"
+                  value-field="id"
+                  text-field="nomeFuncionario"
+                  v-model="dataBillPayable.idFuncionario"
+                ></b-form-select>
               </b-form-group>
 
               <b-form-group
@@ -87,6 +95,7 @@
                 </div>
 
                 <b-form-select
+                  :options="listTypesPaymentsSelectBox"
                   value-field="id"
                   text-field="tipo"
                   v-model="dataBillPayable.idFormaPagamento"
@@ -178,6 +187,7 @@
                     class="mr-4"
                     size="sm"
                     style="border: none; background-color: #56aafe !important"
+                    @click="saveBill"
                     >Salvar
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>
@@ -186,7 +196,8 @@
                     class="mr-4"
                     size="sm"
                     style="border: none !important"
-                    >Limpar
+                    @click="clearDataBill"
+                    >Novo
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>
                 </div>
@@ -207,7 +218,7 @@ export default {
       dataBillPayable: {
         id: "",
         tipo: "saida",
-        idCliente: "",
+        idFornecedor: "",
         idFuncionario: "",
         idFormaPagamento: "",
         idVenda: "",
@@ -224,19 +235,64 @@ export default {
     };
   },
   methods: {
+    saveAndUpdateBill() {
+      console.log(this.dataBillPayable.id);
+      this.dataBillPayable.id !== "" ? this.updateBill() : this.saveBill();
+    },
+
     async saveBill() {
       try {
         const { data } = await api.post("/bills", this.dataBillPayable);
         this.dataBillPayable.id = data.id;
-        console.log(data);
       } catch (error) {
         console.log(error);
       }
     },
+
+    async updateBill() {
+      try {
+        const { data } = await api.put(
+          `/bills/${this.dataBillPayable.id}`,
+          this.dataBillPayable
+        );
+        console.log(data, "Dados atualizados com sucesso");
+      } catch (error) {
+        console.log(error.response);
+      }
+    },
+
+    clearDataBill() {
+      this.dataBillPayable.id = "";
+      this.dataBillPayable.tipo = "saida";
+      this.dataBillPayable.idFornecedor = "";
+      this.dataBillPayable.idFuncionario = "";
+      this.dataBillPayable.idFormaPagamento = "";
+      this.dataBillPayable.idVenda = "";
+      this.dataBillPayable.valorTotal = "0.00";
+      this.dataBillPayable.valorPago = "0.00";
+      this.dataBillPayable.valorRestante = "0.00";
+      this.dataBillPayable.data = "";
+      this.dataBillPayable.descricao = "";
+    },
+
     async getProviderForSelectBox() {
       try {
-        const { data } = await api.get("/providers/combobox");
-        this.listProviderSelectBox = data.data;
+        const { data } = await api.get("/providers/fill/combobox");
+        this.listProviderSelectBox = data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getEmployeesForSelectBox() {
+      const { data } = await api.get("/employees/combobox/fill");
+      this.listEmployeeSelectBox = data.data;
+    },
+
+    async getTypesPaymentsSelectBox() {
+      try {
+        const { data } = await api.get("/payments/combobox");
+        this.listTypesPaymentsSelectBox = data;
       } catch (error) {
         console.log(error);
       }
@@ -245,6 +301,11 @@ export default {
     openModalFormaPagamento() {
       this.$bvModal.show("modalFormaPagamento");
     },
+  },
+  mounted() {
+    this.getProviderForSelectBox();
+    this.getEmployeesForSelectBox();
+    this.getTypesPaymentsSelectBox();
   },
 };
 </script>

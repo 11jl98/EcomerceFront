@@ -196,8 +196,12 @@
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>
 
-                  <b-button class="mr-4" size="sm" style="border: none"
-                    >Limpar
+                  <b-button
+                    class="mr-4"
+                    size="sm"
+                    style="border: none"
+                    @click="clearDataBillReceive"
+                    >Novo
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>
                 </div>
@@ -217,6 +221,11 @@ import FormaPagamento from "../Sale/Modal-Forma-Pagamento.vue";
 export default {
   components: {
     FormaPagamento,
+  },
+  props: {
+    dataBillReceiveById: {
+      type: Object,
+    },
   },
   data() {
     return {
@@ -261,8 +270,21 @@ export default {
       };
     },
 
+    clearDataBillReceive() {
+      this.dataBillReceive.id = "";
+      this.dataBillReceive.tipo = "entrada";
+      this.dataBillReceive.idCliente = "";
+      this.dataBillReceive.idFuncionario = "";
+      this.dataBillReceive.idFormaPagamento = "";
+      this.dataBillReceive.idVenda = "";
+      this.dataBillReceive.valorTotal = "0.00";
+      this.dataBillReceive.valorPago = "0.00";
+      this.dataBillReceive.valorRestante = "0.00";
+      this.dataBillReceive.data = "";
+      this.dataBillReceive.descricao = "";
+    },
+
     saveAndUpdateBill() {
-      console.log(this.dataBillReceive.id);
       this.dataBillReceive.id !== "" ? this.updateBill() : this.saveBill();
     },
 
@@ -316,6 +338,11 @@ export default {
     this.getCustomersForSelectBox();
     this.getTypesPaymentsSelectBox();
     this.getEmployeesForSelectBox();
+  },
+  watch: {
+    dataBillReceiveById() {
+      Object.assign(this.dataBillReceive, this.dataBillReceiveById);
+    },
   },
 };
 </script>
