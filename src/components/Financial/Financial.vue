@@ -7,7 +7,7 @@
             <h3 class="mt-4 mb-4">Dashboard</h3>
           </div>
           <div class="containerCards">
-            <div class="cardsFinancas col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="cardsFinancas col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
               <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
                 <b-card
                   text-variant="dark"

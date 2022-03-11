@@ -117,8 +117,8 @@
 </template>
 
 <script>
-import api from "../../services/axios";
-import moment from "moment";
+import api from "../../services/axios"
+import moment from "moment"
 export default {
   data() {
     return {
@@ -134,52 +134,57 @@ export default {
       endDate: "",
       tabIndex: 0,
       dataBillById: [],
-    };
+    }
   },
   methods: {
     async readBills() {
       try {
         const { data } = await api.get(
           `/bills?q=${this.typeText}&type=${this.tipo}&startDate=${this.startDate}&endDate=${this.endDate}`
-        );
-        this.dataBill = data.data;
-        console.log(this.startDate, this.endDate);
+        )
+        this.dataBill = data.data
+        console.log(this.startDate, this.endDate)
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
 
     alterTabIndexAndSearchBill(idBill) {
-      this.alterValeuTabIndex();
-      this.searchBillToUpdate(idBill);
+      this.alterValeuTabIndex()
+      this.searchBillToUpdate(idBill)
+      this.dropdownCardBillReceive()
     },
 
     async searchBillToUpdate(idBill) {
       try {
-        const { data } = await api.get(`/bills/${idBill}`);
-        this.dataBillById = data;
-        this.$emit("dataBillById", this.dataBillById);
-        console.log(this.dataBillById);
-        return data;
+        const { data } = await api.get(`/bills/${idBill}`)
+        this.dataBillById = data
+        this.$emit("dataBillById", this.dataBillById)
+        console.log(this.dataBillById)
+        return data
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
+    },
+
+    dropdownCardBillReceive() {
+      document.querySelector(".tamanhoCardsContasReceber").click()
     },
 
     alterValeuTabIndex() {
       try {
-        this.$emit("tabIndexFunction", this.tabIndex);
+        this.$emit("tabIndexFunction", this.tabIndex)
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
   },
   filters: {
     moment: function (date) {
-      return moment(date).format("DD/MM/YYYY");
+      return moment(date).format("DD/MM/YYYY")
     },
   },
-};
+}
 </script>
 
 <style>

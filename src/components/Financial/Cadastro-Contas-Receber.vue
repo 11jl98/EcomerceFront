@@ -16,7 +16,7 @@
       </template>
     </b-navbar-toggle>
 
-    <b-collapse id="navbar-toggle-collapseReceber" is-nav>
+    <b-collapse id="navbar-toggle-collapseReceber"  is-nav>
       <b-navbar-nav class="ml-auto">
         <b-card
           class="
@@ -252,6 +252,8 @@ export default {
     openModalFormaPagamento() {
       this.$bvModal.show("modalFormaPagamento");
     },
+
+
 
     Bill() {
       this.dataBillReceive = {
