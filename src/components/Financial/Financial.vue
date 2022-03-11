@@ -231,8 +231,7 @@ export default {
   justify-content: space-between;
 }
 
-#containerFinanceiro {
-}
+
 
 #containerContas {
   width: 100%;

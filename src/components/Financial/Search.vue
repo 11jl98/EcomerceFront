@@ -12,6 +12,7 @@
             size="sm"
             v-model="tipo"
             value="entrada"
+            @change="teste"
             >Receber</b-form-radio
           >
           <b-form-radio
@@ -143,7 +144,6 @@ export default {
           `/bills?q=${this.typeText}&type=${this.tipo}&startDate=${this.startDate}&endDate=${this.endDate}`
         )
         this.dataBill = data.data
-        console.log(this.startDate, this.endDate)
       } catch (error) {
         console.log(error)
       }
@@ -158,17 +158,22 @@ export default {
     async searchBillToUpdate(idBill) {
       try {
         const { data } = await api.get(`/bills/${idBill}`)
-        this.dataBillById = data
-        this.$emit("dataBillById", this.dataBillById)
-        console.log(this.dataBillById)
-        return data
+        if (data.tipo === "entrada") {
+          this.dataBillById = data
+          this.$emit("dataBillById", this.dataBillById)
+          console.log(this.dataBillById)
+          return data
+        }
+        return
       } catch (error) {
         console.log(error)
       }
     },
 
     dropdownCardBillReceive() {
-      document.querySelector(".tamanhoCardsContasReceber").click()
+      if (this.tipo === "entrada")
+        document.querySelector(".tamanhoCardsContasReceber").click()
+      else document.querySelector(".tamanhoCardsContasPagar").click()
     },
 
     alterValeuTabIndex() {
@@ -177,6 +182,10 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+
+    teste() {
+      console.log("testeeeeeeeeeee")
     },
   },
   filters: {
