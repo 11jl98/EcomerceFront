@@ -7,7 +7,7 @@
             <h3 class="mt-4 mb-4">Dashboard</h3>
           </div>
           <div class="containerCards">
-            <div class="cardsFinancas col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
+            <div class="cardsFinancas col-sm-12 col-md-12 col-lg-12 col-xl-12">
               <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
                 <b-card
                   text-variant="dark"
@@ -99,12 +99,12 @@
                   <div class="dadosContasReceberPagar">
                     <div class="cardReceber">
                       <CadastroContasReceber
-                        :dataBillReceiveById="dataBillByIdReceive"
+                        :searchAccountsReceive="dataBillForReceiveAndPayable"
                       />
                     </div>
                     <div class="cardPagar">
                       <CadastroContasPagar
-                        @dataBillById="dataBillByIdPayable = $event"
+                        :searchAccountsPayable="dataBillForReceiveAndPayable"
                       />
                     </div>
                   </div>
@@ -113,7 +113,9 @@
                 <b-tab title="Pesquisa"
                   ><Search
                     @tabIndexFunction="tabIndex = $event"
-                    @dataBillById="dataBillByIdReceive = $event"
+                    @dataBillForReceiveAndPayable="
+                      dataBillForReceiveAndPayable = $event
+                    "
                   />
                 </b-tab>
                 <b-tab title="Realizar baixas"> </b-tab>
@@ -127,9 +129,9 @@
 </template>
 
 <script>
-import CadastroContasReceber from "./Cadastro-Contas-Receber.vue";
-import CadastroContasPagar from "./Cadastro-Contas-Pagar.vue";
-import Search from "./Search.vue";
+import CadastroContasReceber from "./Cadastro-Contas-Receber.vue"
+import CadastroContasPagar from "./Cadastro-Contas-Pagar.vue"
+import Search from "./Search.vue"
 
 export default {
   components: {
@@ -141,11 +143,11 @@ export default {
   data() {
     return {
       tabIndex: 2,
-      dataBillByIdReceive: {},
-      dataBillByIdPayable: [],
-    };
+      dataBillForReceiveAndPayable: {},
+      dataBillByIdPayable: {},
+    }
   },
-};
+}
 </script>
 
 <style>
@@ -230,8 +232,6 @@ export default {
   height: auto;
   justify-content: space-between;
 }
-
-
 
 #containerContas {
   width: 100%;

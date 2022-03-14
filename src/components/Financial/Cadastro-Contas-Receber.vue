@@ -16,7 +16,7 @@
       </template>
     </b-navbar-toggle>
 
-    <b-collapse id="navbar-toggle-collapseReceber"  is-nav>
+    <b-collapse id="navbar-toggle-collapseReceber" is-nav>
       <b-navbar-nav class="ml-auto">
         <b-card
           class="
@@ -216,14 +216,14 @@
 </template>
 
 <script>
-import api from "../../services/axios";
-import FormaPagamento from "../Sale/Modal-Forma-Pagamento.vue";
+import api from "../../services/axios"
+import FormaPagamento from "../Sale/Modal-Forma-Pagamento.vue"
 export default {
   components: {
     FormaPagamento,
   },
   props: {
-    dataBillReceiveById: {
+    searchAccountsReceive: {
       type: Object,
     },
   },
@@ -246,14 +246,12 @@ export default {
       listTypesPaymentsSelectBox: [],
       listCustomersSelectBox: [],
       listEmployeeSelectBox: [],
-    };
+    }
   },
   methods: {
     openModalFormaPagamento() {
-      this.$bvModal.show("modalFormaPagamento");
+      this.$bvModal.show("modalFormaPagamento")
     },
-
-
 
     Bill() {
       this.dataBillReceive = {
@@ -269,34 +267,34 @@ export default {
         data: "",
         dataPagamento: null,
         descricao: "",
-      };
+      }
     },
 
     clearDataBillReceive() {
-      this.dataBillReceive.id = "";
-      this.dataBillReceive.tipo = "entrada";
-      this.dataBillReceive.idCliente = "";
-      this.dataBillReceive.idFuncionario = "";
-      this.dataBillReceive.idFormaPagamento = "";
-      this.dataBillReceive.idVenda = "";
-      this.dataBillReceive.valorTotal = "0.00";
-      this.dataBillReceive.valorPago = "0.00";
-      this.dataBillReceive.valorRestante = "0.00";
-      this.dataBillReceive.data = "";
-      this.dataBillReceive.descricao = "";
+      this.dataBillReceive.id = ""
+      this.dataBillReceive.tipo = "entrada"
+      this.dataBillReceive.idCliente = ""
+      this.dataBillReceive.idFuncionario = ""
+      this.dataBillReceive.idFormaPagamento = ""
+      this.dataBillReceive.idVenda = ""
+      this.dataBillReceive.valorTotal = "0.00"
+      this.dataBillReceive.valorPago = "0.00"
+      this.dataBillReceive.valorRestante = "0.00"
+      this.dataBillReceive.data = ""
+      this.dataBillReceive.descricao = ""
     },
 
     saveAndUpdateBill() {
-      this.dataBillReceive.id !== "" ? this.updateBill() : this.saveBill();
+      this.dataBillReceive.id !== "" ? this.updateBill() : this.saveBill()
     },
 
     async saveBill() {
       try {
-        const { data } = await api.post("/bills", this.dataBillReceive);
-        this.dataBillReceive.id = data.id;
-        console.log(data);
+        const { data } = await api.post("/bills", this.dataBillReceive)
+        this.dataBillReceive.id = data.id
+        console.log(data)
       } catch (error) {
-        console.log(error.response);
+        console.log(error.response)
       }
     },
 
@@ -305,48 +303,52 @@ export default {
         const { data } = await api.put(
           `/bills/${this.dataBillReceive.id}`,
           this.dataBillReceive
-        );
-        console.log(data, "Dados atualizados com sucesso");
+        )
+        console.log(data, "Dados atualizados com sucesso")
       } catch (error) {
-        console.log(error.response);
+        console.log(error.response)
       }
     },
 
     async getCustomersForSelectBox() {
       try {
-        const { data } = await api.get("/customers/combobox");
-        this.listCustomersSelectBox = data.data;
+        const { data } = await api.get("/customers/combobox")
+        this.listCustomersSelectBox = data.data
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
 
     async getEmployeesForSelectBox() {
-      const { data } = await api.get("/employees/combobox/fill");
-      this.listEmployeeSelectBox = data.data;
+      const { data } = await api.get("/employees/combobox/fill")
+      this.listEmployeeSelectBox = data.data
     },
 
     async getTypesPaymentsSelectBox() {
       try {
-        const { data } = await api.get("/payments/combobox");
-        this.listTypesPaymentsSelectBox = data;
+        const { data } = await api.get("/payments/combobox")
+        this.listTypesPaymentsSelectBox = data
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
   },
 
   mounted() {
-    this.getCustomersForSelectBox();
-    this.getTypesPaymentsSelectBox();
-    this.getEmployeesForSelectBox();
+    this.getCustomersForSelectBox()
+    this.getTypesPaymentsSelectBox()
+    this.getEmployeesForSelectBox()
   },
   watch: {
-    dataBillReceiveById() {
-      Object.assign(this.dataBillReceive, this.dataBillReceiveById);
+    searchAccountsReceive() {
+      if (this.searchAccountsReceive.tipo === "entrada") {
+        Object.assign(this.dataBillReceive, this.searchAccountsReceive)
+      } else {
+        return
+      }
     },
   },
-};
+}
 </script>
 
 <style scoped>

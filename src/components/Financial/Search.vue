@@ -134,7 +134,7 @@ export default {
       startDate: "",
       endDate: "",
       tabIndex: 0,
-      dataBillById: [],
+      dataBillForReceiveAndPayable: [],
     }
   },
   methods: {
@@ -158,22 +158,31 @@ export default {
     async searchBillToUpdate(idBill) {
       try {
         const { data } = await api.get(`/bills/${idBill}`)
-        if (data.tipo === "entrada") {
-          this.dataBillById = data
-          this.$emit("dataBillById", this.dataBillById)
-          console.log(this.dataBillById)
-          return data
-        }
-        return
+        this.dataBillForReceiveAndPayable = data
+        this.$emit(
+          "dataBillForReceiveAndPayable",
+          this.dataBillForReceiveAndPayable
+        )
+        console.log(this.dataBillForReceiveAndPayable)
       } catch (error) {
         console.log(error)
       }
     },
 
     dropdownCardBillReceive() {
-      if (this.tipo === "entrada")
+      if (
+        document.getElementById("navbar-toggle-collapseReceber").style
+          .display === "none" &&
+        this.tipo === "entrada"
+      ) {
         document.querySelector(".tamanhoCardsContasReceber").click()
-      else document.querySelector(".tamanhoCardsContasPagar").click()
+      } else if (
+        document.getElementById("navbar-toggle-collapsePagar").style.display ===
+          "none" &&
+        this.tipo === "saida"
+      ) {
+        document.querySelector(".tamanhoCardsContasPagar").click()
+      }
     },
 
     alterValeuTabIndex() {

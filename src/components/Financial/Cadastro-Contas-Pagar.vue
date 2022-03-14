@@ -211,8 +211,13 @@
 </template>
 
 <script>
-import api from "../../services/axios";
+import api from "../../services/axios"
 export default {
+  props: {
+    searchAccountsPayable: {
+      type: Object,
+    },
+  },
   data() {
     return {
       dataBillPayable: {
@@ -232,20 +237,20 @@ export default {
       listTypesPaymentsSelectBox: [],
       listProviderSelectBox: [],
       listEmployeeSelectBox: [],
-    };
+    }
   },
   methods: {
     saveAndUpdateBill() {
-      console.log(this.dataBillPayable.id);
-      this.dataBillPayable.id !== "" ? this.updateBill() : this.saveBill();
+      console.log(this.dataBillPayable.id)
+      this.dataBillPayable.id !== "" ? this.updateBill() : this.saveBill()
     },
 
     async saveBill() {
       try {
-        const { data } = await api.post("/bills", this.dataBillPayable);
-        this.dataBillPayable.id = data.id;
+        const { data } = await api.post("/bills", this.dataBillPayable)
+        this.dataBillPayable.id = data.id
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
 
@@ -254,60 +259,69 @@ export default {
         const { data } = await api.put(
           `/bills/${this.dataBillPayable.id}`,
           this.dataBillPayable
-        );
-        console.log(data, "Dados atualizados com sucesso");
+        )
+        console.log(data, "Dados atualizados com sucesso")
       } catch (error) {
-        console.log(error.response);
+        console.log(error.response)
       }
     },
 
     clearDataBill() {
-      this.dataBillPayable.id = "";
-      this.dataBillPayable.tipo = "saida";
-      this.dataBillPayable.idFornecedor = "";
-      this.dataBillPayable.idFuncionario = "";
-      this.dataBillPayable.idFormaPagamento = "";
-      this.dataBillPayable.idVenda = "";
-      this.dataBillPayable.valorTotal = "0.00";
-      this.dataBillPayable.valorPago = "0.00";
-      this.dataBillPayable.valorRestante = "0.00";
-      this.dataBillPayable.data = "";
-      this.dataBillPayable.descricao = "";
+      this.dataBillPayable.id = ""
+      this.dataBillPayable.tipo = "saida"
+      this.dataBillPayable.idFornecedor = ""
+      this.dataBillPayable.idFuncionario = ""
+      this.dataBillPayable.idFormaPagamento = ""
+      this.dataBillPayable.idVenda = ""
+      this.dataBillPayable.valorTotal = "0.00"
+      this.dataBillPayable.valorPago = "0.00"
+      this.dataBillPayable.valorRestante = "0.00"
+      this.dataBillPayable.data = ""
+      this.dataBillPayable.descricao = ""
     },
 
     async getProviderForSelectBox() {
       try {
-        const { data } = await api.get("/providers/fill/combobox");
-        this.listProviderSelectBox = data;
+        const { data } = await api.get("/providers/fill/combobox")
+        this.listProviderSelectBox = data
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
 
     async getEmployeesForSelectBox() {
-      const { data } = await api.get("/employees/combobox/fill");
-      this.listEmployeeSelectBox = data.data;
+      const { data } = await api.get("/employees/combobox/fill")
+      this.listEmployeeSelectBox = data.data
     },
 
     async getTypesPaymentsSelectBox() {
       try {
-        const { data } = await api.get("/payments/combobox");
-        this.listTypesPaymentsSelectBox = data;
+        const { data } = await api.get("/payments/combobox")
+        this.listTypesPaymentsSelectBox = data
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
 
     openModalFormaPagamento() {
-      this.$bvModal.show("modalFormaPagamento");
+      this.$bvModal.show("modalFormaPagamento")
     },
   },
   mounted() {
-    this.getProviderForSelectBox();
-    this.getEmployeesForSelectBox();
-    this.getTypesPaymentsSelectBox();
+    this.getProviderForSelectBox()
+    this.getEmployeesForSelectBox()
+    this.getTypesPaymentsSelectBox()
   },
-};
+  watch: {
+    searchAccountsPayable() {
+      if (this.searchAccountsPayable.tipo === "saida") {
+        Object.assign(this.dataBillPayable, this.searchAccountsPayable)
+      } else {
+        return
+      }
+    },
+  },
+}
 </script>
 
 <style scoped>
