@@ -310,9 +310,13 @@ export default {
     },
     
     formatDate() {
-       if (this.searchAccountsReceive.dataPagamento !== null)
-        this.searchAccountsReceive.dataPagamento = moment(
-          this.searchAccountsReceive.dataPagamento
+      this.searchAccountsPayable.data = moment(
+        this.searchAccountsPayable.data
+      ).format("YYYY-MM-DD")
+
+      if (this.searchAccountsPayable.dataPagamento !== null)
+        this.searchAccountsPayable.dataPagamento = moment(
+          this.searchAccountsPayable.dataPagamento
         ).format("YYYY-MM-DD")
       else return
     },
@@ -325,8 +329,8 @@ export default {
   watch: {
     searchAccountsPayable() {
       if (this.searchAccountsPayable.tipo === "saida") {
-        Object.assign(this.dataBillPayable, this.searchAccountsPayable)
         this.formatDate()
+        Object.assign(this.dataBillPayable, this.searchAccountsPayable)
       } else {
         return
       }
