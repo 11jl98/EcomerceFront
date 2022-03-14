@@ -218,6 +218,7 @@
 <script>
 import api from "../../services/axios"
 import FormaPagamento from "../Sale/Modal-Forma-Pagamento.vue"
+import moment from "moment"
 export default {
   components: {
     FormaPagamento,
@@ -332,6 +333,18 @@ export default {
         console.log(error)
       }
     },
+
+    formatDate() {
+      this.searchAccountsReceive.data = moment(
+        this.searchAccountsReceive.data
+      ).format("YYYY-MM-DD")
+
+      if (this.searchAccountsReceive.dataPagamento !== null)
+        this.searchAccountsReceive.dataPagamento = moment(
+          this.searchAccountsReceive.dataPagamento
+        ).format("YYYY-MM-DD")
+      else return
+    },
   },
 
   mounted() {
@@ -342,6 +355,7 @@ export default {
   watch: {
     searchAccountsReceive() {
       if (this.searchAccountsReceive.tipo === "entrada") {
+        this.formatDate()
         Object.assign(this.dataBillReceive, this.searchAccountsReceive)
       } else {
         return

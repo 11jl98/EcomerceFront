@@ -212,6 +212,8 @@
 
 <script>
 import api from "../../services/axios"
+
+import moment from 'moment'
 export default {
   props: {
     searchAccountsPayable: {
@@ -306,6 +308,14 @@ export default {
     openModalFormaPagamento() {
       this.$bvModal.show("modalFormaPagamento")
     },
+    
+    formatDate() {
+       if (this.searchAccountsReceive.dataPagamento !== null)
+        this.searchAccountsReceive.dataPagamento = moment(
+          this.searchAccountsReceive.dataPagamento
+        ).format("YYYY-MM-DD")
+      else return
+    },
   },
   mounted() {
     this.getProviderForSelectBox()
@@ -316,6 +326,7 @@ export default {
     searchAccountsPayable() {
       if (this.searchAccountsPayable.tipo === "saida") {
         Object.assign(this.dataBillPayable, this.searchAccountsPayable)
+        this.formatDate()
       } else {
         return
       }
