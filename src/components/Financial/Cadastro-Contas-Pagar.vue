@@ -187,7 +187,7 @@
                     class="mr-4"
                     size="sm"
                     style="border: none; background-color: #56aafe !important"
-                    @click="saveBill"
+                    @click="saveAndUpdateBill"
                     >Salvar
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>
@@ -213,7 +213,8 @@
 <script>
 import api from "../../services/axios"
 
-import moment from 'moment'
+import moment from "moment"
+import BillService from "../../services/Bill/billService"
 export default {
   props: {
     searchAccountsPayable: {
@@ -251,20 +252,27 @@ export default {
       try {
         const { data } = await api.post("/bills", this.dataBillPayable)
         this.dataBillPayable.id = data.id
+        return this.$toast.open({
+          message: "Conta resgistrada!",
+          type: "success",
+        })
       } catch (error) {
-        console.log(error)
+        return BillService.validateBill(error, this.$toast)
       }
     },
 
     async updateBill() {
       try {
-        const { data } = await api.put(
-          `/bills/${this.dataBillPayable.id}`,
-          this.dataBillPayable
-        )
-        console.log(data, "Dados atualizados com sucesso")
+        await api.put(`/bills/${this.dataBillPayable.id}`, this.dataBillPayable)
+        return this.$toast.open({
+          message: "Conta atualizada!",
+          type: "info",
+        })
       } catch (error) {
-        console.log(error.response)
+        return this.$toast.open({
+          message: error.response.data.message,
+          type: "warning",
+        })
       }
     },
 
@@ -308,7 +316,7 @@ export default {
     openModalFormaPagamento() {
       this.$bvModal.show("modalFormaPagamento")
     },
-    
+
     formatDate() {
       this.searchAccountsPayable.data = moment(
         this.searchAccountsPayable.data
