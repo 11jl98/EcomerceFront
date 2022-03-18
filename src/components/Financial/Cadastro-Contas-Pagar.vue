@@ -244,7 +244,6 @@ export default {
   },
   methods: {
     saveAndUpdateBill() {
-      console.log(this.dataBillPayable.id)
       this.dataBillPayable.id !== "" ? this.updateBill() : this.saveBill()
     },
 

@@ -219,6 +219,7 @@
 import api from "../../services/axios"
 import FormaPagamento from "../Sale/Modal-Forma-Pagamento.vue"
 import moment from "moment"
+import BillService from '../../services/Bill/billService'
 export default {
   components: {
     FormaPagamento,
@@ -287,15 +288,20 @@ export default {
 
     saveAndUpdateBill() {
       this.dataBillReceive.id !== "" ? this.updateBill() : this.saveBill()
+
     },
 
     async saveBill() {
       try {
+        console.log(this.dataBillReceive)
         const { data } = await api.post("/bills", this.dataBillReceive)
         this.dataBillReceive.id = data.id
-        console.log(data)
+         return this.$toast.open({
+          message: "Conta resgistrada!",
+          type: "success",
+        })
       } catch (error) {
-        console.log(error.response)
+        return BillService.validateBill(error,this.$toast)
       }
     },
 
