@@ -68,7 +68,7 @@
     </div>
     <div>
       <b-card>
-        <table class="table table-sm">
+        <table class="table table-responsive table-sm responsive">
           <thead>
             <tr>
               <th>Nome</th>
@@ -129,9 +129,9 @@
 </template>
 
 <script>
-import api from "../../services/axios"
-import moment from "moment"
-import ModalMakePayment from "./Pay-The-Bills.vue"
+import api from "../../services/axios";
+import moment from "moment";
+import ModalMakePayment from "./Pay-The-Bills.vue";
 export default {
   components: {
     ModalMakePayment,
@@ -151,36 +151,36 @@ export default {
       tabIndex: 0,
       dataBillForReceiveAndPayable: [],
       idBillPay: "",
-    }
+    };
   },
   methods: {
     async readBills() {
       try {
         const { data } = await api.get(
           `/bills?q=${this.typeText}&type=${this.tipo}&startDate=${this.startDate}&endDate=${this.endDate}`
-        )
-        this.dataBill = data.data
+        );
+        this.dataBill = data.data;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
 
     alterTabIndexAndSearchBill(idBill) {
-      this.alterValueTabIndex()
-      this.searchBillToUpdate(idBill)
-      this.dropdownCardBillReceive()
+      this.alterValueTabIndex();
+      this.searchBillToUpdate(idBill);
+      this.dropdownCardBillReceive();
     },
 
     async searchBillToUpdate(idBill) {
       try {
-        const { data } = await api.get(`/bills/${idBill}`)
-        this.dataBillForReceiveAndPayable = data
+        const { data } = await api.get(`/bills/${idBill}`);
+        this.dataBillForReceiveAndPayable = data;
         this.$emit(
           "dataBillForReceiveAndPayable",
           this.dataBillForReceiveAndPayable
-        )
+        );
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
 
@@ -190,39 +190,39 @@ export default {
           .display === "none" &&
         this.tipo === "entrada"
       ) {
-        document.querySelector(".tamanhoCardsContasReceber").click()
+        document.querySelector(".tamanhoCardsContasReceber").click();
       } else if (
         document.getElementById("navbar-toggle-collapsePagar").style.display ===
           "none" &&
         this.tipo === "saida"
       ) {
-        document.querySelector(".tamanhoCardsContasPagar").click()
+        document.querySelector(".tamanhoCardsContasPagar").click();
       }
     },
 
     alterValueTabIndex() {
       try {
-        this.$emit("tabIndexFunction", this.tabIndex)
+        this.$emit("tabIndexFunction", this.tabIndex);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
 
     openModalPay(idBill) {
-      this.idBillPay = idBill
-      this.$bvModal.show("modalMakePayment")
+      this.idBillPay = idBill;
+      this.$bvModal.show("modalMakePayment");
     },
 
     teste() {
-      console.log("testeeeeeeeeeee")
+      console.log("testeeeeeeeeeee");
     },
   },
   filters: {
     moment: function (date) {
-      return moment(date).format("DD/MM/YYYY")
+      return moment(date).format("DD/MM/YYYY");
     },
   },
-}
+};
 </script>
 
 <style>

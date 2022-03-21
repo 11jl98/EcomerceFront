@@ -3,8 +3,11 @@
     <b-modal
       id="modalMakePayment"
       size="lg"
-      @ok="getBillForPay"
       title="Baixar contas"
+      ok-title="Baixar"
+      ok-variant="warning"
+      cancel-title="Cancelar"
+      text-variant="warning"
       ><div>
         <b-row class="d-flex">
           <b-form-input
@@ -111,14 +114,23 @@
               disabled
             ></b-form-textarea>
           </b-form-group>
-        </b-row></div
-    ></b-modal>
+        </b-row>
+      </div>
+      <template #modal-footer="{ cancel }">
+        <b-button size="sm" variant="danger" @click="cancel()">
+          Cancelar
+        </b-button>
+        <b-button size="sm" variant="warning" style="color: white">
+          Realizar Baixa
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
 <script>
-import api from "../../services/axios"
-import moment from "moment"
+import api from "../../services/axios";
+import moment from "moment";
 export default {
   props: {
     idBillPay: {
@@ -141,41 +153,40 @@ export default {
         dataPagamento: null,
         descricao: "",
       },
-    }
+    };
   },
   methods: {
     async getBillForPay(idBill) {
-      const { data } = await api.get(`/bills/${idBill}`)
-      Object.assign(this.dataBillReduction, data)
-      this.formatDate()
-
-      console.log(this.dataBillReduction, "Funcionando")
-      return data
+      const { data } = await api.get(`/bills/${idBill}`);
+      Object.assign(this.dataBillReduction, data);
+      this.formatDate();
+      console.log(this.dataBillReduction, "Funcionando");
+      return data;
     },
 
     formatDate() {
       this.dataBillReduction.data = moment(this.dataBillReduction.data).format(
         "YYYY-MM-DD"
-      )
+      );
 
       if (
         this.dataBillReduction.dataPagamento === "Invalid date" ||
         this.dataBillReduction.dataPagamento === null
       ) {
-        this.dataBillReduction.dataPagamento = ""
+        this.dataBillReduction.dataPagamento = "";
       } else {
         this.dataBillReduction.dataPagamento = moment(
           this.dataBillReduction.dataPagamento
-        ).format("YYYY-MM-DD")
+        ).format("YYYY-MM-DD");
       }
     },
   },
   watch: {
     idBillPay() {
-      this.getBillForPay(this.idBillPay)
+      this.getBillForPay(this.idBillPay);
     },
   },
-}
+};
 </script>
 
 <style>
