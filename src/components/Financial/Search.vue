@@ -67,7 +67,7 @@
       </b-row>
     </div>
     <div>
-      <b-card class="shadow">
+      <b-card>
         <table class="table table-sm">
           <thead>
             <tr>
@@ -78,7 +78,7 @@
               <th>Valor Pago</th>
               <th>Valor Restante</th>
               <th>Descrição</th>
-              <th>Editar/Excluir</th>
+              <th style="text-align: center">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -103,24 +103,39 @@
                 </b-button>
                 <b-button
                   size="sm"
-                  variant="secondary"
+                  variant="danger"
                   style="border: none !important"
                 >
                   <b-icon-trash scale="0.7"></b-icon-trash
                 ></b-button>
+
+                <b-button
+                  size="sm"
+                  variant="warning"
+                  style="border: none !important; color: white"
+                  class="ml-2"
+                  @click="openModalPay(bill.id)"
+                >
+                  Baixar</b-button
+                >
               </td>
             </tr>
           </tbody>
         </table>
       </b-card>
     </div>
+    <ModalMakePayment />
   </div>
 </template>
 
 <script>
 import api from "../../services/axios"
 import moment from "moment"
+import ModalMakePayment from "./baixar-contas.vue"
 export default {
+  components: {
+    ModalMakePayment,
+  },
   data() {
     return {
       tipo: "entrada",
@@ -150,7 +165,7 @@ export default {
     },
 
     alterTabIndexAndSearchBill(idBill) {
-      this.alterValeuTabIndex()
+      this.alterValueTabIndex()
       this.searchBillToUpdate(idBill)
       this.dropdownCardBillReceive()
     },
@@ -185,12 +200,17 @@ export default {
       }
     },
 
-    alterValeuTabIndex() {
+    alterValueTabIndex() {
       try {
         this.$emit("tabIndexFunction", this.tabIndex)
       } catch (error) {
         console.log(error)
       }
+    },
+
+    openModalPay(idBill) {
+      this.$bvModal.show("modalMakePayment")
+      console.log(idBill, "id da contaaaaaaaaaa")
     },
 
     teste() {
