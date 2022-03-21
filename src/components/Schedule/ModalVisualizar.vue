@@ -2,9 +2,9 @@
   <div>
     <b-modal id="modal-Visualizar" title="Cadastrar agendamentos" size="lg">
       <template #modal-footer>
-         <b-button size="sm" variant="secondary" @click="destroy" 
-                  >Excluir <b-icon-trash  class="ml-2"></b-icon-trash
-          ></b-button>
+        <b-button size="sm" variant="secondary" @click="destroy"
+          >Excluir <b-icon-trash class="ml-2"></b-icon-trash
+        ></b-button>
       </template>
       <b-form-group
         id="input-group-3"
@@ -45,12 +45,12 @@
 import api from "../../services/axios"
 import moment from "moment"
 export default {
-  props:{
-dataReadSchedule:{
-  type:String
-}
+  props: {
+    dataReadSchedule: {
+      type: String,
+    },
   },
-     data() {
+  data() {
     return {
       teste: {
         descricao: "",
@@ -62,13 +62,13 @@ dataReadSchedule:{
         { value: "Reunião", text: "Reunião" },
         { value: "Outro", text: "Outro" },
       ],
-      idSchedule:""
-    };
+      idSchedule: "",
+    }
   },
-  watch:{
-    async dataReadSchedule(){
+  watch: {
+    async dataReadSchedule() {
       try {
-        const {data} = await api.get(`/schedules/${this.dataReadSchedule}`)
+        const { data } = await api.get(`/schedules/${this.dataReadSchedule}`)
         this.teste.dataAgenda = moment(data.dataAgenda).format("YYYY-MM-DD")
         this.teste.descricao = data.descricao
         this.teste.tipo = data.tipo
@@ -77,25 +77,25 @@ dataReadSchedule:{
       } catch (error) {
         console.log(error)
       }
-    }
+    },
   },
-  methods:{
-    async destroy(){
+  methods: {
+    async destroy() {
       try {
         console.log(this.idSchedule)
         await api.delete(`/schedules/${this.idSchedule}`)
         this.$toast.open({
           message: "Agendamento deletado com Sucesso",
           type: "success",
-        });
+        })
         this.$bvModal.hide("modal-Visualizar")
       } catch (error) {
-       this.$toast.open({
+        this.$toast.open({
           message: "Não foi possível deletar o agendamento",
           type: "warning",
-        });
+        })
       }
-    }
-  }
+    },
+  },
 }
 </script>

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <b-modal id="modalMakePayment" size="lg" title="Baixar contas"
+    <b-modal
+      id="modalMakePayment"
+      size="lg"
+      @ok="getBillForPay"
+      title="Baixar contas"
       ><div>
         <b-row class="d-flex">
           <b-form-input hidden class="col-sm-1"></b-form-input>
@@ -85,7 +89,13 @@
 </template>
 
 <script>
+import api from "../../services/axios"
 export default {
+  props: {
+    idBillPay: {
+      type: String,
+    },
+  },
   data() {
     return {
       dataBillPayable: {
@@ -103,6 +113,18 @@ export default {
         descricao: "",
       },
     }
+  },
+  methods: {
+    async getBillForPay(idBill) {
+      const { data } = await api.get(`/bills/${idBill}`)
+      console.log(data, "Funcionando")
+      return data
+    },
+  },
+  watch: {
+    idBillPay() {
+      this.getBillForPay(this.idBillPay)
+    },
   },
 }
 </script>

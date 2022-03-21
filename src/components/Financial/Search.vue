@@ -124,14 +124,14 @@
         </table>
       </b-card>
     </div>
-    <ModalMakePayment />
+    <ModalMakePayment :idBillPay="idBillPay" />
   </div>
 </template>
 
 <script>
 import api from "../../services/axios"
 import moment from "moment"
-import ModalMakePayment from "./baixar-contas.vue"
+import ModalMakePayment from "./Pay-The-Bills.vue"
 export default {
   components: {
     ModalMakePayment,
@@ -150,6 +150,7 @@ export default {
       endDate: "",
       tabIndex: 0,
       dataBillForReceiveAndPayable: [],
+      idBillPay: "",
     }
   },
   methods: {
@@ -178,7 +179,6 @@ export default {
           "dataBillForReceiveAndPayable",
           this.dataBillForReceiveAndPayable
         )
-        console.log(this.dataBillForReceiveAndPayable)
       } catch (error) {
         console.log(error)
       }
@@ -209,8 +209,8 @@ export default {
     },
 
     openModalPay(idBill) {
+      this.idBillPay = idBill
       this.$bvModal.show("modalMakePayment")
-      console.log(idBill, "id da contaaaaaaaaaa")
     },
 
     teste() {
