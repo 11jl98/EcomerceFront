@@ -7,7 +7,11 @@
       title="Baixar contas"
       ><div>
         <b-row class="d-flex">
-          <b-form-input hidden class="col-sm-1"></b-form-input>
+          <b-form-input
+            hidden
+            class="col-sm-1"
+            v-model="dataBillReduction.id"
+          ></b-form-input>
 
           <b-form-group
             id="input-group-1"
@@ -16,7 +20,11 @@
             class="col-sm-12 col-md-6 col-lg-5 col-xl-4"
             size="sm"
           >
-            <b-form-input type="number" size="sm"></b-form-input>
+            <b-form-input
+              type="number"
+              size="sm"
+              v-model="dataBillReduction.valorPago"
+            ></b-form-input>
           </b-form-group>
 
           <b-form-group
@@ -26,7 +34,12 @@
             class="col-sm-12 col-md-6 col-lg-6 col-xl-4"
             size="sm"
           >
-            <b-form-input disabled size="sm"></b-form-input>
+            <b-form-input
+              disabled
+              size="sm"
+              v-model="dataBillReduction.valorTotal"
+              type="number"
+            ></b-form-input>
           </b-form-group>
 
           <b-form-group
@@ -35,7 +48,12 @@
             label-for="input-1"
             class="col-sm-12 col-md-6 col-lg-6 col-xl-4"
           >
-            <b-form-input disabled size="sm"></b-form-input>
+            <b-form-input
+              disabled
+              size="sm"
+              v-model="dataBillReduction.valorRestante"
+              type="number"
+            ></b-form-input>
           </b-form-group>
 
           <b-form-group
@@ -44,7 +62,12 @@
             label-for="input-1"
             class="col-sm-6"
           >
-            <b-form-input type="date" disabled size="sm"></b-form-input>
+            <b-form-input
+              type="date"
+              disabled
+              size="sm"
+              v-model="dataBillReduction.data"
+            ></b-form-input>
           </b-form-group>
 
           <b-form-group
@@ -54,7 +77,12 @@
             class="col-sm-6"
             size="sm"
           >
-            <b-form-input type="date" disabled size="sm"></b-form-input>
+            <b-form-input
+              type="date"
+              disabled
+              size="sm"
+              v-model="dataBillReduction.dataPagamento"
+            ></b-form-input>
           </b-form-group>
 
           <b-form-group
@@ -90,6 +118,7 @@
 
 <script>
 import api from "../../services/axios"
+import moment from "moment"
 export default {
   props: {
     idBillPay: {
@@ -98,7 +127,7 @@ export default {
   },
   data() {
     return {
-      dataBillPayable: {
+      dataBillReduction: {
         id: "",
         tipo: "saida",
         idFornecedor: "",
@@ -117,8 +146,28 @@ export default {
   methods: {
     async getBillForPay(idBill) {
       const { data } = await api.get(`/bills/${idBill}`)
-      console.log(data, "Funcionando")
+      Object.assign(this.dataBillReduction, data)
+      this.formatDate()
+
+      console.log(this.dataBillReduction, "Funcionando")
       return data
+    },
+
+    formatDate() {
+      this.dataBillReduction.data = moment(this.dataBillReduction.data).format(
+        "YYYY-MM-DD"
+      )
+
+      if (
+        this.dataBillReduction.dataPagamento === "Invalid date" ||
+        this.dataBillReduction.dataPagamento === null
+      ) {
+        this.dataBillReduction.dataPagamento = ""
+      } else {
+        this.dataBillReduction.dataPagamento = moment(
+          this.dataBillReduction.dataPagamento
+        ).format("YYYY-MM-DD")
+      }
     },
   },
   watch: {
