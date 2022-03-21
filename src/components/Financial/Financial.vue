@@ -129,8 +129,8 @@
 </template>
 
 <script>
-import CadastroContasReceber from "./Cadastro-Contas-Receber.vue"
-import CadastroContasPagar from "./Cadastro-Contas-Pagar.vue"
+import CadastroContasReceber from "./Registration-accounts-Receivable.vue"
+import CadastroContasPagar from "./Registration-accounts-Payable.vue"
 import Search from "./Search.vue"
 
 export default {
