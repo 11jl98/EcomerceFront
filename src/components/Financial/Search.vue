@@ -98,14 +98,14 @@
                 style="background-color: #56aafe; border: none !important"
                 @click="alterTabIndexAndSearchBill(bill.id)"
               >
-                <b-icon-check scale="2"></b-icon-check>
+                <b-icon-pencil-square scale="1.2"></b-icon-pencil-square>
               </b-button>
               <b-button
                 size="sm"
                 variant="danger"
                 style="border: none !important"
               >
-                <b-icon-trash scale="0.7"></b-icon-trash
+                <b-icon-trash scale="1.2"></b-icon-trash
               ></b-button>
 
               <b-button
