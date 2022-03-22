@@ -697,9 +697,9 @@
 </template>
 
 <script>
-import api from "../../services/axios";
-import moment from "moment";
-import ModalPagamento from "../Sale/Modal-Forma-Pagamento.vue";
+import api from "../../services/axios"
+import moment from "moment"
+import ModalPagamento from "../Sale/Modal-Forma-Pagamento.vue"
 export default {
   components: {
     ModalPagamento,
@@ -748,147 +748,147 @@ export default {
       intervaloDias: 0,
       allPaymentsTypes: [],
       allPaymentsByIdSale: [],
-    };
+    }
   },
   methods: {
     proximoCardDadosVenda() {
-      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse");
-      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse2");
+      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse")
+      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse2")
     },
     proximoCardAdicionarProdutos() {
-      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse2");
-      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse3");
+      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse2")
+      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse3")
     },
     proximoCardFinanceiro() {
-      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse3");
+      this.$root.$emit("bv::toggle::collapse", "navbar-toggle-collapse3")
     },
     clearSale() {
-      this.comissao = "";
-      this.dataSale.id = "";
-      this.dataSale.idCliente = "";
-      this.dataSale.idFuncionario = "";
-      this.dataSale.dadosAdicionais = "";
-      this.dataSale.status = "Orçamento";
-      this.productsTable = [];
-      this.clearDataProductsSale();
-      this.clearDataPaymentsSale();
+      this.comissao = ""
+      this.dataSale.id = ""
+      this.dataSale.idCliente = ""
+      this.dataSale.idFuncionario = ""
+      this.dataSale.dadosAdicionais = ""
+      this.dataSale.status = "Orçamento"
+      this.productsTable = []
+      this.clearDataProductsSale()
+      this.clearDataPaymentsSale()
     },
     clearDataProductsSale() {
-      this.productsSelected = {};
-      this.productsSales.idFornecedor = "";
-      this.productsSales.quantidade = "";
-      this.productsSales.valorTotal = "";
-      this.productsSales.dadosAdicionais = "";
+      this.productsSelected = {}
+      this.productsSales.idFornecedor = ""
+      this.productsSales.quantidade = ""
+      this.productsSales.valorTotal = ""
+      this.productsSales.dadosAdicionais = ""
     },
     clearDataPaymentsSale() {
-      this.dataBillBySale.idCliente = "";
-      this.dataBillBySale.idFuncionario = "";
-      this.dataBillBySale.idFormaPagamento = "";
-      this.dataBillBySale.idVenda = "";
-      this.dataBillBySale.valorTotal = "";
-      this.dataBillBySale.valorPago = "";
-      this.dataBillBySale.valorRestante = "";
-      this.dataBillBySale.data = "";
-      this.totalParcelas = 1;
-      this.intervaloDias = 0;
-      this.allPaymentsByIdSale = [];
+      this.dataBillBySale.idCliente = ""
+      this.dataBillBySale.idFuncionario = ""
+      this.dataBillBySale.idFormaPagamento = ""
+      this.dataBillBySale.idVenda = ""
+      this.dataBillBySale.valorTotal = ""
+      this.dataBillBySale.valorPago = ""
+      this.dataBillBySale.valorRestante = ""
+      this.dataBillBySale.data = ""
+      this.totalParcelas = 1
+      this.intervaloDias = 0
+      this.allPaymentsByIdSale = []
     },
 
     async closeSale() {
-      this.dataSale.status = "Venda";
-      this.UpdateSale();
+      this.dataSale.status = "Venda"
+      this.UpdateSale()
     },
 
     async editSale() {
-      this.dataSale.status = "Orçamento";
-      this.UpdateSale();
+      this.dataSale.status = "Orçamento"
+      this.UpdateSale()
     },
 
     async deleteProductFromTableById(idVenda) {
       try {
-        await api.delete(`/products-of-sale/${idVenda}`);
-        this.getProductSale();
+        await api.delete(`/products-of-sale/${idVenda}`)
+        this.getProductSale()
         return this.$toast.open({
           message: "Produto removido da venda!",
           type: "warning",
-        });
+        })
       } catch (error) {
         return this.$toast.open({
           message: `${error.response.data.message}`,
           type: "warning",
-        });
+        })
       }
     },
 
     async getProductById(idProduct) {
-      const { data } = await api.get(`/products/${idProduct}`);
-      this.productsSelected = data;
-      return data;
+      const { data } = await api.get(`/products/${idProduct}`)
+      this.productsSelected = data
+      return data
     },
 
     async saveOrUpdateSale() {
-      if (this.dataSale.id !== "") return this.UpdateSale();
-      this.saveSale();
+      if (this.dataSale.id !== "") return this.UpdateSale()
+      this.saveSale()
     },
 
     async saveSale() {
       try {
-        const { data } = await api.post(`/sales`, this.dataSale);
-        this.dataSale.id = data.id;
+        const { data } = await api.post(`/sales`, this.dataSale)
+        this.dataSale.id = data.id
 
         return this.$toast.open({
           message: "Venda salva com Sucesso",
           type: "success",
-        });
+        })
       } catch (error) {
-        console.log(error.response);
+        console.log(error.response)
       }
     },
 
     async saveProductSale() {
       try {
-        this.productsSales.idVenda = this.dataSale.id;
+        this.productsSales.idVenda = this.dataSale.id
 
         const { data } = await api.post("/products-of-sale", {
           ...this.productsSales,
           valorTotal:
             this.productsSales.quantidade * this.productsSales.valorTotal,
-        });
-        this.productsSales.id = data.id;
+        })
+        this.productsSales.id = data.id
         if (this.dataSale.id !== "") {
-          this.getProductSale();
-          this.clearDataProductsSale();
+          this.getProductSale()
+          this.clearDataProductsSale()
         }
         return this.$toast.open({
           message: "Produto adicionado na venda!",
           type: "success",
-        });
+        })
       } catch (error) {
-        console.log(error.response);
+        console.log(error.response)
         return this.$toast.open({
           message: `${error.response.data.message}`,
           type: "warning",
-        });
+        })
       }
     },
 
     async getProductSale() {
       try {
-        const { data } = await api.get(`/sales/${this.productsSales.idVenda}`);
-        this.productsTable = data.products;
-        return data;
+        const { data } = await api.get(`/sales/${this.productsSales.idVenda}`)
+        this.productsTable = data.products
+        return data
       } catch (error) {
-        console.log(error.response);
+        console.log(error.response)
       }
     },
 
     async getAllPaymentsByIdSale() {
       try {
-        const { data } = await api.get(`/sales/${this.dataSale.id}`);
-        this.allPaymentsByIdSale = data.bills;
-        return data;
+        const { data } = await api.get(`/sales/${this.dataSale.id}`)
+        this.allPaymentsByIdSale = data.bills
+        return data
       } catch (error) {
-        console.log(error.response);
+        console.log(error.response)
       }
     },
 
@@ -897,84 +897,84 @@ export default {
         const { data } = await api.put(
           `/sales/${this.dataSale.id}`,
           this.dataSale
-        );
+        )
         this.$toast.open({
           message: "Pedido atualizado com sucesso!",
           type: "info",
-        });
-        return data;
+        })
+        return data
       } catch (error) {
-        console.log(error.response.data.message);
+        console.log(error.response.data.message)
         return this.$toast.open({
           message: `${error.response.data.message}`,
           type: "warning",
-        });
+        })
       }
     },
     async listCustomersSelectBox() {
       try {
-        const { data } = await api.get("/customers/combobox");
-        this.dataCustomers = data.data;
+        const { data } = await api.get("/customers/combobox")
+        this.dataCustomers = data.data
       } catch (error) {
-        console.log(error.response);
+        console.log(error.response)
       }
     },
 
     async listEmployeesSelectBox() {
       try {
-        const { data } = await api.get("/employees/combobox/fill");
-        this.dataEmployee = data.data;
+        const { data } = await api.get("/employees/combobox/fill")
+        this.dataEmployee = data.data
       } catch (error) {
-        console.log(error.response);
+        console.log(error.response)
       }
     },
 
     readComissao(dataEmployee) {
-      this.comissao = dataEmployee.comissao;
-      this.dataBillBySale.idFuncionario = this.dataSale.idFuncionario;
+      this.comissao = dataEmployee.comissao
+      this.dataBillBySale.idFuncionario = this.dataSale.idFuncionario
     },
 
     readProducts() {
-      this.productUnitaryValue = this.productsSelected.valorVenda;
-      this.productsSales.valorTotal = this.productUnitaryValue;
-      this.productsSales.nomeProduto = this.productsSelected.nome;
-      this.productsSales.idProduto = this.productsSelected.id;
+      this.productUnitaryValue = this.productsSelected.valorVenda
+      this.productsSales.valorTotal = this.productUnitaryValue
+      this.productsSales.nomeProduto = this.productsSelected.nome
+      this.productsSales.idProduto = this.productsSelected.id
     },
 
     async getProdutos() {
-      const { data } = await api.get("/products");
-      this.products = data.data;
+      const { data } = await api.get("/products")
+      this.products = data.data
     },
 
     async getProviders() {
-      const { data } = await api.get("/providers");
-      this.providers = data.data;
+      const { data } = await api.get("/providers")
+      this.providers = data.data
     },
 
     openModalFormaPagamento() {
-      this.$bvModal.show("modalFormaPagamento");
+      this.$bvModal.show("modalFormaPagamento")
     },
 
     async listPaymentesTypesSelectBox() {
-      const { data } = await api.get("/payments/combobox");
-      this.allPaymentsTypes = data;
+      const { data } = await api.get("/payments/combobox")
+      this.allPaymentsTypes = data
     },
 
     async makingThePayment() {
       try {
         if (this.dataSale.id !== "") {
-          const array = [];
+          const array = []
           const valoTotalPedido = this.productsTable.reduce((total, valor) => {
-            return total + parseFloat(valor.valorTotal);
-          }, 0);
-          const valorPorDuplicata = valoTotalPedido / this.totalParcelas;
+            return total + parseFloat(valor.valorTotal)
+          }, 0)
+          const valorPorDuplicata = valoTotalPedido / this.totalParcelas
           for (let i = 0; i < this.totalParcelas; i++) {
             const dataVencimento =
               i == 0
                 ? this.dataBillBySale.data
                 : moment(dataVencimento)
                     .add(this.intervaloDias, "days")
-                    .format("YYYY-MM-DD");
+                    .format("YYYY-MM-DD")
             array.push({
               tipo: "entrada",
               idCliente: this.dataSale.idCliente,
@@ -985,45 +985,45 @@ export default {
               valorPago: "",
               valorRestante: "",
               data: dataVencimento,
-            });
-            await api.post("/bills", array[i]);
+            })
+            await api.post("/bills", array[i])
           }
-          this.getAllPaymentsByIdSale();
+          this.getAllPaymentsByIdSale()
           return this.$toast.open({
             message: "Parcela adicionada na venda!",
             type: "success",
-          });
+          })
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
     async deletePaymentInstallment(id) {
       try {
-        await api.delete(`/bills/${id}`);
-        this.getAllPaymentsByIdSale();
+        await api.delete(`/bills/${id}`)
+        this.getAllPaymentsByIdSale()
         return this.$toast.open({
           message: "Parcela removida da venda!",
           type: "warning",
-        });
+        })
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
   },
   mounted() {
-    this.listCustomersSelectBox();
-    this.listEmployeesSelectBox();
-    this.getProdutos();
-    this.getProviders();
-    this.listPaymentesTypesSelectBox();
+    this.listCustomersSelectBox()
+    this.listEmployeesSelectBox()
+    this.getProdutos()
+    this.getProviders()
+    this.listPaymentesTypesSelectBox()
   },
   filters: {
     moment(data) {
-      return moment(data).format("DD/MM/YYYY");
+      return moment(data).format("DD/MM/YYYY")
     },
   },
-};
+}
 </script>
 
 <style scoped>

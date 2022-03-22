@@ -66,72 +66,70 @@
         </b-form-group>
       </b-row>
     </div>
-    <div>
-      <b-card>
-        <table class="table table-responsive table-sm responsive">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>CNPJ/CPF</th>
-              <th>Data Vencimento</th>
-              <th>Valor Total</th>
-              <th>Valor Pago</th>
-              <th>Valor Restante</th>
-              <th>Descrição</th>
-              <th style="text-align: center">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="bill in dataBill" :key="bill.id">
-              <td>
-                {{ bill.nome || bill.nomeFantasia }}
-              </td>
-              <td>{{ bill.cpfCnpj || bill.cnpjFornecedor }}</td>
-              <td>{{ bill.data | moment }}</td>
-              <td>{{ bill.valorTotal }}</td>
-              <td>{{ bill.valorPago }}</td>
-              <td>{{ bill.valorRestante }}</td>
-              <td>{{ bill.descricao }}</td>
-              <td style="text-align: center">
-                <b-button
-                  size="sm"
-                  class="mr-2"
-                  style="background-color: #56aafe; border: none !important"
-                  @click="alterTabIndexAndSearchBill(bill.id)"
-                >
-                  <b-icon-check scale="2"></b-icon-check>
-                </b-button>
-                <b-button
-                  size="sm"
-                  variant="danger"
-                  style="border: none !important"
-                >
-                  <b-icon-trash scale="0.7"></b-icon-trash
-                ></b-button>
+    <div class="col-sm-12" style="margin-top: 31px">
+      <table class="table table-responsive col-sm-12">
+        <thead style="background-color: #56aafe !important; color: white">
+          <tr>
+            <th>Nome</th>
+            <th>CNPJ/CPF</th>
+            <th>Data Vencimento</th>
+            <th>Valor Total</th>
+            <th>Valor Pago</th>
+            <th>Valor Restante</th>
+            <th>Descrição</th>
+            <th style="text-align: center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="bill in dataBill" :key="bill.id">
+            <td>
+              {{ bill.nome || bill.nomeFantasia }}
+            </td>
+            <td>{{ bill.cpfCnpj || bill.cnpjFornecedor }}</td>
+            <td>{{ bill.data | moment }}</td>
+            <td>{{ bill.valorTotal }}</td>
+            <td>{{ bill.valorPago }}</td>
+            <td>{{ bill.valorRestante }}</td>
+            <td>{{ bill.descricao }}</td>
+            <td style="text-align: center">
+              <b-button
+                size="sm"
+                class="mr-2"
+                style="background-color: #56aafe; border: none !important"
+                @click="alterTabIndexAndSearchBill(bill.id)"
+              >
+                <b-icon-check scale="2"></b-icon-check>
+              </b-button>
+              <b-button
+                size="sm"
+                variant="danger"
+                style="border: none !important"
+              >
+                <b-icon-trash scale="0.7"></b-icon-trash
+              ></b-button>
 
-                <b-button
-                  size="sm"
-                  variant="warning"
-                  style="border: none !important; color: white"
-                  class="ml-2"
-                  @click="openModalPay(bill.id)"
-                >
-                  Baixar</b-button
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </b-card>
+              <b-button
+                size="sm"
+                variant="warning"
+                style="border: none !important; color: white"
+                class="ml-2"
+                @click="openModalPay(bill.id)"
+              >
+                Baixar</b-button
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <ModalMakePayment :idBillPay="idBillPay" />
   </div>
 </template>
 
 <script>
-import api from "../../services/axios";
-import moment from "moment";
-import ModalMakePayment from "./Modal-Pay-The-Bills.vue";
+import api from "../../services/axios"
+import moment from "moment"
+import ModalMakePayment from "./Modal-Pay-The-Bills.vue"
 export default {
   components: {
     ModalMakePayment,
@@ -151,36 +149,36 @@ export default {
       tabIndex: 0,
       dataBillForReceiveAndPayable: [],
       idBillPay: "",
-    };
+    }
   },
   methods: {
     async readBills() {
       try {
         const { data } = await api.get(
           `/bills?q=${this.typeText}&type=${this.tipo}&startDate=${this.startDate}&endDate=${this.endDate}`
-        );
-        this.dataBill = data.data;
+        )
+        this.dataBill = data.data
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
 
     alterTabIndexAndSearchBill(idBill) {
-      this.alterValueTabIndex();
-      this.searchBillToUpdate(idBill);
-      this.dropdownCardBillReceive();
+      this.alterValueTabIndex()
+      this.searchBillToUpdate(idBill)
+      this.dropdownCardBillReceive()
     },
 
     async searchBillToUpdate(idBill) {
       try {
-        const { data } = await api.get(`/bills/${idBill}`);
-        this.dataBillForReceiveAndPayable = data;
+        const { data } = await api.get(`/bills/${idBill}`)
+        this.dataBillForReceiveAndPayable = data
         this.$emit(
           "dataBillForReceiveAndPayable",
           this.dataBillForReceiveAndPayable
-        );
+        )
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
 
@@ -190,39 +188,39 @@ export default {
           .display === "none" &&
         this.tipo === "entrada"
       ) {
-        document.querySelector(".tamanhoCardsContasReceber").click();
+        document.querySelector(".tamanhoCardsContasReceber").click()
       } else if (
         document.getElementById("navbar-toggle-collapsePagar").style.display ===
           "none" &&
         this.tipo === "saida"
       ) {
-        document.querySelector(".tamanhoCardsContasPagar").click();
+        document.querySelector(".tamanhoCardsContasPagar").click()
       }
     },
 
     alterValueTabIndex() {
       try {
-        this.$emit("tabIndexFunction", this.tabIndex);
+        this.$emit("tabIndexFunction", this.tabIndex)
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
 
     openModalPay(idBill) {
-      this.idBillPay = idBill;
-      this.$bvModal.show("modalMakePayment");
+      this.idBillPay = idBill
+      this.$bvModal.show("modalMakePayment")
     },
 
     teste() {
-      console.log("testeeeeeeeeeee");
+      console.log("testeeeeeeeeeee")
     },
   },
   filters: {
     moment: function (date) {
-      return moment(date).format("DD/MM/YYYY");
+      return moment(date).format("DD/MM/YYYY")
     },
   },
-};
+}
 </script>
 
 <style>
