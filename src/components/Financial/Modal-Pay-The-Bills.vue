@@ -13,7 +13,7 @@
           <b-form-input
             hidden
             class="col-sm-1"
-            v-model="dataBillReduction.id"
+            v-model="billReductionData.id"
           ></b-form-input>
 
           <b-form-group
@@ -26,7 +26,8 @@
             <b-form-input
               type="number"
               size="sm"
-              v-model="dataBillReduction.valorPago"
+              v-model="billReductionData.valorPago"
+              @keyup="changeValueUsingKeyUpEvent"
             ></b-form-input>
           </b-form-group>
 
@@ -40,7 +41,7 @@
             <b-form-input
               disabled
               size="sm"
-              v-model="dataBillReduction.valorTotal"
+              v-model="billReductionData.valorTotal"
               type="number"
             ></b-form-input>
           </b-form-group>
@@ -54,7 +55,7 @@
             <b-form-input
               disabled
               size="sm"
-              v-model="dataBillReduction.valorRestante"
+              v-model="billReductionData.valorRestante"
               type="number"
             ></b-form-input>
           </b-form-group>
@@ -69,7 +70,7 @@
               type="date"
               disabled
               size="sm"
-              v-model="dataBillReduction.data"
+              v-model="billReductionData.data"
             ></b-form-input>
           </b-form-group>
 
@@ -84,7 +85,7 @@
               type="date"
               disabled
               size="sm"
-              v-model="dataBillReduction.dataPagamento"
+              v-model="billReductionData.dataPagamento"
             ></b-form-input>
           </b-form-group>
 
@@ -120,7 +121,12 @@
         <b-button size="sm" variant="danger" @click="cancel()">
           Cancelar
         </b-button>
-        <b-button size="sm" variant="warning" style="color: white">
+        <b-button
+          size="sm"
+          variant="warning"
+          style="color: white"
+          @click="payTheBills"
+        >
           Realizar Baixa
         </b-button>
       </template>
@@ -139,7 +145,7 @@ export default {
   },
   data() {
     return {
-      dataBillReduction: {
+      billReductionData: {
         id: "",
         tipo: "saida",
         idFornecedor: "",
@@ -153,32 +159,50 @@ export default {
         dataPagamento: null,
         descricao: "",
       },
+      payment: {
+        id: "",
+        price: "",
+        description: "",
+        datePayment: Date(),
+      },
     };
   },
   methods: {
     async getBillForPay(idBill) {
       const { data } = await api.get(`/bills/${idBill}`);
-      Object.assign(this.dataBillReduction, data);
+      Object.assign(this.billReductionData, data);
       this.formatDate();
-      console.log(this.dataBillReduction, "Funcionando");
+      console.log(this.billReductionData, "Funcionando");
       return data;
     },
 
+    async payTheBills() {
+      // const { data } = await api.post("/payment/", this.billReductionData);
+      console.log(this.payment.datePayment, "aqui pô");
+    },
+
     formatDate() {
-      this.dataBillReduction.data = moment(this.dataBillReduction.data).format(
+      this.billReductionData.data = moment(this.billReductionData.data).format(
         "YYYY-MM-DD"
       );
 
       if (
-        this.dataBillReduction.dataPagamento === "Invalid date" ||
-        this.dataBillReduction.dataPagamento === null
+        this.billReductionData.dataPagamento === "Invalid date" ||
+        this.billReductionData.dataPagamento === null
       ) {
-        this.dataBillReduction.dataPagamento = "";
+        this.billReductionData.dataPagamento = "";
       } else {
-        this.dataBillReduction.dataPagamento = moment(
-          this.dataBillReduction.dataPagamento
+        this.billReductionData.dataPagamento = moment(
+          this.billReductionData.dataPagamento
         ).format("YYYY-MM-DD");
       }
+    },
+
+    changeValueUsingKeyUpEvent() {
+      const changedValue =
+        this.billReductionData.valorTotal - this.billReductionData.valorPago;
+
+      this.billReductionData.valorRestante = changedValue;
     },
   },
   watch: {

@@ -131,7 +131,7 @@
 <script>
 import api from "../../services/axios";
 import moment from "moment";
-import ModalMakePayment from "./Pay-The-Bills.vue";
+import ModalMakePayment from "./Modal-Pay-The-Bills.vue";
 export default {
   components: {
     ModalMakePayment,

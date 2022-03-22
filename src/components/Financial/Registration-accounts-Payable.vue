@@ -333,6 +333,13 @@ export default {
         ).format("YYYY-MM-DD");
       else return;
     },
+
+    changeValueUsingKeyUpEvent() {
+      const changedValue =
+        this.dataBillReceive.valorTotal - this.dataBillReceive.valorPago;
+
+      this.dataBillReceive.valorRestante = changedValue;
+    },
   },
   mounted() {
     this.getProviderForSelectBox();

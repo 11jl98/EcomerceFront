@@ -116,6 +116,7 @@
                 <b-form-input
                   v-model="dataBillReceive.valorPago"
                   type="number"
+                  @keyup="changeValueUsingKeyUpEvent"
                 ></b-form-input>
               </b-form-group>
 
@@ -282,9 +283,9 @@ export default {
       this.dataBillReceive.idFuncionario = "";
       this.dataBillReceive.idFormaPagamento = "";
       this.dataBillReceive.idVenda = "";
-      this.dataBillReceive.valorTotal = "0.00";
-      this.dataBillReceive.valorPago = "0.00";
-      this.dataBillReceive.valorRestante = "0.00";
+      this.dataBillReceive.valorTotal = "";
+      this.dataBillReceive.valorPago = "";
+      this.dataBillReceive.valorRestante = "";
       this.dataBillReceive.data = "";
       this.dataBillReceive.descricao = "";
     },
@@ -352,6 +353,13 @@ export default {
           this.searchAccountsReceive.dataPagamento
         ).format("YYYY-MM-DD");
       else return;
+    },
+
+    changeValueUsingKeyUpEvent() {
+      const changedValue =
+        this.dataBillReceive.valorTotal - this.dataBillReceive.valorPago;
+        
+      this.dataBillReceive.valorRestante = changedValue;
     },
   },
 
