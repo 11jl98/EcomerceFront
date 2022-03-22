@@ -191,6 +191,8 @@ export default {
     },
 
     async payTheBills() {
+      this.assigningValuesToAnotherVariable()
+
       const { data } = await api.post("/bills/payment", this.payment)
 
       this.billReductionData.valorRestante =
@@ -198,10 +200,16 @@ export default {
         parseFloat(this.LancarValor)
 
       this.LancarValor = "0.00"
-      console.log(data, "opaaaaaa")
+
+      return data
     },
 
-    
+    assigningValuesToAnotherVariable() {
+      this.payment.id = this.billReductionData.id
+      this.payment.price = this.LancarValor
+      this.payment.datePayment = moment(new Date()).format("YYYY-MM-DD HH:mm")
+      this.payment.description = this.billReductionData.descricao
+    },
 
     formatDate() {
       this.billReductionData.data = moment(this.billReductionData.data).format(
