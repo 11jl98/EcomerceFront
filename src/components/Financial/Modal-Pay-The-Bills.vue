@@ -26,7 +26,7 @@
             <b-form-input
               type="number"
               size="sm"
-              v-model="LancarValor"
+              v-model="launchValue"
             ></b-form-input>
           </b-form-group>
 
@@ -149,8 +149,8 @@
 </template>
 
 <script>
-import api from "../../services/axios"
-import moment from "moment"
+import api from "../../services/axios";
+import moment from "moment";
 export default {
   props: {
     idBillPay: {
@@ -179,67 +179,69 @@ export default {
         description: "",
         datePayment: "",
       },
-      LancarValor: "0.00",
-    }
+      launchValue: "0.00",
+    };
   },
   methods: {
     async getBillForPay(idBill) {
-      const { data } = await api.get(`/bills/${idBill}`)
-      Object.assign(this.billReductionData, data)
-      this.formatDate()
-      return data
+      const { data } = await api.get(`/bills/${idBill}`);
+      Object.assign(this.billReductionData, data);
+      console.log(data, "meu ovooooooooooooo");
+      this.formatDate();
+      return data;
     },
 
     async payTheBills() {
-      this.assigningValuesToAnotherVariable()
+      this.assigningValuesToAnotherVariable();
 
-      const { data } = await api.post("/bills/payment", this.payment)
+      const { data } = await api.post("/bills/payment", this.payment);
 
       this.billReductionData.valorRestante =
         parseFloat(this.billReductionData.valorRestante) -
-        parseFloat(this.LancarValor)
+        parseFloat(this.launchValue);
 
-      this.LancarValor = "0.00"
+      this.launchValue = "0.00";
 
-      return data
+      return data;
     },
 
     assigningValuesToAnotherVariable() {
-      this.payment.id = this.billReductionData.id
-      this.payment.price = this.LancarValor
-      this.payment.datePayment = moment(new Date()).format("YYYY-MM-DD HH:mm")
-      this.payment.description = this.billReductionData.descricao
+      this.payment.id = this.billReductionData.id;
+      this.payment.price = this.launchValue;
+      this.payment.datePayment = moment(new Date()).format("YYYY-MM-DD HH:mm");
+      this.payment.description = this.billReductionData.descricao;
     },
 
     formatDate() {
       this.billReductionData.data = moment(this.billReductionData.data).format(
         "YYYY-MM-DD"
-      )
+      );
       if (
         this.billReductionData.dataPagamento === "Invalid date" ||
         this.billReductionData.dataPagamento === null
       ) {
-        this.billReductionData.dataPagamento = ""
+        this.billReductionData.dataPagamento = "";
       } else {
         this.billReductionData.dataPagamento = moment(
           this.billReductionData.dataPagamento
-        ).format("YYYY-MM-DD")
+        ).format("YYYY-MM-DD");
       }
     },
 
     changeValueUsingKeyUpEvent() {
       const changedValue =
-        this.billReductionData.valorTotal - this.billReductionData.valorPago
+        this.billReductionData.valorTotal - this.billReductionData.valorPago;
+        
 
-      this.billReductionData.valorRestante = changedValue
+      this.billReductionData.valorRestante = changedValue;
     },
   },
   watch: {
     idBillPay() {
-      this.getBillForPay(this.idBillPay)
+      this.getBillForPay(this.idBillPay);
     },
   },
-}
+};
 </script>
 
 <style>

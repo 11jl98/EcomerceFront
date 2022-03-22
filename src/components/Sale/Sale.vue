@@ -739,9 +739,9 @@ export default {
         idFuncionario: "",
         idFormaPagamento: "",
         idVenda: "",
-        valorTotal: "",
-        valorPago: "",
-        valorRestante: "",
+        valorTotal: "0.00",
+        valorPago: "0.00",
+        valorRestante: "0.00",
         data: "",
       },
       totalParcelas: 1,
@@ -982,8 +982,8 @@ export default {
               idFormaPagamento: this.dataBillBySale.idFormaPagamento,
               idVenda: this.dataSale.id,
               valorTotal: valorPorDuplicata,
-              valorPago: "",
-              valorRestante: "",
+              valorPago: "0.00",
+              valorRestante: "0.00",
               data: dataVencimento,
             })
             await api.post("/bills", array[i])
