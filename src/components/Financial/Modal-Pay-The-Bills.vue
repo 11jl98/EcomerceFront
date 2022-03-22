@@ -163,7 +163,7 @@ export default {
         id: "",
         price: "",
         description: "",
-        datePayment: Date(),
+        datePayment: "",
       },
     };
   },
@@ -178,6 +178,7 @@ export default {
 
     async payTheBills() {
       // const { data } = await api.post("/payment/", this.billReductionData);
+      this.payment.datePayment = new Date();
       console.log(this.payment.datePayment, "aqui pô");
     },
 
