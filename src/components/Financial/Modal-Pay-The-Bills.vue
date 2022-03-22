@@ -18,16 +18,30 @@
 
           <b-form-group
             id="input-group-1"
-            label="Vl. Pago"
+            label="Lançar Valor"
             label-for="input-1"
-            class="col-sm-12 col-md-6 col-lg-5 col-xl-4"
+            class="col-sm-12 col-md-6 col-lg-4 col-xl-3"
             size="sm"
           >
             <b-form-input
               type="number"
               size="sm"
+              v-model="LancarValor"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-1"
+            label="Vl. Já Pago"
+            label-for="input-1"
+            class="col-sm-12 col-md-6 col-lg-5 col-xl-3"
+            size="sm"
+          >
+            <b-form-input
+              type="number"
+              size="sm"
+              disabled
               v-model="billReductionData.valorPago"
-              @keyup="changeValueUsingKeyUpEvent"
             ></b-form-input>
           </b-form-group>
 
@@ -35,7 +49,7 @@
             id="input-group-1"
             label="Vl. Total"
             label-for="input-1"
-            class="col-sm-12 col-md-6 col-lg-6 col-xl-4"
+            class="col-sm-12 col-md-6 col-lg-6 col-xl-3"
             size="sm"
           >
             <b-form-input
@@ -50,7 +64,7 @@
             id="input-group-1"
             label="VL. Restante"
             label-for="input-1"
-            class="col-sm-12 col-md-6 col-lg-6 col-xl-4"
+            class="col-sm-12 col-md-6 col-lg-6 col-xl-3"
           >
             <b-form-input
               disabled
@@ -135,8 +149,8 @@
 </template>
 
 <script>
-import api from "../../services/axios";
-import moment from "moment";
+import api from "../../services/axios"
+import moment from "moment"
 export default {
   props: {
     idBillPay: {
@@ -165,53 +179,59 @@ export default {
         description: "",
         datePayment: "",
       },
-    };
+      LancarValor: "0.00",
+    }
   },
   methods: {
     async getBillForPay(idBill) {
-      const { data } = await api.get(`/bills/${idBill}`);
-      Object.assign(this.billReductionData, data);
-      this.formatDate();
-      console.log(this.billReductionData, "Funcionando");
-      return data;
+      const { data } = await api.get(`/bills/${idBill}`)
+      Object.assign(this.billReductionData, data)
+      this.formatDate()
+      return data
     },
 
     async payTheBills() {
-      // const { data } = await api.post("/payment/", this.billReductionData);
-      this.payment.datePayment = new Date();
-      console.log(this.payment.datePayment, "aqui pô");
+      this.payment.id = this.billReductionData.id
+      this.payment.price = this.LancarValor
+      this.payment.datePayment = moment(new Date()).format("YYYY-MM-DD HH:mm")
+      this.payment.description = this.billReductionData.descricao
+      const { data } = await api.post("/bills/payment", this.payment)
+      this.billReductionData.valorRestante =
+        parseFloat(this.billReductionData.valorRestante) -
+        parseFloat(this.LancarValor)
+
+      console.log(data, "opaaaaaa")
     },
 
     formatDate() {
       this.billReductionData.data = moment(this.billReductionData.data).format(
         "YYYY-MM-DD"
-      );
-
+      )
       if (
         this.billReductionData.dataPagamento === "Invalid date" ||
         this.billReductionData.dataPagamento === null
       ) {
-        this.billReductionData.dataPagamento = "";
+        this.billReductionData.dataPagamento = ""
       } else {
         this.billReductionData.dataPagamento = moment(
           this.billReductionData.dataPagamento
-        ).format("YYYY-MM-DD");
+        ).format("YYYY-MM-DD")
       }
     },
 
     changeValueUsingKeyUpEvent() {
       const changedValue =
-        this.billReductionData.valorTotal - this.billReductionData.valorPago;
+        this.billReductionData.valorTotal - this.billReductionData.valorPago
 
-      this.billReductionData.valorRestante = changedValue;
+      this.billReductionData.valorRestante = changedValue
     },
   },
   watch: {
     idBillPay() {
-      this.getBillForPay(this.idBillPay);
+      this.getBillForPay(this.idBillPay)
     },
   },
-};
+}
 </script>
 
 <style>

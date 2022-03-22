@@ -228,6 +228,7 @@ export default {
   color: white;
   user-select: none;
 }
+
 .containerCheckBoxFinancial {
   width: 100%;
   display: flex;
