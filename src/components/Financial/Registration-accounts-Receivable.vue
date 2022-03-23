@@ -304,7 +304,7 @@ export default {
           type: "success",
         });
       } catch (error) {
-        return BillService.validateBill(error, this.$toast);
+        return BillService.validateBillErro(error, this.$toast);
       }
     },
 

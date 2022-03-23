@@ -151,7 +151,7 @@
 <script>
 import api from "../../services/axios";
 import moment from "moment";
-// import BillService from "../../services/Bill/billService";
+import BillService from "../../services/Bill/billService";
 export default {
   props: {
     idBillPay: {
@@ -211,7 +211,7 @@ export default {
         this.$emit("changeSearchTotalAmount");
         return data;
       } catch (error) {
-        console.log(error);
+        return BillService.validateBillMessage(error, this.$toast);
       }
     },
 
