@@ -7,7 +7,7 @@
       :style="{ width: width }"
     >
       <b-card no-body>
-        <b-tabs card>
+        <b-tabs card v-model="tabIndex">
           <b-tab title="Cadastro de clientes">
             <b-card-text>
               <Customer :readOrEditCustomers="readOrEditCustomers" />
@@ -15,7 +15,9 @@
           </b-tab>
           <b-tab title="Pesquisa">
             <b-card-text>
-              <Search @readOrEditCustomers="readOrEditCustomers = $event"
+              <Search
+                @readOrEditCustomers="readOrEditCustomers = $event"
+                @alterTabIndex="tabIndex = $event"
             /></b-card-text>
           </b-tab>
         </b-tabs>
@@ -25,9 +27,9 @@
 </template>
 
 <script>
-import Customer from "./Customer.vue";
-import Search from "./Search.vue";
-import { mapState } from "vuex";
+import Customer from "./Customer.vue"
+import Search from "./Search.vue"
+import { mapState } from "vuex"
 
 export default {
   components: {
@@ -37,14 +39,15 @@ export default {
   data() {
     return {
       readOrEditCustomers: {},
-    };
+      tabIndex: 1,
+    }
   },
   computed: {
     ...mapState({
       width: (state) => state.widthCards,
     }),
   },
-};
+}
 </script>
 <style scoped>
 .container-geral {

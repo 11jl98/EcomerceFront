@@ -98,45 +98,47 @@
 </template>
 
 <script>
-import api from "../../services/axios";
+import api from "../../services/axios"
 export default {
   data() {
     return {
       readCustomer: [],
       textPesquisa: "",
-    };
+      tabIndex: 0,
+    }
   },
   methods: {
     async readCustomers() {
       try {
-        const { data } = await api.get("/customers?q=" + this.textPesquisa);
-        this.readCustomer = data.data;
-        console.log(data);
+        const { data } = await api.get("/customers?q=" + this.textPesquisa)
+        this.readCustomer = data.data
+        console.log(data)
       } catch (error) {
         return this.$toast.open({
           message: "Não foi possível salvar o cliente",
           type: "warning",
-        });
+        })
       }
     },
     async editCustomer(Customer) {
-      this.$emit("readOrEditCustomers", Customer);
-      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
-      console.log(Customer);
+      this.$emit("readOrEditCustomers", Customer)
+      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais")
+      this.$emit("alterTabIndex", this.tabIndex)
+      console.log(Customer)
     },
     async destroyCustomer(idCustomer) {
       try {
-        await api.delete(`/customers/${idCustomer}`);
+        await api.delete(`/customers/${idCustomer}`)
         return this.$toast.open({
           message: "Cliente excluido com sucesso",
           type: "success",
-        });
+        })
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
   },
-};
+}
 </script>
 <style scoped>
 .textoGrande {
