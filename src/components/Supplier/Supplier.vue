@@ -200,7 +200,7 @@
                 border: none !important;
                 background-color: #56aafe !important;
               "
-              @click="saveSupllier"
+              @click="saveAndUpdateSupplier"
               >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
             ></b-button>
             <b-button variant="light" @click="clear"
@@ -215,7 +215,7 @@
 </template>
 
 <script>
-import api from "../../services/axios";
+import api from "../../services/axios"
 
 export default {
   props: {
@@ -241,64 +241,66 @@ export default {
         telefone: "",
         celular: "",
       },
-    };
+    }
   },
   methods: {
     async saveSupllier() {
       try {
-        if (this.dadosSupplier.id !== "") {
-          this.updateSupplier();
-          this.clear();
-          return this.$toast.open({
-            message: "Fornecedor atualizado com sucesso",
-            type: "success",
-          });
-        }
-        const { data } = await api.post("/Providers", this.dadosSupplier);
-        this.dadosSupplier.id = data.id;
-        console.log(data);
-        this.clear();
+        const { data } = await api.post("/Providers", this.dadosSupplier)
+        this.dadosSupplier.id = data.id
+
         return this.$toast.open({
           message: "Fornecedor salvo com sucesso",
           type: "success",
-        });
+        })
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data.erros)
       }
     },
+    
     async updateSupplier() {
       try {
-        const id = this.dadosSupplier.id;
-        const { data } = await api.put(`/Providers/${id}`, this.dadosSupplier);
-        console.log(data);
-        return data;
+        const { data } = await api.put(
+          `/Providers/${this.dadosSupplier.id}`,
+          this.dadosSupplier
+        )
+        console.log(data, "aquiii")
+        this.dadosSupplier.id = data.id
+        return this.$toast.open({
+          message: "Fornecedor salvo com sucesso",
+          type: "success",
+        })
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
+
+    saveAndUpdateSupplier() {
+      this.dadosSupplier.id !== "" ? this.updateSupplier() : this.saveSupllier()
+    },
     clear() {
-      this.dadosSupplier = {};
+      this.dadosSupplier = {}
     },
   },
   watch: {
     dataSupplier() {
-      Object.assign(this.dadosSupplier, this.dataSupplier);
+      Object.assign(this.dadosSupplier, this.dataSupplier)
     },
   },
 
   computed: {
     maskCnpj() {
-      return "##.###.###/####-##";
+      return "##.###.###/####-##"
     },
 
     maskCelular() {
-      return "(##) #####-####";
+      return "(##) #####-####"
     },
     maskTelefone() {
-      return "(##) ####-####";
+      return "(##) ####-####"
     },
   },
-};
+}
 </script>
 <style scoped>
 </style>

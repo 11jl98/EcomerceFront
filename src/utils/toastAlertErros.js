@@ -1,4 +1,4 @@
-class BillService {
+class toastAlertErros {
   validateBillErro(error, toast) {
     const erro = error.response.data.erros;
 
@@ -20,4 +20,4 @@ class BillService {
   }
 }
 
-export default new BillService();
+export default new toastAlertErros();
