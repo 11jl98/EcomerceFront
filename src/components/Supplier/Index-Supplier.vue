@@ -7,7 +7,7 @@
       :style="{ width: width }"
     >
       <b-card no-body>
-        <b-tabs card>
+        <b-tabs v-model="tabIndex" card>
           <b-tab title="Cadastro de fornecedores">
             <b-card-text>
               <Supplier :dataSupplier="dataSupplier" />
@@ -15,7 +15,10 @@
           </b-tab>
           <b-tab title="Pesquisa">
             <b-card-text>
-              <Search @readOrEditSupplier="dataSupplier = $event" />
+              <Search
+                @readOrEditSupplier="dataSupplier = $event"
+                @alterTabIndex="tabIndex = $event"
+              />
             </b-card-text>
           </b-tab>
         </b-tabs>
@@ -37,6 +40,7 @@ export default {
   data() {
     return {
       dataSupplier: {},
+      tabIndex: 1,
     };
   },
   computed: {

@@ -60,10 +60,8 @@ export default {
     async readSchedule() {
       try {
         const { data } = await api.get("/schedules");
-        console.log(data);
         data.map((resultado) => {
           this.calendarOptions.events.push(this.CreateObject(resultado));
-          console.log(this.CreateObject(resultado));
         });
       } catch (error) {
         console.log(error);
@@ -87,7 +85,6 @@ export default {
 
     handleEventClick(clickInfo) {
       this.dataReadSchedule = clickInfo.event.id;
-      console.log(clickInfo.event);
       this.$bvModal.show("modal-Visualizar");
     },
 
@@ -97,7 +94,6 @@ export default {
   },
   watch: {
     dataSchedule() {
-      console.log(this.dataSchedule);
       this.calendarOptions.events.push(this.CreateObject(this.dataSchedule));
     },
   },

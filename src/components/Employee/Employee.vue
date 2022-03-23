@@ -338,7 +338,6 @@ export default {
       try {
         if (this.dadosFuncionario.id !== "") {
           this.updateFuncionario();
-          console.log(this.dadosFuncionario.id);
           return this.$toast.open({
             message: "Funcionário Atualizado com Sucesso",
             type: "success",
@@ -346,7 +345,6 @@ export default {
         }
         const { data } = await api.post("/employees", this.dadosFuncionario);
         this.dadosFuncionario.id = data.id;
-        console.log(data);
         this.clear();
         return this.$toast.open({
           message: "Funcionário salvo com Sucesso",
@@ -367,7 +365,6 @@ export default {
           `/employees/${id}`,
           this.dadosFuncionario
         );
-        console.log(data);
         return data;
       } catch (error) {
         console.log(error);

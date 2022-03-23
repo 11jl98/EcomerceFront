@@ -42,7 +42,7 @@
               <th>estoque</th>
               <th>Ações</th>
             </tr>
-             <tr v-for="products in dataProducts" :key="products.id">
+            <tr v-for="products in dataProducts" :key="products.id">
               <td
                 class="textoGrande"
                 v-b-popover.hover.top="{
@@ -50,7 +50,7 @@
                   content: products.nome,
                 }"
               >
-              {{products.nome}}
+                {{ products.nome }}
               </td>
               <td
                 class="textoGrande"
@@ -59,7 +59,7 @@
                   content: products.descricao,
                 }"
               >
-              {{products.descricao}}
+                {{ products.descricao }}
               </td>
               <td>{{ products.valorVenda }}</td>
               <td>{{ products.estoque }}</td>
@@ -98,55 +98,50 @@
 </template>
 
 <script>
- import api from "../../services/axios";
+import api from "../../services/axios";
 export default {
   data() {
     return {
-      dataProducts:{},
-      productsTable:[]
+      dataProducts: {},
+      productsTable: [],
     };
   },
   methods: {
     async SearchProducts() {
-        try{
-          const {data} = await api.get('/products')
-          console.log(data.data)
-          this.dataProducts = data.data
-
-        }
-        catch (error) {
-          console.log(error)
-        }
-    },
-    async editproducts(products){
-        try{
-          this.$emit('dataProducts', products)
-          this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
-
-        }
-        catch (error) {
-          console.log(error)
-        }
-    },
-    async destroyproducts(idProducts){
-      try{ 
-        await api.delete('/products/'+idProducts)
-        this.SearchProducts()
-          return this.$toast.open({
-            message: "Produto deletado com sucesso",
-            type: "success",
-          });
-      }catch {
-            return this.$toast.open({
-            message: "Não foi possível deletar o produto",
-            type: "warning",
-          });
+      try {
+        const { data } = await api.get("/products");
+        this.dataProducts = data.data;
+      } catch (error) {
+        console.log(error);
       }
-    }
+    },
+    async editproducts(products) {
+      try {
+        this.$emit("dataProducts", products);
+        this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async destroyproducts(idProducts) {
+      try {
+        await api.delete("/products/" + idProducts);
+        this.SearchProducts();
+        return this.$toast.open({
+          message: "Produto deletado com sucesso",
+          type: "success",
+        });
+      } catch {
+        return this.$toast.open({
+          message: "Não foi possível deletar o produto",
+          type: "warning",
+        });
+      }
+    },
   },
   mounted() {
-    this.SearchProducts()
-  }
+    this.SearchProducts();
+  },
 };
 </script>
 <style scoped>

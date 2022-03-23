@@ -46,10 +46,10 @@
 <script>
 import api from "../../services/axios";
 export default {
-  props:{
-    date:{
-      type:String
-    }
+  props: {
+    date: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -63,37 +63,35 @@ export default {
         { value: "Reunião", text: "Reunião" },
         { value: "Outro", text: "Outro" },
       ],
-    idSchedule:"",
+      idSchedule: "",
     };
   },
-  mounted(){
-    this.teste.dataAgenda = this.date
+  mounted() {
+    this.teste.dataAgenda = this.date;
   },
   methods: {
     async saveSchedule() {
       try {
-        console.log(this.teste);
         const { data } = await api.post("/schedules", this.teste);
-        this.idSchedule = data.id
-        this.$emit("dataSchedule", {id:this.idSchedule, ...this.teste});
+        this.idSchedule = data.id;
+        this.$emit("dataSchedule", { id: this.idSchedule, ...this.teste });
         this.$bvModal.hide("modal-Agendamento");
         this.$toast.open({
           message: "Agendamento salvo com Sucesso",
           type: "success",
         });
-        console.log(data)
       } catch (error) {
-        console.log(error)
+        console.log(error);
         this.$toast.open({
           message: "Não foi possível salvar agendamento",
           type: "warning",
         });
       }
     },
-    clear(){
-      this.teste = {}
-      this.idSchedule =""
-    }
+    clear() {
+      this.teste = {};
+      this.idSchedule = "";
+    },
   },
 };
 </script>

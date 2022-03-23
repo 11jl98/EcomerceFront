@@ -112,7 +112,6 @@ export default {
       try {
         const { data } = await api.get("/customers?q=" + this.textPesquisa);
         this.readCustomer = data.data;
-        console.log(data);
       } catch (error) {
         return this.$toast.open({
           message: "Não foi possível salvar o cliente",
@@ -124,7 +123,6 @@ export default {
       this.$emit("readOrEditCustomers", customer);
       this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
       this.$emit("alterTabIndex", this.tabIndex);
-      console.log(customer, " aquiiiiiiiiii");
     },
     async destroyCustomer(idCustomer) {
       try {

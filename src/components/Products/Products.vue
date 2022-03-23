@@ -176,7 +176,6 @@ export default {
 
   methods: {
     saveOrUpdateProducts() {
-      console.log(this.dataProducts.id);
       if (this.dataProducts.id == "" || this.dataProducts.id == null)
         return this.SaveProducts();
 
@@ -221,8 +220,6 @@ export default {
   },
   watch: {
     readOrEditProducts() {
-      console.log(this.readOrEditProducts);
-
       this.dataProducts = this.readOrEditProducts;
     },
   },

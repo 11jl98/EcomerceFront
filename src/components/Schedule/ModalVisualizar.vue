@@ -42,8 +42,8 @@
 </template>
 
 <script>
-import api from "../../services/axios"
-import moment from "moment"
+import api from "../../services/axios";
+import moment from "moment";
 export default {
   props: {
     dataReadSchedule: {
@@ -63,39 +63,37 @@ export default {
         { value: "Outro", text: "Outro" },
       ],
       idSchedule: "",
-    }
+    };
   },
   watch: {
     async dataReadSchedule() {
       try {
-        const { data } = await api.get(`/schedules/${this.dataReadSchedule}`)
-        this.teste.dataAgenda = moment(data.dataAgenda).format("YYYY-MM-DD")
-        this.teste.descricao = data.descricao
-        this.teste.tipo = data.tipo
-        this.idSchedule = data.id
-        console.log(this.dataReadSchedule)
+        const { data } = await api.get(`/schedules/${this.dataReadSchedule}`);
+        this.teste.dataAgenda = moment(data.dataAgenda).format("YYYY-MM-DD");
+        this.teste.descricao = data.descricao;
+        this.teste.tipo = data.tipo;
+        this.idSchedule = data.id;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
   },
   methods: {
     async destroy() {
       try {
-        console.log(this.idSchedule)
-        await api.delete(`/schedules/${this.idSchedule}`)
+        await api.delete(`/schedules/${this.idSchedule}`);
         this.$toast.open({
           message: "Agendamento deletado com Sucesso",
           type: "success",
-        })
-        this.$bvModal.hide("modal-Visualizar")
+        });
+        this.$bvModal.hide("modal-Visualizar");
       } catch (error) {
         this.$toast.open({
           message: "Não foi possível deletar o agendamento",
           type: "warning",
-        })
+        });
       }
     },
   },
-}
+};
 </script>

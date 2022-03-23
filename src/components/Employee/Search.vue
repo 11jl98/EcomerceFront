@@ -85,7 +85,6 @@ export default {
     async readEmployee() {
       try {
         const { data } = await api.get(`/employees`);
-        console.log(data);
         this.dataEmployees = data.data;
         return data;
       } catch (error) {
@@ -98,7 +97,6 @@ export default {
     },
     async destroyEmployee(idEmployee) {
       try {
-        console.log(idEmployee);
         await api.delete(`/employees/${idEmployee}`);
         this.readEmployee();
         return this.$toast.open({

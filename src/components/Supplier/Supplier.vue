@@ -285,13 +285,24 @@ export default {
         : this.saveSupllier();
     },
     clear() {
-      this.dadosSupplier = {};
+      this.dadosSupplier.id = "";
+      this.dadosSupplier.nomeFantasia = "";
+      this.dadosSupplier.razaoSocial = "";
+      this.dadosSupplier.cpfCnpj = "";
+      this.dadosSupplier.ie = "";
+      this.dadosSupplier.endereco = "";
+      this.dadosSupplier.numero = "";
+      this.dadosSupplier.bairro = "";
+      this.dadosSupplier.cidade = "";
+      this.dadosSupplier.uf = "";
+      this.dadosSupplier.email = "";
+      this.dadosSupplier.telefone = "";
+      this.dadosSupplier.celular = "";
     },
   },
   watch: {
     dataSupplier() {
       Object.assign(this.dadosSupplier, this.dataSupplier);
-      console.log(this.dadosSupplier, "meu ovo");
     },
   },
 

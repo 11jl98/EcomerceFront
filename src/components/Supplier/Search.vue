@@ -75,41 +75,43 @@
 </template>
 
 <script>
-import api from "../../services/axios"
+import api from "../../services/axios";
 export default {
   components: {},
   data() {
     return {
       dataSuppliers: [],
-      txtPesquisa: ''
-    }
+      txtPesquisa: "",
+      tabIndex: 0,
+    };
   },
   methods: {
     async readSupplier() {
       try {
-        const { data } = await api.get(`/providers/filter/search?q=${this.txtPesquisa}`)
-        console.log(data, 'aqui ccaraiiiiii')
-        this.dataSuppliers = data.data
-        return data
+        const { data } = await api.get(
+          `/providers/filter/search?q=${this.txtPesquisa}`
+        );
+        this.dataSuppliers = data.data;
+        return data;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     async editSupplier(Supplier) {
-      this.$emit("readOrEditSupplier", Supplier)
-      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais")
+      this.$emit("readOrEditSupplier", Supplier);
+      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
+      this.$emit("alterTabIndex", this.tabIndex);
     },
     async destroySupplier(idSupplier) {
-      await api.delete(`/Providers/${idSupplier}`)
-      this.readSupplier()
+      await api.delete(`/Providers/${idSupplier}`);
+      this.readSupplier();
       return this.$toast.open({
         message: "Fornecedor deletado com sucesso",
         type: "success",
-      })
+      });
     },
   },
-
-}
+};
 </script>
 <style scoped>
 </style>

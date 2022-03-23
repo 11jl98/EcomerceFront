@@ -266,21 +266,21 @@ export default {
 
   methods: {
     clearInputs() {
-      (this.dataCostumer.id = ""),
-        (this.dataCostumer.nome = ""),
-        (this.dataCostumer.cpfCnpj = ""),
-        (this.dataCostumer.endereco = ""),
-        (this.dataCostumer.numero = ""),
-        (this.dataCostumer.complemento = ""),
-        (this.dataCostumer.bairro = ""),
-        (this.dataCostumer.cidade = ""),
-        (this.dataCostumer.uf = ""),
-        (this.dataCostumer.cep = ""),
-        (this.dataCostumer.email = ""),
-        (this.dataCostumer.telefone = ""),
-        (this.dataCostumer.celular = ""),
-        (this.dataCostumer.dataNascimento = ""),
-        (this.dataCostumer.observacao = "");
+      this.dataCostumer.id = "";
+      this.dataCostumer.nome = "";
+      this.dataCostumer.cpfCnpj = "";
+      this.dataCostumer.endereco = "";
+      this.dataCostumer.numero = "";
+      this.dataCostumer.complemento = "";
+      this.dataCostumer.bairro = "";
+      this.dataCostumer.cidade = "";
+      this.dataCostumer.uf = "";
+      this.dataCostumer.cep = "";
+      this.dataCostumer.email = "";
+      this.dataCostumer.telefone = "";
+      this.dataCostumer.celular = "";
+      this.dataCostumer.dataNascimento = "";
+      this.dataCostumer.observacao = "";
     },
 
     saveOrUpdateCustomer() {
