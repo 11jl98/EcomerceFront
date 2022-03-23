@@ -79,6 +79,7 @@ export default {
   data() {
     return {
       dataEmployees: [],
+      tabIndex: 0,
     };
   },
   methods: {
@@ -94,6 +95,7 @@ export default {
     async editEmployee(Employee) {
       this.$emit("readOrEditEmployees", Employee);
       this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
+      this.$emit("alterTabIndex", this.tabIndex);
     },
     async destroyEmployee(idEmployee) {
       try {

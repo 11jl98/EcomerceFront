@@ -282,10 +282,10 @@
                 border: none !important;
                 background-color: #56aafe !important;
               "
-              @click="saveFuncionario"
+              @click="saveAndUpdateEmployee"
               >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
             ></b-button>
-            <b-button variant="light"
+            <b-button variant="light" @click="clear"
               >Limpar
               <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
             ></b-button>
@@ -298,6 +298,7 @@
 
 <script>
 import api from "../../services/axios";
+import toastAlertErros from "../../utils/toastAlertErros";
 
 export default {
   props: {
@@ -332,50 +333,66 @@ export default {
   },
   methods: {
     clear() {
-      this.dadosFuncionario = {};
+      this.dadosFuncionario.id = "";
+      this.dadosFuncionario.nomeFuncionario = "";
+      this.dadosFuncionario.cpf = "";
+      this.dadosFuncionario.rg = "";
+      this.dadosFuncionario.comissao = "";
+      this.dadosFuncionario.endereco = "";
+      this.dadosFuncionario.numero = "";
+      this.dadosFuncionario.bairro = "";
+      this.dadosFuncionario.cidade = "";
+      this.dadosFuncionario.uf = "";
+      this.dadosFuncionario.email = "";
+      this.dadosFuncionario.telefone = "";
+      this.dadosFuncionario.celular = "";
+      this.dadosFuncionario.ctps = "";
+      this.dadosFuncionario.funcao = "";
+      this.dadosFuncionario.pis = "";
+      this.dadosFuncionario.matricula = "";
+      this.dadosFuncionario.dataAdimissao = "";
     },
-    async saveFuncionario() {
+
+    async saveEmployee() {
       try {
-        if (this.dadosFuncionario.id !== "") {
-          this.updateFuncionario();
-          return this.$toast.open({
-            message: "Funcionário Atualizado com Sucesso",
-            type: "success",
-          });
-        }
         const { data } = await api.post("/employees", this.dadosFuncionario);
         this.dadosFuncionario.id = data.id;
-        this.clear();
         return this.$toast.open({
           message: "Funcionário salvo com Sucesso",
           type: "success",
         });
       } catch (error) {
         console.log(error);
-        return this.$toast.open({
-          message: "Não foi possível salvar o Funcionário",
-          type: "warning",
-        });
+        return toastAlertErros.validateBillErroDoesNotContainFor(
+          error,
+          this.$toast
+        );
       }
     },
     async updateFuncionario() {
       try {
-        const id = this.dadosFuncionario.id;
-        const { data } = await api.put(
-          `/employees/${id}`,
+        await api.put(
+          `/employees/${this.dadosFuncionario.id}`,
           this.dadosFuncionario
         );
-        return data;
+        return this.$toast.open({
+          message: "Funcionário Atualizado com Sucesso",
+          type: "success",
+        });
       } catch (error) {
         console.log(error);
       }
+    },
+
+    saveAndUpdateEmployee() {
+      this.dadosFuncionario.id !== ""
+        ? this.updateFuncionario()
+        : this.saveEmployee();
     },
   },
   watch: {
     dataEmployee() {
       Object.assign(this.dadosFuncionario, this.dataEmployee);
-      this.dadosFuncionario.dataAdimissao =
-        this.dataEmployee.dataAdimissao.split("T")[0];
     },
   },
   computed: {

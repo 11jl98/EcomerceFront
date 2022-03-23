@@ -298,7 +298,7 @@ export default {
           type: "success",
         });
       } catch (error) {
-        return toastAlertErros.validateBillMessageDoesNotContainFor(
+        return toastAlertErros.validateBillErroDoesNotContainFor(
           error,
           this.$toast
         );

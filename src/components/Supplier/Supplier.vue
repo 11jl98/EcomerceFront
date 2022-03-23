@@ -255,10 +255,7 @@ export default {
           type: "success",
         });
       } catch (error) {
-        toastAlertErros.validateBillMessageDoesNotContainFor(
-          error,
-          this.$toast
-        );
+        toastAlertErros.validateBillErroDoesNotContainFor(error, this.$toast);
         console.log(error.response.data.erros);
       }
     },

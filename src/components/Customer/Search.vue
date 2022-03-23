@@ -99,6 +99,7 @@
 
 <script>
 import api from "../../services/axios";
+import toastAlertErros from "../../utils/toastAlertErros";
 export default {
   data() {
     return {
@@ -127,12 +128,13 @@ export default {
     async destroyCustomer(idCustomer) {
       try {
         await api.delete(`/customers/${idCustomer}`);
+        this.readCustomers();
         return this.$toast.open({
           message: "Cliente excluido com sucesso",
           type: "success",
         });
       } catch (error) {
-        console.log(error);
+        toastAlertErros.validateBillMessage(error, this.$toast);
       }
     },
   },
