@@ -36,6 +36,7 @@
             required
             v-model="dataCostumer.cpfCnpj"
             v-mask="maskCpfCnpj"
+            maxlength="18"
           ></b-form-input>
         </b-form-group>
 
@@ -234,6 +235,7 @@
 
 <script>
 import api from "../../services/axios";
+import toastAlertErros from "../../utils/toastAlertErros";
 export default {
   props: {
     readOrEditCustomers: {
@@ -296,10 +298,10 @@ export default {
           type: "success",
         });
       } catch (error) {
-        return this.$toast.open({
-          message: "Não foi possível salvar o cliente",
-          type: "warning",
-        });
+        return toastAlertErros.validateBillMessageDoesNotContainFor(
+          error,
+          this.$toast
+        );
       }
     },
     async updateCustomer() {
@@ -307,7 +309,7 @@ export default {
         await api.put("/customers/" + this.dataCostumer.id, this.dataCostumer);
 
         this.$toast.open({
-          message: "Cliente editado com Sucesso",
+          message: "Cliente atualizado com Sucesso",
           type: "success",
         });
       } catch (error) {
@@ -321,15 +323,21 @@ export default {
   watch: {
     readOrEditCustomers() {
       Object.assign(this.dataCostumer, this.readOrEditCustomers);
-      this.dataCostumer.dataNascimento =
-        this.readOrEditCustomers.datanascimento.split("T")[0];
     },
   },
   computed: {
     maskCpfCnpj() {
-      return this.dataCostumer.cpfCnpj.length > 14
-        ? "##.###.###/####-##"
-        : "###.###.###-##";
+      if (this.dataCostumer.cpfCnpj === null) {
+        return "";
+      }
+      if (this.dataCostumer.cpfCnpj.length <= 14) {
+        return "###.###.###-##";
+      }
+      if (this.dataCostumer.cpfCnpj.length > 14) {
+        return "##.###.###/####-##";
+      } else {
+        return "";
+      }
     },
 
     maskCelular() {

@@ -215,8 +215,8 @@
 </template>
 
 <script>
-import api from "../../services/axios"
-import toastAlertErros from "../../utils/toastAlertErros"
+import api from "../../services/axios";
+import toastAlertErros from "../../utils/toastAlertErros";
 
 export default {
   props: {
@@ -242,64 +242,72 @@ export default {
         telefone: "",
         celular: "",
       },
-    }
+    };
   },
   methods: {
     async saveSupllier() {
       try {
-        const { data } = await api.post("/Providers", this.dadosSupplier)
-        this.dadosSupplier.id = data.id
+        const { data } = await api.post("/Providers", this.dadosSupplier);
+        this.dadosSupplier.id = data.id;
 
         return this.$toast.open({
           message: "Fornecedor salvo com sucesso",
           type: "success",
-        })
+        });
       } catch (error) {
-        toastAlertErros.validateBillMessageTwo(error, this.$toast)
-        console.log(error.response.data.erros)
+        toastAlertErros.validateBillMessageDoesNotContainFor(
+          error,
+          this.$toast
+        );
+        console.log(error.response.data.erros);
       }
     },
 
     async updateSupplier() {
       try {
-        await api.put(`/Providers/${this.dadosSupplier.id}`, this.dadosSupplier)
+        await api.put(
+          `/Providers/${this.dadosSupplier.id}`,
+          this.dadosSupplier
+        );
 
         return this.$toast.open({
           message: "Fornecedor atualizado com sucesso",
           type: "success",
-        })
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
 
     saveAndUpdateSupplier() {
-      this.dadosSupplier.id !== "" ? this.updateSupplier() : this.saveSupllier()
+      this.dadosSupplier.id !== ""
+        ? this.updateSupplier()
+        : this.saveSupllier();
     },
     clear() {
-      this.dadosSupplier = {}
+      this.dadosSupplier = {};
     },
   },
   watch: {
     dataSupplier() {
-      Object.assign(this.dadosSupplier, this.dataSupplier)
-      console.log(this.dadosSupplier, "meu ovo")
+      Object.assign(this.dadosSupplier, this.dataSupplier);
+      console.log(this.dadosSupplier, "meu ovo");
     },
   },
 
   computed: {
     maskCnpj() {
-      return "##.###.###/####-##"
+      return "##.###.###/####-##";
     },
 
     maskCelular() {
-      return "(##) #####-####"
+      return "(##) #####-####";
     },
     maskTelefone() {
-      return "(##) ####-####"
+      return "(##) ####-####";
     },
   },
-}
+};
 </script>
 <style scoped>
 </style>

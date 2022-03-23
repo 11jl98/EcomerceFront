@@ -19,7 +19,7 @@ class toastAlertErros {
     });
   }
 
-  validateBillMessageTwo(error, toast) {
+  validateBillMessageDoesNotContainFor(error, toast) {
     const erro = error.response.data.erros;
 
     toast.open({
