@@ -216,6 +216,7 @@
 
 <script>
 import api from "../../services/axios"
+import toastAlertErros from "../../utils/toastAlertErros"
 
 export default {
   props: {
@@ -254,20 +255,17 @@ export default {
           type: "success",
         })
       } catch (error) {
+        toastAlertErros.validateBillMessageTwo(error, this.$toast)
         console.log(error.response.data.erros)
       }
     },
-    
+
     async updateSupplier() {
       try {
-        const { data } = await api.put(
-          `/Providers/${this.dadosSupplier.id}`,
-          this.dadosSupplier
-        )
-        console.log(data, "aquiii")
-        this.dadosSupplier.id = data.id
+        await api.put(`/Providers/${this.dadosSupplier.id}`, this.dadosSupplier)
+
         return this.$toast.open({
-          message: "Fornecedor salvo com sucesso",
+          message: "Fornecedor atualizado com sucesso",
           type: "success",
         })
       } catch (error) {
@@ -285,6 +283,7 @@ export default {
   watch: {
     dataSupplier() {
       Object.assign(this.dadosSupplier, this.dataSupplier)
+      console.log(this.dadosSupplier, "meu ovo")
     },
   },
 

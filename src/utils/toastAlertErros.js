@@ -18,6 +18,15 @@ class toastAlertErros {
       type: "warning",
     });
   }
+
+  validateBillMessageTwo(error, toast) {
+    const erro = error.response.data.erros;
+
+    toast.open({
+      message: erro,
+      type: "warning",
+    });
+  }
 }
 
 export default new toastAlertErros();

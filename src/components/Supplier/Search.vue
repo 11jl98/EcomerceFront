@@ -15,11 +15,12 @@
               id="input-1"
               type="email"
               placeholder="Pesquisa"
+              v-model="txtPesquisa"
               required
             ></b-form-input>
           </b-form-group>
           <div style="margin: 16px">
-            <b-button variant="primary" class="mt-3 mb-3">
+            <b-button variant="primary" class="mt-3 mb-3" @click="readSupplier">
               <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
               Pesquisar</b-button
             >
@@ -74,42 +75,41 @@
 </template>
 
 <script>
-import api from "../../services/axios";
+import api from "../../services/axios"
 export default {
   components: {},
   data() {
     return {
       dataSuppliers: [],
-    };
+      txtPesquisa: ''
+    }
   },
   methods: {
     async readSupplier() {
       try {
-        const { data } = await api.get(`/providers`);
-        console.log(data);
-        this.dataSuppliers = data.data;
-        return data;
+        const { data } = await api.get(`/providers/filter/search?q=${this.txtPesquisa}`)
+        console.log(data, 'aqui ccaraiiiiii')
+        this.dataSuppliers = data.data
+        return data
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
     async editSupplier(Supplier) {
-      this.$emit("readOrEditSupplier", Supplier);
-      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
+      this.$emit("readOrEditSupplier", Supplier)
+      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais")
     },
-    async destroySupplier(Supplier) {
-      await api.delete(`/Providers/${Supplier}`);
-      this.readSupplier();
+    async destroySupplier(idSupplier) {
+      await api.delete(`/Providers/${idSupplier}`)
+      this.readSupplier()
       return this.$toast.open({
         message: "Fornecedor deletado com sucesso",
         type: "success",
-      });
+      })
     },
   },
-  mounted() {
-    this.readSupplier();
-  },
-};
+
+}
 </script>
 <style scoped>
 </style>
