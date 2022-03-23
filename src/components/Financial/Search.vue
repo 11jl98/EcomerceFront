@@ -122,7 +122,10 @@
         </tbody>
       </table>
     </div>
-    <ModalMakePayment :idBillPay="idBillPay" />
+    <ModalMakePayment
+      @changeSearchTotalAmount="readBills"
+      :idBillPay="idBillPay"
+    />
   </div>
 </template>
 
@@ -232,7 +235,7 @@ export default {
 .containerCheckBoxFinancial {
   width: 100%;
   display: flex;
-  justify-content: "end";
+  justify-content: flex-end;
   user-select: none;
 }
 

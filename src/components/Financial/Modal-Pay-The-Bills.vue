@@ -151,6 +151,7 @@
 <script>
 import api from "../../services/axios";
 import moment from "moment";
+// import BillService from "../../services/Bill/billService";
 export default {
   props: {
     idBillPay: {
@@ -186,23 +187,32 @@ export default {
     async getBillForPay(idBill) {
       const { data } = await api.get(`/bills/${idBill}`);
       Object.assign(this.billReductionData, data);
-      console.log(data, "meu ovooooooooooooo");
+      this.calculateRemainingValue();
       this.formatDate();
       return data;
     },
 
     async payTheBills() {
-      this.assigningValuesToAnotherVariable();
+      try {
+        this.assigningValuesToAnotherVariable();
 
-      const { data } = await api.post("/bills/payment", this.payment);
+        const { data } = await api.post("/bills/payment", this.payment);
 
-      this.billReductionData.valorRestante =
-        parseFloat(this.billReductionData.valorRestante) -
-        parseFloat(this.launchValue);
+        this.billReductionData.valorRestante =
+          parseFloat(this.billReductionData.valorRestante) -
+          parseFloat(this.launchValue);
 
-      this.launchValue = "0.00";
+        this.billReductionData.valorPago =
+          parseFloat(this.billReductionData.valorPago) +
+          parseFloat(this.launchValue);
 
-      return data;
+        this.launchValue = "0.00";
+
+        this.$emit("changeSearchTotalAmount");
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     assigningValuesToAnotherVariable() {
@@ -228,10 +238,9 @@ export default {
       }
     },
 
-    changeValueUsingKeyUpEvent() {
+    calculateRemainingValue() {
       const changedValue =
         this.billReductionData.valorTotal - this.billReductionData.valorPago;
-        
 
       this.billReductionData.valorRestante = changedValue;
     },

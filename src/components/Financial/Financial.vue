@@ -118,7 +118,6 @@
                     "
                   />
                 </b-tab>
-                <b-tab title="Realizar baixas"> </b-tab>
               </b-tabs>
             </b-card>
           </div>
@@ -129,9 +128,9 @@
 </template>
 
 <script>
-import CadastroContasReceber from "./Registration-accounts-Receivable.vue"
-import CadastroContasPagar from "./Registration-accounts-Payable.vue"
-import Search from "./Search.vue"
+import CadastroContasReceber from "./Registration-accounts-Receivable.vue";
+import CadastroContasPagar from "./Registration-accounts-Payable.vue";
+import Search from "./Search.vue";
 
 export default {
   components: {
@@ -145,9 +144,9 @@ export default {
       tabIndex: 2,
       dataBillForReceiveAndPayable: {},
       dataBillByIdPayable: {},
-    }
+    };
   },
-}
+};
 </script>
 
 <style>
