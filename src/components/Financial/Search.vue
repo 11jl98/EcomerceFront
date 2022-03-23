@@ -232,9 +232,10 @@ export default {
 .containerCheckBoxFinancial {
   width: 100%;
   display: flex;
-  justify-content: end;
+  justify-content: "end";
   user-select: none;
 }
+
 .chkFinancialReceber {
   margin-left: 15px;
 }

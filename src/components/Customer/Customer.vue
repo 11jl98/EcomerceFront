@@ -290,14 +290,12 @@ export default {
     async saveCustomer() {
       try {
         const { data } = await api.post("/customers", this.dataCostumer);
-        console.log(data);
         this.dataCostumer.id = data.id;
         return this.$toast.open({
           message: "Cliente salvo com Sucesso",
           type: "success",
         });
       } catch (error) {
-        console.log(error);
         return this.$toast.open({
           message: "Não foi possível salvar o cliente",
           type: "warning",
@@ -313,7 +311,6 @@ export default {
           type: "success",
         });
       } catch (error) {
-        console.log(error);
         this.$toast.open({
           message: "Não foi possível editar o cliente",
           type: "warning",
@@ -323,7 +320,6 @@ export default {
   },
   watch: {
     readOrEditCustomers() {
-      console.log(this.readOrEditCustomers);
       Object.assign(this.dataCostumer, this.readOrEditCustomers);
       this.dataCostumer.dataNascimento =
         this.readOrEditCustomers.datanascimento.split("T")[0];
