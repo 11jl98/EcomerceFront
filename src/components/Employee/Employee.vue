@@ -20,6 +20,7 @@
             placeholder="Nome"
             required
             v-model="dadosFuncionario.nomeFuncionario"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -35,6 +36,7 @@
             required
             v-model="dadosFuncionario.cpf"
             v-mask="maskCpf"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -49,6 +51,7 @@
             placeholder="Registro Geral"
             required
             v-model="dadosFuncionario.rg"
+            size="sm"
           ></b-form-input>
         </b-form-group>
       </b-row>
@@ -65,6 +68,7 @@
             placeholder="Endereço"
             required
             v-model="dadosFuncionario.endereco"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -79,6 +83,7 @@
             placeholder="Bairro"
             required
             v-model="dadosFuncionario.bairro"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -93,6 +98,7 @@
             placeholder="Número"
             required
             v-model="dadosFuncionario.numero"
+            size="sm"
           ></b-form-input>
         </b-form-group>
       </b-row>
@@ -109,6 +115,7 @@
             placeholder="Cidade"
             required
             v-model="dadosFuncionario.cidade"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -123,6 +130,7 @@
             placeholder="UF"
             required
             v-model="dadosFuncionario.uf"
+            size="sm"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -137,6 +145,7 @@
             required
             v-model="dadosFuncionario.cep"
             v-mask="maskCep"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -152,6 +161,7 @@
             placeholder="Email"
             required
             v-model="dadosFuncionario.email"
+            size="sm"
           ></b-form-input>
         </b-form-group>
       </b-row>
@@ -168,6 +178,7 @@
             required
             v-model="dadosFuncionario.telefone"
             v-mask="maskTelefone"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -183,6 +194,7 @@
             required
             v-model="dadosFuncionario.celular"
             v-mask="maskCelular"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -197,6 +209,7 @@
             placeholder="Comissão"
             required
             v-model="dadosFuncionario.comissao"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -211,6 +224,7 @@
             placeholder="Função"
             required
             v-model="dadosFuncionario.funcao"
+            size="sm"
           ></b-form-input>
         </b-form-group>
       </b-row>
@@ -227,6 +241,7 @@
             placeholder="CTPS"
             required
             v-model="dadosFuncionario.ctps"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -241,6 +256,7 @@
             placeholder="PIS"
             required
             v-model="dadosFuncionario.pis"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -256,6 +272,7 @@
             placeholder="Data adminissão"
             required
             v-model="dadosFuncionario.dataAdimissao"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -270,6 +287,7 @@
             placeholder="Matricula"
             required
             v-model="dadosFuncionario.matricula"
+            size="sm"
           ></b-form-input>
         </b-form-group>
       </b-row>
@@ -283,9 +301,10 @@
                 background-color: #56aafe !important;
               "
               @click="saveAndUpdateEmployee"
+              size="sm"
               >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
             ></b-button>
-            <b-button variant="light" @click="clear"
+            <b-button variant="light" @click="clear" size="sm"
               >Limpar
               <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
             ></b-button>
@@ -297,8 +316,8 @@
 </template>
 
 <script>
-import api from "../../services/axios";
-import toastAlertErros from "../../utils/toastAlertErros";
+import api from "../../services/axios"
+import toastAlertErros from "../../utils/toastAlertErros"
 
 export default {
   props: {
@@ -329,44 +348,44 @@ export default {
         matricula: "",
         dataAdimissao: "",
       },
-    };
+    }
   },
   methods: {
     clear() {
-      this.dadosFuncionario.id = "";
-      this.dadosFuncionario.nomeFuncionario = "";
-      this.dadosFuncionario.cpf = "";
-      this.dadosFuncionario.rg = "";
-      this.dadosFuncionario.comissao = "";
-      this.dadosFuncionario.endereco = "";
-      this.dadosFuncionario.numero = "";
-      this.dadosFuncionario.bairro = "";
-      this.dadosFuncionario.cidade = "";
-      this.dadosFuncionario.uf = "";
-      this.dadosFuncionario.email = "";
-      this.dadosFuncionario.telefone = "";
-      this.dadosFuncionario.celular = "";
-      this.dadosFuncionario.ctps = "";
-      this.dadosFuncionario.funcao = "";
-      this.dadosFuncionario.pis = "";
-      this.dadosFuncionario.matricula = "";
-      this.dadosFuncionario.dataAdimissao = "";
+      this.dadosFuncionario.id = ""
+      this.dadosFuncionario.nomeFuncionario = ""
+      this.dadosFuncionario.cpf = ""
+      this.dadosFuncionario.rg = ""
+      this.dadosFuncionario.comissao = ""
+      this.dadosFuncionario.endereco = ""
+      this.dadosFuncionario.numero = ""
+      this.dadosFuncionario.bairro = ""
+      this.dadosFuncionario.cidade = ""
+      this.dadosFuncionario.uf = ""
+      this.dadosFuncionario.email = ""
+      this.dadosFuncionario.telefone = ""
+      this.dadosFuncionario.celular = ""
+      this.dadosFuncionario.ctps = ""
+      this.dadosFuncionario.funcao = ""
+      this.dadosFuncionario.pis = ""
+      this.dadosFuncionario.matricula = ""
+      this.dadosFuncionario.dataAdimissao = ""
     },
 
     async saveEmployee() {
       try {
-        const { data } = await api.post("/employees", this.dadosFuncionario);
-        this.dadosFuncionario.id = data.id;
+        const { data } = await api.post("/employees", this.dadosFuncionario)
+        this.dadosFuncionario.id = data.id
         return this.$toast.open({
           message: "Funcionário salvo com Sucesso",
           type: "success",
-        });
+        })
       } catch (error) {
-        console.log(error);
+        console.log(error)
         return toastAlertErros.validateBillErroDoesNotContainFor(
           error,
           this.$toast
-        );
+        )
       }
     },
     async updateFuncionario() {
@@ -374,42 +393,42 @@ export default {
         await api.put(
           `/employees/${this.dadosFuncionario.id}`,
           this.dadosFuncionario
-        );
+        )
         return this.$toast.open({
           message: "Funcionário Atualizado com Sucesso",
           type: "success",
-        });
+        })
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
 
     saveAndUpdateEmployee() {
       this.dadosFuncionario.id !== ""
         ? this.updateFuncionario()
-        : this.saveEmployee();
+        : this.saveEmployee()
     },
   },
   watch: {
     dataEmployee() {
-      Object.assign(this.dadosFuncionario, this.dataEmployee);
+      Object.assign(this.dadosFuncionario, this.dataEmployee)
     },
   },
   computed: {
     maskCpf() {
-      return "###.###.###-##";
+      return "###.###.###-##"
     },
 
     maskCelular() {
-      return "(##) #####-####";
+      return "(##) #####-####"
     },
     maskTelefone() {
-      return "(##) ####-####";
+      return "(##) ####-####"
     },
     maskCep() {
-      return "#####-###";
+      return "#####-###"
     },
   },
-};
+}
 </script>
 <style scoped></style>

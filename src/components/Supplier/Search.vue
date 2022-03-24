@@ -17,10 +17,16 @@
               placeholder="Pesquisa"
               v-model="txtPesquisa"
               required
+              size="sm"
             ></b-form-input>
           </b-form-group>
           <div style="margin: 16px">
-            <b-button variant="primary" class="mt-3 mb-3" @click="readSupplier">
+            <b-button
+              variant="primary"
+              class="mt-3 mb-3"
+              @click="readSupplier"
+              size="sm"
+            >
               <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
               Pesquisar</b-button
             >
@@ -63,7 +69,7 @@
                   content: 'Excluir',
                 }"
               >
-                <b-icon-trash scale="0.7"></b-icon-trash
+                <b-icon-trash scale="1"></b-icon-trash
               ></b-button>
             </td>
           </tr>
@@ -75,7 +81,7 @@
 </template>
 
 <script>
-import api from "../../services/axios";
+import api from "../../services/axios"
 export default {
   components: {},
   data() {
@@ -83,34 +89,34 @@ export default {
       dataSuppliers: [],
       txtPesquisa: "",
       tabIndex: 0,
-    };
+    }
   },
   methods: {
     async readSupplier() {
       try {
         const { data } = await api.get(
           `/providers/filter/search/parameters?q=${this.txtPesquisa}`
-        );
-        this.dataSuppliers = data.data;
-        return data;
+        )
+        this.dataSuppliers = data.data
+        return data
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
     async editSupplier(Supplier) {
-      this.$emit("readOrEditSupplier", Supplier);
-      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
-      this.$emit("alterTabIndex", this.tabIndex);
+      this.$emit("readOrEditSupplier", Supplier)
+      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais")
+      this.$emit("alterTabIndex", this.tabIndex)
     },
     async destroySupplier(idSupplier) {
-      await api.delete(`/Providers/${idSupplier}`);
-      this.readSupplier();
+      await api.delete(`/Providers/${idSupplier}`)
+      this.readSupplier()
       return this.$toast.open({
         message: "Fornecedor deletado com sucesso",
         type: "success",
-      });
+      })
     },
   },
-};
+}
 </script>
 <style scoped></style>

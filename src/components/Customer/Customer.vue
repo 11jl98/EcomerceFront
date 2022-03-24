@@ -38,6 +38,7 @@
             v-model="dataCostumer.cpfCnpj"
             v-mask="maskCpfCnpj"
             maxlength="18"
+             size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -52,6 +53,7 @@
             placeholder="Endereço"
             required
             v-model="dataCostumer.endereco"
+             size="sm"
           ></b-form-input>
         </b-form-group>
       </b-row>
@@ -67,6 +69,7 @@
             placeholder="Número"
             required
             v-model="dataCostumer.numero"
+             size="sm"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -80,6 +83,7 @@
             placeholder="Complemento"
             required
             v-model="dataCostumer.complemento"
+             size="sm"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -93,6 +97,7 @@
             placeholder="Bairro"
             required
             v-model="dataCostumer.bairro"
+             size="sm"
           ></b-form-input>
         </b-form-group>
       </b-row>
@@ -108,6 +113,7 @@
             placeholder="Cidade"
             required
             v-model="dataCostumer.cidade"
+             size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -122,6 +128,7 @@
             placeholder="UF"
             required
             v-model="dataCostumer.uf"
+             size="sm"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -136,6 +143,7 @@
             required
             v-model="dataCostumer.cep"
             v-mask="maskCep"
+             size="sm"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -150,6 +158,7 @@
             placeholder="Email"
             required
             v-model="dataCostumer.email"
+             size="sm"
           ></b-form-input>
         </b-form-group>
       </b-row>
@@ -167,6 +176,7 @@
             placeholder="Telefone"
             require
             v-model="dataCostumer.telefone"
+             size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -182,6 +192,7 @@
             required
             v-mask="maskCelular"
             v-model="dataCostumer.celular"
+             size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -195,6 +206,7 @@
             id="input-1"
             type="date"
             v-model="dataCostumer.dataNascimento"
+             size="sm"
           ></b-form-input>
         </b-form-group>
       </b-row>
@@ -210,6 +222,7 @@
             rows="3"
             max-rows="6"
             v-model="dataCostumer.observacao"
+             size="sm"
           ></b-form-textarea>
         </b-form-group>
         <div class="d-flex justify-content-end">
@@ -220,10 +233,11 @@
                 border: none !important;
                 background-color: #56aafe !important;
               "
+               size="sm"
               @click="saveOrUpdateCustomer"
               >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
             ></b-button>
-            <b-button variant="light" @click="clearInputs"
+            <b-button variant="light" @click="clearInputs"  size="sm"
               >Limpar
               <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
             ></b-button>

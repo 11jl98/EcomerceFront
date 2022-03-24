@@ -16,10 +16,11 @@
               type="email"
               placeholder="Pesquisa"
               required
+              size="sm"
             ></b-form-input>
           </b-form-group>
           <div style="margin: 16px">
-            <b-button variant="primary" class="mt-3 mb-3">
+            <b-button variant="primary" class="mt-3 mb-3" size="sm">
               <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
               Pesquisar</b-button
             >
@@ -62,7 +63,7 @@
                   content: 'Excluir',
                 }"
               >
-                <b-icon-trash scale="0.7"></b-icon-trash
+                <b-icon-trash scale="1.0"></b-icon-trash
               ></b-button>
             </td>
           </tr>
@@ -73,48 +74,48 @@
 </template>
 
 <script>
-import api from "../../services/axios";
+import api from "../../services/axios"
 export default {
   components: {},
   data() {
     return {
       dataEmployees: [],
       tabIndex: 0,
-    };
+    }
   },
   methods: {
     async readEmployee() {
       try {
-        const { data } = await api.get(`/employees`);
-        this.dataEmployees = data.data;
-        return data;
+        const { data } = await api.get(`/employees`)
+        this.dataEmployees = data.data
+        return data
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
     async editEmployee(Employee) {
-      this.$emit("readOrEditEmployees", Employee);
-      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
-      this.$emit("alterTabIndex", this.tabIndex);
+      this.$emit("readOrEditEmployees", Employee)
+      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais")
+      this.$emit("alterTabIndex", this.tabIndex)
     },
     async destroyEmployee(idEmployee) {
       try {
-        await api.delete(`/employees/${idEmployee}`);
-        this.readEmployee();
+        await api.delete(`/employees/${idEmployee}`)
+        this.readEmployee()
         return this.$toast.open({
           message: "Funcionário deletado!",
           type: "success",
-        });
+        })
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     },
   },
 
   mounted() {
-    this.readEmployee();
+    this.readEmployee()
   },
-};
+}
 </script>
 <style scoped>
 </style>

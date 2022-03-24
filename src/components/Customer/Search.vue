@@ -17,6 +17,7 @@
               placeholder="Pesquisa"
               v-model="textPesquisa"
               required
+              size="sm"
             ></b-form-input>
           </b-form-group>
           <div style="margin: 16px">
@@ -24,6 +25,7 @@
               variant="primary"
               class="mt-3 mb-3"
               @click="readCustomers"
+              size="sm"
             >
               <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
               Pesquisar</b-button
@@ -86,7 +88,7 @@
                   content: 'Excluir',
                 }"
               >
-                <b-icon-trash scale="0.7"></b-icon-trash
+                <b-icon-trash scale="1"></b-icon-trash
               ></b-button>
             </td>
           </tr>
@@ -98,47 +100,47 @@
 </template>
 
 <script>
-import api from "../../services/axios";
-import toastAlertErros from "../../utils/toastAlertErros";
+import api from "../../services/axios"
+import toastAlertErros from "../../utils/toastAlertErros"
 export default {
   data() {
     return {
       readCustomer: [],
       textPesquisa: "",
       tabIndex: 0,
-    };
+    }
   },
   methods: {
     async readCustomers() {
       try {
-        const { data } = await api.get("/customers?q=" + this.textPesquisa);
-        this.readCustomer = data.data;
+        const { data } = await api.get("/customers?q=" + this.textPesquisa)
+        this.readCustomer = data.data
       } catch (error) {
         return this.$toast.open({
           message: "Não foi possível salvar o cliente",
           type: "warning",
-        });
+        })
       }
     },
     async editCustomer(customer) {
-      this.$emit("readOrEditCustomers", customer);
-      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
-      this.$emit("alterTabIndex", this.tabIndex);
+      this.$emit("readOrEditCustomers", customer)
+      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais")
+      this.$emit("alterTabIndex", this.tabIndex)
     },
     async destroyCustomer(idCustomer) {
       try {
-        await api.delete(`/customers/${idCustomer}`);
-        this.readCustomers();
+        await api.delete(`/customers/${idCustomer}`)
+        this.readCustomers()
         return this.$toast.open({
           message: "Cliente excluido com sucesso",
           type: "success",
-        });
+        })
       } catch (error) {
-        toastAlertErros.validateBillMessage(error, this.$toast);
+        toastAlertErros.validateBillMessage(error, this.$toast)
       }
     },
   },
-};
+}
 </script>
 <style scoped>
 .textoGrande {
