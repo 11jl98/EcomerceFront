@@ -89,7 +89,7 @@ export default {
     async readSupplier() {
       try {
         const { data } = await api.get(
-          `/providers/filter/search?q=${this.txtPesquisa}`
+          `/providers/filter/search/parameters?q=${this.txtPesquisa}`
         );
         this.dataSuppliers = data.data;
         return data;
@@ -113,5 +113,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>
