@@ -17,10 +17,16 @@
               placeholder="Pesquisa"
               required
               size="sm"
+              v-model="textPesquisa"
             ></b-form-input>
           </b-form-group>
           <div style="margin: 16px">
-            <b-button variant="primary" class="mt-3 mb-3" size="sm">
+            <b-button
+              variant="primary"
+              class="mt-3 mb-3"
+              size="sm"
+              @click="readEmployees"
+            >
               <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
               Pesquisar</b-button
             >
@@ -74,48 +80,51 @@
 </template>
 
 <script>
-import api from "../../services/axios"
+import api from "../../services/axios";
 export default {
   components: {},
   data() {
     return {
       dataEmployees: [],
       tabIndex: 0,
-    }
+      textPesquisa: "",
+    };
   },
   methods: {
-    async readEmployee() {
+    async readEmployees() {
       try {
-        const { data } = await api.get(`/employees`)
-        this.dataEmployees = data.data
-        return data
+        const { data } = await api.get(
+          `/employees/filter/search/parameters?q=${this.textPesquisa}`
+        );
+        console.log(data, "meu ovo ta aquiiiiiii");
+        this.dataEmployees = data.data;
+        return data;
       } catch (error) {
-        console.log(error)
+        return this.$toast.open({
+          message: "Não foi possível listar os funcionarios",
+          type: "warning",
+        });
       }
     },
     async editEmployee(Employee) {
-      this.$emit("readOrEditEmployees", Employee)
-      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais")
-      this.$emit("alterTabIndex", this.tabIndex)
+      this.$emit("readOrEditEmployees", Employee);
+      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
+      this.$emit("alterTabIndex", this.tabIndex);
     },
     async destroyEmployee(idEmployee) {
       try {
-        await api.delete(`/employees/${idEmployee}`)
-        this.readEmployee()
+        await api.delete(`/employees/${idEmployee}`);
+        this.readEmployees();
         return this.$toast.open({
           message: "Funcionário deletado!",
           type: "success",
-        })
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
   },
-
-  mounted() {
-    this.readEmployee()
-  },
-}
+};
 </script>
 <style scoped>
 </style>

@@ -117,7 +117,7 @@ export default {
         this.readCustomer = data.data
       } catch (error) {
         return this.$toast.open({
-          message: "Não foi possível salvar o cliente",
+          message: "Não foi possível listar os clientes",
           type: "warning",
         })
       }

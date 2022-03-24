@@ -22,11 +22,16 @@
                 id="input-1"
                 type="email"
                 placeholder="Pesquisa"
+                v-model="textPesquisa"
                 required
               ></b-form-input>
             </b-form-group>
             <div style="margin: 16px">
-              <b-button variant="primary" class="mt-3 mb-3">
+              <b-button
+                variant="primary"
+                class="mt-3 mb-3"
+                @click="SearchProducts"
+              >
                 <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
                 Pesquisar</b-button
               >
@@ -104,12 +109,15 @@ export default {
     return {
       dataProducts: {},
       productsTable: [],
+      textPesquisa: "",
     };
   },
   methods: {
     async SearchProducts() {
       try {
-        const { data } = await api.get("/products");
+        const { data } = await api.get(
+          `/products/filter/teste/seila?q=${this.textPesquisa}`
+        );
         this.dataProducts = data.data;
       } catch (error) {
         console.log(error);
@@ -138,9 +146,6 @@ export default {
         });
       }
     },
-  },
-  mounted() {
-    this.SearchProducts();
   },
 };
 </script>

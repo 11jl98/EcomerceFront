@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import Customer from "./Customer.vue"
-import Search from "./Search.vue"
-import { mapState } from "vuex"
+import Customer from "./Customer.vue";
+import Search from "./Search.vue";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -40,14 +40,14 @@ export default {
     return {
       readOrEditCustomers: {},
       tabIndex: 1,
-    }
+    };
   },
   computed: {
     ...mapState({
       width: (state) => state.widthCards,
     }),
   },
-}
+};
 </script>
 <style scoped>
 .container-geral {
