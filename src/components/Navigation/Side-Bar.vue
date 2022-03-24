@@ -19,7 +19,7 @@
             <b-button to="/Clientes" :class="iconsCenter">
               <i>
                 <b-icon-person-bounding-box
-                  scale="1.5"
+                  
                 ></b-icon-person-bounding-box
               ></i>
               <span :class="sizeText">Clientes</span>
@@ -29,7 +29,7 @@
 
         <li>
           <b-button to="/Fornecedores" :class="iconsCenter">
-            <i> <b-icon-truck scale="1.5"></b-icon-truck></i>
+            <i> <b-icon-truck ></b-icon-truck></i>
             <span :class="sizeText">Fornecedores</span>
           </b-button>
         </li>
@@ -37,7 +37,7 @@
         <li>
           <b-button to="/Funcionarios" :class="iconsCenter">
             <i>
-              <b-icon-person-plus-fill scale="1.5"></b-icon-person-plus-fill
+              <b-icon-person-plus-fill ></b-icon-person-plus-fill
             ></i>
             <span :class="sizeText">Funcionário</span>
           </b-button>
@@ -45,7 +45,7 @@
 
         <li>
           <b-button to="/Produtos" :class="iconsCenter">
-            <i> <b-icon-box-seam scale="1.5"></b-icon-box-seam></i>
+            <i> <b-icon-box-seam ></b-icon-box-seam></i>
             <span :class="sizeText">Produtos</span>
           </b-button>
         </li>
@@ -53,7 +53,7 @@
         <li>
           <b-button to="/Vendas" :class="iconsCenter">
             <i>
-              <b-icon-cart-check-fill scale="1.5"></b-icon-cart-check-fill
+              <b-icon-cart-check-fill ></b-icon-cart-check-fill
             ></i>
             <span :class="sizeText">Vendas</span>
           </b-button>
@@ -61,28 +61,28 @@
 
         <li>
           <b-button to="/" :class="iconsCenter">
-            <i> <b-icon-reply-all scale="1.5"></b-icon-reply-all></i>
+            <i> <b-icon-reply-all ></b-icon-reply-all></i>
             <span :class="sizeText">NF-e / NFc-e</span>
           </b-button>
         </li>
 
         <li>
           <b-button to="/Financeiro" :class="iconsCenter">
-            <i> <b-icon-journals scale="1.5"></b-icon-journals></i>
+            <i> <b-icon-journals ></b-icon-journals></i>
             <span :class="sizeText">Financeiro</span>
           </b-button>
         </li>
 
         <li>
           <b-button to="/agenda" :class="iconsCenter">
-            <i> <b-icon-pencil-fill scale="1.5"></b-icon-pencil-fill></i>
+            <i> <b-icon-pencil-fill ></b-icon-pencil-fill></i>
             <span :class="sizeText">Agenda</span>
           </b-button>
         </li>
 
         <li>
           <b-button to="/" :class="iconsCenter">
-            <i> <b-icon-gear-fill scale="1.5"></b-icon-gear-fill></i>
+            <i> <b-icon-gear-fill ></b-icon-gear-fill></i>
             <span :class="sizeText">Configurações</span>
           </b-button>
         </li>
@@ -93,7 +93,7 @@
           <li>
             <b-button to="/" :class="iconsCenter">
               <i>
-                <b-icon-door-open-fill scale="1.5"></b-icon-door-open-fill
+                <b-icon-door-open-fill ></b-icon-door-open-fill
               ></i>
               <span :class="btnSair">Sair</span>
             </b-button>
@@ -166,6 +166,7 @@ export default {
   transition: all 0.5s ease;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
     rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    overflow-y: overlay;
 }
 
 .disable {
@@ -201,12 +202,7 @@ export default {
   color: #fff;
 }
 
-.sidebar .nav-links {
-  margin-top: 35px;
-}
-
 .sidebar .nav-links li {
-  height: 50px;
   width: 100%;
   list-style: none;
 }

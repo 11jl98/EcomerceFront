@@ -21,6 +21,7 @@
             placeholder="Nome"
             required
             v-model="dataCostumer.nome"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 

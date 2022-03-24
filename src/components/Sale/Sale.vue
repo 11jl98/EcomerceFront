@@ -2,55 +2,55 @@
   <div class="containerGeralPedidoVenda">
     <div>
       <b-card no-body>
-        <b-row>
-          <div
-            class="
-              col-sm-12 col-md-12 col-lg-12 col-lg-12
-              d-flex
-              justify-content-between
-            "
-          >
-            <div>
-              <b-form-group
-                id="input-group-1"
-                label="Data da venda"
-                label-for="input-1"
-                class="col-sm-12"
-                size="sm"
-              >
-                <b-form-input
-                  value-field="id"
-                  text-field="nome"
-                  disabled
-                  :options="dataCustomers"
-                  type="date"
-                  v-model="dataSale.dataVenda"
-                ></b-form-input>
-              </b-form-group>
-            </div>
-
-            <div class="mr-2 containerCheckBox">
-              <b-form-group v-slot="{ ariaDescribedby }">
-                <b-form-checkbox
-                  :aria-describedby="ariaDescribedby"
-                  name="checado"
-                  value="Venda"
-                  disabled
-                  unchecked-value="Orçamento"
-                  class="chkVendaOrçamento"
-                  v-model="dataSale.status"
-                  switch
-                >
-                  <div style="width: 115px">
-                    {{ dataSale.status.toUpperCase() }}
-                  </div>
-                </b-form-checkbox>
-              </b-form-group>
-            </div>
-          </div>
-        </b-row>
         <b-tabs card>
           <b-tab title="Venda/Orçamento">
+            <b-row>
+              <div
+                class="
+                  col-sm-12 col-md-12 col-lg-12 col-lg-12
+                  d-flex
+                  justify-content-between
+                "
+              >
+                <div>
+                  <b-form-group
+                    id="input-group-1"
+                    label="Data da venda"
+                    label-for="input-1"
+                    class="col-sm-12"
+                    size="sm"
+                  >
+                    <b-form-input
+                      value-field="id"
+                      text-field="nome"
+                      disabled
+                      :options="dataCustomers"
+                      type="date"
+                      v-model="dataSale.dataVenda"
+                    ></b-form-input>
+                  </b-form-group>
+                </div>
+
+                <div class="mr-2 containerCheckBox">
+                  <b-form-group v-slot="{ ariaDescribedby }">
+                    <b-form-checkbox
+                      :aria-describedby="ariaDescribedby"
+                      name="checado"
+                      value="Venda"
+                      disabled
+                      unchecked-value="Orçamento"
+                      class="chkVendaOrçamento"
+                      v-model="dataSale.status"
+                      switch
+                    >
+                      <div style="width: 115px">
+                        {{ dataSale.status.toUpperCase() }}
+                      </div>
+                    </b-form-checkbox>
+                  </b-form-group>
+                </div>
+              </div>
+            </b-row>
             <div class="containerAllCard">
               <b-card-text>
                 <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
