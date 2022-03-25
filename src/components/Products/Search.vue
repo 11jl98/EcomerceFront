@@ -110,15 +110,17 @@ export default {
       dataProducts: {},
       productsTable: [],
       textPesquisa: "",
+      tabIndex: 0,
     };
   },
   methods: {
     async SearchProducts() {
       try {
         const { data } = await api.get(
-          `/products/filter/teste/seila?q=${this.textPesquisa}`
+          `/products/filter/products?q=${this.textPesquisa}`
         );
         this.dataProducts = data.data;
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -127,6 +129,7 @@ export default {
       try {
         this.$emit("dataProducts", products);
         this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
+        this.$emit("alterTabIndex", this.tabIndex);
       } catch (error) {
         console.log(error);
       }

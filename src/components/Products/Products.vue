@@ -101,7 +101,7 @@
             placeholder="Estoque"
             required
             disabled
-            v-model="estoque"
+            v-model="dataProducts.estoque"
             type="number"
           ></b-form-input>
         </b-form-group>
@@ -147,7 +147,7 @@
               @click="saveOrUpdateProducts"
               >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
             ></b-button>
-            <b-button variant="light"
+            <b-button variant="light" @click="clear"
               >Limpar
               <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
             ></b-button>
@@ -160,6 +160,7 @@
 
 <script>
 import api from "../../services/axios";
+import toastAlertErros from "../../utils/toastAlertErros";
 
 export default {
   props: {
@@ -169,8 +170,18 @@ export default {
   },
   data() {
     return {
-      dataProducts: {},
-      estoque: 0,
+      dataProducts: {
+        id: "",
+        nome: "",
+        valor: "0.00",
+        valorVenda: "0.00",
+        unidade: "",
+        descricao: "",
+        codBarras: "",
+        codReferencia: "",
+        estoque: "0",
+        estoqueMin: "0",
+      },
     };
   },
 
@@ -200,22 +211,34 @@ export default {
 
     async SaveProducts() {
       try {
-        const { data } = await api.post("/products", {
-          ...this.dataProducts,
-          estoque: this.estoque,
-        });
+        const { data } = await api.post("/products", this.dataProducts);
         console.log(data);
+        this.dataProducts.id = data.id;
         return this.$toast.open({
           message: "Produto Salvo com Sucesso",
           type: "success",
         });
       } catch (error) {
-        console.log(error.response);
-        return this.$toast.open({
-          message: "Não foi possível salvar os dados",
-          type: "warning",
-        });
+        return toastAlertErros.validateBillErroDoesNotContainFor(
+          error,
+          this.$toast
+        );
       }
+    },
+
+    clear() {
+      this.dataProducts = {
+        id: "",
+        nome: "",
+        valor: "0.00",
+        valorVenda: "0.00",
+        unidade: "",
+        descricao: "",
+        codBarras: "",
+        codReferencia: "",
+        estoque: "0",
+        estoqueMin: "0",
+      };
     },
   },
   watch: {

@@ -7,7 +7,7 @@
       :style="{ width: width }"
     >
       <b-card no-body>
-        <b-tabs card>
+        <b-tabs card v-model="tabIndex">
           <b-tab title="Cadastro de produtos">
             <b-card-text>
               <Products :readOrEditProducts="dataProducts" />
@@ -15,7 +15,10 @@
           </b-tab>
           <b-tab title="Pesquisa">
             <b-card-text>
-              <Search @dataProducts="dataProducts = $event" />
+              <Search
+                @dataProducts="dataProducts = $event"
+                @alterTabIndex="tabIndex = $event"
+              />
             </b-card-text>
           </b-tab>
         </b-tabs>
@@ -38,6 +41,7 @@ export default {
   data() {
     return {
       dataProducts: {},
+      tabIndex: 1,
     };
   },
   computed: {
