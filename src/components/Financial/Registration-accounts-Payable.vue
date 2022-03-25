@@ -214,10 +214,10 @@
 </template>
 
 <script>
-import api from "../../services/axios"
+import api from "../../services/axios";
 
-import moment from "moment"
-import toastAlertErros from "../../utils/toastAlertErros"
+import moment from "moment";
+import toastAlertErros from "../../utils/toastAlertErros";
 export default {
   props: {
     searchAccountsPayable: {
@@ -243,117 +243,120 @@ export default {
       listTypesPaymentsSelectBox: [],
       listProviderSelectBox: [],
       listEmployeeSelectBox: [],
-    }
+    };
   },
   methods: {
     saveAndUpdateBill() {
-      this.dataBillPayable.id !== "" ? this.updateBill() : this.saveBill()
+      this.dataBillPayable.id !== "" ? this.updateBill() : this.saveBill();
     },
 
     async saveBill() {
       try {
-        const { data } = await api.post("/bills", this.dataBillPayable)
-        this.dataBillPayable.id = data.id
+        const { data } = await api.post("/bills", this.dataBillPayable);
+        this.dataBillPayable.id = data.id;
         return this.$toast.open({
           message: "Conta resgistrada!",
           type: "success",
-        })
+        });
       } catch (error) {
-        return toastAlertErros.validateBillErro(error, this.$toast)
+        return toastAlertErros.validateBillErro(error, this.$toast);
       }
     },
 
     async updateBill() {
       try {
-        await api.put(`/bills/${this.dataBillPayable.id}`, this.dataBillPayable)
+        await api.put(
+          `/bills/${this.dataBillPayable.id}`,
+          this.dataBillPayable
+        );
         return this.$toast.open({
           message: "Conta atualizada!",
           type: "info",
-        })
+        });
       } catch (error) {
         return this.$toast.open({
           message: error.response.data.message,
           type: "warning",
-        })
+        });
       }
     },
 
     clearDataBill() {
-      this.dataBillPayable.id = ""
-      this.dataBillPayable.tipo = "saida"
-      this.dataBillPayable.idFornecedor = ""
-      this.dataBillPayable.idFuncionario = ""
-      this.dataBillPayable.idFormaPagamento = ""
-      this.dataBillPayable.idVenda = ""
-      this.dataBillPayable.valorTotal = "0.00"
-      this.dataBillPayable.valorPago = "0.00"
-      this.dataBillPayable.valorRestante = "0.00"
-      this.dataBillPayable.data = ""
-      this.dataBillPayable.descricao = ""
+      this.dataBillPayable.id = "";
+      this.dataBillPayable.tipo = "saida";
+      this.dataBillPayable.idFornecedor = "";
+      this.dataBillPayable.idFuncionario = "";
+      this.dataBillPayable.idFormaPagamento = "";
+      this.dataBillPayable.idVenda = "";
+      this.dataBillPayable.valorTotal = "0.00";
+      this.dataBillPayable.valorPago = "0.00";
+      this.dataBillPayable.valorRestante = "0.00";
+      this.dataBillPayable.data = "";
+      this.dataBillPayable.descricao = "";
     },
 
     async getProviderForSelectBox() {
       try {
-        const { data } = await api.get("/providers/fill/combobox")
-        this.listProviderSelectBox = data
+        const { data } = await api.get("/providers/fill/combobox");
+        this.listProviderSelectBox = data;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
 
     async getEmployeesForSelectBox() {
-      const { data } = await api.get("/employees/combobox/fill")
-      this.listEmployeeSelectBox = data.data
+      const { data } = await api.get("/employees/combobox/fill");
+      this.listEmployeeSelectBox = data.data;
     },
 
     async getTypesPaymentsSelectBox() {
       try {
-        const { data } = await api.get("/payments/combobox")
-        this.listTypesPaymentsSelectBox = data
+        const { data } = await api.get("/payments/combobox");
+        this.listTypesPaymentsSelectBox = data;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
 
     openModalFormaPagamento() {
-      this.$bvModal.show("modalFormaPagamento")
+      this.$bvModal.show("modalFormaPagamento");
     },
 
     formatDate() {
       this.searchAccountsPayable.data = moment(
         this.searchAccountsPayable.data
-      ).format("YYYY-MM-DD")
+      ).format("YYYY-MM-DD");
 
       if (this.searchAccountsPayable.dataPagamento !== null)
         this.searchAccountsPayable.dataPagamento = moment(
           this.searchAccountsPayable.dataPagamento
-        ).format("YYYY-MM-DD")
-      else return
+        ).format("YYYY-MM-DD");
+      else return;
     },
 
     changeValueUsingKeyUpEvent() {
       const changedValue =
-        this.dataBillReceive.valorTotal - this.dataBillReceive.valorPago
+        this.dataBillReceive.valorTotal - this.dataBillReceive.valorPago;
 
-      this.dataBillReceive.valorRestante = changedValue
+      this.dataBillReceive.valorRestante = changedValue;
     },
   },
   mounted() {
-    this.getProviderForSelectBox()
-    this.getEmployeesForSelectBox()
-    this.getTypesPaymentsSelectBox()
+    this.getProviderForSelectBox();
+    this.getEmployeesForSelectBox();
+    this.getTypesPaymentsSelectBox();
   },
   watch: {
     searchAccountsPayable() {
       if (this.searchAccountsPayable.tipo === "saida") {
-        this.formatDate()
-        Object.assign(this.dataBillPayable, this.searchAccountsPayable)
+        this.formatDate();
+        Object.assign(this.dataBillPayable, this.searchAccountsPayable);
       } else {
-        return
+        return;
       }
     },
   },
-}
+};
 </script>
 
 <style scoped>

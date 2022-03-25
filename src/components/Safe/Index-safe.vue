@@ -14,7 +14,7 @@
             </b-card-text>
           </b-tab>
           <b-tab title="Pesquisa">
-            <b-card-text> </b-card-text>
+            <b-card-text> <Search /> </b-card-text>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -25,11 +25,13 @@
 
 <script>
 import Safe from "./Form-safe.vue";
+import Search from "./Search.vue";
 import { mapState } from "vuex";
 
 export default {
   components: {
     Safe,
+    Search,
   },
   data() {
     return {
