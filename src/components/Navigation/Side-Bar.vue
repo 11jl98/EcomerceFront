@@ -67,7 +67,7 @@
 
         <li>
           <b-button to="/caixa" :class="iconsCenter">
-            <i> <b-icon-journals></b-icon-journals></i>
+            <i> <b-icon-wallet-fill></b-icon-wallet-fill></i>
             <span :class="sizeText">Caixa</span>
           </b-button>
         </li>
