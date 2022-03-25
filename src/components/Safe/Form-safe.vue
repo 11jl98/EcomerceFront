@@ -20,13 +20,12 @@
             <b-icon-plus-square-fill
               scale="1.5"
               size="sm"
+              variant="info"
             ></b-icon-plus-square-fill>
           </div>
         </div>
 
         <b-form-select
-          value-field="id"
-          text-field="tipo"
           v-model="form.idFormaPagamento"
           :options="payments"
           size="sm"
@@ -43,7 +42,7 @@
 
       <b-form-group
         id="input-group-1"
-        label="Data Inicio"
+        label="Data da movimentação"
         label-for="input-1"
         class="col-sm-4 col-md-3 col-lg-3 col-xl-3"
       >
@@ -68,6 +67,7 @@
 <script>
 import api from "../../services/axios";
 import ModalFormaPagamento from "../../components/Sale/Modal-Forma-Pagamento.vue";
+import toastAlertErros from "../../utils/toastAlertErros";
 export default {
   components: {
     ModalFormaPagamento,
@@ -96,12 +96,17 @@ export default {
     async searchPayment() {
       const response = await api.get("/payments/combobox");
       this.payments = response.data.map((item) => {
+        console.log(item.tipo);
         return { text: item.tipo, value: item.id };
       });
     },
     async save() {
-      const response = await api.post("/safe", this.form);
-      this.form.id = response.data.id;
+      try {
+        const response = await api.post("/safe", this.form);
+        this.form.id = response.data.id;
+      } catch (error) {
+        return toastAlertErros.validateBillErro(error, this.$toast);
+      }
     },
     async updated() {
       await api.put(`/safe/${this.form.id}`, this.form);
