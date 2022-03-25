@@ -16,73 +16,72 @@
       <ul class="nav-links">
         <li>
           <span>
-            <b-button to="/Clientes" :class="iconsCenter">
-              <i>
-                <b-icon-person-bounding-box
-                  
-                ></b-icon-person-bounding-box
-              ></i>
+            <b-button to="/clientes" :class="iconsCenter">
+              <i> <b-icon-person-bounding-box></b-icon-person-bounding-box></i>
               <span :class="sizeText">Clientes</span>
             </b-button>
           </span>
         </li>
 
         <li>
-          <b-button to="/Fornecedores" :class="iconsCenter">
-            <i> <b-icon-truck ></b-icon-truck></i>
+          <b-button to="/fornecedores" :class="iconsCenter">
+            <i> <b-icon-truck></b-icon-truck></i>
             <span :class="sizeText">Fornecedores</span>
           </b-button>
         </li>
 
         <li>
-          <b-button to="/Funcionarios" :class="iconsCenter">
-            <i>
-              <b-icon-person-plus-fill ></b-icon-person-plus-fill
-            ></i>
+          <b-button to="/funcionarios" :class="iconsCenter">
+            <i> <b-icon-person-plus-fill></b-icon-person-plus-fill></i>
             <span :class="sizeText">Funcionário</span>
           </b-button>
         </li>
 
         <li>
-          <b-button to="/Produtos" :class="iconsCenter">
-            <i> <b-icon-box-seam ></b-icon-box-seam></i>
+          <b-button to="/produtos" :class="iconsCenter">
+            <i> <b-icon-box-seam></b-icon-box-seam></i>
             <span :class="sizeText">Produtos</span>
           </b-button>
         </li>
 
         <li>
-          <b-button to="/Vendas" :class="iconsCenter">
-            <i>
-              <b-icon-cart-check-fill ></b-icon-cart-check-fill
-            ></i>
+          <b-button to="/vendas" :class="iconsCenter">
+            <i> <b-icon-cart-check-fill></b-icon-cart-check-fill></i>
             <span :class="sizeText">Vendas</span>
           </b-button>
         </li>
 
         <li>
           <b-button to="/" :class="iconsCenter">
-            <i> <b-icon-reply-all ></b-icon-reply-all></i>
+            <i> <b-icon-reply-all></b-icon-reply-all></i>
             <span :class="sizeText">NF-e / NFc-e</span>
           </b-button>
         </li>
 
         <li>
-          <b-button to="/Financeiro" :class="iconsCenter">
-            <i> <b-icon-journals ></b-icon-journals></i>
+          <b-button to="/financeiro" :class="iconsCenter">
+            <i> <b-icon-journals></b-icon-journals></i>
             <span :class="sizeText">Financeiro</span>
           </b-button>
         </li>
 
         <li>
+          <b-button to="/caixa" :class="iconsCenter">
+            <i> <b-icon-journals></b-icon-journals></i>
+            <span :class="sizeText">Caixa</span>
+          </b-button>
+        </li>
+
+        <li>
           <b-button to="/agenda" :class="iconsCenter">
-            <i> <b-icon-pencil-fill ></b-icon-pencil-fill></i>
+            <i> <b-icon-pencil-fill></b-icon-pencil-fill></i>
             <span :class="sizeText">Agenda</span>
           </b-button>
         </li>
 
         <li>
           <b-button to="/" :class="iconsCenter">
-            <i> <b-icon-gear-fill ></b-icon-gear-fill></i>
+            <i> <b-icon-gear-fill></b-icon-gear-fill></i>
             <span :class="sizeText">Configurações</span>
           </b-button>
         </li>
@@ -92,9 +91,7 @@
         <ul class="nav-links">
           <li>
             <b-button to="/" :class="iconsCenter">
-              <i>
-                <b-icon-door-open-fill ></b-icon-door-open-fill
-              ></i>
+              <i> <b-icon-door-open-fill></b-icon-door-open-fill></i>
               <span :class="btnSair">Sair</span>
             </b-button>
           </li>
@@ -166,7 +163,7 @@ export default {
   transition: all 0.5s ease;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
     rgba(0, 0, 0, 0.22) 0px 15px 12px;
-    overflow-y: overlay;
+  overflow-y: overlay;
 }
 
 .disable {

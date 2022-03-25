@@ -8,7 +8,7 @@ import Employee from "../src/pages/Employee/Page-Employee.vue";
 import Products from "../src/pages/Products/Page-Products.vue";
 import Sale from "../src/pages/Sale/Page-Sale.vue";
 import Financial from "../src/pages/Financial/Page-Financial.vue";
-import PageSafe from "../src/pages/Safe/Page-Safe.vue";
+import Safe from "../src/pages/Safe/Page-Safe.vue";
 
 
 Vue.use(Router);
@@ -48,7 +48,7 @@ const routes = [
   },
   {
     path: "/Caixa",
-    component: PageSafe,
+    component: Safe,
   },];
 
 const router = new Router({
