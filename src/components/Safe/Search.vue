@@ -30,6 +30,8 @@
             <b-form-select
               text-field="text"
               size="sm"
+              value-field="value"
+              v-model="dataSafe.type"
               :options="listSelectSafe"
             ></b-form-select>
           </b-form-group>
@@ -76,35 +78,30 @@
       <table class="table table-sm">
         <thead>
           <tr>
-            <th>Nome Cliente</th>
-            <th>CNPJ/CPF</th>
-            <th>Cidade</th>
-            <th>Endereço</th>
+            <th>Nome</th>
+            <th>Data</th>
+            <th>Tipo</th>
+            <th>Tipo Pag</th>
+            <th>Valor</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="safe in dataSafe" :key="safe.id">
-            <td
-              class="textoGrande"
-              v-b-popover.hover.top="{
-                variant: 'secondary',
-                content: safe.tipo + ' CPF: ' + safe.tipo,
-              }"
-            >
-              {{ safe.tipo }}
+          <tr v-for="safe in listTableSafe.data" :key="safe.id">
+            <td>{{ safe.nomeCliente || ". . . . . . ." }}</td>
+            <td>{{ safe.data }}</td>
+            <td>
+              {{ safe.tipoMov || safe.tipoCaixa }}
             </td>
-            <td>{{ safe.tipo }}</td>
-            <td>{{ safe.tipo }} - {{ safe.tipo }}</td>
-            <td
-              class="textoGrande"
-              v-b-popover.hover.top="{
-                variant: 'secondary',
-                content: safe.tipo,
-              }"
-            >
-              {{ safe.tipo }}
+
+            <td>
+              {{ safe.tipoFormaPag || ". . . . . . ." }}
             </td>
+
+            <td>
+              {{ safe.valor }}
+            </td>
+
             <td>
               <b-button
                 size="sm"
@@ -146,7 +143,7 @@ export default {
       tabIndex: 0,
       dataSafe: {
         q: "",
-        type: "todos",
+        type: "",
         startDate: "",
         endDate: "",
       },
@@ -154,7 +151,8 @@ export default {
       listSelectSafe: [
         { value: "nome", text: "Cliente" },
         { value: "nomeFantasia", text: "Fornecedor" },
-        { value: "tipo", text: "Forma de Pagamento" },
+        { value: "tipo", text: "Tipo" },
+        { value: "tipoFormaPagamento", text: "Forma de Pagamento" },
       ],
     };
   },
@@ -165,7 +163,7 @@ export default {
           `/safe?q=${this.dataSafe.q}&type=${this.dataSafe.type}&startDate=${this.dataSafe.startDate}&endDate=${this.dataSafe.endDate}`
         );
         this.listTableSafe = data;
-        console.log(this.listTableSafe, "terstetregfd");
+        console.log(this.listTableSafe);
       } catch (error) {
         toastAlertErros.validateBillErro(error);
       }
