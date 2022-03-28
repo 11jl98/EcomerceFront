@@ -283,9 +283,9 @@ export default {
       this.dataBillReceive.idFuncionario = "";
       this.dataBillReceive.idFormaPagamento = "";
       this.dataBillReceive.idVenda = "";
-      this.dataBillReceive.valorTotal = "";
-      this.dataBillReceive.valorPago = "";
-      this.dataBillReceive.valorRestante = "";
+      this.dataBillReceive.valorTotal = "0.00";
+      this.dataBillReceive.valorPago = "0.00";
+      this.dataBillReceive.valorRestante = "0.00";
       this.dataBillReceive.data = "";
       this.dataBillReceive.descricao = "";
     },

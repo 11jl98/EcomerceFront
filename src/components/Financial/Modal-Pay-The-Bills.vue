@@ -167,9 +167,9 @@ export default {
         idFuncionario: "",
         idFormaPagamento: "",
         idVenda: "",
-        valorTotal: "0.00",
-        valorPago: "0.00",
-        valorRestante: "0.00",
+        valorTotal: 0.0,
+        valorPago: 0.0,
+        valorRestante: 0.0,
         data: "",
         dataPagamento: null,
         descricao: "",
@@ -180,7 +180,7 @@ export default {
         description: "",
         datePayment: "",
       },
-      launchValue: "0.00",
+      launchValue: 0.0,
     };
   },
   methods: {
@@ -195,7 +195,7 @@ export default {
     async payTheBills() {
       try {
         this.assigningValuesToAnotherVariable();
-
+        console.log(this.payment, "minha picaaaaaaaaaaaaa grossonaaaaaaaa");
         const { data } = await api.post("/bills/payment", this.payment);
 
         this.billReductionData.valorRestante =
@@ -206,7 +206,7 @@ export default {
           parseFloat(this.billReductionData.valorPago) +
           parseFloat(this.launchValue);
 
-        this.launchValue = "0.00";
+        this.launchValue = 0.0;
 
         this.$emit("changeSearchTotalAmount");
         return data;
