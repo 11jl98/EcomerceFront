@@ -3,28 +3,68 @@
     <b-card class="shadow">
       <h3>Pesquisa</h3>
       <hr />
+
       <div class="d-flex align-items-center">
         <b-row class="col-sm-12">
           <b-form-group
             id="input-group-1"
-            label="Pesquisa"
+            label="Nome"
             label-for="input-1"
-            class="col-sm-4"
+            class="col-sm-3"
           >
             <b-form-input
               id="input-1"
               type="email"
-              placeholder="Pesquisa"
-              v-model="textPesquisa"
+              v-model="dataSafe.q"
               required
               size="sm"
             ></b-form-input>
           </b-form-group>
-          <div style="margin: 16px">
+
+          <b-form-group
+            id="input-group-1"
+            label="Filtro"
+            label-for="input-1"
+            class="col-sm-3"
+          >
+            <b-form-select
+              text-field="text"
+              size="sm"
+              :options="listSelectSafe"
+            ></b-form-select>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-1"
+            label="Data Inicio"
+            label-for="input-1"
+            class="col-sm-4 col-md-3 col-lg-3 col-xl-3"
+          >
+            <b-form-input
+              type="date"
+              size="sm"
+              v-model="dataSafe.startDate"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-1"
+            label="Data Fim"
+            label-for="input-1"
+            class="col-sm-4 col-md-3 col-lg-3 col-xl-3"
+          >
+            <b-form-input
+              type="date"
+              v-model="dataSafe.endDate"
+              size="sm"
+            ></b-form-input>
+          </b-form-group>
+
+          <div style="margin: 16px" class="searchSafe">
             <b-button
               variant="primary"
               class="mt-3 mb-3"
-              @click="readCustomers"
+              @click="filterSafe"
               size="sm"
             >
               <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
@@ -44,33 +84,32 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="customer in readCustomer" :key="customer.id">
+          <tr v-for="safe in dataSafe" :key="safe.id">
             <td
               class="textoGrande"
               v-b-popover.hover.top="{
                 variant: 'secondary',
-                content: customer.nome + ' CPF: ' + customer.cpfCnpj,
+                content: safe.tipo + ' CPF: ' + safe.tipo,
               }"
             >
-              {{ customer.nome }}
+              {{ safe.tipo }}
             </td>
-            <td>{{ customer.cpfCnpj }}</td>
-            <td>{{ customer.cidade }} - {{ customer.uf }}</td>
+            <td>{{ safe.tipo }}</td>
+            <td>{{ safe.tipo }} - {{ safe.tipo }}</td>
             <td
               class="textoGrande"
               v-b-popover.hover.top="{
                 variant: 'secondary',
-                content: customer.endereco,
+                content: safe.tipo,
               }"
             >
-              {{ customer.endereco }}
+              {{ safe.tipo }}
             </td>
             <td>
               <b-button
                 size="sm"
                 class="mr-2"
                 style="background-color: #56aafe; border: none !important"
-                @click="editCustomer(customer)"
                 v-b-popover.hover.left="{
                   variant: 'info',
                   content: 'Editar',
@@ -82,7 +121,6 @@
                 size="sm"
                 variant="secondary"
                 style="border: none !important"
-                @click="destroyCustomer(customer.id)"
                 v-b-popover.hover.right="{
                   variant: 'secondary',
                   content: 'Excluir',
@@ -100,47 +138,40 @@
 </template>
 
 <script>
-import api from "../../services/axios"
-import toastAlertErros from "../../utils/toastAlertErros"
+import api from "../../services/axios";
+import toastAlertErros from "../../utils/toastAlertErros";
 export default {
   data() {
     return {
-      readCustomer: [],
-      textPesquisa: "",
       tabIndex: 0,
-    }
+      dataSafe: {
+        q: "",
+        type: "todos",
+        startDate: "",
+        endDate: "",
+      },
+      listTableSafe: [],
+      listSelectSafe: [
+        { value: "nome", text: "Cliente" },
+        { value: "nomeFantasia", text: "Fornecedor" },
+        { value: "tipo", text: "Forma de Pagamento" },
+      ],
+    };
   },
   methods: {
-    async readCustomers() {
+    async filterSafe() {
       try {
-        const { data } = await api.get("/customers?q=" + this.textPesquisa)
-        this.readCustomer = data.data
+        const { data } = await api.get(
+          `/safe?q=${this.dataSafe.q}&type=${this.dataSafe.type}&startDate=${this.dataSafe.startDate}&endDate=${this.dataSafe.endDate}`
+        );
+        this.listTableSafe = data;
+        console.log(this.listTableSafe, "terstetregfd");
       } catch (error) {
-        return this.$toast.open({
-          message: "Não foi possível listar os clientes",
-          type: "warning",
-        })
-      }
-    },
-    async editCustomer(customer) {
-      this.$emit("readOrEditCustomers", customer)
-      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais")
-      this.$emit("alterTabIndex", this.tabIndex)
-    },
-    async destroyCustomer(idCustomer) {
-      try {
-        await api.delete(`/customers/${idCustomer}`)
-        this.readCustomers()
-        return this.$toast.open({
-          message: "Cliente excluido com sucesso",
-          type: "success",
-        })
-      } catch (error) {
-        toastAlertErros.validateBillMessage(error, this.$toast)
+        toastAlertErros.validateBillErro(error);
       }
     },
   },
-}
+};
 </script>
 <style scoped>
 .textoGrande {
@@ -148,5 +179,11 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 100px !important;
+}
+
+.searchSafe {
+  width: 100% !important;
+  display: flex;
+  justify-content: flex-end !important;
 }
 </style>

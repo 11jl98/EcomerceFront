@@ -25,7 +25,7 @@
         </div>
       </div>
       <b-row class="d-flex">
-        <b-form-group label="Tipo" class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
+        <b-form-group label="Nome" class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
           <b-form-input size="sm" v-model="typeText"></b-form-input>
         </b-form-group>
 

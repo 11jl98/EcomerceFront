@@ -96,7 +96,6 @@ export default {
     async searchPayment() {
       const response = await api.get("/payments/combobox");
       this.payments = response.data.map((item) => {
-        console.log(item.tipo);
         return { text: item.tipo, value: item.id };
       });
     },
@@ -108,9 +107,11 @@ export default {
         return toastAlertErros.validateBillErro(error, this.$toast);
       }
     },
+
     async updated() {
       await api.put(`/safe/${this.form.id}`, this.form);
     },
+
     async handle() {
       if (!this.form.id) {
         await this.save();
@@ -118,6 +119,7 @@ export default {
         await this.updated();
       }
     },
+
     openModalFormaPagamento() {
       this.$bvModal.show("modalFormaPagamento");
     },
