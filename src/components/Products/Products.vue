@@ -17,6 +17,7 @@
             placeholder="Nome"
             required
             v-model="dataProducts.nome"
+            size="sm"
           ></b-form-input>
         </b-form-group>
 
@@ -31,6 +32,7 @@
             placeholder="Valor"
             required
             v-model="dataProducts.valor"
+            size="sm"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -44,6 +46,7 @@
             placeholder="Valor de venda"
             required
             v-model="dataProducts.valorVenda"
+            size="sm"
           ></b-form-input>
         </b-form-group>
       </b-row>
@@ -59,6 +62,7 @@
             placeholder="Unidade"
             required
             v-model="dataProducts.unidade"
+            size="sm"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -71,6 +75,7 @@
             id="input-1"
             placeholder="Código de barras"
             v-model="dataProducts.codBarras"
+            size="sm"
             required
           ></b-form-input>
         </b-form-group>
@@ -84,6 +89,7 @@
             id="input-1"
             placeholder="Código de referencia"
             v-model="dataProducts.codReferencia"
+            size="sm"
             required
           ></b-form-input>
         </b-form-group>
@@ -102,6 +108,7 @@
             required
             disabled
             v-model="dataProducts.estoque"
+            size="sm"
             type="number"
           ></b-form-input>
         </b-form-group>
@@ -117,6 +124,7 @@
             required
             type="number"
             v-model="dataProducts.estoqueMin"
+            size="sm"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -130,6 +138,7 @@
             rows="3"
             max-rows="6"
             v-model="dataProducts.descricao"
+            size="sm"
           ></b-form-textarea>
         </b-form-group>
       </b-row>
@@ -145,9 +154,10 @@
                 background-color: #56aafe !important;
               "
               @click="saveOrUpdateProducts"
+              size="sm"
               >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
             ></b-button>
-            <b-button variant="light" @click="clear"
+            <b-button variant="light" size="sm" @click="clear"
               >Limpar
               <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
             ></b-button>
@@ -248,5 +258,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

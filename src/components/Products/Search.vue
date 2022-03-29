@@ -23,6 +23,7 @@
                 type="email"
                 placeholder="Pesquisa"
                 v-model="textPesquisa"
+                size="sm"
                 required
               ></b-form-input>
             </b-form-group>
@@ -31,6 +32,7 @@
                 variant="primary"
                 class="mt-3 mb-3"
                 @click="SearchProducts"
+                size="sm"
               >
                 <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
                 Pesquisar</b-button
