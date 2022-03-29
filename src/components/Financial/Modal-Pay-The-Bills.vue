@@ -195,7 +195,7 @@ export default {
     async payTheBills() {
       try {
         this.assigningValuesToAnotherVariable();
-        console.log(this.payment, "minha picaaaaaaaaaaaaa grossonaaaaaaaa");
+
         const { data } = await api.post("/bills/payment", this.payment);
 
         this.billReductionData.valorRestante =
