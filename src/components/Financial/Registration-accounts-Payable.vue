@@ -200,6 +200,7 @@
                     size="sm"
                     style="border: none !important"
                     @click="clearDataBill"
+                    variant="light"
                     >Novo
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>

@@ -205,6 +205,7 @@
                     size="sm"
                     style="border: none"
                     @click="clearDataBillReceive"
+                    variant="light"
                     >Novo
                     <b-icon-person-check class="ml-1"></b-icon-person-check
                   ></b-button>

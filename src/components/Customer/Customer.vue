@@ -238,7 +238,7 @@
               >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
             ></b-button>
             <b-button variant="light" @click="clearInputs" size="sm"
-              >Limpar
+              >Novo
               <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
             ></b-button>
           </div>
