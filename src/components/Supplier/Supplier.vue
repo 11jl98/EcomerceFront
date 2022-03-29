@@ -228,8 +228,8 @@
 </template>
 
 <script>
-import api from "../../services/axios"
-import toastAlertErros from "../../utils/toastAlertErros"
+import api from "../../services/axios";
+import toastAlertErros from "../../utils/toastAlertErros";
 
 export default {
   props: {
@@ -255,75 +255,79 @@ export default {
         telefone: "",
         celular: "",
       },
-    }
+    };
   },
   methods: {
     async saveSupllier() {
       try {
-        const { data } = await api.post("/Providers", this.dadosSupplier)
-        this.dadosSupplier.id = data.id
+        const { data } = await api.post("/Providers", this.dadosSupplier);
+        this.dadosSupplier.id = data.id;
 
         return this.$toast.open({
           message: "Fornecedor salvo com sucesso",
           type: "success",
-        })
+        });
       } catch (error) {
-        toastAlertErros.validateBillErroDoesNotContainFor(error, this.$toast)
-        console.log(error.response.data.erros)
+        toastAlertErros.validateErroDoesNotContainFor(error, this.$toast);
+        console.log(error.response.data.erros);
       }
     },
 
     async updateSupplier() {
       try {
-        await api.put(`/Providers/${this.dadosSupplier.id}`, this.dadosSupplier)
+        await api.put(
+          `/Providers/${this.dadosSupplier.id}`,
+          this.dadosSupplier
+        );
 
         return this.$toast.open({
           message: "Fornecedor atualizado com sucesso",
           type: "success",
-        })
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
 
     saveAndUpdateSupplier() {
-      this.dadosSupplier.id !== "" ? this.updateSupplier() : this.saveSupllier()
+      this.dadosSupplier.id !== ""
+        ? this.updateSupplier()
+        : this.saveSupllier();
     },
     clear() {
-      this.dadosSupplier.id = ""
-      this.dadosSupplier.nomeFantasia = ""
-      this.dadosSupplier.razaoSocial = ""
-      this.dadosSupplier.cpfCnpj = ""
-      this.dadosSupplier.ie = ""
-      this.dadosSupplier.endereco = ""
-      this.dadosSupplier.numero = ""
-      this.dadosSupplier.bairro = ""
-      this.dadosSupplier.cidade = ""
-      this.dadosSupplier.uf = ""
-      this.dadosSupplier.email = ""
-      this.dadosSupplier.telefone = ""
-      this.dadosSupplier.celular = ""
+      this.dadosSupplier.id = "";
+      this.dadosSupplier.nomeFantasia = "";
+      this.dadosSupplier.razaoSocial = "";
+      this.dadosSupplier.cpfCnpj = "";
+      this.dadosSupplier.ie = "";
+      this.dadosSupplier.endereco = "";
+      this.dadosSupplier.numero = "";
+      this.dadosSupplier.bairro = "";
+      this.dadosSupplier.cidade = "";
+      this.dadosSupplier.uf = "";
+      this.dadosSupplier.email = "";
+      this.dadosSupplier.telefone = "";
+      this.dadosSupplier.celular = "";
     },
   },
   watch: {
     dataSupplier() {
-      Object.assign(this.dadosSupplier, this.dataSupplier)
+      Object.assign(this.dadosSupplier, this.dataSupplier);
     },
   },
 
   computed: {
     maskCnpj() {
-      return "##.###.###/####-##"
+      return "##.###.###/####-##";
     },
 
     maskCelular() {
-      return "(##) #####-####"
+      return "(##) #####-####";
     },
     maskTelefone() {
-      return "(##) ####-####"
+      return "(##) ####-####";
     },
   },
-}
+};
 </script>
-<style scoped>
-</style>
+<style scoped></style>

@@ -165,7 +165,7 @@ export default {
         this.listTableSafe = data;
         console.log(this.listTableSafe);
       } catch (error) {
-        toastAlertErros.validateBillErro(error);
+        toastAlertErros.validateErro(error);
       }
     },
   },

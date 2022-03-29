@@ -82,6 +82,7 @@
 
 <script>
 import api from "../../services/axios";
+import toastAlertErros from "../../utils/toastAlertErros";
 export default {
   components: {},
   data() {
@@ -94,9 +95,7 @@ export default {
   methods: {
     async readSupplier() {
       try {
-        const { data } = await api.get(
-          `/providers/filter/search/parameters?q=${this.txtPesquisa}`
-        );
+        const { data } = await api.get(`/providers?q=${this.txtPesquisa}`);
         this.dataSuppliers = data.data;
         return data;
       } catch (error) {
@@ -109,12 +108,16 @@ export default {
       this.$emit("alterTabIndex", this.tabIndex);
     },
     async destroySupplier(idSupplier) {
-      await api.delete(`/Providers/${idSupplier}`);
-      this.readSupplier();
-      return this.$toast.open({
-        message: "Fornecedor deletado com sucesso",
-        type: "success",
-      });
+      try {
+        await api.delete(`/Providers/${idSupplier}`);
+        this.readSupplier();
+        return this.$toast.open({
+          message: "Fornecedor deletado com sucesso",
+          type: "success",
+        });
+      } catch (error) {
+        return toastAlertErros.validateMessage(error, this.$toast);
+      }
     },
   },
 };

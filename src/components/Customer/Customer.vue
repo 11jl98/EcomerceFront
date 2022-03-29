@@ -313,7 +313,7 @@ export default {
           type: "success",
         });
       } catch (error) {
-        return toastAlertErros.validateBillErroDoesNotContainFor(
+        return toastAlertErros.validateErroDoesNotContainFor(
           error,
           this.$toast
         );
@@ -328,10 +328,10 @@ export default {
           type: "success",
         });
       } catch (error) {
-        this.$toast.open({
-          message: "Não foi possível editar o cliente",
-          type: "warning",
-        });
+        return toastAlertErros.validateErroDoesNotContainFor(
+          error,
+          this.$toast
+        );
       }
     },
   },
@@ -367,5 +367,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

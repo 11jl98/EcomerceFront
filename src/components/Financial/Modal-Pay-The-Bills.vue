@@ -211,7 +211,7 @@ export default {
         this.$emit("changeSearchTotalAmount");
         return data;
       } catch (error) {
-        return toastAlertErros.validateBillMessage(error, this.$toast);
+        return toastAlertErros.validateMessage(error, this.$toast);
       }
     },
 

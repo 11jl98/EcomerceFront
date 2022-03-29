@@ -382,7 +382,7 @@ export default {
         });
       } catch (error) {
         console.log(error);
-        return toastAlertErros.validateBillErroDoesNotContainFor(
+        return toastAlertErros.validateErroDoesNotContainFor(
           error,
           this.$toast
         );

@@ -33,6 +33,7 @@
             required
             v-model="dataProducts.valor"
             size="sm"
+            type="number"
           ></b-form-input>
         </b-form-group>
         <b-form-group
@@ -47,6 +48,7 @@
             required
             v-model="dataProducts.valorVenda"
             size="sm"
+            type="number"
           ></b-form-input>
         </b-form-group>
       </b-row>
@@ -183,8 +185,8 @@ export default {
       dataProducts: {
         id: "",
         nome: "",
-        valor: "0.00",
-        valorVenda: "0.00",
+        valor: 0.0,
+        valorVenda: 0.0,
         unidade: "",
         descricao: "",
         codBarras: "",
@@ -212,10 +214,10 @@ export default {
         });
       } catch (error) {
         console.log(error);
-        return this.$toast.open({
-          message: "Não foi possível editar os dados",
-          type: "warning",
-        });
+        return toastAlertErros.validateErroDoesNotContainFor(
+          error,
+          this.$toast
+        );
       }
     },
 
@@ -229,7 +231,7 @@ export default {
           type: "success",
         });
       } catch (error) {
-        return toastAlertErros.validateBillErroDoesNotContainFor(
+        return toastAlertErros.validateErroDoesNotContainFor(
           error,
           this.$toast
         );
@@ -240,14 +242,14 @@ export default {
       this.dataProducts = {
         id: "",
         nome: "",
-        valor: "0.00",
-        valorVenda: "0.00",
+        valor: 0.0,
+        valorVenda: 0.0,
         unidade: "",
         descricao: "",
         codBarras: "",
         codReferencia: "",
-        estoque: "0",
-        estoqueMin: "0",
+        estoque: 0,
+        estoqueMin: 0,
       };
     },
   },

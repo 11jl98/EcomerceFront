@@ -136,7 +136,7 @@ export default {
           type: "success",
         })
       } catch (error) {
-        toastAlertErros.validateBillMessage(error, this.$toast)
+        toastAlertErros.validateMessage(error, this.$toast)
       }
     },
   },

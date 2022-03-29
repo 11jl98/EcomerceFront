@@ -260,7 +260,7 @@ export default {
           type: "success",
         });
       } catch (error) {
-        return toastAlertErros.validateBillErro(error, this.$toast);
+        return toastAlertErros.validateErro(error, this.$toast);
       }
     },
 

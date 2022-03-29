@@ -27,6 +27,7 @@
                       :options="dataCustomers"
                       type="date"
                       v-model="dataSale.dataVenda"
+                      size="sm"
                     ></b-form-input>
                   </b-form-group>
                 </div>
@@ -41,6 +42,7 @@
                       unchecked-value="Orçamento"
                       class="chkVendaOrçamento"
                       v-model="dataSale.status"
+                      size="sm"
                       switch
                     >
                       <div style="width: 115px">
@@ -110,6 +112,7 @@
                                   text-field="nome"
                                   :options="dataCustomers"
                                   v-model="dataSale.idCliente"
+                                  size="sm"
                                 ></b-form-select>
                               </b-form-group>
 
@@ -125,6 +128,7 @@
                                   value-field="id"
                                   text-field="nomeFuncionario"
                                   v-model="dataSale.idFuncionario"
+                                  size="sm"
                                   @change="readComissao(dataEmployee[0])"
                                 >
                                 </b-form-select>
@@ -138,6 +142,7 @@
                               >
                                 <b-form-input
                                   v-model="comissao"
+                                  size="sm"
                                   placeholder="Comissão"
                                 ></b-form-input>
                               </b-form-group>
@@ -155,6 +160,7 @@
                                   id="textarea"
                                   rows="5"
                                   max-rows="6"
+                                  size="sm"
                                 ></b-form-textarea>
                               </b-form-group>
                             </b-row>
@@ -248,10 +254,10 @@
                                   label="Nome Produto"
                                   label-for="input-1"
                                   class="col-sm-4"
-                                  size="sm"
                                 >
                                   <b-form-select
                                     v-model="productsSelected"
+                                    size="sm"
                                     @change="readProducts"
                                   >
                                     <b-form-select-option
@@ -275,6 +281,7 @@
                                     value-field="id"
                                     text-field="nomeFantasia"
                                     v-model="productsSales.idFornecedor"
+                                    size="sm"
                                   ></b-form-select>
                                 </b-form-group>
 
@@ -288,6 +295,7 @@
                                   <b-form-input
                                     placeholder="Quantidade"
                                     v-model="productsSales.quantidade"
+                                    size="sm"
                                   ></b-form-input>
                                 </b-form-group>
 
@@ -301,6 +309,8 @@
                                   <b-form-input
                                     placeholder="Valor"
                                     v-model="productsSales.valorTotal"
+                                    size="sm"
+                                    type="number"
                                   ></b-form-input>
                                 </b-form-group>
                               </b-row>
@@ -503,6 +513,7 @@
                                       text-field="tipo"
                                       v-model="dataBillBySale.idFormaPagamento"
                                       :options="allPaymentsTypes"
+                                      size="sm"
                                     ></b-form-select>
                                   </b-form-group>
 
@@ -519,6 +530,7 @@
                                       text-field="nomeFuncionario"
                                       disabled
                                       v-model="dataBillBySale.idFuncionario"
+                                      size="sm"
                                     ></b-form-select>
                                   </b-form-group>
 
@@ -532,6 +544,8 @@
                                     <b-form-input
                                       placeholder="Ex em dias: 30"
                                       v-model="intervaloDias"
+                                      size="sm"
+                                      type="number"
                                     ></b-form-input>
                                   </b-form-group>
 
@@ -544,12 +558,13 @@
                                   >
                                     <b-form-input
                                       v-model="totalParcelas"
+                                      size="sm"
                                     ></b-form-input>
                                   </b-form-group>
 
                                   <b-form-group
                                     id="input-group-1"
-                                    label="Data primeiro vencimento"
+                                    label="Primeiro vencimento"
                                     label-for="input-1"
                                     class="col-sm-3"
                                     size="sm"
@@ -557,6 +572,7 @@
                                     <b-form-input
                                       type="date"
                                       v-model="dataBillBySale.data"
+                                      size="sm"
                                     ></b-form-input>
                                   </b-form-group>
 
@@ -655,12 +671,28 @@
             class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12 acoesBtns"
           >
             <div class="btnsGeral">
-              <b-button variant="success" size="sm" @click="closeSale"
+              <b-button
+                variant="success"
+                size="sm"
+                :disabled="
+                  dataSale.id === '' || dataSale.status === 'Venda'
+                    ? true
+                    : false
+                "
+                @click="closeSale"
                 >Fechar Venda
                 <b-icon-check class="ml-1" scale="1.8"></b-icon-check
               ></b-button>
 
-              <b-button variant="dark" size="sm" @click="editSale"
+              <b-button
+                variant="dark"
+                size="sm"
+                :disabled="
+                  dataSale.id === '' || dataSale.status === 'Orçamento'
+                    ? true
+                    : false
+                "
+                @click="editSale"
                 >Editar Venda
                 <b-icon-pencil-square class="ml-1"></b-icon-pencil-square
               ></b-button>
@@ -739,13 +771,13 @@ export default {
         idFuncionario: "",
         idFormaPagamento: "",
         idVenda: "",
-        valorTotal: "0.00",
-        valorPago: "0.00",
-        valorRestante: "0.00",
+        valorTotal: 0.0,
+        valorPago: 0.0,
+        valorRestante: 0.0,
         data: "",
       },
       totalParcelas: 1,
-      intervaloDias: 0,
+      intervaloDias: "",
       allPaymentsTypes: [],
       allPaymentsByIdSale: [],
     };
@@ -978,6 +1010,7 @@ export default {
           const valoTotalPedido = this.productsTable.reduce((total, valor) => {
             return total + parseFloat(valor.valorTotal);
           }, 0);
+
           const valorPorDuplicata = valoTotalPedido / this.totalParcelas;
           for (let i = 0; i < this.totalParcelas; i++) {
             const dataVencimento =
@@ -993,8 +1026,8 @@ export default {
               idFormaPagamento: this.dataBillBySale.idFormaPagamento,
               idVenda: this.dataSale.id,
               valorTotal: valorPorDuplicata,
-              valorPago: "0.00",
-              valorRestante: "0.00",
+              valorPago: 0.0,
+              valorRestante: 0.0,
               data: dataVencimento,
             });
             await api.post("/bills", array[i]);
@@ -1095,7 +1128,7 @@ export default {
 
 .containerCheckBox {
   display: flex;
-  height: 40px !important;
+  height: 32px !important;
   margin-top: 31px;
   align-items: center !important;
   background-color: #e9ecef !important;
@@ -1105,7 +1138,7 @@ export default {
 }
 
 .chkVendaOrçamento {
-  margin-top: 13px;
+  margin-top: 18px;
 }
 
 .containerGeralPedidoVenda {

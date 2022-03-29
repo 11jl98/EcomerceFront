@@ -81,6 +81,7 @@
 
 <script>
 import api from "../../services/axios";
+import toastAlertErros from "../../utils/toastAlertErros";
 export default {
   components: {},
   data() {
@@ -120,11 +121,10 @@ export default {
           type: "success",
         });
       } catch (error) {
-        console.log(error);
+        return toastAlertErros.validateMessage(error, this.$toast);
       }
     },
   },
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

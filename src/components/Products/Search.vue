@@ -144,10 +144,11 @@ export default {
           message: "Produto deletado com sucesso",
           type: "success",
         });
-      } catch {
+      } catch (error) {
+        console.log(error.response.data);
         return this.$toast.open({
-          message: "Não foi possível deletar o produto",
-          type: "warning",
+          message: `${error.response.data.message}`,
+          type: "error",
         });
       }
     },

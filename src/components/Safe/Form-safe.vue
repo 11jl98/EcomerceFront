@@ -104,7 +104,7 @@ export default {
         const response = await api.post("/safe", this.form);
         this.form.id = response.data.id;
       } catch (error) {
-        return toastAlertErros.validateBillErro(error, this.$toast);
+        return toastAlertErros.validateErro(error, this.$toast);
       }
     },
 
