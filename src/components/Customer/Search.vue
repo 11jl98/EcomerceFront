@@ -1,8 +1,6 @@
 <template>
   <div>
     <b-card class="shadow">
-      <h3>Pesquisa</h3>
-      <hr />
       <div class="d-flex align-items-center">
         <b-row class="col-sm-12">
           <b-form-group
@@ -14,7 +12,6 @@
             <b-form-input
               id="input-1"
               type="email"
-              placeholder="Pesquisa"
               v-model="textPesquisa"
               required
               size="sm"
@@ -100,47 +97,47 @@
 </template>
 
 <script>
-import api from "../../services/axios"
-import toastAlertErros from "../../utils/toastAlertErros"
+import api from "../../services/axios";
+import toastAlertErros from "../../utils/toastAlertErros";
 export default {
   data() {
     return {
       readCustomer: [],
       textPesquisa: "",
       tabIndex: 0,
-    }
+    };
   },
   methods: {
     async readCustomers() {
       try {
-        const { data } = await api.get("/customers?q=" + this.textPesquisa)
-        this.readCustomer = data.data
+        const { data } = await api.get("/customers?q=" + this.textPesquisa);
+        this.readCustomer = data.data;
       } catch (error) {
         return this.$toast.open({
           message: "Não foi possível listar os clientes",
           type: "warning",
-        })
+        });
       }
     },
     async editCustomer(customer) {
-      this.$emit("readOrEditCustomers", customer)
-      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais")
-      this.$emit("alterTabIndex", this.tabIndex)
+      this.$emit("readOrEditCustomers", customer);
+      this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
+      this.$emit("alterTabIndex", this.tabIndex);
     },
     async destroyCustomer(idCustomer) {
       try {
-        await api.delete(`/customers/${idCustomer}`)
-        this.readCustomers()
+        await api.delete(`/customers/${idCustomer}`);
+        this.readCustomers();
         return this.$toast.open({
           message: "Cliente excluido com sucesso",
           type: "success",
-        })
+        });
       } catch (error) {
-        toastAlertErros.validateMessage(error, this.$toast)
+        toastAlertErros.validateMessage(error, this.$toast);
       }
     },
   },
-}
+};
 </script>
 <style scoped>
 .textoGrande {

@@ -37,12 +37,12 @@
                 id="input-group-1"
                 label="Tipo"
                 label-for="input-1"
-                class="col-sm-12 col-md-6 col-lg-5 col-xl-3"
-                size="sm"
+                class="col-sm-12 col-md-6 col-lg-5 col-xl-4"
               >
                 <b-form-input
                   disabled
                   v-model="dataBillReceive.tipo"
+                  size="sm"
                 ></b-form-input>
               </b-form-group>
 
@@ -50,14 +50,14 @@
                 id="input-group-1"
                 label="Cliente"
                 label-for="input-1"
-                class="col-sm-12 col-md-12 col-lg-7 col-xl-7"
-                size="sm"
+                class="col-sm-12 col-md-12 col-lg-7 col-xl-8"
               >
                 <b-form-select
                   :options="listCustomersSelectBox"
                   text-field="nome"
                   value-field="id"
                   v-model="dataBillReceive.idCliente"
+                  size="sm"
                 ></b-form-select>
               </b-form-group>
 
@@ -66,13 +66,13 @@
                 label="Funcionario"
                 label-for="input-1"
                 class="col-sm-12 col-md-12 col-lg-12 col-xl-6"
-                size="sm"
               >
                 <b-form-select
                   :options="listEmployeeSelectBox"
                   text-field="nomeFuncionario"
                   value-field="id"
                   v-model="dataBillReceive.idFuncionario"
+                  size="sm"
                 ></b-form-select>
               </b-form-group>
 
@@ -80,11 +80,10 @@
                 id="input-group-1"
                 label-for="input-1"
                 class="col-sm-12 col-md-12 col-lg-7 col-xl-6"
-                size="sm"
               >
                 <div class="iconFormaPagamentoReceber">
                   <div>
-                    <label for="input-1">Forma de pagamento</label>
+                    <label for="input-1">Tipo pagamento</label>
                   </div>
 
                   <div
@@ -103,6 +102,7 @@
                   value-field="id"
                   text-field="tipo"
                   v-model="dataBillReceive.idFormaPagamento"
+                  size="sm"
                 ></b-form-select>
               </b-form-group>
 
@@ -115,6 +115,7 @@
               >
                 <b-form-input
                   v-model="dataBillReceive.valorPago"
+                  size="sm"
                   type="number"
                   @keyup="changeValueUsingKeyUpEvent"
                 ></b-form-input>
@@ -129,6 +130,7 @@
               >
                 <b-form-input
                   v-model="dataBillReceive.valorTotal"
+                  size="sm"
                   type="number"
                 ></b-form-input>
               </b-form-group>
@@ -142,6 +144,7 @@
               >
                 <b-form-input
                   v-model="dataBillReceive.valorRestante"
+                  size="sm"
                   type="number"
                 ></b-form-input>
               </b-form-group>
@@ -156,6 +159,7 @@
                 <b-form-input
                   type="date"
                   v-model="dataBillReceive.data"
+                  size="sm"
                 ></b-form-input>
               </b-form-group>
 
@@ -169,6 +173,7 @@
                 <b-form-input
                   type="date"
                   v-model="dataBillReceive.dataPagamento"
+                  size="sm"
                   disabled
                 ></b-form-input>
               </b-form-group>

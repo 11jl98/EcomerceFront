@@ -33,12 +33,12 @@
                 id="input-group-1"
                 label="Tipo"
                 label-for="input-1"
-                class="col-sm-12 col-md-6 col-lg-5 col-xl-3"
-                size="sm"
+                class="col-sm-12 col-md-6 col-lg-5 col-xl-4"
               >
                 <b-form-input
                   disabled
                   v-model="dataBillPayable.tipo"
+                  size="sm"
                 ></b-form-input>
               </b-form-group>
 
@@ -46,7 +46,7 @@
                 id="input-group-1"
                 label="Fornecedor"
                 label-for="input-1"
-                class="col-sm-12 col-md-12 col-lg-7 col-xl-7"
+                class="col-sm-12 col-md-12 col-lg-7 col-xl-8"
                 size="sm"
               >
                 <b-form-select
@@ -54,6 +54,7 @@
                   text-field="razaoSocial"
                   value-field="id"
                   v-model="dataBillPayable.idFornecedor"
+                  size="sm"
                 ></b-form-select>
               </b-form-group>
 
@@ -69,6 +70,7 @@
                   value-field="id"
                   text-field="nomeFuncionario"
                   v-model="dataBillPayable.idFuncionario"
+                  size="sm"
                 ></b-form-select>
               </b-form-group>
 
@@ -80,7 +82,7 @@
               >
                 <div class="iconFormaPagamentoPagar">
                   <div>
-                    <label for="input-1">Forma de pagamento</label>
+                    <label for="input-1">Tipo pagamento</label>
                   </div>
 
                   <div
@@ -99,6 +101,7 @@
                   value-field="id"
                   text-field="tipo"
                   v-model="dataBillPayable.idFormaPagamento"
+                  size="sm"
                 ></b-form-select>
               </b-form-group>
 
@@ -111,6 +114,7 @@
               >
                 <b-form-input
                   v-model="dataBillPayable.valorPago"
+                  size="sm"
                   type="number"
                 ></b-form-input>
               </b-form-group>
@@ -124,6 +128,7 @@
               >
                 <b-form-input
                   v-model="dataBillPayable.valorTotal"
+                  size="sm"
                   type="number"
                 ></b-form-input>
               </b-form-group>
@@ -137,6 +142,7 @@
               >
                 <b-form-input
                   v-model="dataBillPayable.valorRestante"
+                  size="sm"
                   type="number"
                 ></b-form-input>
               </b-form-group>
@@ -151,6 +157,7 @@
                 <b-form-input
                   type="date"
                   v-model="dataBillPayable.data"
+                  size="sm"
                 ></b-form-input>
               </b-form-group>
 
@@ -165,6 +172,7 @@
                   type="date"
                   disabled
                   v-model="dataBillPayable.dataPagamento"
+                  size="sm"
                 ></b-form-input>
               </b-form-group>
 
@@ -179,6 +187,7 @@
                   rows="5"
                   max-rows="6"
                   v-model="dataBillPayable.descricao"
+                  size="sm"
                 ></b-form-textarea>
               </b-form-group>
             </b-row>

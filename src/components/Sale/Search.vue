@@ -1,8 +1,6 @@
 <template>
   <div>
     <b-card class="shadow">
-      <h3>Pesquisa</h3>
-      <hr />
       <div class="d-flex align-items-center">
         <b-row class="col-sm-12">
           <b-form-group
@@ -14,12 +12,12 @@
             <b-form-input
               id="input-1"
               type="email"
-              placeholder="Pesquisa"
+              size="sm"
               required
             ></b-form-input>
           </b-form-group>
           <div style="margin: 16px">
-            <b-button variant="primary" class="mt-3 mb-3">
+            <b-button variant="primary" class="mt-3 mb-3" size="sm">
               <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
               Pesquisar</b-button
             >
@@ -91,10 +89,6 @@ export default {
   methods: {},
 };
 </script>
-
-
-
-
 
 <style scoped>
 .textoGrande {

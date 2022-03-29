@@ -1,8 +1,6 @@
 <template>
   <div>
     <b-card class="shadow">
-      <h3>Pesquisa</h3>
-      <hr />
       <div class="d-flex align-items-center">
         <b-row class="col-sm-12">
           <b-form-group
@@ -14,7 +12,6 @@
             <b-form-input
               id="input-1"
               type="email"
-              placeholder="Pesquisa"
               v-model="txtPesquisa"
               required
               size="sm"
