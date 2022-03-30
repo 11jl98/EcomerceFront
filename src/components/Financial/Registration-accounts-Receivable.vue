@@ -130,8 +130,8 @@
               >
                 <b-form-input
                   v-model="dataBillReceive.valorTotal"
-                  size="sm"
                   type="number"
+                  size="sm"
                 ></b-form-input>
               </b-form-group>
 
@@ -144,8 +144,8 @@
               >
                 <b-form-input
                   v-model="dataBillReceive.valorRestante"
-                  size="sm"
                   type="number"
+                  size="sm"
                 ></b-form-input>
               </b-form-group>
 
@@ -248,9 +248,9 @@ export default {
         idFuncionario: "",
         idFormaPagamento: "",
         idVenda: "",
-        valorTotal: "0.00",
-        valorPago: "0.00",
-        valorRestante: "0.00",
+        valorTotal: 0.0,
+        valorPago: 0.0,
+        valorRestante: 0.0,
         data: "",
         dataPagamento: null,
         descricao: "",
@@ -273,9 +273,9 @@ export default {
         idFuncionario: "",
         idFormaPagamento: "",
         idVenda: "",
-        valorTotal: "0.00",
-        valorPago: "0.00",
-        valorRestante: "0.00",
+        valorTotal: 0.0,
+        valorPago: 0.0,
+        valorRestante: 0.0,
         data: "",
         dataPagamento: null,
         descricao: "",
@@ -289,9 +289,9 @@ export default {
       this.dataBillReceive.idFuncionario = "";
       this.dataBillReceive.idFormaPagamento = "";
       this.dataBillReceive.idVenda = "";
-      this.dataBillReceive.valorTotal = "0.00";
-      this.dataBillReceive.valorPago = "0.00";
-      this.dataBillReceive.valorRestante = "0.00";
+      this.dataBillReceive.valorTotal = 0.0;
+      this.dataBillReceive.valorPago = 0.0;
+      this.dataBillReceive.valorRestante = 0.0;
       this.dataBillReceive.data = "";
       this.dataBillReceive.descricao = "";
     },

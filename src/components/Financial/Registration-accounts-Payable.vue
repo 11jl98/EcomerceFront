@@ -114,8 +114,8 @@
               >
                 <b-form-input
                   v-model="dataBillPayable.valorPago"
-                  size="sm"
                   type="number"
+                  size="sm"
                 ></b-form-input>
               </b-form-group>
 
@@ -128,8 +128,8 @@
               >
                 <b-form-input
                   v-model="dataBillPayable.valorTotal"
-                  size="sm"
                   type="number"
+                  size="sm"
                 ></b-form-input>
               </b-form-group>
 
@@ -142,8 +142,8 @@
               >
                 <b-form-input
                   v-model="dataBillPayable.valorRestante"
-                  size="sm"
                   type="number"
+                  size="sm"
                 ></b-form-input>
               </b-form-group>
 
@@ -242,9 +242,9 @@ export default {
         idFuncionario: "",
         idFormaPagamento: "",
         idVenda: "",
-        valorTotal: "0.00",
-        valorPago: "0.00",
-        valorRestante: "0.00",
+        valorTotal: 0.0,
+        valorPago: 0.0,
+        valorRestante: 0.0,
         data: "",
         dataPagamento: null,
         descricao: "",
@@ -297,9 +297,9 @@ export default {
       this.dataBillPayable.idFuncionario = "";
       this.dataBillPayable.idFormaPagamento = "";
       this.dataBillPayable.idVenda = "";
-      this.dataBillPayable.valorTotal = "0.00";
-      this.dataBillPayable.valorPago = "0.00";
-      this.dataBillPayable.valorRestante = "0.00";
+      this.dataBillPayable.valorTotal = 0.0;
+      this.dataBillPayable.valorPago = 0.0;
+      this.dataBillPayable.valorRestante = 0.0;
       this.dataBillPayable.data = "";
       this.dataBillPayable.descricao = "";
     },
