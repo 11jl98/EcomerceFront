@@ -187,7 +187,6 @@
                   rows="5"
                   max-rows="6"
                   v-model="dataBillPayable.descricao"
-                  size="sm"
                 ></b-form-textarea>
               </b-form-group>
             </b-row>
