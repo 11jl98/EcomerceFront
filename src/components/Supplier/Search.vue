@@ -30,48 +30,51 @@
           </div>
         </b-row>
       </div>
-      <table class="table table-sm">
-        <thead>
-          <tr>
-            <th scope="col">Nome Fantasia</th>
-            <th scope="col">Razão Social</th>
-            <th scope="col">CNPJ</th>
-            <th scope="col">Celular</th>
-            <th scope="col">Ações</th>
-          </tr>
-          <tr v-for="supplier in dataSuppliers" :key="supplier.id">
-            <td>{{ supplier.nomeFantasia }}</td>
-            <td>{{ supplier.razaoSocial }}</td>
-            <td>{{ supplier.cpfCnpj }}</td>
-            <td>{{ supplier.celular }}</td>
-            <td>
-              <b-button
-                size="sm"
-                class="mr-2"
-                variant="info"
-                @click="editSupplier(supplier)"
-                v-b-popover.hover.left="{
-                  variant: 'info',
-                  content: 'Editar',
-                }"
-              >
-                <b-icon-check scale="2"></b-icon-check>
-              </b-button>
-              <b-button
-                size="sm"
-                variant="secondary"
-                @click="destroySupplier(supplier.id)"
-                v-b-popover.hover.right="{
-                  variant: 'secondary',
-                  content: 'Excluir',
-                }"
-              >
-                <b-icon-trash scale="1"></b-icon-trash
-              ></b-button>
-            </td>
-          </tr>
-        </thead>
-      </table>
+
+      <div class="tableSearchSupplier">
+        <table class="table table-sm">
+          <thead>
+            <tr style="background-color: #56aafe; color: white">
+              <th scope="col">Nome Fantasia</th>
+              <th scope="col">Razão Social</th>
+              <th scope="col">CNPJ</th>
+              <th scope="col">Celular</th>
+              <th scope="col">Ações</th>
+            </tr>
+            <tr v-for="supplier in dataSuppliers" :key="supplier.id">
+              <td class="tdSearchSupplier">{{ supplier.nomeFantasia }}</td>
+              <td class="tdSearchSupplier">{{ supplier.razaoSocial }}</td>
+              <td class="tdSearchSupplier">{{ supplier.cpfCnpj }}</td>
+              <td class="tdSearchSupplier">{{ supplier.celular }}</td>
+              <td>
+                <b-button
+                  size="sm"
+                  class="mr-2"
+                  variant="info"
+                  @click="editSupplier(supplier)"
+                  v-b-popover.hover.left="{
+                    variant: 'info',
+                    content: 'Editar',
+                  }"
+                >
+                  <b-icon-check scale="2"></b-icon-check>
+                </b-button>
+                <b-button
+                  size="sm"
+                  variant="secondary"
+                  @click="destroySupplier(supplier.id)"
+                  v-b-popover.hover.right="{
+                    variant: 'secondary',
+                    content: 'Excluir',
+                  }"
+                >
+                  <b-icon-trash scale="1"></b-icon-trash
+                ></b-button>
+              </td>
+            </tr>
+          </thead>
+        </table>
+      </div>
       <hr />
     </b-card>
   </div>
@@ -119,4 +122,16 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.tableSearchSupplier {
+  margin-top: 31px;
+  overflow-x: auto !important;
+}
+
+.tdSearchSupplier {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+</style>

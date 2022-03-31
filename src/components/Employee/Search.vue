@@ -30,48 +30,52 @@
           </div>
         </b-row>
       </div>
-      <table class="table table-sm">
-        <thead>
-          <tr>
-            <th scope="col">Nome Funcionario</th>
-            <th scope="col">CPF</th>
-            <th scope="col">Telefone</th>
-            <th scope="col">Celular</th>
-            <th scope="col">Ações</th>
-          </tr>
-          <tr v-for="Employee in dataEmployees" :key="Employee.id">
-            <td>{{ Employee.nomeFuncionario }}</td>
-            <td>{{ Employee.cpf }}</td>
-            <td>{{ Employee.telefone }}</td>
-            <td>{{ Employee.celular }}</td>
-            <td>
-              <b-button
-                size="sm"
-                class="mr-2"
-                variant="info"
-                @click="editEmployee(Employee)"
-                v-b-popover.hover.left="{
-                  variant: 'info',
-                  content: 'Editar',
-                }"
-              >
-                <b-icon-check scale="2"></b-icon-check>
-              </b-button>
-              <b-button
-                size="sm"
-                variant="secondary"
-                @click="destroyEmployee(Employee.id)"
-                v-b-popover.hover.right="{
-                  variant: 'secondary',
-                  content: 'Excluir',
-                }"
-              >
-                <b-icon-trash scale="1.0"></b-icon-trash
-              ></b-button>
-            </td>
-          </tr>
-        </thead>
-      </table>
+      <div class="tableSearchEmployee">
+        <table class="table table-sm">
+          <thead>
+            <tr style="background-color: #56aafe; color: white">
+              <th>Nome Funcionario</th>
+              <th>CPF</th>
+              <th>Telefone</th>
+              <th>Celular</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="Employee in dataEmployees" :key="Employee.id">
+              <td class="tdSearchEmployee">{{ Employee.nomeFuncionario }}</td>
+              <td class="tdSearchEmployee">{{ Employee.cpf }}</td>
+              <td class="tdSearchEmployee">{{ Employee.telefone }}</td>
+              <td class="tdSearchEmployee">{{ Employee.celular }}</td>
+              <td>
+                <b-button
+                  size="sm"
+                  class="mr-2"
+                  variant="info"
+                  @click="editEmployee(Employee)"
+                  v-b-popover.hover.left="{
+                    variant: 'info',
+                    content: 'Editar',
+                  }"
+                >
+                  <b-icon-check scale="2"></b-icon-check>
+                </b-button>
+                <b-button
+                  size="sm"
+                  variant="secondary"
+                  @click="destroyEmployee(Employee.id)"
+                  v-b-popover.hover.right="{
+                    variant: 'secondary',
+                    content: 'Excluir',
+                  }"
+                >
+                  <b-icon-trash scale="1.0"></b-icon-trash
+                ></b-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </b-card>
   </div>
 </template>
@@ -124,4 +128,15 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.tableSearchEmployee {
+  margin-top: 31px;
+  overflow-x: auto !important;
+}
+.tdSearchEmployee {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 80px;
+}
+</style>

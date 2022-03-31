@@ -30,67 +30,59 @@
           </div>
         </b-row>
       </div>
-      <table class="table table-sm">
-        <thead>
-          <tr>
-            <th>Nome Cliente</th>
-            <th>CNPJ/CPF</th>
-            <th>Cidade</th>
-            <th>Endereço</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="customer in readCustomer" :key="customer.id">
-            <td
-              class="textoGrande"
-              v-b-popover.hover.top="{
-                variant: 'secondary',
-                content: customer.nome + ' CPF: ' + customer.cpfCnpj,
-              }"
-            >
-              {{ customer.nome }}
-            </td>
-            <td>{{ customer.cpfCnpj }}</td>
-            <td>{{ customer.cidade }} - {{ customer.uf }}</td>
-            <td
-              class="textoGrande"
-              v-b-popover.hover.top="{
-                variant: 'secondary',
-                content: customer.endereco,
-              }"
-            >
-              {{ customer.endereco }}
-            </td>
-            <td>
-              <b-button
-                size="sm"
-                class="mr-2"
-                style="background-color: #56aafe; border: none !important"
-                @click="editCustomer(customer)"
-                v-b-popover.hover.left="{
-                  variant: 'info',
-                  content: 'Editar',
-                }"
-              >
-                <b-icon-check scale="2"></b-icon-check>
-              </b-button>
-              <b-button
-                size="sm"
-                variant="secondary"
-                style="border: none !important"
-                @click="destroyCustomer(customer.id)"
-                v-b-popover.hover.right="{
-                  variant: 'secondary',
-                  content: 'Excluir',
-                }"
-              >
-                <b-icon-trash scale="1"></b-icon-trash
-              ></b-button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="tableSearchCustomer">
+        <table class="table table-sm">
+          <thead>
+            <tr style="background-color: #56aafe; color: white">
+              <th>Nome Cliente</th>
+              <th>CNPJ/CPF</th>
+              <th>Cidade</th>
+              <th>Endereço</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="customer in readCustomer" :key="customer.id">
+              <td class="tdSearchCustomer">
+                {{ customer.nome }}
+              </td>
+              <td class="tdSearchCustomer">{{ customer.cpfCnpj }}</td>
+              <td class="tdSearchCustomer">
+                {{ customer.cidade }} - {{ customer.uf }}
+              </td>
+              <td class="tdSearchCustomer">
+                {{ customer.endereco }}
+              </td>
+              <td>
+                <b-button
+                  size="sm"
+                  class="mr-2"
+                  style="background-color: #56aafe; border: none !important"
+                  @click="editCustomer(customer)"
+                  v-b-popover.hover.left="{
+                    variant: 'info',
+                    content: 'Editar',
+                  }"
+                >
+                  <b-icon-check scale="2"></b-icon-check>
+                </b-button>
+                <b-button
+                  size="sm"
+                  variant="secondary"
+                  style="border: none !important"
+                  @click="destroyCustomer(customer.id)"
+                  v-b-popover.hover.right="{
+                    variant: 'secondary',
+                    content: 'Excluir',
+                  }"
+                >
+                  <b-icon-trash scale="1"></b-icon-trash
+                ></b-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <hr />
     </b-card>
   </div>
@@ -145,5 +137,17 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 100px !important;
+}
+
+.tableSearchCustomer {
+  margin-top: 31px;
+  overflow-x: auto !important;
+}
+
+.tdSearchCustomer {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 80px;
 }
 </style>

@@ -37,64 +37,54 @@
             </div>
           </b-row>
         </div>
-        <table class="table table-sm">
-          <thead>
-            <tr>
-              <th>Nome Produto</th>
-              <th>Descrição</th>
-              <th>Valor de venda</th>
-              <th>estoque</th>
-              <th>Ações</th>
-            </tr>
-            <tr v-for="products in dataProducts" :key="products.id">
-              <td
-                class="textoGrande"
-                v-b-popover.hover.top="{
-                  variant: 'secondary',
-                  content: products.nome,
-                }"
-              >
-                {{ products.nome }}
-              </td>
-              <td
-                class="textoGrande"
-                v-b-popover.hover.top="{
-                  variant: 'secondary',
-                  content: products.descricao,
-                }"
-              >
-                {{ products.descricao }}
-              </td>
-              <td>{{ products.valorVenda }}</td>
-              <td>{{ products.estoque }}</td>
-              <td>
-                <b-button
-                  size="sm"
-                  class="mr-2"
-                  variant="info"
-                  @click="editproducts(products)"
-                  v-b-popover.hover.left="{
-                    variant: 'info',
-                    content: 'Editar',
-                  }"
-                >
-                  <b-icon-check scale="2"></b-icon-check>
-                </b-button>
-                <b-button
-                  size="sm"
-                  variant="secondary"
-                  @click="destroyproducts(products.id)"
-                  v-b-popover.hover.right="{
-                    variant: 'secondary',
-                    content: 'Excluir',
-                  }"
-                >
-                  <b-icon-trash scale="0.7"></b-icon-trash
-                ></b-button>
-              </td>
-            </tr>
-          </thead>
-        </table>
+        <div class="tableSearchProducts">
+          <table class="table table-sm">
+            <thead>
+              <tr style="background-color: #56aafe; color: white">
+                <th>Nome Produto</th>
+                <th>Descrição</th>
+                <th>Valor de venda</th>
+                <th>estoque</th>
+                <th>Ações</th>
+              </tr>
+              <tr v-for="products in dataProducts" :key="products.id">
+                <td class="tdSearchProducts">
+                  {{ products.nome }}
+                </td>
+                <td class="tdSearchProducts">
+                  {{ products.descricao }}
+                </td>
+                <td class="tdSearchProducts">{{ products.valorVenda }}</td>
+                <td class="tdSearchProducts">{{ products.estoque }}</td>
+                <td>
+                  <b-button
+                    size="sm"
+                    class="mr-2"
+                    variant="info"
+                    @click="editproducts(products)"
+                    v-b-popover.hover.left="{
+                      variant: 'info',
+                      content: 'Editar',
+                    }"
+                  >
+                    <b-icon-check scale="2"></b-icon-check>
+                  </b-button>
+                  <b-button
+                    size="sm"
+                    variant="secondary"
+                    @click="destroyproducts(products.id)"
+                    v-b-popover.hover.right="{
+                      variant: 'secondary',
+                      content: 'Excluir',
+                    }"
+                  >
+                    <b-icon-trash scale="0.7"></b-icon-trash
+                  ></b-button>
+                </td>
+              </tr>
+            </thead>
+          </table>
+        </div>
         <hr />
       </b-card>
     </b-collapse>
@@ -158,5 +148,17 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 100px !important;
+}
+
+.tableSearchProducts {
+  margin-top: 31px;
+  overflow-x: auto !important;
+}
+
+.tdSearchProducts {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 80px;
 }
 </style>

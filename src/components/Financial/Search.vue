@@ -66,10 +66,10 @@
         </b-form-group>
       </b-row>
     </div>
-    <div class="col-sm-12" style="margin-top: 31px">
-      <table class="table table-responsive col-sm-12">
-        <thead style="background-color: #56aafe !important; color: white">
-          <tr>
+    <div class="tableSearchFinancial">
+      <table class="table col-sm-12">
+        <thead>
+          <tr style="background-color: #56aafe; color: white">
             <th>Nome</th>
             <th>CNPJ/CPF</th>
             <th>Data Vencimento</th>
@@ -82,15 +82,19 @@
         </thead>
         <tbody>
           <tr v-for="bill in dataBill" :key="bill.id">
-            <td>
+            <td class="tdSearchFinancial">
               {{ bill.nome || bill.nomeFantasia }}
             </td>
-            <td>{{ bill.cpfCnpj || bill.cnpjFornecedor }}</td>
-            <td>{{ bill.data | moment }}</td>
-            <td>{{ bill.valorTotal }}</td>
-            <td>{{ bill.valorPago }}</td>
-            <td>{{ bill.valorTotal - bill.valorPago }}</td>
-            <td>{{ bill.descricao }}</td>
+            <td class="tdSearchFinancial">
+              {{ bill.cpfCnpj || bill.cnpjFornecedor }}
+            </td>
+            <td class="tdSearchFinancial">{{ bill.data | moment }}</td>
+            <td class="tdSearchFinancial">{{ bill.valorTotal }}</td>
+            <td class="tdSearchFinancial">{{ bill.valorPago }}</td>
+            <td class="tdSearchFinancial">
+              {{ bill.valorTotal - bill.valorPago }}
+            </td>
+            <td class="tdSearchFinancial">{{ bill.descricao }}</td>
             <td style="text-align: center">
               <b-button
                 size="sm"
@@ -245,5 +249,10 @@ export default {
 
 #container-geral-seach-financial {
   user-select: none;
+}
+
+.tableSearchFinancial {
+  margin-top: 31px;
+  overflow-x: auto !important;
 }
 </style>
