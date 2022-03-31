@@ -224,7 +224,6 @@ export default {
     async SaveProducts() {
       try {
         const { data } = await api.post("/products", this.dataProducts);
-        console.log(data);
         this.dataProducts.id = data.id;
         return this.$toast.open({
           message: "Produto Salvo com Sucesso",

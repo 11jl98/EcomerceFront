@@ -348,7 +348,7 @@
                                     </thead>
                                     <tbody>
                                       <tr
-                                        v-for="productsSaleTable in productsTable"
+                                        v-for="productsSaleTable in dataSale.products"
                                         :key="productsSaleTable.id"
                                       >
                                         <td>{{ productsSaleTable.nome }}</td>
@@ -365,18 +365,7 @@
                                           {{ productsSaleTable.valorTotal }}
                                         </td>
                                         <td>
-                                          <!-- <b-button
-                                size="sm"
-                                class="mr-2"
-                                
-                                v-b-popover.hover.left="{
-                                  variant: 'info',
-                                  content: 'Editar',
-                                }"
-                                @click="getProductAndEdit(productsSaleTable.id)"
-                              >
-                                <b-icon-check scale="2"></b-icon-check>
-                              </b-button> -->
+     
                                           <b-button
                                             size="sm"
                                             variant="secondary"
@@ -595,7 +584,7 @@
                                       </thead>
                                       <tbody>
                                         <tr
-                                          v-for="dataPayments in allPaymentsByIdSale"
+                                          v-for="dataPayments in dataSale.bills"
                                           :key="dataPayments.id"
                                         >
                                           <td>
@@ -736,6 +725,11 @@ export default {
   components: {
     ModalPagamento,
   },
+  props: {
+    idSale: {
+      type: String,
+    },
+  },
   data() {
     return {
       dataSale: {
@@ -745,6 +739,8 @@ export default {
         dataVenda: moment().format("YYYY-MM-DD"),
         dadosAdicionais: "",
         status: "Orçamento",
+        products: [],
+        bills: [],
       },
       productsSales: {
         id: "",
@@ -756,7 +752,6 @@ export default {
         dadosAdicionais: "",
         nomeProduto: "",
       },
-      productsTable: [],
       dataCustomers: [],
       dataEmployee: [],
       products: [],
@@ -779,7 +774,6 @@ export default {
       totalParcelas: 1,
       intervaloDias: "",
       allPaymentsTypes: [],
-      allPaymentsByIdSale: [],
     };
   },
   methods: {
@@ -801,7 +795,7 @@ export default {
       this.dataSale.idFuncionario = "";
       this.dataSale.dadosAdicionais = "";
       this.dataSale.status = "Orçamento";
-      this.productsTable = [];
+      this.dataSale.products = [];
       this.clearDataProductsSale();
       this.clearDataPaymentsSale();
     },
@@ -823,7 +817,7 @@ export default {
       this.dataBillBySale.data = "";
       this.totalParcelas = 1;
       this.intervaloDias = 0;
-      this.allPaymentsByIdSale = [];
+      this.dataSale.bills = [];
     },
 
     async closeSale() {
@@ -918,7 +912,7 @@ export default {
     async getProductSale() {
       try {
         const { data } = await api.get(`/sales/${this.productsSales.idVenda}`);
-        this.productsTable = data.products;
+        this.dataSale.products = data.products;
         return data;
       } catch (error) {
         console.log(error.response);
@@ -928,7 +922,7 @@ export default {
     async getAllPaymentsByIdSale() {
       try {
         const { data } = await api.get(`/sales/${this.dataSale.id}`);
-        this.allPaymentsByIdSale = data.bills;
+        this.dataSale.bills = data.bills;
         return data;
       } catch (error) {
         console.log(error.response);
@@ -1007,9 +1001,12 @@ export default {
       try {
         if (this.dataSale.id !== "") {
           const array = [];
-          const valoTotalPedido = this.productsTable.reduce((total, valor) => {
-            return total + parseFloat(valor.valorTotal);
-          }, 0);
+          const valoTotalPedido = this.dataSale.products.reduce(
+            (total, valor) => {
+              return total + parseFloat(valor.valorTotal);
+            },
+            0
+          );
 
           const valorPorDuplicata = valoTotalPedido / this.totalParcelas;
           for (let i = 0; i < this.totalParcelas; i++) {
@@ -1054,6 +1051,17 @@ export default {
         console.log(error);
       }
     },
+
+    assignSearchDataToSalesData(dataSearch) {
+      Object.assign(this.dataSale, dataSearch);
+    },
+
+    async searchTableDataForSale(idVenda) {
+      const { data } = await api.get(`/sales/${idVenda}`);
+      this.assignSearchDataToSalesData(data);
+      console.log(data, "dados da venda aqui");
+      return data;
+    },
   },
   mounted() {
     this.listCustomersSelectBox();
@@ -1065,6 +1073,11 @@ export default {
   filters: {
     moment(data) {
       return moment(data).format("DD/MM/YYYY");
+    },
+  },
+  watch: {
+    idSale() {
+      this.searchTableDataForSale(this.idSale);
     },
   },
 };

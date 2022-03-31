@@ -86,7 +86,9 @@
           <tbody>
             <tr v-for="dataSearchSale in dataSale" :key="dataSearchSale.id">
               <td>{{ dataSearchSale.nomeCliente }}</td>
-              <td>{{ dataSearchSale.nomeFuncionario }}</td>
+              <td>
+                {{ dataSearchSale.nomeFuncionario || ". . . . . . . . " }}
+              </td>
               <td>{{ dataSearchSale.status }}</td>
               <td>{{ dataSearchSale.data | moment }}</td>
               <td>
@@ -94,7 +96,7 @@
                   size="sm"
                   class="mr-2"
                   style="background-color: #56aafe; border: none !important"
-                  @click="editCustomer(customer)"
+                  @click="editSale(dataSearchSale.id)"
                   v-b-popover.hover.left="{
                     variant: 'info',
                     content: 'Editar',
@@ -106,7 +108,6 @@
                   size="sm"
                   variant="secondary"
                   style="border: none !important"
-                  @click="destroyCustomer(customer.id)"
                   v-b-popover.hover.right="{
                     variant: 'secondary',
                     content: 'Excluir',
@@ -145,6 +146,7 @@ export default {
       ],
 
       dataSale: {},
+      tabIndex: 0,
     };
   },
   methods: {
@@ -153,6 +155,11 @@ export default {
         `/sales?q=${this.filterSale.q}&type=${this.filterSale.type}&startDate=${this.filterSale.startDate}&endDate=${this.filterSale.endDate}`
       );
       this.dataSale = data.data;
+    },
+
+    editSale(idSale) {
+      this.$emit("idSale", idSale);
+      this.$emit("alterTabIndex", this.tabIndex);
     },
   },
   filters: {

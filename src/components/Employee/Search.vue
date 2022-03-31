@@ -98,7 +98,6 @@ export default {
         const { data } = await api.get(
           `/employees/filter/search/parameters?q=${this.textPesquisa}`
         );
-        console.log(data, "meu ovo ta aquiiiiiii");
         this.dataEmployees = data.data;
         return data;
       } catch (error) {

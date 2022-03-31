@@ -7,15 +7,18 @@
       :style="{ width: width }"
     >
       <b-card no-body>
-        <b-tabs card>
+        <b-tabs v-model="tabIndex" card>
           <b-tab title="Pedido de venda">
             <b-card-text>
-              <Sale />
+              <Sale :idSale="idSale" />
             </b-card-text>
           </b-tab>
           <b-tab title="Pesquisa">
             <b-card-text>
-              <Search />
+              <Search
+                @idSale="idSale = $event"
+                @alterTabIndex="tabIndex = $event"
+              />
             </b-card-text>
           </b-tab>
         </b-tabs>
@@ -34,7 +37,10 @@ export default {
     Search,
   },
   data() {
-    return {};
+    return {
+      idSale: "",
+      tabIndex: 1,
+    };
   },
   computed: {
     ...mapState({

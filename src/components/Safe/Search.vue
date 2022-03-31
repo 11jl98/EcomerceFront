@@ -164,7 +164,6 @@ export default {
           `/safe?q=${this.dataSafe.q}&type=${this.dataSafe.type}&startDate=${this.dataSafe.startDate}&endDate=${this.dataSafe.endDate}`
         );
         this.listTableSafe = data;
-        console.log(this.listTableSafe);
       } catch (error) {
         toastAlertErros.validateErro(error);
       }
