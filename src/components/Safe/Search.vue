@@ -1,9 +1,6 @@
 <template>
   <div>
     <b-card class="shadow">
-      <h3>Pesquisa</h3>
-      <hr />
-
       <div class="d-flex align-items-center">
         <b-row class="col-sm-12">
           <b-form-group
@@ -75,60 +72,64 @@
           </div>
         </b-row>
       </div>
-      <table class="table table-sm">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Data</th>
-            <th>Tipo</th>
-            <th>Tipo Pag</th>
-            <th>Valor</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="safe in listTableSafe.data" :key="safe.id">
-            <td>{{ safe.nomeCliente || ". . . . . . ." }}</td>
-            <td>{{ safe.data }}</td>
-            <td>
-              {{ safe.tipoMov || safe.tipoCaixa }}
-            </td>
 
-            <td>
-              {{ safe.tipoFormaPag || ". . . . . . ." }}
-            </td>
+      <div class="tableSearchSafe">
+        <table class="table table-sm">
+          <thead>
+            <tr style="background-color: #56aafe; color: white">
+              <th>Nome</th>
+              <th>Data</th>
+              <th>Tipo</th>
+              <th>Tipo Pag</th>
+              <th>Valor</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="safe in listTableSafe.data" :key="safe.id">
+              <td>{{ safe.nomeCliente || ". . . . . . ." }}</td>
+              <td>{{ safe.data }}</td>
+              <td>
+                {{ safe.tipoMov || safe.tipoCaixa }}
+              </td>
 
-            <td>
-              {{ safe.valor }}
-            </td>
+              <td>
+                {{ safe.tipoFormaPag || ". . . . . . ." }}
+              </td>
 
-            <td>
-              <b-button
-                size="sm"
-                class="mr-2"
-                style="background-color: #56aafe; border: none !important"
-                v-b-popover.hover.left="{
-                  variant: 'info',
-                  content: 'Editar',
-                }"
-              >
-                <b-icon-check scale="2"></b-icon-check>
-              </b-button>
-              <b-button
-                size="sm"
-                variant="secondary"
-                style="border: none !important"
-                v-b-popover.hover.right="{
-                  variant: 'secondary',
-                  content: 'Excluir',
-                }"
-              >
-                <b-icon-trash scale="1"></b-icon-trash
-              ></b-button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <td>
+                {{ safe.valor }}
+              </td>
+
+              <td>
+                <b-button
+                  size="sm"
+                  class="mr-2"
+                  style="background-color: #56aafe; border: none !important"
+                  v-b-popover.hover.left="{
+                    variant: 'info',
+                    content: 'Editar',
+                  }"
+                >
+                  <b-icon-check scale="2"></b-icon-check>
+                </b-button>
+                <b-button
+                  size="sm"
+                  variant="secondary"
+                  style="border: none !important"
+                  v-b-popover.hover.right="{
+                    variant: 'secondary',
+                    content: 'Excluir',
+                  }"
+                >
+                  <b-icon-trash scale="1"></b-icon-trash
+                ></b-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <hr />
     </b-card>
   </div>
@@ -183,5 +184,10 @@ export default {
   width: 100% !important;
   display: flex;
   justify-content: flex-end !important;
+}
+
+.tableSearchSafe {
+  margin-top: 31px;
+  overflow-x: auto !important;
 }
 </style>
