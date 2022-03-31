@@ -365,7 +365,6 @@
                                           {{ productsSaleTable.valorTotal }}
                                         </td>
                                         <td>
-     
                                           <b-button
                                             size="sm"
                                             variant="secondary"
@@ -1059,7 +1058,6 @@ export default {
     async searchTableDataForSale(idVenda) {
       const { data } = await api.get(`/sales/${idVenda}`);
       this.assignSearchDataToSalesData(data);
-      console.log(data, "dados da venda aqui");
       return data;
     },
   },
