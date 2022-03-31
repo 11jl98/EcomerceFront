@@ -14,6 +14,7 @@
               type="email"
               size="sm"
               required
+              v-model="filterSale.q"
             ></b-form-input>
           </b-form-group>
 
@@ -23,7 +24,13 @@
             label-for="input-1"
             class="col-sm-3"
           >
-            <b-form-select size="sm"></b-form-select>
+            <b-form-select
+              size="sm"
+              value-field="value"
+              text-field="text"
+              v-model="filterSale.type"
+              :options="filterCombobox"
+            ></b-form-select>
           </b-form-group>
 
           <b-form-group
@@ -32,7 +39,11 @@
             label-for="input-1"
             class="col-sm-4 col-md-3 col-lg-3 col-xl-3"
           >
-            <b-form-input type="date" size="sm"></b-form-input>
+            <b-form-input
+              type="date"
+              v-model="filterSale.startDate"
+              size="sm"
+            ></b-form-input>
           </b-form-group>
 
           <b-form-group
@@ -41,10 +52,19 @@
             label-for="input-1"
             class="col-sm-4 col-md-3 col-lg-3 col-xl-3"
           >
-            <b-form-input type="date" size="sm"></b-form-input>
+            <b-form-input
+              type="date"
+              v-model="filterSale.endDate"
+              size="sm"
+            ></b-form-input>
           </b-form-group>
           <div style="margin: 16px" class="searchSale">
-            <b-button variant="primary" class="mt-3 mb-3" size="sm">
+            <b-button
+              variant="primary"
+              class="mt-3 mb-3"
+              @click="filterSafe"
+              size="sm"
+            >
               <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
               Pesquisar</b-button
             >
@@ -57,47 +77,45 @@
             <tr style="background-color: #56aafe; color: white">
               <th>Cliente</th>
               <th>Funcionário</th>
-              <th>Fornecedor</th>
-              <th>Valor total</th>
-              <th>Forma de pagamento</th>
-              <th>Parcelas</th>
+              <th>Status</th>
+              <th>Data Venda</th>
               <th>Ações</th>
             </tr>
           </thead>
 
           <tbody>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-              <b-button
-                size="sm"
-                class="mr-2"
-                style="background-color: #56aafe; border: none !important"
-                @click="editCustomer(customer)"
-                v-b-popover.hover.left="{
-                  variant: 'info',
-                  content: 'Editar',
-                }"
-              >
-                <b-icon-check scale="2"></b-icon-check>
-              </b-button>
-              <b-button
-                size="sm"
-                variant="secondary"
-                style="border: none !important"
-                @click="destroyCustomer(customer.id)"
-                v-b-popover.hover.right="{
-                  variant: 'secondary',
-                  content: 'Excluir',
-                }"
-              >
-                <b-icon-trash scale="0.7"></b-icon-trash
-              ></b-button>
-            </td>
+            <tr v-for="dataSearchSale in dataSale" :key="dataSearchSale.id">
+              <td>{{ dataSearchSale.nomeCliente }}</td>
+              <td>{{ dataSearchSale.nomeFuncionario }}</td>
+              <td>{{ dataSearchSale.status }}</td>
+              <td>{{ dataSearchSale.data | moment }}</td>
+              <td>
+                <b-button
+                  size="sm"
+                  class="mr-2"
+                  style="background-color: #56aafe; border: none !important"
+                  @click="editCustomer(customer)"
+                  v-b-popover.hover.left="{
+                    variant: 'info',
+                    content: 'Editar',
+                  }"
+                >
+                  <b-icon-check scale="2"></b-icon-check>
+                </b-button>
+                <b-button
+                  size="sm"
+                  variant="secondary"
+                  style="border: none !important"
+                  @click="destroyCustomer(customer.id)"
+                  v-b-popover.hover.right="{
+                    variant: 'secondary',
+                    content: 'Excluir',
+                  }"
+                >
+                  <b-icon-trash scale="0.7"></b-icon-trash
+                ></b-button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -107,15 +125,41 @@
 </template>
 
 <script>
-// import api from "../../services/axios";
+import api from "../../services/axios";
+import moment from "moment";
 
 export default {
   data() {
     return {
+      filterSale: {
+        q: "",
+        type: "",
+        startDate: "",
+        endDate: "",
+      },
+      filterCombobox: [
+        { value: "nomeCliente", text: "Cliente" },
+        { value: "nomeFuncionario", text: "Funcionario" },
+        { value: "tipoFormaPagamento", text: "Tipo Pagamento" },
+        { value: "status", text: "Orçamento/Venda" },
+      ],
+
       dataSale: {},
     };
   },
-  methods: {},
+  methods: {
+    async filterSafe() {
+      const { data } = await api.get(
+        `/sales?q=${this.filterSale.q}&type=${this.filterSale.type}&startDate=${this.filterSale.startDate}&endDate=${this.filterSale.endDate}`
+      );
+      this.dataSale = data.data;
+    },
+  },
+  filters: {
+    moment: function (date) {
+      return moment(date).format("DD/MM/YYYY");
+    },
+  },
 };
 </script>
 
