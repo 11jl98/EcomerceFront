@@ -12,7 +12,7 @@
           >Salvar</b-button
         >
       </template>
-      <b-tabs content-class="mt-3">
+      <b-tabs v-model="tabIndexSetetetete" content-class="mt-3">
         <b-tab title="Cadastro Tipo" active>
           <b-row class="d-flex justify-content-between">
             <b-form-input
@@ -43,7 +43,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="typePayment in dataPayment" :key="typePayment.id">
+              <tr v-for="typePayment in dataAllType" :key="typePayment.id">
                 <td>{{ typePayment.tipo }}</td>
                 <td>
                   <b-button
@@ -54,6 +54,7 @@
                       variant: 'info',
                       content: 'Editar',
                     }"
+                    @click="getPaymentFindById(typePayment.id)"
                   >
                     <b-icon-check scale="2"></b-icon-check>
                   </b-button>
@@ -88,6 +89,8 @@ export default {
         id: "",
         tipo: "",
       },
+      dataAllType: [],
+      tabIndexSetetetete: 0,
     };
   },
   methods: {
@@ -104,7 +107,20 @@ export default {
       }
     },
 
-    async getPayment() {},
+    async getPaymentFindById(idTipoPagamento) {
+      const { data } = await api.get(`/payments/${idTipoPagamento}`);
+      console.log(idTipoPagamento);
+      return data;
+    },
+
+    async getAllPayment() {
+      const { data } = await api.get(`/payments/combobox`);
+      this.dataAllType = data;
+      return data;
+    },
+  },
+  mounted() {
+    this.getAllPayment();
   },
 };
 </script>

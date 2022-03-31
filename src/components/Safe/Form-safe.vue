@@ -37,7 +37,7 @@
       </b-form-group>
 
       <b-form-group class="col-sm-3" id="" label="Valor:">
-        <b-form-input size="sm" v-model="form.valor" />
+        <b-form-input size="sm" type="number" v-model="form.valor" />
       </b-form-group>
 
       <b-form-group
@@ -60,6 +60,14 @@
     <b-button type="submit" size="sm" variant="primary" @click="handle()"
       >Salvar</b-button
     >
+    <b-button
+      type="submit"
+      class="ml-2"
+      size="sm"
+      variant="light"
+      @click="clear"
+      >Novo</b-button
+    >
     <ModalFormaPagamento />
   </div>
 </template>
@@ -78,7 +86,7 @@ export default {
         id: null,
         idFormaPagamento: "",
         tipo: "",
-        valor: "",
+        valor: 0,
         data: "",
         descricao: "",
       },
@@ -122,6 +130,14 @@ export default {
 
     openModalFormaPagamento() {
       this.$bvModal.show("modalFormaPagamento");
+    },
+
+    clear() {
+      this.form.id = null;
+      this.form.idFormaPagamento = "";
+      this.form.tipo = "";
+      this.form.valor = 0;
+      this.form.data = "";
     },
   },
 };
