@@ -10,11 +10,16 @@
         <b-tabs card v-model="tabIndex">
           <b-tab title="Movimentações de caixa">
             <b-card-text>
-              <Safe />
+              <Safe :searchDataForTheForm="searchDataForTheForm" />
             </b-card-text>
           </b-tab>
           <b-tab title="Pesquisa">
-            <b-card-text> <Search /> </b-card-text>
+            <b-card-text>
+              <Search
+                @searchDataForTheForm="searchDataForTheForm = $event"
+                @alterTabIndex="tabIndex = $event"
+              />
+            </b-card-text>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -35,8 +40,8 @@ export default {
   },
   data() {
     return {
-      dataProducts: {},
       tabIndex: 1,
+      searchDataForTheForm: {},
     };
   },
   computed: {

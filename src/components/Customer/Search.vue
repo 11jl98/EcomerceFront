@@ -30,6 +30,7 @@
           </div>
         </b-row>
       </div>
+
       <div class="tableSearchCustomer">
         <table class="table table-sm">
           <thead>
@@ -84,6 +85,32 @@
         </table>
       </div>
       <hr />
+      <b-button
+        size="sm"
+        class="buttonPagePrevious"
+        :disabled="this.page === 1 ? true : false"
+      >
+        <b-icon-arrow-left-square-fill
+          class="ml-2"
+          scale="1.5"
+          style="cursor: pointer"
+          variant="info"
+          @click="previousPage"
+        ></b-icon-arrow-left-square-fill
+      ></b-button>
+
+      <b-button
+        size="sm"
+        class="buttonPageNext"
+        :disabled="this.dataLength === 0 ? true : false"
+      >
+        <b-icon-arrow-right-square-fill
+          scale="1.5"
+          variant="info"
+          style="cursor: pointer"
+          @click="nextPage"
+        ></b-icon-arrow-right-square-fill>
+      </b-button>
     </b-card>
   </div>
 </template>
@@ -97,13 +124,42 @@ export default {
       readCustomer: [],
       textPesquisa: "",
       tabIndex: 0,
+      page: 1,
+      dataLength: 0,
     };
   },
   methods: {
-    async readCustomers() {
+    nextPage() {
+      if (this.textPesquisa !== "") {
+        this.readCustomers((this.page += 1));
+      } else {
+        return;
+      }
+    },
+
+    previousPage() {
+      if (this.textPesquisa !== "") {
+        if (this.page === 1) {
+          return;
+        } else {
+          this.readCustomers((this.page -= 1));
+        }
+      } else {
+        return;
+      }
+    },
+
+    async readCustomers(page = 1) {
       try {
-        const { data } = await api.get("/customers?q=" + this.textPesquisa);
-        this.readCustomer = data.data;
+        if (this.textPesquisa !== "") {
+          const { data } = await api.get(
+            `/customers?q=${this.textPesquisa}&page=${page}`
+          );
+          this.dataLength = data.data.length;
+          this.readCustomer = data.data;
+        } else {
+          return;
+        }
       } catch (error) {
         return this.$toast.open({
           message: "Não foi possível listar os clientes",
@@ -140,7 +196,7 @@ export default {
 }
 
 .tableSearchCustomer {
-  margin-top: 31px;
+  margin-top: 36px;
   overflow-x: auto !important;
 }
 
@@ -149,5 +205,16 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 80px;
+}
+
+.buttonPagePrevious {
+  background-color: transparent !important;
+  border: none !important;
+  padding-left: 0px !important;
+}
+
+.buttonPageNext {
+  background-color: transparent !important;
+  border: none !important;
 }
 </style>

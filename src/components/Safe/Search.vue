@@ -88,7 +88,7 @@
           <tbody>
             <tr v-for="safe in listTableSafe.data" :key="safe.id">
               <td>{{ safe.nomeCliente || ". . . . . . ." }}</td>
-              <td>{{ safe.data }}</td>
+              <td>{{ safe.data | moment }}</td>
               <td>
                 {{ safe.tipoMov || safe.tipoCaixa }}
               </td>
@@ -106,6 +106,7 @@
                   size="sm"
                   class="mr-2"
                   style="background-color: #56aafe; border: none !important"
+                  @click="editSafe(safe.id)"
                   v-b-popover.hover.left="{
                     variant: 'info',
                     content: 'Editar',
@@ -117,6 +118,7 @@
                   size="sm"
                   variant="secondary"
                   style="border: none !important"
+                  @click="deleteSafe"
                   v-b-popover.hover.right="{
                     variant: 'secondary',
                     content: 'Excluir',
@@ -129,13 +131,23 @@
           </tbody>
         </table>
       </div>
+      <b-modal id="modalConfirmDeleteSafe">
+        <h3>Deseja realmente deletar ?</h3>
 
+        <template #modal-footer="{ cancel }">
+          <b-button size="sm" variant="danger"> Deletar </b-button>
+          <b-button size="sm" variant="info" @click="cancel()">
+            Fechar
+          </b-button>
+        </template>
+      </b-modal>
       <hr />
     </b-card>
   </div>
 </template>
 
 <script>
+import moment from "moment";
 import api from "../../services/axios";
 import toastAlertErros from "../../utils/toastAlertErros";
 export default {
@@ -167,6 +179,22 @@ export default {
       } catch (error) {
         toastAlertErros.validateErro(error);
       }
+    },
+
+    async editSafe(idSafe) {
+      const { data } = await api.get(`/safe/${idSafe}`);
+      this.$emit("searchDataForTheForm", data);
+      this.$emit("alterTabIndex", this.tabIndex);
+      return data;
+    },
+
+    async deleteSafe() {
+      this.$bvModal.show("modalConfirmDeleteSafe");
+    },
+  },
+ filters: {
+    moment: function (date) {
+      return moment(date).format("DD/MM/YYYY");
     },
   },
 };

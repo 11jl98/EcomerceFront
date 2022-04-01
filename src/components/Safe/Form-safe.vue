@@ -73,10 +73,16 @@
 </template>
 
 <script>
+import moment from "moment";
 import api from "../../services/axios";
 import ModalFormaPagamento from "../../components/Sale/Modal-Forma-Pagamento.vue";
 import toastAlertErros from "../../utils/toastAlertErros";
 export default {
+  props: {
+    searchDataForTheForm: {
+      type: Object,
+    },
+  },
   components: {
     ModalFormaPagamento,
   },
@@ -89,6 +95,7 @@ export default {
         valor: 0,
         data: "",
         descricao: "",
+        idConta: null,
       },
       payments: [],
       tipos: [
@@ -111,6 +118,10 @@ export default {
       try {
         const response = await api.post("/safe", this.form);
         this.form.id = response.data.id;
+        return this.$toast.open({
+          message: "Movimentação Salva!",
+          type: "success",
+        });
       } catch (error) {
         return toastAlertErros.validateErro(error, this.$toast);
       }
@@ -118,6 +129,10 @@ export default {
 
     async updated() {
       await api.put(`/safe/${this.form.id}`, this.form);
+      return this.$toast.open({
+        message: "Movimentação Atualizada!",
+        type: "info",
+      });
     },
 
     async handle() {
@@ -138,6 +153,14 @@ export default {
       this.form.tipo = "";
       this.form.valor = 0;
       this.form.data = "";
+    },
+  },
+  watch: {
+    searchDataForTheForm() {
+      Object.assign(this.form, this.searchDataForTheForm);
+      this.form.data = moment(this.searchDataForTheForm.data).format(
+        "YYYY-MM-DD"
+      );
     },
   },
 };
