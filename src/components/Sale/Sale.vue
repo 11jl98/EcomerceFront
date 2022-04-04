@@ -1035,7 +1035,10 @@ export default {
           });
         }
       } catch (error) {
-        console.log(error);
+        return this.$toast.open({
+          message: "Verifique se os campos estão preenchidos corretamente!",
+          type: "error",
+        });
       }
     },
     async deletePaymentInstallment(id) {

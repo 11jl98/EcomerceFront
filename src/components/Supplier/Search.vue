@@ -11,8 +11,7 @@
           >
             <b-form-input
               id="input-1"
-              type="email"
-              v-model="txtPesquisa"
+              v-model="textPesquisa"
               required
               size="sm"
             ></b-form-input>
@@ -21,7 +20,7 @@
             <b-button
               variant="primary"
               class="mt-3 mb-3"
-              @click="readSupplier"
+              @click="readSupplier(page)"
               size="sm"
             >
               <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
@@ -41,7 +40,7 @@
               <th scope="col">Celular</th>
               <th scope="col">Ações</th>
             </tr>
-            <tr v-for="supplier in dataSuppliers" :key="supplier.id">
+            <tr v-for="supplier in readSuppliers" :key="supplier.id">
               <td class="tdSearchSupplier">{{ supplier.nomeFantasia }}</td>
               <td class="tdSearchSupplier">{{ supplier.razaoSocial }}</td>
               <td class="tdSearchSupplier">{{ supplier.cpfCnpj }}</td>
@@ -76,6 +75,32 @@
         </table>
       </div>
       <hr />
+      <b-button
+        size="sm"
+        class="buttonPagePrevious"
+        @click="previousPage"
+        :disabled="this.page === 1 ? true : false"
+      >
+        <b-icon-arrow-left-square-fill
+          class="ml-2"
+          scale="1.5"
+          style="cursor: pointer"
+          variant="info"
+        ></b-icon-arrow-left-square-fill
+      ></b-button>
+
+      <b-button
+        size="sm"
+        class="buttonPageNext"
+        @click="nextPage"
+        :disabled="this.dataLength === 0 ? true : false"
+      >
+        <b-icon-arrow-right-square-fill
+          scale="1.5"
+          variant="info"
+          style="cursor: pointer"
+        ></b-icon-arrow-right-square-fill>
+      </b-button>
     </b-card>
   </div>
 </template>
@@ -87,19 +112,31 @@ export default {
   components: {},
   data() {
     return {
-      dataSuppliers: [],
-      txtPesquisa: "",
+      readSuppliers: [],
+      textPesquisa: "",
       tabIndex: 0,
+      page: 1,
+      dataLength: 0,
     };
   },
   methods: {
-    async readSupplier() {
+    async readSupplier(page = 1) {
       try {
-        const { data } = await api.get(`/providers?q=${this.txtPesquisa}`);
-        this.dataSuppliers = data.data;
-        return data;
+        if (this.textPesquisa !== "") {
+          const { data } = await api.get(
+            `/providers?q=${this.textPesquisa}&page=${page}`
+          );
+          this.dataLength = data.data.length;
+          this.readSuppliers = data.data;
+          console.log(this.textPesquisa);
+        } else {
+          return;
+        }
       } catch (error) {
-        console.log(error);
+        return this.$toast.open({
+          message: "Não foi possível listar os clientes",
+          type: "warning",
+        });
       }
     },
     async editSupplier(Supplier) {
@@ -119,6 +156,26 @@ export default {
         return toastAlertErros.validateMessage(error, this.$toast);
       }
     },
+
+    nextPage() {
+      if (this.textPesquisa !== "") {
+        this.readSupplier((this.page += 1));
+      } else {
+        return;
+      }
+    },
+
+    previousPage() {
+      if (this.textPesquisa !== "") {
+        if (this.page === 1) {
+          return;
+        } else {
+          this.readSupplier((this.page -= 1));
+        }
+      } else {
+        return;
+      }
+    },
   },
 };
 </script>
@@ -133,5 +190,16 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 100px;
+}
+
+.buttonPagePrevious {
+  background-color: transparent !important;
+  border: none !important;
+  padding-left: 0px !important;
+}
+
+.buttonPageNext {
+  background-color: transparent !important;
+  border: none !important;
 }
 </style>

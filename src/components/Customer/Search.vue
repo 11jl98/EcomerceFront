@@ -21,7 +21,7 @@
             <b-button
               variant="primary"
               class="mt-3 mb-3"
-              @click="readCustomers"
+              @click="readCustomers(page)"
               size="sm"
             >
               <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
@@ -88,6 +88,7 @@
       <b-button
         size="sm"
         class="buttonPagePrevious"
+        @click="previousPage"
         :disabled="this.page === 1 ? true : false"
       >
         <b-icon-arrow-left-square-fill
@@ -95,20 +96,19 @@
           scale="1.5"
           style="cursor: pointer"
           variant="info"
-          @click="previousPage"
         ></b-icon-arrow-left-square-fill
       ></b-button>
 
       <b-button
         size="sm"
         class="buttonPageNext"
+        @click="nextPage"
         :disabled="this.dataLength === 0 ? true : false"
       >
         <b-icon-arrow-right-square-fill
           scale="1.5"
           variant="info"
           style="cursor: pointer"
-          @click="nextPage"
         ></b-icon-arrow-right-square-fill>
       </b-button>
     </b-card>
@@ -155,6 +155,7 @@ export default {
           const { data } = await api.get(
             `/customers?q=${this.textPesquisa}&page=${page}`
           );
+          console.log(page, "pageeeeeeeee aqui");
           this.dataLength = data.data.length;
           this.readCustomer = data.data;
         } else {
