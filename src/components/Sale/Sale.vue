@@ -279,7 +279,7 @@
                                   <b-form-select
                                     :options="providers"
                                     value-field="id"
-                                    text-field="nomeFantasia"
+                                    text-field="razaoSocial"
                                     v-model="productsSales.idFornecedor"
                                     size="sm"
                                   ></b-form-select>
@@ -983,8 +983,8 @@ export default {
     },
 
     async getProviders() {
-      const { data } = await api.get("/providers");
-      this.providers = data.data;
+      const { data } = await api.get("/providers/fill/combobox");
+      this.providers = data;
     },
 
     openModalFormaPagamento() {
