@@ -284,7 +284,12 @@ export default {
         });
       } catch (error) {
         return this.$toast.open({
-          message: error.response.data.message,
+          message:
+            error.response.data.erros[0].valorPago ||
+            error.response.data.erros[0].valorTotal ||
+            error.response.data.erros[0].valorRestante ||
+            error.response.data.erros[0].data,
+
           type: "warning",
         });
       }

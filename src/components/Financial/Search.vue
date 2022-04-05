@@ -12,7 +12,6 @@
             size="sm"
             v-model="tipo"
             value="entrada"
-            @change="teste"
             >Receber</b-form-radio
           >
           <b-form-radio
@@ -25,7 +24,7 @@
         </div>
       </div>
       <b-row class="d-flex">
-        <b-form-group label="Nome" class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
+        <b-form-group label="Nome" class="col-sm-6 col-md-4 col-lg-4 col-xl-4">
           <b-form-input size="sm" v-model="typeText"></b-form-input>
         </b-form-group>
 
@@ -33,7 +32,7 @@
           id="input-group-1"
           label="Data Inicio"
           label-for="input-1"
-          class="col-sm-4 col-md-3 col-lg-3 col-xl-2"
+          class="col-sm-4 col-md-4 col-lg-4 col-xl-4"
         >
           <b-form-input
             type="date"
@@ -46,24 +45,19 @@
           id="input-group-1"
           label="Data Fim"
           label-for="input-1"
-          class="col-sm-4 col-md-3 col-lg-3 col-xl-2"
+          class="col-sm-4 col-md-4 col-lg-4 col-xl-4"
         >
           <b-form-input type="date" v-model="endDate" size="sm"></b-form-input>
         </b-form-group>
 
-        <b-form-group
-          id="input-group-1"
-          label="."
-          label-for="input-1"
-          class="col-sm-4 col-md-3 col-lg-3 col-xl-2 btnPesquisar"
-        >
+        <div style="margin: 16px" class="searchFinancial">
           <b-button
             size="sm"
             style="border: none; background-color: #56aafe !important"
             @click="readBills"
             >Pesquisar <b-icon-search class="ml-1"></b-icon-search
           ></b-button>
-        </b-form-group>
+        </div>
       </b-row>
     </div>
     <div class="tableSearchFinancial">
@@ -95,7 +89,7 @@
               {{ bill.valorTotal - bill.valorPago }}
             </td>
             <td class="tdSearchFinancial">{{ bill.descricao }}</td>
-            <td style="text-align: center">
+            <td style="text-align: center" class="tdIconsSearch">
               <b-button
                 size="sm"
                 class="mr-2"
@@ -114,13 +108,16 @@
 
               <b-button
                 size="sm"
-                variant="warning"
-                style="border: none !important; color: white"
+                style="
+                  border: none !important;
+                  color: white;
+                  background-color: #2bc94f;
+                "
                 class="ml-2"
                 @click="openModalPay(bill.id)"
               >
-                Baixar</b-button
-              >
+                <b-icon-stickies scale="1.2"></b-icon-stickies
+              ></b-button>
             </td>
           </tr>
         </tbody>
@@ -217,10 +214,6 @@ export default {
       this.idBillPay = idBill;
       this.$bvModal.show("modalMakePayment");
     },
-
-    teste() {
-      console.log("testeeeeeeeeeee");
-    },
   },
   filters: {
     moment: function (date) {
@@ -254,5 +247,24 @@ export default {
 .tableSearchFinancial {
   margin-top: 31px;
   overflow-x: auto !important;
+}
+
+.searchFinancial {
+  width: 100% !important;
+  display: flex;
+  justify-content: flex-end !important;
+}
+
+.tdIconsSearch {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  width: 15% !important;
+}
+
+.tdSearchFinancial {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100px;
 }
 </style>

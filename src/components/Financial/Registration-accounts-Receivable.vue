@@ -315,13 +315,24 @@ export default {
 
     async updateBill() {
       try {
-        const { data } = await api.put(
+        await api.put(
           `/bills/${this.dataBillReceive.id}`,
           this.dataBillReceive
         );
-        console.log(data, "Dados atualizados com sucesso");
+        return this.$toast.open({
+          message: "Conta Atualizada!",
+          type: "info",
+        });
       } catch (error) {
-        console.log(error.response);
+        return this.$toast.open({
+          message:
+            error.response.data.erros[0].valorPago ||
+            error.response.data.erros[0].valorTotal ||
+            error.response.data.erros[0].valorRestante ||
+            error.response.data.erros[0].data,
+
+          type: "warning",
+        });
       }
     },
 
