@@ -209,7 +209,7 @@ export default {
       try {
         await api.put("/products/" + this.dataProducts.id, this.dataProducts);
         return this.$toast.open({
-          message: "Produto Editado com Sucesso",
+          message: "Produto Atualizado com Sucesso",
           type: "success",
         });
       } catch (error) {

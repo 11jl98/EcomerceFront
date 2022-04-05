@@ -28,7 +28,7 @@
               <b-button
                 variant="primary"
                 class="mt-3 mb-3"
-                @click="SearchProducts"
+                @click="readProducts(page)"
                 size="sm"
               >
                 <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
@@ -86,6 +86,32 @@
           </table>
         </div>
         <hr />
+        <b-button
+          size="sm"
+          class="buttonPagePrevious"
+          @click="previousPage"
+          :disabled="this.page === 1 ? true : false"
+        >
+          <b-icon-arrow-left-square-fill
+            class="ml-2"
+            scale="1.5"
+            style="cursor: pointer"
+            variant="info"
+          ></b-icon-arrow-left-square-fill
+        ></b-button>
+
+        <b-button
+          size="sm"
+          class="buttonPageNext"
+          @click="nextPage"
+          :disabled="this.dataLength === 0 ? true : false"
+        >
+          <b-icon-arrow-right-square-fill
+            scale="1.5"
+            variant="info"
+            style="cursor: pointer"
+          ></b-icon-arrow-right-square-fill>
+        </b-button>
       </b-card>
     </b-collapse>
   </div>
@@ -100,20 +126,30 @@ export default {
       productsTable: [],
       textPesquisa: "",
       tabIndex: 0,
+      page: 1,
+      dataLength: 0,
     };
   },
   methods: {
-    async SearchProducts() {
+    async readProducts(page = 1) {
       try {
-        const { data } = await api.get(
-          `/products/filter/products?q=${this.textPesquisa}`
-        );
-        this.dataProducts = data.data;
-        console.log(data);
+        if (this.textPesquisa !== "") {
+          const { data } = await api.get(
+            `/products/filter/products?q=${this.textPesquisa}&page=${page}`
+          );
+          this.dataLength = data.data.length;
+          this.dataProducts = data.data;
+        } else {
+          return;
+        }
       } catch (error) {
-        console.log(error);
+        return this.$toast.open({
+          message: "Não foi possível listar os produtos",
+          type: "warning",
+        });
       }
     },
+
     async editproducts(products) {
       try {
         this.$emit("dataProducts", products);
@@ -123,10 +159,11 @@ export default {
         console.log(error);
       }
     },
+
     async destroyproducts(idProducts) {
       try {
         await api.delete("/products/" + idProducts);
-        this.SearchProducts();
+        this.readProducts();
         return this.$toast.open({
           message: "Produto deletado com sucesso",
           type: "success",
@@ -137,6 +174,26 @@ export default {
           message: `${error.response.data.message}`,
           type: "error",
         });
+      }
+    },
+
+    nextPage() {
+      if (this.textPesquisa !== "") {
+        this.readProducts((this.page += 1));
+      } else {
+        return;
+      }
+    },
+
+    previousPage() {
+      if (this.textPesquisa !== "") {
+        if (this.page === 1) {
+          return;
+        } else {
+          this.readProducts((this.page -= 1));
+        }
+      } else {
+        return;
       }
     },
   },
@@ -160,5 +217,16 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 80px;
+}
+
+.buttonPagePrevious {
+  background-color: transparent !important;
+  border: none !important;
+  padding-left: 0px !important;
+}
+
+.buttonPageNext {
+  background-color: transparent !important;
+  border: none !important;
 }
 </style>

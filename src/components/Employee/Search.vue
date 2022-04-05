@@ -22,7 +22,7 @@
               variant="primary"
               class="mt-3 mb-3"
               size="sm"
-              @click="readEmployees"
+              @click="readEmployees(page)"
             >
               <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
               Pesquisar</b-button
@@ -76,6 +76,33 @@
           </tbody>
         </table>
       </div>
+      <hr />
+      <b-button
+        size="sm"
+        class="buttonPagePrevious"
+        @click="previousPage"
+        :disabled="this.page === 1 ? true : false"
+      >
+        <b-icon-arrow-left-square-fill
+          class="ml-2"
+          scale="1.5"
+          style="cursor: pointer"
+          variant="info"
+        ></b-icon-arrow-left-square-fill
+      ></b-button>
+
+      <b-button
+        size="sm"
+        class="buttonPageNext"
+        @click="nextPage"
+        :disabled="this.dataLength === 0 ? true : false"
+      >
+        <b-icon-arrow-right-square-fill
+          scale="1.5"
+          variant="info"
+          style="cursor: pointer"
+        ></b-icon-arrow-right-square-fill>
+      </b-button>
     </b-card>
   </div>
 </template>
@@ -90,16 +117,23 @@ export default {
       dataEmployees: [],
       tabIndex: 0,
       textPesquisa: "",
+      page: 1,
+      dataLength: 0,
     };
   },
   methods: {
-    async readEmployees() {
+    async readEmployees(page = 1) {
       try {
-        const { data } = await api.get(
-          `/employees/filter/search/parameters?q=${this.textPesquisa}`
-        );
-        this.dataEmployees = data.data;
-        return data;
+        if (this.textPesquisa !== "") {
+          const { data } = await api.get(
+            `/employees/filter/search/parameters?q=${this.textPesquisa}&page=${page}`
+          );
+          this.dataLength = data.data.length;
+          this.dataEmployees = data.data;
+          return data;
+        } else {
+          return;
+        }
       } catch (error) {
         return this.$toast.open({
           message: "Não foi possível listar os funcionarios",
@@ -107,11 +141,13 @@ export default {
         });
       }
     },
+
     async editEmployee(Employee) {
       this.$emit("readOrEditEmployees", Employee);
       this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
       this.$emit("alterTabIndex", this.tabIndex);
     },
+
     async destroyEmployee(idEmployee) {
       try {
         await api.delete(`/employees/${idEmployee}`);
@@ -122,6 +158,26 @@ export default {
         });
       } catch (error) {
         return toastAlertErros.validateMessage(error, this.$toast);
+      }
+    },
+
+    nextPage() {
+      if (this.textPesquisa !== "") {
+        this.readEmployees((this.page += 1));
+      } else {
+        return;
+      }
+    },
+
+    previousPage() {
+      if (this.textPesquisa !== "") {
+        if (this.page === 1) {
+          return;
+        } else {
+          this.readEmployees((this.page -= 1));
+        }
+      } else {
+        return;
       }
     },
   },
@@ -137,5 +193,15 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 80px;
+}
+.buttonPagePrevious {
+  background-color: transparent !important;
+  border: none !important;
+  padding-left: 0px !important;
+}
+
+.buttonPageNext {
+  background-color: transparent !important;
+  border: none !important;
 }
 </style>

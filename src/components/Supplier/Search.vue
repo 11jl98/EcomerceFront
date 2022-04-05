@@ -128,7 +128,6 @@ export default {
           );
           this.dataLength = data.data.length;
           this.readSuppliers = data.data;
-          console.log(this.textPesquisa);
         } else {
           return;
         }
@@ -139,11 +138,13 @@ export default {
         });
       }
     },
+
     async editSupplier(Supplier) {
       this.$emit("readOrEditSupplier", Supplier);
       this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
       this.$emit("alterTabIndex", this.tabIndex);
     },
+
     async destroySupplier(idSupplier) {
       try {
         await api.delete(`/Providers/${idSupplier}`);

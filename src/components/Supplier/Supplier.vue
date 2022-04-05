@@ -269,7 +269,6 @@ export default {
         });
       } catch (error) {
         toastAlertErros.validateErroDoesNotContainFor(error, this.$toast);
-        console.log(error.response.data.erros);
       }
     },
 
@@ -285,7 +284,7 @@ export default {
           type: "success",
         });
       } catch (error) {
-        console.log(error);
+        toastAlertErros.validateErroDoesNotContainFor(error, this.$toast);
       }
     },
 

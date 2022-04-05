@@ -14,7 +14,7 @@
               type="email"
               size="sm"
               required
-              v-model="filterSale.q"
+              v-model="q"
             ></b-form-input>
           </b-form-group>
 
@@ -28,7 +28,7 @@
               size="sm"
               value-field="value"
               text-field="text"
-              v-model="filterSale.type"
+              v-model="type"
               :options="filterCombobox"
             ></b-form-select>
           </b-form-group>
@@ -41,7 +41,7 @@
           >
             <b-form-input
               type="date"
-              v-model="filterSale.startDate"
+              v-model="startDate"
               size="sm"
             ></b-form-input>
           </b-form-group>
@@ -54,7 +54,7 @@
           >
             <b-form-input
               type="date"
-              v-model="filterSale.endDate"
+              v-model="endDate"
               size="sm"
             ></b-form-input>
           </b-form-group>
@@ -62,7 +62,7 @@
             <b-button
               variant="primary"
               class="mt-3 mb-3"
-              @click="filterSafe"
+              @click="filterSale(page)"
               size="sm"
             >
               <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
@@ -121,6 +121,32 @@
         </table>
       </div>
       <hr />
+      <b-button
+        size="sm"
+        class="buttonPagePrevious"
+        @click="previousPage"
+        :disabled="this.page === 1 ? true : false"
+      >
+        <b-icon-arrow-left-square-fill
+          class="ml-2"
+          scale="1.5"
+          style="cursor: pointer"
+          variant="info"
+        ></b-icon-arrow-left-square-fill
+      ></b-button>
+
+      <b-button
+        size="sm"
+        class="buttonPageNext"
+        @click="nextPage"
+        :disabled="this.dataLength === 0 ? true : false"
+      >
+        <b-icon-arrow-right-square-fill
+          scale="1.5"
+          variant="info"
+          style="cursor: pointer"
+        ></b-icon-arrow-right-square-fill>
+      </b-button>
     </b-card>
   </div>
 </template>
@@ -132,36 +158,66 @@ import moment from "moment";
 export default {
   data() {
     return {
-      filterSale: {
-        q: "",
-        type: "",
-        startDate: "",
-        endDate: "",
-      },
+      q: "",
+      type: "",
+      startDate: "",
+      endDate: "",
       filterCombobox: [
         { value: "nomeCliente", text: "Cliente" },
         { value: "nomeFuncionario", text: "Funcionario" },
         { value: "tipoFormaPagamento", text: "Tipo Pagamento" },
         { value: "status", text: "Orçamento/Venda" },
       ],
-
       dataSale: {},
       tabIndex: 0,
+      page: 1,
+      dataLength: 0,
     };
   },
   methods: {
-    async filterSafe() {
-      const { data } = await api.get(
-        `/sales?q=${this.filterSale.q}&type=${this.filterSale.type}&startDate=${this.filterSale.startDate}&endDate=${this.filterSale.endDate}`
-      );
-      this.dataSale = data.data;
+    async filterSale(page = 1) {
+      try {
+        console.log(page, "merdaaaaaaa");
+        if (this.q !== "") {
+          const { data } = await api.get(
+            `/sales?q=${this.q}&type=${this.type}&page=${page}&startDate=${this.startDate}&endDate=${this.endDate}`
+          );
+          this.dataLength = data.data.length;
+          this.dataSale = data.data;
+        } else {
+          return;
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     editSale(idSale) {
       this.$emit("idSale", idSale);
       this.$emit("alterTabIndex", this.tabIndex);
     },
+
+    nextPage() {
+      if (this.textPesquisa !== "") {
+        this.filterSale((this.page += 1));
+      } else {
+        return;
+      }
+    },
+
+    previousPage() {
+      if (this.textPesquisa !== "") {
+        if (this.page === 1) {
+          return;
+        } else {
+          this.filterSale((this.page -= 1));
+        }
+      } else {
+        return;
+      }
+    },
   },
+
   filters: {
     moment: function (date) {
       return moment(date).format("DD/MM/YYYY");
@@ -186,5 +242,16 @@ export default {
 .tableSearchSale {
   margin-top: 31px;
   overflow-x: auto !important;
+}
+
+.buttonPagePrevious {
+  background-color: transparent !important;
+  border: none !important;
+  padding-left: 0px !important;
+}
+
+.buttonPageNext {
+  background-color: transparent !important;
+  border: none !important;
 }
 </style>

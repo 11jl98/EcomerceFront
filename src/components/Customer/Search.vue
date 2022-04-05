@@ -155,7 +155,6 @@ export default {
           const { data } = await api.get(
             `/customers?q=${this.textPesquisa}&page=${page}`
           );
-          console.log(page, "pageeeeeeeee aqui");
           this.dataLength = data.data.length;
           this.readCustomer = data.data;
         } else {

@@ -381,7 +381,6 @@ export default {
           type: "success",
         });
       } catch (error) {
-        console.log(error);
         return toastAlertErros.validateErroDoesNotContainFor(
           error,
           this.$toast
@@ -399,7 +398,10 @@ export default {
           type: "success",
         });
       } catch (error) {
-        console.log(error);
+        return toastAlertErros.validateErroDoesNotContainFor(
+          error,
+          this.$toast
+        );
       }
     },
 

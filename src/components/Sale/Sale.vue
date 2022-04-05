@@ -480,7 +480,7 @@
                                     <div class="iconFormaPagamento">
                                       <div>
                                         <label for="input-1"
-                                          >Forma de pagamento</label
+                                          >Tipo pagamento</label
                                         >
                                       </div>
 
