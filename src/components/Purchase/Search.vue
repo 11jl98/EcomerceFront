@@ -31,7 +31,7 @@
             </div>
           </b-row>
         </div>
-        <div class="tableSearchProducts">
+        <div class="tableSearchPurchase">
           <table class="table table-sm">
             <thead>
               <tr style="background-color: #56aafe; color: white">
@@ -42,10 +42,10 @@
                 <th>Ações</th>
               </tr>
               <tr>
-                <td class="tdSearchProducts">TESTE</td>
-                <td class="tdSearchProducts">TESTE</td>
-                <td class="tdSearchProducts">TESTE</td>
-                <td class="tdSearchProducts">TESTE</td>
+                <td class="tdSearchPurchase">TESTE</td>
+                <td class="tdSearchPurchase">TESTE</td>
+                <td class="tdSearchPurchase">TESTE</td>
+                <td class="tdSearchPurchase">TESTE</td>
                 <td>
                   <b-button
                     size="sm"
@@ -141,12 +141,12 @@ export default {
   max-width: 100px !important;
 }
 
-.tableSearchProducts {
+.tableSearchPurchase {
   margin-top: 31px;
   overflow-x: auto !important;
 }
 
-.tdSearchProducts {
+.tdSearchPurchase {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

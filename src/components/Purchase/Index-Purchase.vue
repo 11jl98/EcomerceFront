@@ -8,7 +8,7 @@
     >
       <b-card no-body>
         <b-tabs card v-model="tabIndex">
-          <b-tab title="Cadastro de clientes">
+          <b-tab title="Nota de compra">
             <b-card-text>
               <Purchase />
             </b-card-text>
