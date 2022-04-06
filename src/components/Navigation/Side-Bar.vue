@@ -141,7 +141,7 @@ export default {
       return "active";
     },
   },
-  mounted() {
+  created() {
     this.sidBarExpand();
   },
 };
