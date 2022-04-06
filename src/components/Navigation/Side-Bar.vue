@@ -45,6 +45,13 @@
         </li>
 
         <li>
+          <b-button to="/compras" :class="iconsCenter">
+            <i> <b-icon-inboxes-fill></b-icon-inboxes-fill></i>
+            <span :class="sizeText">Compras</span>
+          </b-button>
+        </li>
+
+        <li>
           <b-button to="/vendas" :class="iconsCenter">
             <i> <b-icon-cart-check-fill></b-icon-cart-check-fill></i>
             <span :class="sizeText">Vendas</span>

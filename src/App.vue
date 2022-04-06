@@ -35,8 +35,8 @@ export default {
 }
 
 body {
-  background: #102558 !important;
-
+  /* background: #102558 !important; */
+  background-color: rgb(194, 193, 193) !important;
   margin: 0;
   padding: 0;
   height: auto;

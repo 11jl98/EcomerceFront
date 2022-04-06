@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-content-end w-100 container-geral">
+  <div class="d-flex justify-content-end w-100 container-geral-purchase">
     <div
       class="container-components mt-5"
       id="receita"
@@ -7,19 +7,14 @@
       :style="{ width: width }"
     >
       <b-card no-body>
-        <b-tabs v-model="tabIndex" card>
-          <b-tab title="Cadastro de fornecedores">
+        <b-tabs card v-model="tabIndex">
+          <b-tab title="Cadastro de clientes">
             <b-card-text>
-              <Supplier :dataSupplier="dataSupplier" />
+              <Purchase />
             </b-card-text>
           </b-tab>
           <b-tab title="Pesquisa">
-            <b-card-text>
-              <Search
-                @readOrEditSupplier="dataSupplier = $event"
-                @alterTabIndex="tabIndex = $event"
-              />
-            </b-card-text>
+            <b-card-text> <Search /></b-card-text>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -28,18 +23,18 @@
 </template>
 
 <script>
-import Supplier from "./Supplier.vue";
+import Purchase from "./Purchase.vue";
 import Search from "./Search.vue";
 import { mapState } from "vuex";
 
 export default {
   components: {
-    Supplier,
+    Purchase,
     Search,
   },
   data() {
     return {
-      dataSupplier: {},
+      readOrEditCustomers: {},
       tabIndex: 1,
     };
   },
@@ -51,9 +46,9 @@ export default {
 };
 </script>
 <style scoped>
-.container-geral {
+.container-geral-purchase {
   width: 100% !important;
-  margin-right: 20px !important;
+  margin-left: -20px !important;
 }
 
 .container-components {

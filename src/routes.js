@@ -9,6 +9,7 @@ import Products from "../src/pages/Products/Page-Products.vue";
 import Sale from "../src/pages/Sale/Page-Sale.vue";
 import Financial from "../src/pages/Financial/Page-Financial.vue";
 import Safe from "../src/pages/Safe/Page-Safe.vue";
+import Purchase from "../src/pages/Purchase/Page-Purchase.vue"
 
 
 Vue.use(Router);
@@ -19,37 +20,44 @@ const routes = [
     component: Home,
   },
   {
-    path: "/Agenda",
+    path: "/agenda",
     component: Schedule,
   },
   {
-    path: "/Clientes",
+    path: "/clientes",
     component: Customer,
   },
   {
-    path: "/Fornecedores",
+    path: "/fornecedores",
     component: Supplier,
   },
   {
-    path: "/Funcionarios",
+    path: "/funcionarios",
     component: Employee,
   },
   {
-    path: "/Produtos",
+    path: "/produtos",
     component: Products,
   },
   {
-    path: "/Vendas",
+    path: "/vendas",
     component: Sale,
   },
   {
-    path: "/Financeiro",
+    path: "/financeiro",
     component: Financial,
   },
   {
-    path: "/Caixa",
+    path: "/caixa",
     component: Safe,
-  },];
+    
+  },
+  {
+    path: "/compras",
+    component: Purchase,
+    Purchase
+  },
+];
 
 const router = new Router({
   mode: "history",
