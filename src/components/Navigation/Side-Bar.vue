@@ -52,7 +52,7 @@
         </li>
 
         <li>
-          <b-button to="/" :class="iconsCenter">
+          <b-button to="/nfce" :class="iconsCenter">
             <i> <b-icon-reply-all></b-icon-reply-all></i>
             <span :class="sizeText">NF-e / NFc-e</span>
           </b-button>
@@ -80,7 +80,7 @@
         </li>
 
         <li>
-          <b-button to="/" :class="iconsCenter">
+          <b-button to="/configuracoes" :class="iconsCenter">
             <i> <b-icon-gear-fill></b-icon-gear-fill></i>
             <span :class="sizeText">Configurações</span>
           </b-button>

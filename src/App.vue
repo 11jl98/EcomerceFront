@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="this.$route.path != '/'">
+    <div>
       <NavigationBar />
     </div>
     <router-view></router-view>
@@ -20,13 +20,13 @@ export default {
 
 <style>
 *::-webkit-scrollbar {
-  width: 8px; 
+  width: 8px;
   height: 8px;
 }
 
 *::-webkit-scrollbar-track {
   background: rgb(29, 169, 253);
-  background: transparent
+  background: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
