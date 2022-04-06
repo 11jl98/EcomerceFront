@@ -131,7 +131,7 @@ export default {
     };
   },
   methods: {
-    async readProducts(page = 1) {
+    async readProducts(page) {
       try {
         if (this.textPesquisa !== "") {
           const { data } = await api.get(
@@ -178,22 +178,14 @@ export default {
     },
 
     nextPage() {
-      if (this.textPesquisa !== "") {
-        this.readProducts((this.page += 1));
-      } else {
-        return;
-      }
+      this.readProducts((this.page += 1));
     },
 
     previousPage() {
-      if (this.textPesquisa !== "") {
-        if (this.page === 1) {
-          return;
-        } else {
-          this.readProducts((this.page -= 1));
-        }
-      } else {
+      if (this.page === 1) {
         return;
+      } else {
+        this.readProducts((this.page -= 1));
       }
     },
   },

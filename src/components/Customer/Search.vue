@@ -130,26 +130,18 @@ export default {
   },
   methods: {
     nextPage() {
-      if (this.textPesquisa !== "") {
-        this.readCustomers((this.page += 1));
-      } else {
-        return;
-      }
+      this.readCustomers((this.page += 1));
     },
 
     previousPage() {
-      if (this.textPesquisa !== "") {
-        if (this.page === 1) {
-          return;
-        } else {
-          this.readCustomers((this.page -= 1));
-        }
-      } else {
+      if (this.page === 1) {
         return;
+      } else {
+        this.readCustomers((this.page -= 1));
       }
     },
 
-    async readCustomers(page = 1) {
+    async readCustomers(page) {
       try {
         if (this.textPesquisa !== "") {
           const { data } = await api.get(

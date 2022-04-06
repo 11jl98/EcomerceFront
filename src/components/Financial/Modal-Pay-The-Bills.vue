@@ -132,16 +132,16 @@
         </b-row>
       </div>
       <template #modal-footer="{ cancel }">
-        <b-button size="sm" variant="danger" @click="cancel()">
-          Cancelar
-        </b-button>
         <b-button
           size="sm"
-          variant="warning"
+          variant="success"
           style="color: white"
           @click="payTheBills"
         >
           Realizar Baixa
+        </b-button>
+        <b-button size="sm" variant="danger" @click="cancel()">
+          Fechar
         </b-button>
       </template>
     </b-modal>
@@ -196,7 +196,7 @@ export default {
       try {
         this.assigningValuesToAnotherVariable();
 
-        const { data } = await api.post("/bills/payment", this.payment);
+        await api.post("/bills/payment", this.payment);
 
         this.billReductionData.valorRestante =
           parseFloat(this.billReductionData.valorRestante) -
@@ -209,7 +209,10 @@ export default {
         this.launchValue = 0.0;
 
         this.$emit("changeSearchTotalAmount");
-        return data;
+        return this.$toast.open({
+          message: "Baixa realizada com sucesso!",
+          type: "success",
+        });
       } catch (error) {
         return toastAlertErros.validateMessage(error, this.$toast);
       }

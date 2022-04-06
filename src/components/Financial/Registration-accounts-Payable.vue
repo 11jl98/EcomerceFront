@@ -280,7 +280,7 @@ export default {
         );
         return this.$toast.open({
           message: "Conta atualizada!",
-          type: "info",
+          type: "success",
         });
       } catch (error) {
         return this.$toast.open({

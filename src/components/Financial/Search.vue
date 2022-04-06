@@ -24,8 +24,11 @@
         </div>
       </div>
       <b-row class="d-flex">
-        <b-form-group label="Nome" class="col-sm-6 col-md-4 col-lg-4 col-xl-4">
-          <b-form-input size="sm" v-model="typeText"></b-form-input>
+        <b-form-group
+          label="Pesquisa"
+          class="col-sm-6 col-md-4 col-lg-4 col-xl-4"
+        >
+          <b-form-input size="sm" v-model="textPesquisa"></b-form-input>
         </b-form-group>
 
         <b-form-group
@@ -54,14 +57,14 @@
           <b-button
             size="sm"
             style="border: none; background-color: #56aafe !important"
-            @click="readBills"
+            @click="readBills(page)"
             >Pesquisar <b-icon-search class="ml-1"></b-icon-search
           ></b-button>
         </div>
       </b-row>
     </div>
     <div class="tableSearchFinancial">
-      <table class="table col-sm-12">
+      <table class="table table-sm col-sm-12">
         <thead>
           <tr style="background-color: #56aafe; color: white">
             <th>Nome</th>
@@ -127,6 +130,33 @@
       @changeSearchTotalAmount="readBills"
       :idBillPay="idBillPay"
     />
+    <hr />
+    <b-button
+      size="sm"
+      class="buttonPagePrevious"
+      @click="previousPage"
+      :disabled="this.page === 1 ? true : false"
+    >
+      <b-icon-arrow-left-square-fill
+        class="ml-2"
+        scale="1.5"
+        style="cursor: pointer"
+        variant="info"
+      ></b-icon-arrow-left-square-fill
+    ></b-button>
+
+    <b-button
+      size="sm"
+      class="buttonPageNext"
+      @click="nextPage"
+      :disabled="this.dataLength === 0 ? true : false"
+    >
+      <b-icon-arrow-right-square-fill
+        scale="1.5"
+        variant="info"
+        style="cursor: pointer"
+      ></b-icon-arrow-right-square-fill>
+    </b-button>
   </div>
 </template>
 
@@ -147,21 +177,26 @@ export default {
       ],
       dataBill: [],
       filtro: "",
-      typeText: "",
+      textPesquisa: "",
       startDate: "",
       endDate: "",
       tabIndex: 0,
       dataBillForReceiveAndPayable: [],
       idBillPay: "",
+      page: 1,
+      dataLength: 0,
     };
   },
   methods: {
-    async readBills() {
+    async readBills(page) {
       try {
-        const { data } = await api.get(
-          `/bills?q=${this.typeText}&type=${this.tipo}&startDate=${this.startDate}&endDate=${this.endDate}`
-        );
-        this.dataBill = data.data;
+        if (this.textPesquisa !== "") {
+          const { data } = await api.get(
+            `/bills?q=${this.textPesquisa}&type=${this.tipo}&page=${page}&startDate=${this.startDate}&endDate=${this.endDate}`
+          );
+          this.dataLength = data.data.length;
+          this.dataBill = data.data;
+        }
       } catch (error) {
         console.log(error);
       }
@@ -214,6 +249,18 @@ export default {
       this.idBillPay = idBill;
       this.$bvModal.show("modalMakePayment");
     },
+
+    nextPage() {
+      this.readBills((this.page += 1));
+    },
+
+    previousPage() {
+      if (this.page === 1) {
+        return;
+      } else {
+        this.readBills((this.page -= 1));
+      }
+    },
   },
   filters: {
     moment: function (date) {
@@ -223,7 +270,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .btnPesquisar {
   color: white;
   user-select: none;
@@ -266,5 +313,16 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 100px;
+}
+
+.buttonPagePrevious {
+  background-color: transparent !important;
+  border: none !important;
+  padding-left: 0px !important;
+}
+
+.buttonPageNext {
+  background-color: transparent !important;
+  border: none !important;
 }
 </style>

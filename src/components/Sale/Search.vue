@@ -14,7 +14,7 @@
               type="email"
               size="sm"
               required
-              v-model="q"
+              v-model="textPesquisa"
             ></b-form-input>
           </b-form-group>
 
@@ -72,7 +72,7 @@
         </b-row>
       </div>
       <div class="col-sm-12 tableSearchSale">
-        <table class="table col-sm-12">
+        <table class="table table-sm col-sm-12">
           <thead>
             <tr style="background-color: #56aafe; color: white">
               <th>Cliente</th>
@@ -158,7 +158,7 @@ import moment from "moment";
 export default {
   data() {
     return {
-      q: "",
+      textPesquisa: "",
       type: "",
       startDate: "",
       endDate: "",
@@ -175,12 +175,11 @@ export default {
     };
   },
   methods: {
-    async filterSale(page = 1) {
+    async filterSale(page) {
       try {
-        console.log(page, "merdaaaaaaa");
-        if (this.q !== "") {
+        if (this.textPesquisa !== "") {
           const { data } = await api.get(
-            `/sales?q=${this.q}&type=${this.type}&page=${page}&startDate=${this.startDate}&endDate=${this.endDate}`
+            `/sales?q=${this.textPesquisa}&type=${this.type}&page=${page}&startDate=${this.startDate}&endDate=${this.endDate}`
           );
           this.dataLength = data.data.length;
           this.dataSale = data.data;
@@ -198,22 +197,14 @@ export default {
     },
 
     nextPage() {
-      if (this.textPesquisa !== "") {
-        this.filterSale((this.page += 1));
-      } else {
-        return;
-      }
+      this.filterSale((this.page += 1));
     },
 
     previousPage() {
-      if (this.textPesquisa !== "") {
-        if (this.page === 1) {
-          return;
-        } else {
-          this.filterSale((this.page -= 1));
-        }
-      } else {
+      if (this.page === 1) {
         return;
+      } else {
+        this.filterSale((this.page -= 1));
       }
     },
   },

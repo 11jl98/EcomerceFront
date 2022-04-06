@@ -122,9 +122,9 @@ export default {
     };
   },
   methods: {
-    async readEmployees(page = 1) {
+    async readEmployees(page) {
       try {
-        if (this.textPesquisa !== "") {
+        if (this.q !== "") {
           const { data } = await api.get(
             `/employees/filter/search/parameters?q=${this.textPesquisa}&page=${page}`
           );
@@ -162,22 +162,14 @@ export default {
     },
 
     nextPage() {
-      if (this.textPesquisa !== "") {
-        this.readEmployees((this.page += 1));
-      } else {
-        return;
-      }
+      this.readEmployees((this.page += 1));
     },
 
     previousPage() {
-      if (this.textPesquisa !== "") {
-        if (this.page === 1) {
-          return;
-        } else {
-          this.readEmployees((this.page -= 1));
-        }
-      } else {
+      if (this.page === 1) {
         return;
+      } else {
+        this.readEmployees((this.page -= 1));
       }
     },
   },

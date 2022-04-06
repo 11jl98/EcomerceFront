@@ -12,7 +12,7 @@
             <b-form-input
               id="input-1"
               type="email"
-              v-model="dataSafe.q"
+              v-model="dataSafe.textPesquisa"
               required
               size="sm"
             ></b-form-input>
@@ -63,7 +63,7 @@
             <b-button
               variant="primary"
               class="mt-3 mb-3"
-              @click="filterSafe"
+              @click="filterSafe(page)"
               size="sm"
             >
               <b-icon-search class="mr-2" scale="0.8"></b-icon-search>
@@ -87,7 +87,9 @@
           </thead>
           <tbody>
             <tr v-for="safe in listTableSafe.data" :key="safe.id">
-              <td>{{ safe.nomeCliente || ". . . . . . ." }}</td>
+              <td>
+                {{ safe.nomeCliente || safe.nomeFornecedor || ". . . . . . ." }}
+              </td>
               <td>{{ safe.data | moment }}</td>
               <td>
                 {{ safe.tipoMov || safe.tipoCaixa }}
@@ -142,6 +144,32 @@
         </template>
       </b-modal>
       <hr />
+      <b-button
+        size="sm"
+        class="buttonPagePrevious"
+        @click="previousPage"
+        :disabled="this.page === 1 ? true : false"
+      >
+        <b-icon-arrow-left-square-fill
+          class="ml-2"
+          scale="1.5"
+          style="cursor: pointer"
+          variant="info"
+        ></b-icon-arrow-left-square-fill
+      ></b-button>
+
+      <b-button
+        size="sm"
+        class="buttonPageNext"
+        @click="nextPage"
+        :disabled="this.dataLength === 0 ? true : false"
+      >
+        <b-icon-arrow-right-square-fill
+          scale="1.5"
+          variant="info"
+          style="cursor: pointer"
+        ></b-icon-arrow-right-square-fill>
+      </b-button>
     </b-card>
   </div>
 </template>
@@ -155,27 +183,33 @@ export default {
     return {
       tabIndex: 0,
       dataSafe: {
-        q: "",
+        textPesquisa: "",
         type: "",
         startDate: "",
         endDate: "",
       },
       listTableSafe: [],
       listSelectSafe: [
-        { value: "nome", text: "Cliente" },
+        { value: "nomeCliente", text: "Cliente" },
         { value: "nomeFantasia", text: "Fornecedor" },
-        { value: "tipo", text: "Tipo" },
-        { value: "tipoFormaPagamento", text: "Forma de Pagamento" },
+        { value: "tipo", text: "Tipo de movimentação" },
+        { value: "tipoFormaPagamento", text: "Tipo de Pagamento" },
       ],
+      page: 1,
+      dataLength: 0,
     };
   },
   methods: {
-    async filterSafe() {
+    async filterSafe(page) {
       try {
-        const { data } = await api.get(
-          `/safe?q=${this.dataSafe.q}&type=${this.dataSafe.type}&startDate=${this.dataSafe.startDate}&endDate=${this.dataSafe.endDate}`
-        );
-        this.listTableSafe = data;
+        if (this.dataSafe.textPesquisa !== "") {
+          const { data } = await api.get(
+            `/safe?q=${this.dataSafe.textPesquisa}&type=${this.dataSafe.type}&page=${page}&startDate=${this.dataSafe.startDate}&endDate=${this.dataSafe.endDate}`
+          );
+          this.dataLength = data.data.length;
+          console.log(data);
+          this.listTableSafe = data;
+        }
       } catch (error) {
         toastAlertErros.validateErro(error);
       }
@@ -191,8 +225,20 @@ export default {
     async deleteSafe() {
       this.$bvModal.show("modalConfirmDeleteSafe");
     },
+
+    nextPage() {
+      this.filterSafe((this.page += 1));
+    },
+
+    previousPage() {
+      if (this.page === 1) {
+        return;
+      } else {
+        this.filterSafe((this.page -= 1));
+      }
+    },
   },
- filters: {
+  filters: {
     moment: function (date) {
       return moment(date).format("DD/MM/YYYY");
     },
@@ -216,5 +262,16 @@ export default {
 .tableSearchSafe {
   margin-top: 31px;
   overflow-x: auto !important;
+}
+
+.buttonPagePrevious {
+  background-color: transparent !important;
+  border: none !important;
+  padding-left: 0px !important;
+}
+
+.buttonPageNext {
+  background-color: transparent !important;
+  border: none !important;
 }
 </style>
