@@ -1,6 +1,6 @@
 <template>
   <b-card class="shadow">
-    <h3>Dados Cadastrais</h3>
+    <h3>Compra de mercadorias</h3>
     <hr />
     <div class="mt-4">
       <b-row class="col-sm-12 d-flex">
@@ -60,6 +60,7 @@
             placeholder="Serie"
             required
             size="sm"
+            type="number"
           ></b-form-input>
         </b-form-group>
 
@@ -92,8 +93,10 @@
               <b-form-select
                 text-field="nome"
                 value-field="id"
+                v-model="idProductForSelectBox"
                 size="sm"
                 :options="productsForSelectBox"
+                @change="onChange(idProductForSelectBox)"
               ></b-form-select>
             </b-form-group>
 
@@ -220,9 +223,13 @@ export default {
     return {
       productsForSelectBox: [],
       providersForSelectBox: [],
+      idProductForSelectBox: "",
     };
   },
   methods: {
+    onChange(idProductForSelectBox) {
+      console.log(idProductForSelectBox);
+    },
     async getProductsForSelectBox() {
       try {
         const { data } = await api.get("/products");
