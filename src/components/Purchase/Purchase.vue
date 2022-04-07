@@ -1,7 +1,29 @@
 <template>
   <b-card class="shadow">
     <h3>Compra de mercadorias</h3>
+    <div>
+      <b-row class="col-sm-12 d-flex justify-content-end">
+        <div>
+          <div>
+            <b-button
+              class="mr-4"
+              style="
+                border: none !important;
+                background-color: black !important;
+              "
+              size="sm"
+              @click="openModalImportXml"
+              >Importar XML
+              <b-icon-file-earmark-arrow-down
+                class="ml-1"
+              ></b-icon-file-earmark-arrow-down
+            ></b-button>
+          </div>
+        </div>
+      </b-row>
+    </div>
     <hr />
+
     <div class="mt-4">
       <b-row class="col-sm-12 d-flex">
         <b-form-input hidden class="col-sm-1"></b-form-input>
@@ -210,6 +232,7 @@
             ></b-button>
           </div>
         </div>
+        <ModalImportXml />
       </div>
     </div>
   </b-card>
@@ -217,7 +240,7 @@
 
 <script>
 import api from "../../services/axios";
-
+import ModalImportXml from "./Modal-Import-Xml.vue";
 export default {
   data() {
     return {
@@ -226,10 +249,14 @@ export default {
       idProductForSelectBox: "",
     };
   },
+  components: {
+    ModalImportXml,
+  },
   methods: {
     onChange(idProductForSelectBox) {
       console.log(idProductForSelectBox);
     },
+
     async getProductsForSelectBox() {
       try {
         const { data } = await api.get("/products");
@@ -241,6 +268,7 @@ export default {
         });
       }
     },
+
     async getProvidersForSelectBox() {
       try {
         const { data } = await api.get("/providers/fill/combobox");
@@ -251,6 +279,9 @@ export default {
           type: "success",
         });
       }
+    },
+    openModalImportXml() {
+      this.$bvModal.show("modalImportXml");
     },
   },
   mounted() {
