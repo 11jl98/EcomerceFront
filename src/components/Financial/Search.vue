@@ -106,7 +106,7 @@
                 variant="danger"
                 style="border: none !important"
               >
-                <b-icon-trash scale="1.2"></b-icon-trash
+                <b-icon-trash scale="1.3"></b-icon-trash
               ></b-button>
 
               <b-button

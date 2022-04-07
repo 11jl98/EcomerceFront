@@ -42,7 +42,7 @@
         >
           <b-form-input
             id="input-1"
-            placeholder="Ex: 55 NFe, 61 NFCe"
+            placeholder="Ex: 55"
             required
             size="sm"
             type="number"
@@ -74,6 +74,7 @@
             text-field="razaoSocial"
             value-field="id"
             size="sm"
+            :options="providersForSelectBox"
           ></b-form-select>
         </b-form-group>
       </b-row>
@@ -89,15 +90,16 @@
               size="sm"
             >
               <b-form-select
-                text-field="razaoSocial"
+                text-field="nome"
                 value-field="id"
                 size="sm"
+                :options="productsForSelectBox"
               ></b-form-select>
             </b-form-group>
 
             <b-form-group
               id="input-group-1"
-              label="Quantidade"
+              label="Qnt"
               label-for="input-1"
               class="col-sm-3"
             >
@@ -146,10 +148,10 @@
             <table class="table table-sm">
               <thead>
                 <tr style="background-color: #56aafe; color: white">
-                  <th>Nome Produto</th>
-                  <th>Descrição</th>
-                  <th>Valor de venda</th>
-                  <th>estoque</th>
+                  <th>Produto</th>
+                  <th>Qnt</th>
+                  <th>Vl. und</th>
+                  <th>Vl. total</th>
                   <th>Ações</th>
                 </tr>
                 <tr>
@@ -177,239 +179,7 @@
                         content: 'Excluir',
                       }"
                     >
-                      <b-icon-trash scale="0.7"></b-icon-trash
-                    ></b-button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td>
-                    <b-button
-                      size="sm"
-                      class="mr-2"
-                      variant="info"
-                      v-b-popover.hover.left="{
-                        variant: 'info',
-                        content: 'Editar',
-                      }"
-                    >
-                      <b-icon-check scale="2"></b-icon-check>
-                    </b-button>
-                    <b-button
-                      size="sm"
-                      variant="secondary"
-                      v-b-popover.hover.right="{
-                        variant: 'secondary',
-                        content: 'Excluir',
-                      }"
-                    >
-                      <b-icon-trash scale="0.7"></b-icon-trash
-                    ></b-button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td>
-                    <b-button
-                      size="sm"
-                      class="mr-2"
-                      variant="info"
-                      v-b-popover.hover.left="{
-                        variant: 'info',
-                        content: 'Editar',
-                      }"
-                    >
-                      <b-icon-check scale="2"></b-icon-check>
-                    </b-button>
-                    <b-button
-                      size="sm"
-                      variant="secondary"
-                      v-b-popover.hover.right="{
-                        variant: 'secondary',
-                        content: 'Excluir',
-                      }"
-                    >
-                      <b-icon-trash scale="0.7"></b-icon-trash
-                    ></b-button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td>
-                    <b-button
-                      size="sm"
-                      class="mr-2"
-                      variant="info"
-                      v-b-popover.hover.left="{
-                        variant: 'info',
-                        content: 'Editar',
-                      }"
-                    >
-                      <b-icon-check scale="2"></b-icon-check>
-                    </b-button>
-                    <b-button
-                      size="sm"
-                      variant="secondary"
-                      v-b-popover.hover.right="{
-                        variant: 'secondary',
-                        content: 'Excluir',
-                      }"
-                    >
-                      <b-icon-trash scale="0.7"></b-icon-trash
-                    ></b-button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td>
-                    <b-button
-                      size="sm"
-                      class="mr-2"
-                      variant="info"
-                      v-b-popover.hover.left="{
-                        variant: 'info',
-                        content: 'Editar',
-                      }"
-                    >
-                      <b-icon-check scale="2"></b-icon-check>
-                    </b-button>
-                    <b-button
-                      size="sm"
-                      variant="secondary"
-                      v-b-popover.hover.right="{
-                        variant: 'secondary',
-                        content: 'Excluir',
-                      }"
-                    >
-                      <b-icon-trash scale="0.7"></b-icon-trash
-                    ></b-button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td>
-                    <b-button
-                      size="sm"
-                      class="mr-2"
-                      variant="info"
-                      v-b-popover.hover.left="{
-                        variant: 'info',
-                        content: 'Editar',
-                      }"
-                    >
-                      <b-icon-check scale="2"></b-icon-check>
-                    </b-button>
-                    <b-button
-                      size="sm"
-                      variant="secondary"
-                      v-b-popover.hover.right="{
-                        variant: 'secondary',
-                        content: 'Excluir',
-                      }"
-                    >
-                      <b-icon-trash scale="0.7"></b-icon-trash
-                    ></b-button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td>
-                    <b-button
-                      size="sm"
-                      class="mr-2"
-                      variant="info"
-                      v-b-popover.hover.left="{
-                        variant: 'info',
-                        content: 'Editar',
-                      }"
-                    >
-                      <b-icon-check scale="2"></b-icon-check>
-                    </b-button>
-                    <b-button
-                      size="sm"
-                      variant="secondary"
-                      v-b-popover.hover.right="{
-                        variant: 'secondary',
-                        content: 'Excluir',
-                      }"
-                    >
-                      <b-icon-trash scale="0.7"></b-icon-trash
-                    ></b-button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td>
-                    <b-button
-                      size="sm"
-                      class="mr-2"
-                      variant="info"
-                      v-b-popover.hover.left="{
-                        variant: 'info',
-                        content: 'Editar',
-                      }"
-                    >
-                      <b-icon-check scale="2"></b-icon-check>
-                    </b-button>
-                    <b-button
-                      size="sm"
-                      variant="secondary"
-                      v-b-popover.hover.right="{
-                        variant: 'secondary',
-                        content: 'Excluir',
-                      }"
-                    >
-                      <b-icon-trash scale="0.7"></b-icon-trash
-                    ></b-button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td>
-                    <b-button
-                      size="sm"
-                      class="mr-2"
-                      variant="info"
-                      v-b-popover.hover.left="{
-                        variant: 'info',
-                        content: 'Editar',
-                      }"
-                    >
-                      <b-icon-check scale="2"></b-icon-check>
-                    </b-button>
-                    <b-button
-                      size="sm"
-                      variant="secondary"
-                      v-b-popover.hover.right="{
-                        variant: 'secondary',
-                        content: 'Excluir',
-                      }"
-                    >
-                      <b-icon-trash scale="0.7"></b-icon-trash
+                      <b-icon-trash scale="1.3"></b-icon-trash
                     ></b-button>
                   </td>
                 </tr>
@@ -443,41 +213,46 @@
 </template>
 
 <script>
-// import api from "../../services/axios";
-// import toastAlertErros from "../../utils/toastAlertErros";
+import api from "../../services/axios";
 
 export default {
-  props: {
-    readOrEditProducts: {
-      type: Object,
-    },
-  },
   data() {
     return {
-      dataProducts: {
-        id: "",
-        nome: "",
-        valor: 0.0,
-        valorVenda: 0.0,
-        unidade: "",
-        descricao: "",
-        codBarras: "",
-        codReferencia: "",
-        estoque: "0",
-        estoqueMin: "0",
-      },
+      productsForSelectBox: [],
+      providersForSelectBox: [],
     };
+  },
+  methods: {
+    async getProductsForSelectBox() {
+      try {
+        const { data } = await api.get("/products");
+        this.productsForSelectBox = data.data;
+      } catch (error) {
+        return this.$toast.open({
+          message: "Ocorreu um erro ao listar os produtos!",
+          type: "success",
+        });
+      }
+    },
+    async getProvidersForSelectBox() {
+      try {
+        const { data } = await api.get("/providers/fill/combobox");
+        this.providersForSelectBox = data;
+      } catch (error) {
+        return this.$toast.open({
+          message: "Ocorreu um erro ao listar os Fornecedores!",
+          type: "success",
+        });
+      }
+    },
+  },
+  mounted() {
+    this.getProductsForSelectBox();
+    this.getProvidersForSelectBox();
   },
 };
 </script>
 <style scoped>
-.textoGrande {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  max-width: 100px !important;
-}
-
 .tableSearchPurchase {
   margin-top: 31px;
   overflow: auto !important;

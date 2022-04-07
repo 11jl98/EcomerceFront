@@ -69,7 +69,7 @@
                     content: 'Excluir',
                   }"
                 >
-                  <b-icon-trash scale="1.0"></b-icon-trash
+                  <b-icon-trash scale="1.3"></b-icon-trash
                 ></b-button>
               </td>
             </tr>

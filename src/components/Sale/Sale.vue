@@ -379,7 +379,7 @@
                                             "
                                           >
                                             <b-icon-trash
-                                              scale="0.7"
+                                              scale="1.3"
                                             ></b-icon-trash
                                           ></b-button>
                                         </td>
@@ -605,7 +605,7 @@
                                               "
                                             >
                                               <b-icon-trash
-                                                scale="0.7"
+                                                scale="1.3"
                                               ></b-icon-trash
                                             ></b-button>
                                           </td>

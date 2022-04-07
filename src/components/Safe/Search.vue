@@ -126,7 +126,7 @@
                     content: 'Excluir',
                   }"
                 >
-                  <b-icon-trash scale="1"></b-icon-trash
+                  <b-icon-trash scale="1.3"></b-icon-trash
                 ></b-button>
               </td>
             </tr>
@@ -246,13 +246,6 @@ export default {
 };
 </script>
 <style scoped>
-.textoGrande {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  max-width: 100px !important;
-}
-
 .searchSafe {
   width: 100% !important;
   display: flex;
