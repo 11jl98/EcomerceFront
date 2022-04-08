@@ -1,10 +1,14 @@
 class ImportXML {
   readXml(file) {
     if (file) {
-      let objetcTotal = []
+      let objetcTotal = {
+        fornecedor: {
+
+        }
+      }
       let reader = new FileReader();
       reader.readAsText(file, "UTF-8");
-      
+
       reader.onload = function ({ target }) {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(
@@ -14,32 +18,23 @@ class ImportXML {
 
         let provider = xmlDoc.getElementsByTagName("emit")[0];
         let dataProvider = Array.from(provider.childNodes);
-        let textContentProviderInTagName;
-        let tagNameProvider;
 
         let enderProvider = xmlDoc.getElementsByTagName("enderEmit")[0]
         let dataEnderProvider = Array.from(enderProvider.childNodes)
-        let textContentEnderProviderInTagName;
-        let tagNameEnderProvider;
 
-
-
-        dataProvider.map((e) => {
-          tagNameProvider = e.tagName;
-          textContentProviderInTagName = e.textContent;
-
-          if (tagNameProvider === "enderEmit") {
-            dataEnderProvider.map((e) => {
-              tagNameEnderProvider = e.tagName
-              textContentEnderProviderInTagName = e.textContent
-
-              objetcTotal.push({ [tagNameEnderProvider]: textContentEnderProviderInTagName })
-            })
-
+        const teste = dataProvider.reduce((prev, current) => {
+          const tag = current.tagName
+          const text = current.textContent
+          if (tag === "enderEmit") {
+            dataEnderProvider.forEach((e) => prev[e.tagName] = e.textContent)
+          } else {
+            prev[tag] = text
           }
-          objetcTotal.push({ [tagNameProvider]: textContentProviderInTagName })
-        })
-        
+          return prev
+        }, {})
+
+        console.log(teste, 'wwwwwwwww')
+
 
         // for (var i = 0; i < provider.childElementCount; i++) {
         //   const dataProvider = provider.childNodes[i];
