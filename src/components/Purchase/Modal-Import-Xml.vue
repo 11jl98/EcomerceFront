@@ -42,6 +42,7 @@
 <script>
 // import api from "../../services/axios";
 // import moment from "moment";
+import { readXml } from "../../services/ImportXML/importXml";
 // import toastAlertErros from "../../utils/toastAlertErros";
 
 export default {
@@ -53,21 +54,7 @@ export default {
   methods: {
     importXml() {
       var file = this.xmlFile;
-      if (file) {
-        var reader = new FileReader();
-        reader.readAsText(file, "UTF-8");
-        reader.onload = function ({ target }) {
-          const parser = new DOMParser();
-          const xmlDoc = parser.parseFromString(
-            target.result,
-            "application/xml"
-          );
-          const reg = xmlDoc.getElementsByTagName("chNFe");
-          console.log(xmlDoc, reg);
-        };
-      } else {
-        console.log("Error ao ler o arquivo");
-      }
+      readXml(file);
     },
   },
   watch: {},
