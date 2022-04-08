@@ -42,7 +42,7 @@
 <script>
 // import api from "../../services/axios";
 // import moment from "moment";
-import { readXml } from "../../services/ImportXML/importXml";
+import ImportXML from "../../services/ImportXML/importXml";
 // import toastAlertErros from "../../utils/toastAlertErros";
 
 export default {
@@ -54,7 +54,7 @@ export default {
   methods: {
     importXml() {
       var file = this.xmlFile;
-      readXml(file);
+      console.log(ImportXML.readXml(file));
     },
   },
   watch: {},
