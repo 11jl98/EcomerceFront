@@ -54,7 +54,7 @@ export default {
   methods: {
     importXml() {
       var file = this.xmlFile;
-      console.log(ImportXML.readXml(file));
+      ImportXML.readXml(file);
     },
   },
   watch: {},

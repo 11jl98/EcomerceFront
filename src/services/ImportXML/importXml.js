@@ -2,10 +2,16 @@ class ImportXML {
   readXml(file) {
     if (file) {
       let objetcTotal = {
-        fornecedor: {
+        provider: {
+
+        },
+        products: {
 
         }
+
       }
+
+
       let reader = new FileReader();
       reader.readAsText(file, "UTF-8");
 
@@ -22,7 +28,7 @@ class ImportXML {
         let enderProvider = xmlDoc.getElementsByTagName("enderEmit")[0]
         let dataEnderProvider = Array.from(enderProvider.childNodes)
 
-        const teste = dataProvider.reduce((prev, current) => {
+        objetcTotal.provider = dataProvider.reduce((prev, current) => {
           const tag = current.tagName
           const text = current.textContent
           if (tag === "enderEmit") {
@@ -33,30 +39,23 @@ class ImportXML {
           return prev
         }, {})
 
-        console.log(teste, 'wwwwwwwww')
 
+        // objetcTotal.products 
+        let productsDetails = Array.from(xmlDoc.getElementsByTagName("prod"))
+        objetcTotal.products = productsDetails.reduce((prev, current) => {
+          let objectProducts = {}
 
-        // for (var i = 0; i < provider.childElementCount; i++) {
-        //   const dataProvider = provider.childNodes[i];
-        //   const tagNameProvider = dataProvider.tagName;
-        //   const textContentInTagName = provider.childNodes[i].textContent;
+          let dataProductsDetails = Array.from(current.childNodes)
+          dataProductsDetails.forEach((e) => {
 
-        //   if(tagNameProvider === "enderEmit"){
-        //     const enderEmite = xmlDoc.getElementsByTagName("enderEmit")[0]
-        //     for (var e = 0; e < enderEmite.childElementCount; e++) {
-        //       const dataEnderProvider = enderEmite.childNodes[e]
-        //       const tagNameEnderProvider = dataEnderProvider.tagName
-        //       const textContentEnderProviderInTagName = enderEmite.childNodes[e].textContent
-
-        //       const objectDataEnderProvider = {[tagNameEnderProvider]: textContentEnderProviderInTagName}
-        //       console.log(objectDataEnderProvider)
-        //     }
-        //   }
-
-        //   const objectDataProviders= {[tagNameProvider] : textContentInTagName}
-
-        //   console.log(objectDataProviders)
-        // }
+            const tag = e.tagName
+            const text = e.textContent
+            objectProducts[tag]=text
+            })
+            prev.push(objectProducts)
+          return prev
+        }, [])
+        console.log(objetcTotal)
       };
       return objetcTotal
     } else {
