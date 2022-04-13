@@ -26,7 +26,7 @@
         <b-button
           size="sm"
           variant="success"
-          @click="importXml"
+          @click="convertXml"
           style="color: white"
         >
           Importar
@@ -40,22 +40,29 @@
 </template>
 
 <script>
-// import api from "../../services/axios";
+import api from "../../services/axios";
 // import moment from "moment";
-import ImportXML from "../../services/ImportXML/importXml";
+import ConvertXml from "../../services/convertXML/convertXml";
 // import toastAlertErros from "../../utils/toastAlertErros";
 
 export default {
   data() {
     return {
       xmlFile: null,
+      objectXmlPurchase: null,
     };
   },
   methods: {
-    async importXml() {
-      const file = this.xmlFile;
-      console.log(ImportXML.readXml(file));
-      // const { data } = await api.post("/purchasenote", xml);
+    async convertXml() {
+      const xml = this.xmlFile;
+      const xmlConvertedToString = await ConvertXml.xmlString(xml);
+
+      const { data } = await api.post("/purchasenote", {
+        xmlString: xmlConvertedToString,
+      });
+
+      this.objectXmlPurchase = ConvertXml.ObjectXmlPurchase(data);
+      console.log(this.objectXmlPurchase, "doideradaaaaaaaaaa");
     },
   },
   watch: {},
