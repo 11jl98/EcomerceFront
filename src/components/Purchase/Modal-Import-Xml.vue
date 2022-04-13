@@ -52,9 +52,10 @@ export default {
     };
   },
   methods: {
-    importXml() {
-      var file = this.xmlFile;
-      ImportXML.readXml(file);
+    async importXml() {
+      const file = this.xmlFile;
+      console.log(ImportXML.readXml(file));
+      // const { data } = await api.post("/purchasenote", xml);
     },
   },
   watch: {},
