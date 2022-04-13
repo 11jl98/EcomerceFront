@@ -26,7 +26,7 @@
         <b-button
           size="sm"
           variant="success"
-          @click="convertXml"
+          @click="converXmlAndReturnObject"
           style="color: white"
         >
           Importar
@@ -53,6 +53,11 @@ export default {
     };
   },
   methods: {
+    async converXmlAndReturnObject() {
+      const data = await this.convertXml();
+      this.returnObjectPurchase(data);
+    },
+
     async convertXml() {
       const xml = this.xmlFile;
       const xmlConvertedToString = await ConvertXml.xmlString(xml);
@@ -61,7 +66,14 @@ export default {
         xmlString: xmlConvertedToString,
       });
 
+      return data;
+    },
+
+    returnObjectPurchase(data) {
       this.objectXmlPurchase = ConvertXml.ObjectXmlPurchase(data);
+
+      // falta atribuir os valores para realizar os cadastros tanto de produto quando de fornecedor
+
       console.log(this.objectXmlPurchase, "doideradaaaaaaaaaa");
     },
   },
