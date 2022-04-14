@@ -230,6 +230,7 @@
 <script>
 import api from "../../services/axios";
 import toastAlertErros from "../../utils/toastAlertErros";
+import ServiceSupplier from "../../services/serviceSupplier";
 
 export default {
   props: {
@@ -260,8 +261,8 @@ export default {
   methods: {
     async saveSupllier() {
       try {
-        const { data } = await api.post("/Providers", this.dadosSupplier);
-        this.dadosSupplier.id = data.id;
+        const id = await ServiceSupplier.saveSupllier(this.dadosSupplier);
+        this.dadosSupplier.id = id;
 
         return this.$toast.open({
           message: "Fornecedor salvo com sucesso",

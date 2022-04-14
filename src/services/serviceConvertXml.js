@@ -15,7 +15,6 @@ class ConvertXml {
     } catch (error) {
       console.log(error, 'ocorreu um erro ao ler o arquivo')
     }
-
   }
 
   ObjectXmlPurchase(object) {
@@ -31,7 +30,6 @@ class ConvertXml {
     } catch (error) {
       console.log('error ao atribuir objetos do xml ao objeto da nota de compra')
     }
-
   }
 }
 

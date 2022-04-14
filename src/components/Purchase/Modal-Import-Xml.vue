@@ -42,7 +42,7 @@
 <script>
 import api from "../../services/axios";
 // import moment from "moment";
-import ConvertXml from "../../services/convertXML/convertXml";
+import ConvertXml from "../../services/serviceConvertXml";
 // import toastAlertErros from "../../utils/toastAlertErros";
 
 export default {
@@ -50,12 +50,28 @@ export default {
     return {
       xmlFile: null,
       objectXmlPurchase: null,
+      objectSupplier: {
+        id: "",
+        nomeFantasia: "",
+        razaoSocial: "",
+        cpfCnpj: "",
+        ie: "",
+        endereco: "",
+        numero: "",
+        bairro: "",
+        cidade: "",
+        uf: "",
+        email: "",
+        telefone: "",
+        celular: "",
+      },
+      objectProducts: [],
     };
   },
   methods: {
     async converXmlAndReturnObject() {
       const data = await this.convertXml();
-      this.returnObjectPurchase(data);
+      this.returnObjectAndassignValuesToTheNewObject(data);
     },
 
     async convertXml() {
@@ -69,12 +85,57 @@ export default {
       return data;
     },
 
-    returnObjectPurchase(data) {
-      this.objectXmlPurchase = ConvertXml.ObjectXmlPurchase(data);
+    async returnObjectAndassignValuesToTheNewObject(data) {
+      await this.returnObjectPurchase(data);
+      await this.assignValuesToTheObjectPurchase();
+    },
 
+    async returnObjectPurchase(data) {
+      this.objectXmlPurchase = await ConvertXml.ObjectXmlPurchase(data);
       // falta atribuir os valores para realizar os cadastros tanto de produto quando de fornecedor
+    },
 
-      console.log(this.objectXmlPurchase, "doideradaaaaaaaaaa");
+    assignValuesToTheObjectPurchase() {
+      this.objectSupplier.nomeFantasia =
+        this.objectXmlPurchase.fornecedor[0].xFant[0];
+
+      this.objectSupplier.razaoSocial =
+        this.objectXmlPurchase.fornecedor[0].xNome[0];
+
+      this.objectSupplier.ie = this.objectXmlPurchase.fornecedor[0].IE[0];
+
+      this.objectSupplier.cpfCnpj =
+        this.objectXmlPurchase.fornecedor[0].CNPJ[0];
+
+      this.objectSupplier.endereco =
+        this.objectXmlPurchase.fornecedor[0].enderEmit[0].xLgr[0];
+
+      this.objectSupplier.numero =
+        this.objectXmlPurchase.fornecedor[0].enderEmit[0].nro[0];
+
+      this.objectSupplier.bairro =
+        this.objectXmlPurchase.fornecedor[0].enderEmit[0].xBairro[0];
+
+      this.objectSupplier.cidade =
+        this.objectXmlPurchase.fornecedor[0].enderEmit[0].xMun[0];
+
+      this.objectSupplier.uf =
+        this.objectXmlPurchase.fornecedor[0].enderEmit[0].UF[0];
+
+      this.objectSupplier.telefone =
+        this.objectXmlPurchase.fornecedor[0].enderEmit[0].fone[0];
+
+      this.objectProducts = this.objectXmlPurchase.produtos.map((e) => {
+        return {
+          id: "",
+          nome: e.prod[0].xProd,
+          valor: e.prod[0].vProd,
+          valorVenda: 0.0,
+          unidade: e.prod[0].uTrib,
+          estoque: e.prod[0].qCom,
+        };
+      });
+      console.log(this.objectProducts);
     },
   },
   watch: {},

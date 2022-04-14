@@ -109,7 +109,7 @@
               id="input-group-1"
               label="Produtos"
               label-for="input-1"
-              class="col-sm-5"
+              class="col-sm-6"
               size="sm"
             >
               <b-form-select
@@ -124,9 +124,9 @@
 
             <b-form-group
               id="input-group-1"
-              label="Qnt"
+              label="Quantidade"
               label-for="input-1"
-              class="col-sm-3"
+              class="col-sm-4"
             >
               <b-form-input
                 id="input-1"
@@ -138,9 +138,23 @@
 
             <b-form-group
               id="input-group-1"
+              label="Valor unitario"
+              label-for="input-1"
+              class="col-sm-5"
+            >
+              <b-form-input
+                id="input-1"
+                placeholder="Valor unitario"
+                size="sm"
+                type="number"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group
+              id="input-group-1"
               label="Estoque"
               label-for="input-1"
-              class="col-sm-4"
+              class="col-sm-5"
             >
               <b-form-input
                 id="input-1"
