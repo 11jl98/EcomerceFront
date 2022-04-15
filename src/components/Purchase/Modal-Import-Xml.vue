@@ -18,6 +18,7 @@
               size="sm"
               id="fileXml"
               v-model="xmlFile"
+              browse-text="Arquivo"
             ></b-form-file>
           </b-form-group>
         </b-row>
@@ -26,7 +27,7 @@
         <b-button
           size="sm"
           variant="success"
-          @click="converXmlAndReturnObject"
+          @click="converXmlAndReturnObjectAndSave"
           style="color: white"
         >
           Importar
@@ -43,99 +44,88 @@
 import api from "../../services/axios";
 // import moment from "moment";
 import ConvertXml from "../../services/serviceConvertXml";
+import AssigningValuesToTheObject from "../../services/assigningValues​ToTheObject";
+import ServiceSupplier from "../../services/serviceSupplier";
+
 // import toastAlertErros from "../../utils/toastAlertErros";
 
 export default {
   data() {
     return {
       xmlFile: null,
-      objectXmlPurchase: null,
-      objectSupplier: {
-        id: "",
-        nomeFantasia: "",
-        razaoSocial: "",
-        cpfCnpj: "",
-        ie: "",
-        endereco: "",
-        numero: "",
-        bairro: "",
-        cidade: "",
-        uf: "",
-        email: "",
-        telefone: "",
-        celular: "",
-      },
-      objectProducts: [],
+      objectPurchase: null,
+      objectPurchaseTotal: {},
     };
   },
   methods: {
-    async converXmlAndReturnObject() {
-      const data = await this.convertXml();
-      this.returnObjectAndassignValuesToTheNewObject(data);
+    async converXmlAndReturnObjectAndSave() {
+      const xmlConverted = await this.convertXml();
+      await this.returnPurchaseObject(xmlConverted);
+      await this.saveSupplier();
     },
 
     async convertXml() {
-      const xml = this.xmlFile;
-      const xmlConvertedToString = await ConvertXml.xmlString(xml);
+      try {
+        if (this.xmlFile === null) {
+          this.$toast.open({
+            message: "Selecione o arquivo XML",
+            type: "warning",
+          });
+          return null;
+        }
 
-      const { data } = await api.post("/purchasenote", {
-        xmlString: xmlConvertedToString,
-      });
+        const xmlConvertedToString = await ConvertXml.xmlString(this.xmlFile);
 
-      return data;
+        if (xmlConvertedToString === null) {
+          this.$toast.open({
+            message: "O arquivo deve ser um XML VALIDO",
+            type: "error",
+          });
+          return null;
+        } else {
+          const { data } = await api.post("/purchasenote", {
+            xmlString: xmlConvertedToString,
+          });
+
+          return data;
+        }
+      } catch (error) {
+        console.log(error, "ocorreu um erro ao converter o arquivo XML");
+      }
     },
 
-    async returnObjectAndassignValuesToTheNewObject(data) {
-      await this.returnObjectPurchase(data);
-      await this.assignValuesToTheObjectPurchase();
+    async returnPurchaseObject(xmlConverted) {
+      try {
+        if (xmlConverted === null) {
+          return;
+        }
+        this.objectPurchase = await ConvertXml.ObjectPurchase(xmlConverted);
+        this.assignValuesToTheObjectPurchase(this.objectPurchase);
+      } catch (error) {
+        console.log(
+          error,
+          "error ao atribuir objetos do xml ao objeto da nota de compra"
+        );
+      }
     },
 
-    async returnObjectPurchase(data) {
-      this.objectXmlPurchase = await ConvertXml.ObjectXmlPurchase(data);
-      // falta atribuir os valores para realizar os cadastros tanto de produto quando de fornecedor
+    assignValuesToTheObjectPurchase(objectPurchase) {
+      this.objectPurchaseTotal =
+        AssigningValuesToTheObject.assigningValues(objectPurchase);
     },
 
-    assignValuesToTheObjectPurchase() {
-      this.objectSupplier.nomeFantasia =
-        this.objectXmlPurchase.fornecedor[0].xFant[0];
-
-      this.objectSupplier.razaoSocial =
-        this.objectXmlPurchase.fornecedor[0].xNome[0];
-
-      this.objectSupplier.ie = this.objectXmlPurchase.fornecedor[0].IE[0];
-
-      this.objectSupplier.cpfCnpj =
-        this.objectXmlPurchase.fornecedor[0].CNPJ[0];
-
-      this.objectSupplier.endereco =
-        this.objectXmlPurchase.fornecedor[0].enderEmit[0].xLgr[0];
-
-      this.objectSupplier.numero =
-        this.objectXmlPurchase.fornecedor[0].enderEmit[0].nro[0];
-
-      this.objectSupplier.bairro =
-        this.objectXmlPurchase.fornecedor[0].enderEmit[0].xBairro[0];
-
-      this.objectSupplier.cidade =
-        this.objectXmlPurchase.fornecedor[0].enderEmit[0].xMun[0];
-
-      this.objectSupplier.uf =
-        this.objectXmlPurchase.fornecedor[0].enderEmit[0].UF[0];
-
-      this.objectSupplier.telefone =
-        this.objectXmlPurchase.fornecedor[0].enderEmit[0].fone[0];
-
-      this.objectProducts = this.objectXmlPurchase.produtos.map((e) => {
-        return {
-          id: "",
-          nome: e.prod[0].xProd,
-          valor: e.prod[0].vProd,
-          valorVenda: 0.0,
-          unidade: e.prod[0].uTrib,
-          estoque: e.prod[0].qCom,
-        };
-      });
-      console.log(this.objectProducts);
+    async saveSupplier() {
+      try {
+        if (Object.values(this.objectPurchaseTotal).length === 0) {
+          return;
+        }
+        const data = await ServiceSupplier.saveSupllier(
+          this.objectPurchaseTotal?.supplier
+        );
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   watch: {},

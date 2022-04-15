@@ -207,7 +207,6 @@ export default {
             `/safe?q=${this.dataSafe.textPesquisa}&type=${this.dataSafe.type}&page=${page}&startDate=${this.dataSafe.startDate}&endDate=${this.dataSafe.endDate}`
           );
           this.dataLength = data.data.length;
-          console.log(data);
           this.listTableSafe = data;
         }
       } catch (error) {
