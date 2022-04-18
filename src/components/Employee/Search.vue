@@ -151,7 +151,7 @@ export default {
     async destroyEmployee(idEmployee) {
       try {
         await api.delete(`/employees/${idEmployee}`);
-        this.readEmployees();
+        this.readEmployees(this.page);
         return this.$toast.open({
           message: "Funcionário deletado!",
           type: "success",

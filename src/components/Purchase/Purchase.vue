@@ -96,8 +96,9 @@
           <b-form-select
             text-field="razaoSocial"
             value-field="id"
+            v-model="idSupplierForSelectBox"
             size="sm"
-            :options="providersForSelectBox"
+            :options="supplierForSelectBox"
           ></b-form-select>
         </b-form-group>
       </b-row>
@@ -246,7 +247,7 @@
             ></b-button>
           </div>
         </div>
-        <ModalImportXml />
+        <ModalImportXml @idSupplierForSelectBox="idSupplier = $event" />
       </div>
     </div>
   </b-card>
@@ -258,14 +259,18 @@ import ModalImportXml from "./Modal-Import-Xml.vue";
 export default {
   data() {
     return {
+      idSupplier: "",
+      idSupplierForSelectBox: "",
       productsForSelectBox: [],
-      providersForSelectBox: [],
+      supplierForSelectBox: [],
       idProductForSelectBox: "",
     };
   },
+
   components: {
     ModalImportXml,
   },
+
   methods: {
     onChange(idProductForSelectBox) {
       console.log(idProductForSelectBox);
@@ -283,10 +288,10 @@ export default {
       }
     },
 
-    async getProvidersForSelectBox() {
+    async getSuppliersForSelectBox() {
       try {
         const { data } = await api.get("/providers/fill/combobox");
-        this.providersForSelectBox = data;
+        this.supplierForSelectBox = data;
       } catch (error) {
         return this.$toast.open({
           message: "Ocorreu um erro ao listar os Fornecedores!",
@@ -298,9 +303,17 @@ export default {
       this.$bvModal.show("modalImportXml");
     },
   },
+
   mounted() {
     this.getProductsForSelectBox();
-    this.getProvidersForSelectBox();
+    this.getSuppliersForSelectBox();
+  },
+
+  watch: {
+    idSupplier() {
+      this.getSuppliersForSelectBox();
+      this.idSupplierForSelectBox = this.idSupplier;
+    },
   },
 };
 </script>

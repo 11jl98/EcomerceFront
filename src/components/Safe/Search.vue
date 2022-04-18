@@ -120,7 +120,7 @@
                   size="sm"
                   variant="secondary"
                   style="border: none !important"
-                  @click="deleteSafe"
+                  @click="openModalDeleteSafe"
                   v-b-popover.hover.right="{
                     variant: 'secondary',
                     content: 'Excluir',
@@ -137,7 +137,9 @@
         <h3>Deseja realmente deletar ?</h3>
 
         <template #modal-footer="{ cancel }">
-          <b-button size="sm" variant="danger"> Deletar </b-button>
+          <b-button size="sm" variant="danger" @click="deleteSafe">
+            Deletar
+          </b-button>
           <b-button size="sm" variant="info" @click="cancel()">
             Fechar
           </b-button>
@@ -221,8 +223,12 @@ export default {
       return data;
     },
 
-    async deleteSafe() {
+    async openModalDeleteSafe() {
       this.$bvModal.show("modalConfirmDeleteSafe");
+    },
+
+    async deleteSafe() {
+      console.log("deletando");
     },
 
     nextPage() {

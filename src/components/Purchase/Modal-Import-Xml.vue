@@ -122,7 +122,7 @@ export default {
         const data = await ServiceSupplier.saveSupllier(
           this.objectPurchaseTotal?.supplier
         );
-        console.log(data);
+        this.$emit("idSupplierForSelectBox", data);
       } catch (error) {
         console.log(error);
       }

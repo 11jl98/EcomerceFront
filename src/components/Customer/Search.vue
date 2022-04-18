@@ -167,7 +167,7 @@ export default {
     async destroyCustomer(idCustomer) {
       try {
         await api.delete(`/customers/${idCustomer}`);
-        this.readCustomers();
+        this.readCustomers(this.page);
         return this.$toast.open({
           message: "Cliente excluido com sucesso",
           type: "success",

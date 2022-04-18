@@ -148,7 +148,7 @@ export default {
     async destroySupplier(idSupplier) {
       try {
         await api.delete(`/Providers/${idSupplier}`);
-        this.readSupplier();
+        this.readSupplier(this.page);
         return this.$toast.open({
           message: "Fornecedor deletado com sucesso",
           type: "success",

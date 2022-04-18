@@ -163,7 +163,7 @@ export default {
     async destroyproducts(idProducts) {
       try {
         await api.delete("/products/" + idProducts);
-        this.readProducts();
+        this.readProducts(this.page);
         return this.$toast.open({
           message: "Produto deletado com sucesso",
           type: "success",
