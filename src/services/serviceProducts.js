@@ -16,6 +16,24 @@ class ServiceProducts {
     })
     return data.id
   }
+
+  async saveProductsFromXml(dataProducts){
+    for(var i = 0; i < dataProducts.length; i++){
+      await api.post('/products', {
+        id: "",
+        nome: dataProducts[i]?.nome[0],
+        valor: dataProducts[i]?.valor[0],
+        valorVenda: 0.0,
+        unidade: dataProducts[i]?.unidade[0],
+        estoque: dataProducts[i]?.estoque[0],
+        descricao: "",
+        codBarras: "",
+        corReferencia: "",
+        estoqueMin: "0"
+      })
+    }
+    
+  }
 }
 
 export default new ServiceProducts

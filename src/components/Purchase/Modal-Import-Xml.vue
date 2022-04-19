@@ -137,8 +137,8 @@ export default {
           return;
         }
 
-        const data = await ServiceProducts.saveProducts(
-          this.objectPurchaseTotal?.products[0]
+        const data = await ServiceProducts.saveProductsFromXml(
+          this.objectPurchaseTotal?.products
         );
 
         this.$emit("idProductsForSelectBox", data);
