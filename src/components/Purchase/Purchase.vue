@@ -247,7 +247,10 @@
             ></b-button>
           </div>
         </div>
-        <ModalImportXml @idSupplierForSelectBox="idSupplier = $event" />
+        <ModalImportXml
+          @idSupplierForSelectBox="idSupplier = $event"
+          @idProductsForSelectBox="idProduct = $event"
+        />
       </div>
     </div>
   </b-card>
@@ -264,6 +267,7 @@ export default {
       productsForSelectBox: [],
       supplierForSelectBox: [],
       idProductForSelectBox: "",
+      idProduct: "",
     };
   },
 
@@ -313,6 +317,10 @@ export default {
     idSupplier() {
       this.getSuppliersForSelectBox();
       this.idSupplierForSelectBox = this.idSupplier;
+    },
+    idProduct() {
+      this.getProductsForSelectBox();
+      this.idProductForSelectBox = this.idProduct;
     },
   },
 };

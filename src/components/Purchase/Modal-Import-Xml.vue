@@ -46,6 +46,7 @@ import api from "../../services/axios";
 import ConvertXml from "../../services/serviceConvertXml";
 import AssigningValuesToTheObject from "../../services/assigningValues​ToTheObject";
 import ServiceSupplier from "../../services/serviceSupplier";
+import ServiceProducts from "../../services/serviceProducts";
 
 // import toastAlertErros from "../../utils/toastAlertErros";
 
@@ -62,6 +63,7 @@ export default {
       const xmlConverted = await this.convertXml();
       await this.returnPurchaseObject(xmlConverted);
       await this.saveSupplier();
+      await this.saveProducts();
     },
 
     async convertXml() {
@@ -86,7 +88,6 @@ export default {
           const { data } = await api.post("/purchasenote", {
             xmlString: xmlConvertedToString,
           });
-
           return data;
         }
       } catch (error) {
@@ -119,10 +120,28 @@ export default {
         if (Object.values(this.objectPurchaseTotal).length === 0) {
           return;
         }
+
         const data = await ServiceSupplier.saveSupllier(
           this.objectPurchaseTotal?.supplier
         );
+
         this.$emit("idSupplierForSelectBox", data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async saveProducts() {
+      try {
+        if (Object.values(this.objectPurchaseTotal).length === 0) {
+          return;
+        }
+
+        const data = await ServiceProducts.saveProducts(
+          this.objectPurchaseTotal?.products[0]
+        );
+
+        this.$emit("idProductsForSelectBox", data);
       } catch (error) {
         console.log(error);
       }

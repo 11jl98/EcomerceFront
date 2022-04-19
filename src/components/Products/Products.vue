@@ -173,6 +173,7 @@
 <script>
 import api from "../../services/axios";
 import toastAlertErros from "../../utils/toastAlertErros";
+import ServiceProducts from "../../services/serviceProducts";
 
 export default {
   props: {
@@ -199,10 +200,9 @@ export default {
 
   methods: {
     saveOrUpdateProducts() {
-      if (this.dataProducts.id == "" || this.dataProducts.id == null)
-        return this.SaveProducts();
-
-      this.updateProducts();
+      this.dataProducts.id === "" || this.dataProducts.id === null
+        ? this.SaveProducts()
+        : this.updateProducts();
     },
 
     async updateProducts() {
@@ -223,8 +223,9 @@ export default {
 
     async SaveProducts() {
       try {
-        const { data } = await api.post("/products", this.dataProducts);
-        this.dataProducts.id = data.id;
+        const id = await ServiceProducts.saveProducts(this.dataProducts);
+        console.log(id, "returrrrrrrn service");
+        this.dataProducts.id = id;
         return this.$toast.open({
           message: "Produto Salvo com Sucesso",
           type: "success",
