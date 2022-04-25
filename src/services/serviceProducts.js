@@ -17,6 +17,11 @@ class ServiceProducts {
     return data.id
   }
 
+  async getProductsForSelectBox(){
+    const { data } = await api.get("/products");
+    return data
+  }
+
   async saveProductsFromXml(dataProducts){
     for(var i = 0; i < dataProducts.length; i++){
       await api.post('/products', {

@@ -26,7 +26,11 @@
 
     <div class="mt-4">
       <b-row class="col-sm-12 d-flex">
-        <b-form-input hidden class="col-sm-1"></b-form-input>
+        <b-form-input
+          hidden
+          v-model="dataPurchase.id"
+          class="col-sm-1"
+        ></b-form-input>
         <b-form-group
           id="input-group-1"
           label="Data Compra"
@@ -38,6 +42,7 @@
             required
             size="sm"
             type="date"
+            v-model="dataPurchase.dataCompra"
           ></b-form-input>
         </b-form-group>
 
@@ -53,6 +58,7 @@
             required
             size="sm"
             type="number"
+            v-model="dataPurchase.numeroNfe"
           ></b-form-input>
         </b-form-group>
 
@@ -68,6 +74,7 @@
             required
             size="sm"
             type="number"
+            v-model="dataPurchase.modeloNfe"
           ></b-form-input>
         </b-form-group>
 
@@ -83,6 +90,7 @@
             required
             size="sm"
             type="number"
+            v-model="dataPurchase.serieNfe"
           ></b-form-input>
         </b-form-group>
 
@@ -96,7 +104,7 @@
           <b-form-select
             text-field="razaoSocial"
             value-field="id"
-            v-model="idSupplierForSelectBox"
+            v-model="dataPurchase.idFornecedor"
             size="sm"
             :options="supplierForSelectBox"
           ></b-form-select>
@@ -178,6 +186,7 @@
                 rows="3"
                 max-rows="6"
                 size="sm"
+                v-model="dataPurchase.dadosAdicionais"
               ></b-form-textarea>
             </b-form-group>
           </b-row>
@@ -239,6 +248,7 @@
                 background-color: #56aafe !important;
               "
               size="sm"
+              @click="savePurchase"
               >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
             ></b-button>
             <b-button variant="light" size="sm"
@@ -257,11 +267,22 @@
 </template>
 
 <script>
-import api from "../../services/axios";
 import ModalImportXml from "./Modal-Import-Xml.vue";
+import ServiceSupplier from "../../services/serviceSupplier";
+import ServiceProducts from "../../services/serviceProducts";
+import ServicePurchase from "../../services/servicePurchase";
 export default {
   data() {
     return {
+      dataPurchase: {
+        id: "",
+        idFornecedor: "",
+        dataCompra: "",
+        numeroNfe: "",
+        modeloNfe: "",
+        serieNfe: "",
+        dadosAdicionais: "",
+      },
       idSupplier: "",
       idSupplierForSelectBox: "",
       productsForSelectBox: [],
@@ -280,10 +301,15 @@ export default {
       console.log(idProductForSelectBox);
     },
 
+    async savePurchase() {
+      const idPurchase = await ServicePurchase.savePurchase(this.dataPurchase);
+      console.log(idPurchase);
+    },
+
     async getProductsForSelectBox() {
       try {
-        const { data } = await api.get("/products");
-        this.productsForSelectBox = data.data;
+        const products = await ServiceProducts.getProductsForSelectBox();
+        this.productsForSelectBox = products.data;
       } catch (error) {
         return this.$toast.open({
           message: "Ocorreu um erro ao listar os produtos!",
@@ -294,8 +320,8 @@ export default {
 
     async getSuppliersForSelectBox() {
       try {
-        const { data } = await api.get("/providers/fill/combobox");
-        this.supplierForSelectBox = data;
+        const suppliers = await ServiceSupplier.getSuppliersForSelectBox();
+        this.supplierForSelectBox = suppliers;
       } catch (error) {
         return this.$toast.open({
           message: "Ocorreu um erro ao listar os Fornecedores!",
@@ -318,6 +344,7 @@ export default {
       this.getSuppliersForSelectBox();
       this.idSupplierForSelectBox = this.idSupplier;
     },
+
     idProduct() {
       this.getProductsForSelectBox();
       this.idProductForSelectBox = this.idProduct;
