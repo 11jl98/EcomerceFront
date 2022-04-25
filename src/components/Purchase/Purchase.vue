@@ -29,7 +29,7 @@
         <b-form-input hidden class="col-sm-1"></b-form-input>
         <b-form-group
           id="input-group-1"
-          label="Data Movimentação"
+          label="Data Compra"
           label-for="input-1"
           class="col-sm-3"
         >
