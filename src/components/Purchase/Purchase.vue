@@ -271,6 +271,7 @@ import ModalImportXml from "./Modal-Import-Xml.vue";
 import ServiceSupplier from "../../services/serviceSupplier";
 import ServiceProducts from "../../services/serviceProducts";
 import ServicePurchase from "../../services/servicePurchase";
+
 export default {
   data() {
     return {
@@ -313,7 +314,7 @@ export default {
       } catch (error) {
         return this.$toast.open({
           message: "Ocorreu um erro ao listar os produtos!",
-          type: "success",
+          type: "error",
         });
       }
     },
@@ -325,7 +326,7 @@ export default {
       } catch (error) {
         return this.$toast.open({
           message: "Ocorreu um erro ao listar os Fornecedores!",
-          type: "success",
+          type: "error",
         });
       }
     },
@@ -341,13 +342,13 @@ export default {
 
   watch: {
     idSupplier() {
-      this.getSuppliersForSelectBox();
       this.idSupplierForSelectBox = this.idSupplier;
+      this.getSuppliersForSelectBox();
     },
 
     idProduct() {
-      this.getProductsForSelectBox();
       this.idProductForSelectBox = this.idProduct;
+      this.getProductsForSelectBox();
     },
   },
 };

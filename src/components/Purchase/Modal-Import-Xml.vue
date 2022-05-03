@@ -42,13 +42,10 @@
 
 <script>
 import api from "../../services/axios";
-// import moment from "moment";
 import ConvertXml from "../../services/serviceConvertXml";
 import AssigningValuesToTheObject from "../../services/assigningValues​ToTheObject";
 import ServiceSupplier from "../../services/serviceSupplier";
 import ServiceProducts from "../../services/serviceProducts";
-
-// import toastAlertErros from "../../utils/toastAlertErros";
 
 export default {
   data() {
@@ -70,7 +67,7 @@ export default {
       try {
         if (this.xmlFile === null) {
           this.$toast.open({
-            message: "Selecione o arquivo XML",
+            message: "Selecione o arquivo XML!",
             type: "warning",
           });
           return null;
@@ -147,7 +144,6 @@ export default {
       }
     },
   },
-  watch: {},
 };
 </script>
 
