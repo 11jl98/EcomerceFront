@@ -348,7 +348,6 @@ export default {
 
     idProduct() {
       this.getProductsForSelectBox();
-      this.idProductForSelectBox = this.idProduct;
     },
   },
 };
