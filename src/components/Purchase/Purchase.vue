@@ -342,13 +342,13 @@ export default {
 
   watch: {
     idSupplier() {
-      this.idSupplierForSelectBox = this.idSupplier;
       this.getSuppliersForSelectBox();
+      this.dataPurchase.idFornecedor = this.idSupplier;
     },
 
     idProduct() {
-      this.idProductForSelectBox = this.idProduct;
       this.getProductsForSelectBox();
+      this.idProductForSelectBox = this.idProduct;
     },
   },
 };
