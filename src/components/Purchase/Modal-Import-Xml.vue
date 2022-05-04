@@ -41,11 +41,13 @@
 </template>
 
 <script>
+import moment from "moment";
 import api from "../../services/axios";
 import ConvertXml from "../../services/serviceConvertXml";
 import AssigningValuesToTheObject from "../../services/assigningValues​ToTheObject";
 import ServiceSupplier from "../../services/serviceSupplier";
 import ServiceProducts from "../../services/serviceProducts";
+import ServicePurchase from "../../services/servicePurchase";
 
 export default {
   data() {
@@ -53,6 +55,7 @@ export default {
       xmlFile: null,
       objectPurchase: null,
       objectPurchaseTotal: {},
+      idPurchase: null,
     };
   },
   methods: {
@@ -61,6 +64,9 @@ export default {
       await this.returnPurchaseObject(xmlConverted);
       await this.saveSupplier();
       await this.saveProducts();
+      this.idPurchase = await ServicePurchase.savePurchase({
+        dataCompra: moment(Date()).format("YYYY-MM-DD"),
+      });
     },
 
     async convertXml() {
