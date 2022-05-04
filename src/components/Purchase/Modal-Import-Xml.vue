@@ -65,7 +65,7 @@ export default {
       await this.saveSupplier();
       await this.saveProducts();
       this.idPurchase = await ServicePurchase.savePurchase({
-        dataCompra: moment(Date()).format("YYYY-MM-DD"),
+        dataCompra: moment().format("YYYY-MM-DD"),
       });
     },
 
