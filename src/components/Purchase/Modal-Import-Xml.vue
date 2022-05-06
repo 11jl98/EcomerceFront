@@ -48,6 +48,7 @@ import AssigningValuesToTheObject from "../../services/assigningValues​ToTheOb
 import ServiceSupplier from "../../services/serviceSupplier";
 import ServiceProducts from "../../services/serviceProducts";
 import ServicePurchase from "../../services/servicePurchase";
+import ServiceProductsOfPurchase from "../../services/serviceProductsOfPurchase";
 
 export default {
   data() {
@@ -58,15 +59,18 @@ export default {
       idPurchase: null,
     };
   },
+
   methods: {
     async converXmlAndReturnObjectAndSave() {
+      if (this.xmlFile.type !== "text/xml") {
+        return;
+      }
       const xmlConverted = await this.convertXml();
       await this.returnPurchaseObject(xmlConverted);
       await this.saveSupplier();
       await this.saveProducts();
-      this.idPurchase = await ServicePurchase.savePurchase({
-        dataCompra: moment().format("YYYY-MM-DD"),
-      });
+      await this.savePurchase();
+      await this.saveProductsOfPurchase();
     },
 
     async convertXml() {
@@ -129,6 +133,11 @@ export default {
         );
 
         this.$emit("idSupplierForSelectBox", data);
+
+        return this.$toast.open({
+          message: "Fornecedor cadastrado com Sucesso",
+          type: "success",
+        });
       } catch (error) {
         console.log(error);
       }
@@ -145,11 +154,38 @@ export default {
         );
 
         this.$emit("idProductsForSelectBox", data);
+
+        return this.$toast.open({
+          message: "Produtos cadastrados com Sucesso",
+          type: "success",
+        });
       } catch (error) {
         console.log(error);
       }
     },
+
+    async savePurchase() {
+      try {
+        this.idPurchase = await ServicePurchase.savePurchase({
+          dataCompra: moment().format("YYYY-MM-DD"),
+        });
+
+        this.$emit("modalIdForPurchase", this.idPurchase);
+
+        return this.$toast.open({
+          message: "Compra salva com Sucesso",
+          type: "success",
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async saveProductsOfPurchase() {
+      await ServiceProductsOfPurchase.save();
+    },
   },
+  watch: {},
 };
 </script>
 

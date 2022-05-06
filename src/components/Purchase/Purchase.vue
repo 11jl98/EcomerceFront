@@ -248,7 +248,7 @@
                 background-color: #56aafe !important;
               "
               size="sm"
-              @click="savePurchase"
+              @click="saveAndUpdate"
               >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
             ></b-button>
             <b-button variant="light" size="sm"
@@ -260,6 +260,7 @@
         <ModalImportXml
           @idSupplierForSelectBox="idSupplier = $event"
           @idProductsForSelectBox="idProduct = $event"
+          @modalIdForPurchase="modalIdForPurchase = $event"
         />
       </div>
     </div>
@@ -290,6 +291,7 @@ export default {
       supplierForSelectBox: [],
       idProductForSelectBox: "",
       idProduct: "",
+      modalIdForPurchase: "",
     };
   },
 
@@ -300,6 +302,12 @@ export default {
   methods: {
     onChange(idProductForSelectBox) {
       console.log(idProductForSelectBox);
+    },
+
+    async saveAndUpdate() {
+      this.dataPurchase.id !== ""
+        ? console.log("atualizando algum dia")
+        : this.savePurchase();
     },
 
     async savePurchase() {
@@ -348,6 +356,10 @@ export default {
 
     idProduct() {
       this.getProductsForSelectBox();
+    },
+
+    modalIdForPurchase() {
+      this.dataPurchase.id = this.modalIdForPurchase.id;
     },
   },
 };
