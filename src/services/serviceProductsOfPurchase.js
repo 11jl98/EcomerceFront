@@ -1,10 +1,9 @@
 import api from "../services/axios";
 
-class ServiceProductsOfPurchase{
-
-  async save(dataProductsPurchase){
-    return await api.post('/productspurchase', dataProductsPurchase)
+class SaveAllPurchase{
+  async save(dataAllPurchase){
+    return await api.post('/save-all-purchase', dataAllPurchase)
   }
 }
 
-export default new ServiceProductsOfPurchase();
+export default new SaveAllPurchase();

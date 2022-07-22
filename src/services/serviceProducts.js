@@ -4,15 +4,15 @@ class ServiceProducts {
   async saveProducts(dataProducts) {
     const { data } = await api.post('/products', {
       id: "",
-      nome: dataProducts?.nome[0],
-      valor: dataProducts?.valor[0],
-      valorVenda: 0.0,
-      unidade: dataProducts?.unidade[0],
-      estoque: dataProducts?.estoque[0],
-      descricao: null,
-      codBarras: null,
-      codReferencia: null,
-      estoqueMin: 0
+      nome: dataProducts?.nome,
+      valor: dataProducts?.valor,
+      valorVenda: dataProducts?.valorVenda,
+      unidade: dataProducts?.unidade,
+      estoque: dataProducts.estoque,
+      descricao: dataProducts.descricao,
+      codBarras: dataProducts.codBarras,
+      codReferencia: dataProducts.codReferencia,
+      estoqueMin: dataProducts.estoqueMin
     })
     return data.id
   }

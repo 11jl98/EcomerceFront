@@ -192,12 +192,11 @@ export default {
         descricao: "",
         codBarras: "",
         codReferencia: "",
-        estoque: "0",
-        estoqueMin: "0",
+        estoque: 0,
+        estoqueMin: 0,
       },
     };
   },
-
   methods: {
     saveOrUpdateProducts() {
       this.dataProducts.id === "" || this.dataProducts.id === null
@@ -224,7 +223,6 @@ export default {
     async SaveProducts() {
       try {
         const id = await ServiceProducts.saveProducts(this.dataProducts);
-        console.log(id, "returrrrrrrn service");
         this.dataProducts.id = id;
         return this.$toast.open({
           message: "Produto Salvo com Sucesso",

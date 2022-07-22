@@ -67,10 +67,10 @@ export default {
       }
       const xmlConverted = await this.convertXml();
       await this.returnPurchaseObject(xmlConverted);
-      await this.saveSupplier();
-      await this.saveProducts();
-      await this.savePurchase();
-      await this.saveProductsOfPurchase();
+      // await this.saveSupplier();
+      // await this.saveProducts();
+      // await this.savePurchase();
+      await this.saveAllPurchase();
     },
 
     async convertXml() {
@@ -181,8 +181,12 @@ export default {
       }
     },
 
-    async saveProductsOfPurchase() {
-      await ServiceProductsOfPurchase.save();
+    async saveAllPurchase() {
+      console.log(this.objectPurchaseTotal, "testeeeeeeeee");
+      const { data } = await ServiceProductsOfPurchase.save(
+        this.objectPurchaseTotal
+      );
+      return data;
     },
   },
   watch: {},
