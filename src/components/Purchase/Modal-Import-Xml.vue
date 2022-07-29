@@ -119,14 +119,11 @@ export default {
     },
 
     async saveAllPurchase() {
-      if (Object.values(this.objectPurchaseTotal).length === 0) {
-        return;
-      }
-      await this.saveAllData();
-    },
-
-    async saveAllData() {
       try {
+        if (Object.values(this.objectPurchaseTotal).length === 0) {
+          return;
+        }
+
         const dataAllPurchase = {
           products: this.objectPurchaseTotal.products,
           supplier: this.objectPurchaseTotal?.supplier,
@@ -135,6 +132,7 @@ export default {
 
         const data = await ServiceProductsOfPurchase.save(dataAllPurchase);
         this.$emit("idProductsForSelectBox", data);
+        
       } catch (error) {
         console.log(error);
       }
