@@ -45,9 +45,8 @@ import moment from "moment";
 import api from "../../services/axios";
 import ConvertXml from "../../services/serviceConvertXml";
 import AssigningValuesToTheObject from "../../services/assigningValues​ToTheObject";
-import ServiceSupplier from "../../services/serviceSupplier";
-import ServiceProducts from "../../services/serviceProducts";
-import ServicePurchase from "../../services/servicePurchase";
+// import ServiceSupplier from "../../services/serviceSupplier";
+// import ServicePurchase from "../../services/servicePurchase";
 import ServiceProductsOfPurchase from "../../services/serviceProductsOfPurchase";
 
 export default {
@@ -67,9 +66,6 @@ export default {
       }
       const xmlConverted = await this.convertXml();
       await this.returnPurchaseObject(xmlConverted);
-      // await this.saveSupplier();
-      // await this.saveProducts();
-      // await this.savePurchase();
       await this.saveAllPurchase();
     },
 
@@ -122,72 +118,86 @@ export default {
         AssigningValuesToTheObject.assigningValues(objectPurchase);
     },
 
-    async saveSupplier() {
-      try {
-        if (Object.values(this.objectPurchaseTotal).length === 0) {
-          return;
-        }
-
-        const data = await ServiceSupplier.saveSupllier(
-          this.objectPurchaseTotal?.supplier
-        );
-
-        this.$emit("idSupplierForSelectBox", data);
-
-        return this.$toast.open({
-          message: "Fornecedor cadastrado com Sucesso",
-          type: "success",
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    async saveProducts() {
-      try {
-        if (Object.values(this.objectPurchaseTotal).length === 0) {
-          return;
-        }
-
-        const data = await ServiceProducts.saveProductsFromXml(
-          this.objectPurchaseTotal?.products
-        );
-
-        this.$emit("idProductsForSelectBox", data);
-
-        return this.$toast.open({
-          message: "Produtos cadastrados com Sucesso",
-          type: "success",
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    async savePurchase() {
-      try {
-        this.idPurchase = await ServicePurchase.savePurchase({
-          dataCompra: moment().format("YYYY-MM-DD"),
-        });
-
-        this.$emit("modalIdForPurchase", this.idPurchase);
-
-        return this.$toast.open({
-          message: "Compra salva com Sucesso",
-          type: "success",
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
     async saveAllPurchase() {
-      console.log(this.objectPurchaseTotal, "testeeeeeeeee");
-      const { data } = await ServiceProductsOfPurchase.save(
-        this.objectPurchaseTotal
-      );
-      return data;
+      if (Object.values(this.objectPurchaseTotal).length === 0) {
+        return;
+      }
+      await this.saveAllData();
     },
+
+    async saveAllData() {
+      try {
+        const dataAllPurchase = {
+          products: this.objectPurchaseTotal.products,
+          supplier: this.objectPurchaseTotal?.supplier,
+          purchase: moment().format("YYYY-MM-DD"),
+        };
+
+        const data = await ServiceProductsOfPurchase.save(dataAllPurchase);
+        this.$emit("idProductsForSelectBox", data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    // async saveSupplier() {
+    //   try {
+    //     if (Object.values(this.objectPurchaseTotal).length === 0) {
+    //       return;
+    //     }
+
+    //     const data = await ServiceSupplier.saveSupllier(
+    //       this.objectPurchaseTotal?.supplier
+    //     );
+
+    //     this.$emit("idSupplierForSelectBox", data);
+
+    //     return this.$toast.open({
+    //       message: "Fornecedor cadastrado com Sucesso",
+    //       type: "success",
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
+
+    // async saveProducts() {
+    //   try {
+    //     if (Object.values(this.objectPurchaseTotal).length === 0) {
+    //       return;
+    //     }
+
+    //     const { data } = await ServiceProductsOfPurchase.save(
+    //       this.objectPurchaseTotal.products
+    //     );
+
+    //     this.$emit("idProductsForSelectBox", data);
+
+    //     return this.$toast.open({
+    //       message: "Produtos cadastrados com Sucesso",
+    //       type: "success",
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
+
+    // async savePurchase() {
+    //   try {
+    //     this.idPurchase = await ServicePurchase.savePurchase({
+    //       dataCompra: moment().format("YYYY-MM-DD"),
+    //     });
+
+    //     this.$emit("modalIdForPurchase", this.idPurchase);
+
+    //     return this.$toast.open({
+    //       message: "Compra salva com Sucesso",
+    //       type: "success",
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
   },
   watch: {},
 };

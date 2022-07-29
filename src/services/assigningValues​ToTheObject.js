@@ -20,11 +20,12 @@ class AssigningValuesToTheObject {
     supplierTotal.products = object.produtos.map((e) => {
       return {
         id: "",
-        nome: e.prod[0].xProd,
-        valor: e.prod[0].vProd,
+        nome: e.prod[0].xProd[0],
+        valor: e.prod[0].vProd[0],
         valorVenda: 0.0,
-        unidade: e.prod[0].uTrib,
-        estoque: e.prod[0].qCom,
+        unidade: e.prod[0].uTrib[0],
+        estoque: e.prod[0].qCom[0],
+        estoqueMin: 0
       };
     });
 
