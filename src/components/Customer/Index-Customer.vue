@@ -10,7 +10,7 @@
         <b-tabs card v-model="tabIndex">
           <b-tab title="Cadastro de clientes">
             <b-card-text>
-              <Customer :readOrEditCustomers="readOrEditCustomers" />
+              <Customer :readOrEditCustomers="readOrEditCustomers" :clearAll="clearAll" />
             </b-card-text>
           </b-tab>
           <b-tab title="Pesquisa">
@@ -18,6 +18,7 @@
               <Search
                 @readOrEditCustomers="readOrEditCustomers = $event"
                 @alterTabIndex="tabIndex = $event"
+                @clearAll="clearAll = $event"
             /></b-card-text>
           </b-tab>
         </b-tabs>
@@ -40,6 +41,7 @@ export default {
     return {
       readOrEditCustomers: {},
       tabIndex: 1,
+      clearAll: "",
     };
   },
   computed: {

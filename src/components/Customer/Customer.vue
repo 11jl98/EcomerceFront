@@ -256,6 +256,9 @@ export default {
     readOrEditCustomers: {
       type: Object,
     },
+    clearAll: {
+      type: Boolean,
+    },
   },
   data() {
     return {
@@ -338,6 +341,9 @@ export default {
   watch: {
     readOrEditCustomers() {
       Object.assign(this.dataCostumer, this.readOrEditCustomers);
+    },
+    clearAll() {
+      this.clearInputs();
     },
   },
   computed: {

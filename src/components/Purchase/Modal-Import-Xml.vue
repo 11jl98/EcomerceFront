@@ -41,13 +41,12 @@
 </template>
 
 <script>
-import moment from "moment";
 import api from "../../services/axios";
 import ConvertXml from "../../services/serviceConvertXml";
 import AssigningValuesToTheObject from "../../services/assigningValues​ToTheObject";
 // import ServiceSupplier from "../../services/serviceSupplier";
 // import ServicePurchase from "../../services/servicePurchase";
-import ServiceProductsOfPurchase from "../../services/serviceProductsOfPurchase";
+import ServiceImportMovimentPurchase from "../../services/serviceImportMovimentPurchase";
 
 export default {
   data() {
@@ -55,7 +54,6 @@ export default {
       xmlFile: null,
       objectPurchase: null,
       objectPurchaseTotal: {},
-      idPurchase: null,
     };
   },
 
@@ -67,6 +65,10 @@ export default {
       const xmlConverted = await this.convertXml();
       await this.returnPurchaseObject(xmlConverted);
       await this.saveAllPurchase();
+      return this.$toast.open({
+        message: "Importado com sucesso!",
+        type: "success",
+      });
     },
 
     async convertXml() {
@@ -127,12 +129,15 @@ export default {
         const dataAllPurchase = {
           products: this.objectPurchaseTotal.products,
           supplier: this.objectPurchaseTotal?.supplier,
-          purchase: moment().format("YYYY-MM-DD"),
+          purchase: this.objectPurchaseTotal?.purchase,
         };
 
-        const data = await ServiceProductsOfPurchase.save(dataAllPurchase);
-        this.$emit("idProductsForSelectBox", data);
-        
+        const { data } = await ServiceImportMovimentPurchase.save(
+          dataAllPurchase
+        );
+        this.$emit("idProductsForSelectBox", data.idProduct);
+        this.$emit("idSupplierForSelectBox", data.idProvider);
+        this.$emit("modalIdForPurchase", data.idPurchase);
       } catch (error) {
         console.log(error);
       }
@@ -201,5 +206,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -20,11 +20,13 @@ class ConvertXml {
     
       const objectPurchase = {
         fornecedor: {},
-        produtos: {}
+        produtos: {},
+        purchase: {}
       }
 
       objectPurchase.fornecedor = object.data.nfeProc.NFe[0].infNFe[0].emit
       objectPurchase.produtos = object.data.nfeProc.NFe[0].infNFe[0].det
+      objectPurchase.purchase = object.data.nfeProc.NFe[0].infNFe[0].ide
       return objectPurchase
     
   }
