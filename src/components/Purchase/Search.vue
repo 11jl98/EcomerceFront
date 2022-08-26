@@ -110,7 +110,7 @@
                     size="sm"
                     variant="secondary"
                     style="border: none !important"
-                    @click="deletProducts(dataPurchase.id)"
+                    @click="openModalDeletePurchase(dataPurchase.id)"
                     v-b-popover.hover.right="{
                       variant: 'secondary',
                       content: 'Excluir',
@@ -152,6 +152,16 @@
         </b-button>
       </b-card>
     </b-collapse>
+    <b-modal id="modalConfirmDeletePurchase">
+      <h3>Deseja realmente deletar ?</h3>
+
+      <template #modal-footer="{ cancel }">
+        <b-button size="sm" variant="danger" @click="deleteAll">
+          Deletar
+        </b-button>
+        <b-button size="sm" variant="info" @click="cancel()"> Fechar </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -174,6 +184,7 @@ export default {
       tabIndex: 0,
       page: 1,
       dataLength: 0,
+      idPurchaseFromModal: null,
     };
   },
   methods: {
@@ -197,10 +208,38 @@ export default {
       }
     },
 
-    async deletProducts(id) {
-      await servicePurchase.delete(id);
-      this.getProductsForGrid();
-      console.log("1313");
+    async openModalDeletePurchase(id) {
+      this.$bvModal.show("modalConfirmDeletePurchase");
+      this.idPurchaseFromModal = id;
+    },
+
+    async deleteAll() {
+      try {
+        await servicePurchase.deleteAll(this.idPurchaseFromModal);
+        this.filterPurchase();
+        this.idPurchaseFromModal = null;
+        this.$bvModal.hide("modalConfirmDeletePurchase");
+        return this.$toast.open({
+          message: "Deletado com sucesso!",
+          type: "success",
+        });
+      } catch (error) {
+        return this.$toast.open({
+          message: `${error.response}`,
+          type: "error",
+        });
+      }
+    },
+
+    async editPurchase(id) {
+      try {
+        const data = await servicePurchase.findPurchaseById(id);
+        this.$emit("editPurchase", data);
+        this.$root.$emit("bv::toggle::collapse", "accordion-dadosCadastrais");
+        this.$emit("alterTabIndex", this.tabIndex);
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     nextPage() {

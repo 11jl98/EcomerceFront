@@ -10,11 +10,15 @@
         <b-tabs card v-model="tabIndex">
           <b-tab title="Nota de compra">
             <b-card-text>
-              <Purchase />
+              <Purchase :dataEditPurchase="dataPurchase" />
             </b-card-text>
           </b-tab>
           <b-tab title="Pesquisa">
-            <b-card-text> <Search /></b-card-text>
+            <b-card-text>
+              <Search
+                @editPurchase="dataPurchase = $event"
+                @alterTabIndex="tabIndex = $event"
+            /></b-card-text>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -36,6 +40,7 @@ export default {
     return {
       readOrEditCustomers: {},
       tabIndex: 1,
+      dataPurchase: {},
     };
   },
   computed: {

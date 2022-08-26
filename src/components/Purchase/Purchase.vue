@@ -211,7 +211,7 @@
                       style="align"
                       size="sm"
                       variant="secondary"
-                      @click="deletPurchase(item.id)"
+                      @click="deleteMovimentPurchase(item.id)"
                       v-b-popover.hover.right="{
                         variant: 'secondary',
                         content: 'Excluir',
@@ -267,6 +267,11 @@ import ServiceProductsPurchase from "../../services/serviceProductsPurchase";
 import servicePurchase from "../../services/servicePurchase";
 
 export default {
+  props: {
+    dataEditPurchase: {
+      type: Object,
+    },
+  },
   data() {
     return {
       dataPurchase: {
@@ -323,7 +328,6 @@ export default {
           type: "success",
         });
       } catch (error) {
-        console.log("aaaooieo");
         return this.$toast.open({
           message: `${error.response}`,
           type: "error",
@@ -337,13 +341,11 @@ export default {
           this.dataPurchase.id,
           this.dataPurchase
         );
-        console.log(this.dataPurchase.id, "123123");
 
         this.$toast.open({
           message: "Atualizado com sucesso!",
           type: "info",
         });
-        console.log("nesse lugar");
         return data;
       } catch (error) {
         console.log(error.response.data.message);
@@ -437,11 +439,20 @@ export default {
       );
     },
 
-    async deletPurchase(id) {
-    console.log(id, '99')
-
-      // await servicePurchase.delete(id);
-      // this.getProductsForGrid();
+    async deleteMovimentPurchase(id) {
+      try {
+        await ServiceProductsPurchase.delete(id);
+        this.getProductsForGrid();
+        return this.$toast.open({
+          message: "Produto Excluido",
+          type: "success",
+        });
+      } catch (error) {
+        return this.$toast.open({
+          message: "Opa, deu erro!",
+          type: "error",
+        });
+      }
     },
   },
 
@@ -462,6 +473,10 @@ export default {
 
     modalIdForPurchase() {
       this.dataPurchase.id = this.modalIdForPurchase.id;
+    },
+    async dataEditPurchase() {
+      Object.assign(this.dataPurchase, this.dataEditPurchase);
+      await this.getProductsForGrid();
     },
   },
 };

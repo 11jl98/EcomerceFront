@@ -6,7 +6,7 @@ class ServiceProductsPurchase{
   }
 
   async delete(idProduct){
-    await api.delete(`/moviment-purchase/${idProduct}`)
+    await api.delete(`/moviment-purchase/deleteProductsMoviment/${idProduct}`)
   }
 
 }

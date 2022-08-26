@@ -19,16 +19,19 @@ class ServicePurchase {
     const { data } = await api.get(
       `/purchase/search?q=${textPesquisa}&type=${type}&page=${page}&startDate=${startDate}&endDate=${endDate}`
     );
-    console.log(data)
 
-    return data 
+    return data
   }
 
-  async delete(id){
-    await api.delete(`purchase/${id}`)
-    console.log("oioi")
+  async deleteAll(id){
+    const {data} = await api.delete(`/moviment-purchase/${id}`)
+    return data
   }
 
+  async findPurchaseById(id){
+    const {data} = await api.get(`purchase/edit/purchase/${id}`)
+    return data.data
+  }
 }
 
 export default new ServicePurchase()
