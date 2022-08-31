@@ -10,6 +10,7 @@ import Sale from "../src/pages/Sale/Page-Sale.vue";
 import Financial from "../src/pages/Financial/Page-Financial.vue";
 import Safe from "../src/pages/Safe/Page-Safe.vue";
 import Purchase from "../src/pages/Purchase/Page-Purchase.vue"
+import NotaFiscal from "../src/pages/NotaFiscal/Page-NotaFiscal.vue"
 
 
 Vue.use(Router);
@@ -55,7 +56,10 @@ const routes = [
   {
     path: "/compras",
     component: Purchase,
-    Purchase
+  },
+  {
+    path: "/notafiscal",
+    component: NotaFiscal,
   },
 ];
 
