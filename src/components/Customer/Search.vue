@@ -126,6 +126,7 @@ export default {
       tabIndex: 0,
       page: 1,
       dataLength: 0,
+      boolClear: false,
     };
   },
   methods: {
@@ -168,6 +169,8 @@ export default {
       try {
         await api.delete(`/customers/${idCustomer}`);
         this.readCustomers(this.page);
+        this.$emit("clearAll", this.boolClear);
+        this.boolClear = !this.boolClear;
         return this.$toast.open({
           message: "Cliente excluido com sucesso",
           type: "success",

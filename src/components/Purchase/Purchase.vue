@@ -1,27 +1,7 @@
 <template>
   <b-card class="shadow">
     <h3>Compra de mercadorias</h3>
-    <div>
-      <b-row class="col-sm-12 d-flex justify-content-end">
-        <div>
-          <div>
-            <b-button
-              class="mr-4"
-              style="
-                border: none !important;
-                background-color: black !important;
-              "
-              size="sm"
-              @click="openModalImportXml"
-              >Importar XML
-              <b-icon-file-earmark-arrow-down
-                class="ml-1"
-              ></b-icon-file-earmark-arrow-down
-            ></b-button>
-          </div>
-        </div>
-      </b-row>
-    </div>
+
     <hr />
 
     <div class="mt-4">
@@ -142,6 +122,7 @@
                 type="number"
                 size="sm"
                 required
+                v-model="dataPurchase.quantidade"
               ></b-form-input>
             </b-form-group>
 
@@ -156,6 +137,7 @@
                 placeholder="Valor unitario"
                 size="sm"
                 type="number"
+                v-model="dataPurchase.valorUnitario"
               ></b-form-input>
             </b-form-group>
 
@@ -174,7 +156,6 @@
                 type="number"
               ></b-form-input>
             </b-form-group>
-
             <b-form-group
               id="input-group-1"
               label="Descrição"
@@ -188,6 +169,14 @@
                 size="sm"
                 v-model="dataPurchase.dadosAdicionais"
               ></b-form-textarea>
+              <b-button
+                variant="info"
+                size="sm"
+                @click="addProduct"
+                class="mt-3"
+              >
+                Adicionar Produto <b-icon-plus class="ml-1"></b-icon-plus
+              ></b-button>
             </b-form-group>
           </b-row>
         </b-col>
@@ -203,26 +192,26 @@
                   <th>Vl. total</th>
                   <th>Ações</th>
                 </tr>
-                <tr>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
-                  <td class="tdSearchPurchase">TESTE</td>
+                <tr v-for="item in productsListGrid" :key="item.id">
+                  <td class="tdSearchPurchase">
+                    {{ item.nome }}
+                  </td>
+                  <td class="tdSearchPurchase">
+                    {{ item.quantidade }}
+                  </td>
+                  <td class="tdSearchPurchase">
+                    {{ item.valorUnitario }}
+                  </td>
+                  <td class="tdSearchPurchase">
+                    {{ item.valorUnitario * item.quantidade }}
+                  </td>
                   <td>
                     <b-button
-                      size="sm"
-                      class="mr-2"
-                      variant="info"
-                      v-b-popover.hover.left="{
-                        variant: 'info',
-                        content: 'Editar',
-                      }"
-                    >
-                      <b-icon-check scale="2"></b-icon-check>
-                    </b-button>
-                    <b-button
+                      class="mr-4"
+                      style="align"
                       size="sm"
                       variant="secondary"
+                      @click="deleteMovimentPurchase(item.id)"
                       v-b-popover.hover.right="{
                         variant: 'secondary',
                         content: 'Excluir',
@@ -240,22 +229,24 @@
 
       <div>
         <div class="d-flex justify-content-end">
-          <div>
-            <b-button
-              class="mr-4"
-              style="
-                border: none !important;
-                background-color: #56aafe !important;
-              "
+          <div class="mr-4">
+            <b-dropdown
+              id="dropdown-1"
+              text="Salvar / Importar XML"
+              class="m-md-2 mr-4"
+              variant="info"
               size="sm"
-              @click="saveAndUpdate"
-              >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
-            ></b-button>
-            <b-button variant="light" size="sm"
-              >Novo
-              <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
-            ></b-button>
+            >
+              <b-dropdown-item @click="saveAndUpdate">Salvar</b-dropdown-item>
+              <b-dropdown-divider></b-dropdown-divider>
+              <b-dropdown-item @click="openModalImportXml"
+                >Importar XML</b-dropdown-item
+              >
+            </b-dropdown>
           </div>
+          <b-button variant="light" size="sm" @click="clearInputs"
+            >Novo <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
+          ></b-button>
         </div>
         <ModalImportXml
           @idSupplierForSelectBox="idSupplier = $event"
@@ -272,8 +263,15 @@ import ModalImportXml from "./Modal-Import-Xml.vue";
 import ServiceSupplier from "../../services/serviceSupplier";
 import ServiceProducts from "../../services/serviceProducts";
 import ServicePurchase from "../../services/servicePurchase";
+import ServiceProductsPurchase from "../../services/serviceProductsPurchase";
+import servicePurchase from "../../services/servicePurchase";
 
 export default {
+  props: {
+    dataEditPurchase: {
+      type: Object,
+    },
+  },
   data() {
     return {
       dataPurchase: {
@@ -283,7 +281,9 @@ export default {
         numeroNfe: "",
         modeloNfe: "",
         serieNfe: "",
-        dadosAdicionais: "",
+        dadosAdicionais: null,
+        quantidade: "",
+        valorUnitario: "",
       },
       idSupplier: "",
       idSupplierForSelectBox: "",
@@ -292,6 +292,17 @@ export default {
       idProductForSelectBox: "",
       idProduct: "",
       modalIdForPurchase: "",
+
+      addProdutos: {
+        id: "",
+        idEmpresa: "",
+        idProduto: "",
+        nomeProduto: "",
+        idCompra: "",
+        quantidade: "",
+        valorUnitario: "",
+      },
+      productsListGrid: [],
     };
   },
 
@@ -305,14 +316,44 @@ export default {
     },
 
     async saveAndUpdate() {
-      this.dataPurchase.id !== ""
-        ? console.log("atualizando algum dia")
-        : this.savePurchase();
+      this.dataPurchase.id !== "" ? this.updatePurchase() : this.savePurchase();
     },
 
     async savePurchase() {
-      const idPurchase = await ServicePurchase.savePurchase(this.dataPurchase);
-      console.log(idPurchase);
+      try {
+        const { id } = await ServicePurchase.savePurchase(this.dataPurchase);
+        this.dataPurchase.id = id;
+        return this.$toast.open({
+          message: "Salvo com sucesso!",
+          type: "success",
+        });
+      } catch (error) {
+        return this.$toast.open({
+          message: `${error.response}`,
+          type: "error",
+        });
+      }
+    },
+
+    async updatePurchase() {
+      try {
+        const { data } = await servicePurchase.updatePurchase(
+          this.dataPurchase.id,
+          this.dataPurchase
+        );
+
+        this.$toast.open({
+          message: "Atualizado com sucesso!",
+          type: "info",
+        });
+        return data;
+      } catch (error) {
+        console.log(error.response.data.message);
+        return this.$toast.open({
+          message: `${error.response.data.message}`,
+          type: "warning",
+        });
+      }
     },
 
     async getProductsForSelectBox() {
@@ -341,6 +382,78 @@ export default {
     openModalImportXml() {
       this.$bvModal.show("modalImportXml");
     },
+
+    clearInputs() {
+      this.dataPurchase.id = "";
+      this.dataPurchase.idFornecedor = "";
+      this.dataPurchase.dataCompra = "";
+      this.dataPurchase.numeroNfe = "";
+      this.dataPurchase.modeloNfe = "";
+      this.dataPurchase.serieNfe = "";
+
+      this.idProductForSelectBox = "";
+      this.dataPurchase.quantidade = "";
+      this.dataPurchase.valorUnitario = "";
+
+      this.dataPurchase.dadosAdicionais = "";
+
+      this.productsListGrid = "";
+    },
+
+    clearProducts() {
+      this.idProductForSelectBox = "";
+      this.dataPurchase.valorUnitario = "";
+      this.dataPurchase.quantidade = "";
+      this.dataPurchase.dadosAdicionais = "";
+    },
+
+    async addProduct() {
+      try {
+        this.addProdutos.idCompra = this.dataPurchase.id;
+        this.addProdutos.idProduto = this.idProductForSelectBox;
+        this.addProdutos.valorUnitario = this.dataPurchase.valorUnitario;
+        this.addProdutos.quantidade = this.dataPurchase.quantidade;
+
+        if (this.dataPurchase.id == "") {
+          return this.$toast.open({
+            message: "Salve a compra antes de adicionar o produto",
+            type: "error",
+          });
+        } else {
+          await ServiceProductsPurchase.save(this.addProdutos);
+          await this.getProductsForGrid();
+          this.clearProducts();
+        }
+        this.clearProducts();
+      } catch (error) {
+        return this.$toast.open({
+          message: "Opa, deu erro!",
+          type: "error",
+        });
+      }
+    },
+
+    async getProductsForGrid() {
+      this.productsListGrid = await servicePurchase.getProductsForGrid(
+        this.dataPurchase.id
+      );
+    },
+
+    async deleteMovimentPurchase(id) {
+      try {
+        await ServiceProductsPurchase.delete(id);
+        this.getProductsForGrid();
+        return this.$toast.open({
+          message: "Produto Excluido",
+          type: "success",
+        });
+      } catch (error) {
+        return this.$toast.open({
+          message: "Opa, deu erro!",
+          type: "error",
+        });
+      }
+    },
   },
 
   mounted() {
@@ -360,6 +473,10 @@ export default {
 
     modalIdForPurchase() {
       this.dataPurchase.id = this.modalIdForPurchase.id;
+    },
+    async dataEditPurchase() {
+      Object.assign(this.dataPurchase, this.dataEditPurchase);
+      await this.getProductsForGrid();
     },
   },
 };

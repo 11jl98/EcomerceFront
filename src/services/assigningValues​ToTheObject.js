@@ -1,3 +1,4 @@
+import moment from "moment";
 class AssigningValuesToTheObject {
   assigningValues(object) {
     const supplierTotal = {
@@ -14,7 +15,18 @@ class AssigningValuesToTheObject {
         uf: object.fornecedor[0].enderEmit[0].UF[0],
         telefone: object.fornecedor[0].enderEmit[0].fone[0],
       },
-      products: []
+      products: [],
+      purchase: {
+        id: "",
+        idEmpresa: "",
+        idFornecedor: "",
+        dataCompra: moment().format("YYYY-MM-DD"),
+        numeroNfe: object.purchase[0].nNF[0],
+        modeloNfe: object.purchase[0].mod[0],
+        serieNfe: object.purchase[0].serie[0],
+        dadosAdicionais: null,
+      }
+
     }
 
     supplierTotal.products = object.produtos.map((e) => {
@@ -28,7 +40,6 @@ class AssigningValuesToTheObject {
         estoqueMin: 0
       };
     });
-
     return supplierTotal
   }
 }
