@@ -38,9 +38,8 @@
                       :aria-describedby="ariaDescribedby"
                       name="checado"
                       value="Venda"
-                      disabled
                       unchecked-value="Orçamento"
-                      class="chkVendaOrçamento"
+                      class="chkVendaOrcamento"
                       v-model="dataSale.status"
                       size="sm"
                       switch
@@ -1151,7 +1150,7 @@ export default {
   padding-left: 15px !important;
 }
 
-.chkVendaOrçamento {
+.chkVendaOrcamento {
   margin-top: 18px;
 }
 
