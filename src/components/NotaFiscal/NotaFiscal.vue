@@ -1,60 +1,166 @@
 <template>
   <div class="containerGeralNfe">
-    <div class="conteudoBotaoEmail">
-      <b-button variant="info" size="sm">Envio de E-mail</b-button>
-    </div>
-    <b-row>
-      <div
-        class="
-          col-sm-12 col-md-12 col-lg-12 col-lg-12
-          d-flex
-          justify-content-between
-          contentDtEmissTipoEmiss
-        "
-      >
-        <div>
-          <b-form-group
-            id="input-group-1"
-            label="Data da Emissão"
-            label-for="input-1"
-            class="col-sm-12"
-            size="sm"
-          >
-            <b-form-input
-              value-field="id"
-              text-field="nome"
-              v-model="dataNfe.dataEmissao"
-              type="date"
-              size="sm"
-            ></b-form-input>
-          </b-form-group>
-        </div>
+    <b-row
+      class="conteudoBotaoEmail mt-2 col-sm-12 col-md-12 col-lg-12 col-xl-12"
+    >
+      <b-form-group>
+        <b-button variant="info" size="sm">Envio de E-mail</b-button>
+      </b-form-group>
 
-        <div class="mr-2 containerCheckBox">
-          <b-form-group v-slot="{ ariaDescribedby }">
-            <b-form-checkbox
-              :aria-describedby="ariaDescribedby"
-              value="Entrada"
-              unchecked-value="Saída"
-              class="chkSaidaEntrada"
-              v-model="dataNfe.typeEmiss"
-              size="sm"
-              switch
-            >
-              <div style="width: 115px">
-                {{ dataNfe.typeEmiss.toUpperCase() }}
-              </div>
-            </b-form-checkbox>
-          </b-form-group>
-        </div>
+      <div class="containerCheckBox">
+        <b-form-group v-slot="{ ariaDescribedby }">
+          <b-form-checkbox
+            :aria-describedby="ariaDescribedby"
+            value="Entrada"
+            unchecked-value="Saída"
+            class="chkSaidaEntrada"
+            v-model="dataNfe.typeEmiss"
+            size="sm"
+            switch
+          >
+            <div style="width: 90px">
+              {{ dataNfe.typeEmiss.toUpperCase() }}
+            </div>
+          </b-form-checkbox>
+        </b-form-group>
       </div>
     </b-row>
+
+    <b-row
+      class="
+        col-sm-12 col-md-12 col-lg-12 col-xl-12
+        d-flex
+        mt-3
+        contentDataNfeRow
+      "
+    >
+      <b-form-group
+        id="input-group-1"
+        label="Cliente"
+        label-for="input-1"
+        class="col-sm-7 col-md-6 col-lg-6 col-xl-3"
+        size="sm"
+      >
+        <b-form-select
+          size="sm"
+          v-model="dataNfe.selectedFinalityNfe"
+          :options="finalityNfe"
+        ></b-form-select>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-1"
+        label="Data Emissão"
+        label-for="input-1"
+        class="col-sm-5 col-md-3 col-lg-3 col-xl-2"
+        size="sm"
+      >
+        <b-form-input
+          text-field="nome"
+          v-model="dataNfe.dataEmissao"
+          type="date"
+          size="sm"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-1"
+        label="Data Saída"
+        label-for="input-1"
+        class="col-sm-5 col-md-3 col-lg-3 col-xl-2"
+        size="sm"
+      >
+        <b-form-input
+          text-field="nome"
+          v-model="dataNfe.dataEmissao"
+          type="date"
+          size="sm"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-1"
+        label="Natureza operação"
+        label-for="input-1"
+        class="col-sm-7 col-md-5 col-lg-5 col-xl-3"
+        size="sm"
+      >
+        <b-form-input disabled type="text" size="sm"></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-1"
+        label="Finalidade NFe"
+        label-for="input-1"
+        class="col-sm-6 col-md-3 col-lg-3 col-xl-2"
+        size="sm"
+      >
+        <b-form-select
+          size="sm"
+          value-field="value"
+          text-field="text"
+          v-model="dataNfe.selectedFinalityNfe"
+          :options="finalityNfe"
+        ></b-form-select>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-1"
+        label="Nº NFe"
+        label-for="input-1"
+        class="col-sm-3 col-md-2 col-lg-2 col-xl-2"
+        size="sm"
+      >
+        <b-form-input disabled type="text" size="sm"></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-1"
+        label="Serie"
+        label-for="input-1"
+        class="col-sm-3 col-md-2 col-lg-2 col-xl-1"
+        size="sm"
+      >
+        <b-form-input disabled type="text" size="sm"></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-1"
+        label="Chave NFe"
+        label-for="input-1"
+        class="col-sm-12 col-md-6 col-lg-6 col-xl-5"
+        size="sm"
+      >
+        <b-form-input disabled type="text" size="sm"></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-1"
+        label="Recibo"
+        label-for="input-1"
+        class="col-sm-6 col-md-3 col-lg-3 col-xl-2"
+        size="sm"
+      >
+        <b-form-input disabled type="text" size="sm"></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-1"
+        label="Status"
+        label-for="input-1"
+        class="col-sm-6 col-md-3 col-lg-3 col-xl-2"
+        size="sm"
+      >
+        <b-form-input disabled type="text" size="sm"></b-form-input>
+      </b-form-group>
+    </b-row>
+
     <b-card-text class="mt-3">
       <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <b-navbar toggleable class="cardDadosNfe">
           <b-navbar-toggle
-            target="navbar-toggle-collapse"
-            id="dadosVendaStyle"
+            target="navbar-toggle-collapse-transportadora"
+            id="dadosNfeStyle"
             class="tamanhoCards"
           >
             <template #default="{ expanded }">
@@ -68,13 +174,101 @@
                   <b-icon v-else icon="plus-square-fill" variant="info">
                   </b-icon>
                 </div>
-                <div style="margin-left: 10px">Dados do produto</div>
+                <div style="margin-left: 10px">Dados Transportadora</div>
               </div>
             </template>
           </b-navbar-toggle>
 
           <b-collapse
-            id="navbar-toggle-collapse"
+            id="navbar-toggle-collapse-transportadora"
+            class="col-md-12 col-sm-12 col-lg-12 col-xl-12"
+            is-nav
+          >
+            <b-navbar-nav class="ml-auto">
+              <b-card class="mt-2 cardDadosNfeBorda">
+                <b-row
+                  class="
+                    col-sm-12 col-md-12 col-lg-12 col-xl-12
+                    conteudoDadosNfe
+                    d-flex
+                  "
+                >
+                  <b-form-group
+                    id="input-group-1"
+                    label="Modalidade Frete"
+                    label-for="input-1"
+                    class="col-sm-6 col-md-3 col-lg-3 col-xl-3"
+                    size="sm"
+                  >
+                    <b-form-select
+                      value-field="value"
+                      text-field="text"
+                      @change="enableFreightage"
+                      size="sm"
+                      v-model="dataNfe.selectedModalityFrete"
+                      :options="modality"
+                    ></b-form-select>
+                  </b-form-group>
+                  <b-form-group
+                    class="col-sm-4 col-md-4 col-lg-4 col-xl-4"
+                    size="sm"
+                  >
+                    <div class="iconCadTransportadora">
+                      <div>
+                        <label>Transportadora</label>
+                      </div>
+
+                      <div class="btnCadTransportadora mr-1">
+                        <b-icon-plus-square-fill
+                          scale="1.5"
+                          size="sm"
+                        ></b-icon-plus-square-fill>
+                      </div>
+                    </div>
+
+                    <b-form-select
+                      value-field="value"
+                      text-field="text"
+                      size="sm"
+                      v-model="dataNfe.selectedFreightage"
+                      :options="freightage"
+                      :disabled="isDisabled"
+                    ></b-form-select>
+                  </b-form-group>
+                </b-row>
+              </b-card>
+            </b-navbar-nav>
+          </b-collapse>
+        </b-navbar>
+      </div>
+    </b-card-text>
+
+    <b-card-text class="mt-3">
+      <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <b-navbar toggleable class="cardDadosNfe">
+          <b-navbar-toggle
+            target="navbar-toggle-collapse-produtos"
+            id="dadosNfeStyle"
+            class="tamanhoCards"
+          >
+            <template #default="{ expanded }">
+              <div class="tamanhoBotaoOpenCard">
+                <div>
+                  <b-icon
+                    v-if="expanded"
+                    icon="dash-square-fill"
+                    variant="info"
+                  ></b-icon>
+                  <b-icon v-else icon="plus-square-fill" variant="info">
+                  </b-icon>
+                </div>
+                <div style="margin-left: 10px">Dados Produto</div>
+              </div>
+            </template>
+          </b-navbar-toggle>
+
+          <b-collapse
+            id="navbar-toggle-collapse-produtos"
             class="col-md-12 col-sm-12 col-lg-12 col-xl-12"
             is-nav
           >
@@ -87,6 +281,8 @@
                   >
                     <b-form-select
                       size="sm"
+                      value-field="value"
+                      text-field="text"
                       v-model="dataNfe.selectedProducts"
                       :options="products"
                     ></b-form-select>
@@ -222,23 +418,54 @@ export default {
     return {
       dataNfe: {
         amountProduct: 0,
-        codRed: null,
+        codRed: "",
         dataEmissao: moment().format("YYYY-MM-DD"),
         typeEmiss: "Saída",
         totalPrice: "",
         unitPrice: "",
-        selectedProducts: null,
+        selectedProducts: "",
+        noteNumber: "",
+        seriesNumber: "",
+        selectedFinalityNfe: "",
+        selectedModalityFrete: 9,
+        selectedFreightage: "",
+        modelNfe: "nfe",
       },
       products: [
         { value: 1, text: "amv" },
         { value: 2, text: "jpg" },
         { value: 2, text: "jpge" },
       ],
+      finalityNfe: [
+        { value: 1, text: "Ajuste" },
+        { value: 2, text: "Complementar" },
+        { value: 3, text: "Devolução" },
+        { value: 4, text: "Normal" },
+      ],
+      modality: [
+        { value: 0, text: "Por conta do Remetente" },
+        { value: 1, text: "Por conta do Destinatário" },
+        { value: 2, text: "Por conta de Terceiros" },
+        { value: 3, text: "Transporte Próprio do Remetente" },
+        { value: 4, text: "Transporte Próprio do Destinatário" },
+        { value: 9, text: "Sem Frete" },
+      ],
+      freightage: [
+        { value: 1, text: "Transportadora teste 1" },
+        { value: 2, text: "Transportadora teste 2" },
+        { value: 2, text: "Transportadora teste 3" },
+      ],
+      isDisabled: true,
     };
   },
   methods: {
     teste() {
       console.log(parseFloat(this.dataNfe.unitPrice.replace(",", ".")));
+    },
+    enableFreightage() {
+      this.dataNfe.selectedModalityFrete === 9
+        ? (this.isDisabled = true)
+        : (this.isDisabled = false);
     },
     changeValueUsingKeyUpEvent() {
       this.dataNfe.totalPrice =
@@ -291,11 +518,17 @@ export default {
 
 .conteudoBotaoEmail {
   height: 50px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .conteudoBotaoEmail button:hover {
   background-color: #025f6b !important;
   transition: all 0.3s linear;
+}
+
+.conteudoBotaoEmail button {
+  margin-left: 16px;
 }
 
 .conteudoDadosNfe {
@@ -346,16 +579,29 @@ export default {
 .containerCheckBox {
   display: flex;
   height: 32px !important;
-  margin-top: 31px;
   align-items: center !important;
   background-color: #e9ecef !important;
   border: solid 1px rgb(216, 215, 215);
   border-radius: 5px;
   padding-left: 15px !important;
+  margin-right: 16px;
+}
+
+.iconCadTransportadora {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btnCadTransportadora {
+  cursor: pointer;
+}
+
+#dadosNfeStyle {
+  border: none !important;
 }
 
 @media screen and (max-width: 438px) {
-  .contentDtEmissTipoEmiss {
+  .contentDataNfeRow {
     display: flex;
     flex-direction: column;
   }
