@@ -4,22 +4,25 @@
       class="conteudoBotaoEmail mt-2 col-sm-12 col-md-12 col-lg-12 col-xl-12"
     >
       <b-form-group>
-        <b-button variant="info" size="sm">Envio de E-mail</b-button>
+        <b-button variant="info" size="sm" @click="sendNfeByEmail"
+          >Envio de E-mail</b-button
+        >
       </b-form-group>
 
       <div class="containerCheckBox">
         <b-form-group v-slot="{ ariaDescribedby }">
           <b-form-checkbox
             :aria-describedby="ariaDescribedby"
-            value="Entrada"
-            unchecked-value="Saída"
+            value="0"
+            unchecked-value="1"
             class="chkSaidaEntrada"
             v-model="dataNfe.typeEmiss"
             size="sm"
             switch
+            @change="alterTextTypeEmiss"
           >
             <div style="width: 90px">
-              {{ dataNfe.typeEmiss.toUpperCase() }}
+              {{ textTypeEmiss }}
             </div>
           </b-form-checkbox>
         </b-form-group>
@@ -34,6 +37,15 @@
         contentDataNfeRow
       "
     >
+      <b-form-group hidden>
+        <b-form-input
+          hidden
+          type="text"
+          size="sm"
+          v-model="dataNfe.id"
+        ></b-form-input>
+      </b-form-group>
+
       <b-form-group
         id="input-group-1"
         label="Cliente"
@@ -43,8 +55,8 @@
       >
         <b-form-select
           size="sm"
-          v-model="dataNfe.selectedFinalityNfe"
-          :options="finalityNfe"
+          v-model="dataNfe.idCstomer"
+          :options="customers"
         ></b-form-select>
       </b-form-group>
 
@@ -72,7 +84,7 @@
       >
         <b-form-input
           text-field="nome"
-          v-model="dataNfe.dataEmissao"
+          v-model="dataNfe.dataSaida"
           type="date"
           size="sm"
         ></b-form-input>
@@ -99,7 +111,7 @@
           size="sm"
           value-field="value"
           text-field="text"
-          v-model="dataNfe.selectedFinalityNfe"
+          v-model="dataNfe.finalityNfe"
           :options="finalityNfe"
         ></b-form-select>
       </b-form-group>
@@ -205,8 +217,8 @@
                       text-field="text"
                       @change="enableFreightage"
                       size="sm"
-                      v-model="dataNfe.selectedModalityFrete"
-                      :options="modality"
+                      v-model="dataNfe.modalityFreightage"
+                      :options="modalityFreightage"
                     ></b-form-select>
                   </b-form-group>
                   <b-form-group
@@ -230,8 +242,8 @@
                       value-field="value"
                       text-field="text"
                       size="sm"
-                      v-model="dataNfe.selectedFreightage"
-                      :options="freightage"
+                      v-model="dataNfe.idShippingCompany"
+                      :options="shippingCompany"
                       :disabled="isDisabled"
                     ></b-form-select>
                   </b-form-group>
@@ -283,7 +295,7 @@
                       size="sm"
                       value-field="value"
                       text-field="text"
-                      v-model="dataNfe.selectedProducts"
+                      v-model="dataNfe.products"
                       :options="products"
                     ></b-form-select>
                   </b-form-group>
@@ -356,7 +368,6 @@
                         border: none !important;
                         background-color: #56aafe !important;
                       "
-                      @click="teste"
                       >Adicionar
                       <b-icon-cart-check class="ml-1"></b-icon-cart-check
                     ></b-button>
@@ -408,6 +419,11 @@
         </b-navbar>
       </div>
     </b-card-text>
+    <b-row class="mt-5 ml-0 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      <b-form-group class="m-0">
+        <b-button variant="success" size="sm">Salvar NF-e</b-button>
+      </b-form-group>
+    </b-row>
   </div>
 </template>
 
@@ -417,32 +433,32 @@ export default {
   data() {
     return {
       dataNfe: {
+        id: "",
         amountProduct: 0,
         codRed: "",
         dataEmissao: moment().format("YYYY-MM-DD"),
-        typeEmiss: "Saída",
+        dataSaida: moment().format("YYYY-MM-DD"),
+        typeEmiss: "1",
         totalPrice: "",
         unitPrice: "",
-        selectedProducts: "",
+        products: "",
         noteNumber: "",
         seriesNumber: "",
-        selectedFinalityNfe: "",
-        selectedModalityFrete: 9,
-        selectedFreightage: "",
+        idCstomer: "",
+        finalityNfe: "",
+        modalityFreightage: 9,
+        idShippingCompany: "",
         modelNfe: "nfe",
       },
-      products: [
-        { value: 1, text: "amv" },
-        { value: 2, text: "jpg" },
-        { value: 2, text: "jpge" },
-      ],
+      customers: [],
+      products: [],
       finalityNfe: [
-        { value: 1, text: "Ajuste" },
+        { value: 1, text: "Normal" },
         { value: 2, text: "Complementar" },
-        { value: 3, text: "Devolução" },
-        { value: 4, text: "Normal" },
+        { value: 3, text: "Ajuste" },
+        { value: 4, text: "Devolução" },
       ],
-      modality: [
+      modalityFreightage: [
         { value: 0, text: "Por conta do Remetente" },
         { value: 1, text: "Por conta do Destinatário" },
         { value: 2, text: "Por conta de Terceiros" },
@@ -450,20 +466,21 @@ export default {
         { value: 4, text: "Transporte Próprio do Destinatário" },
         { value: 9, text: "Sem Frete" },
       ],
-      freightage: [
-        { value: 1, text: "Transportadora teste 1" },
-        { value: 2, text: "Transportadora teste 2" },
-        { value: 2, text: "Transportadora teste 3" },
-      ],
+      shippingCompany: [],
       isDisabled: true,
+      textTypeEmiss: "Saída",
     };
   },
   methods: {
-    teste() {
-      console.log(parseFloat(this.dataNfe.unitPrice.replace(",", ".")));
+    alterTextTypeEmiss() {
+      if (this.dataNfe.typeEmiss === "1") {
+        this.textTypeEmiss = "Saída";
+      } else {
+        this.textTypeEmiss = "Entrada";
+      }
     },
     enableFreightage() {
-      this.dataNfe.selectedModalityFrete === 9
+      this.dataNfe.modalityFreightage === 9
         ? (this.isDisabled = true)
         : (this.isDisabled = false);
     },
@@ -471,6 +488,9 @@ export default {
       this.dataNfe.totalPrice =
         this.dataNfe.amountProduct *
         parseFloat(this.dataNfe.unitPrice.replace(",", "."));
+    },
+    sendNfeByEmail() {
+      console.log(this.dataNfe);
     },
   },
   computed: {
