@@ -329,7 +329,7 @@ export default {
         });
       } catch (error) {
         return this.$toast.open({
-          message: `${error.response}`,
+          message: "Insira DATA COMPRA e FORNECEDOR",
           type: "error",
         });
       }
@@ -397,7 +397,7 @@ export default {
 
       this.dataPurchase.dadosAdicionais = "";
 
-      this.productsListGrid = "";
+      this.productsListGrid = [];
     },
 
     clearProducts() {
@@ -454,6 +454,16 @@ export default {
         });
       }
     },
+
+    async getAllProducts(id) {
+      const products = await servicePurchase.getProductsForGrid(id);
+      this.productsListGrid.push(products);
+      this.productsListGrid.pop();
+    },
+
+    async searchPurchase(id) {
+      return await servicePurchase.findPurchaseById(id);
+    },
   },
 
   mounted() {
@@ -467,12 +477,23 @@ export default {
       this.dataPurchase.idFornecedor = this.idSupplier;
     },
 
-    idProduct() {
+    async idProduct() {
       this.getProductsForSelectBox();
+
+      for (let produts of this.idProduct) {
+        await this.getAllProducts(produts);
+      }
     },
 
-    modalIdForPurchase() {
-      this.dataPurchase.id = this.modalIdForPurchase.id;
+    async modalIdForPurchase() {
+      this.dataPurchase.id = this.modalIdForPurchase;
+      await this.getProductsForGrid();
+
+      const result = await this.searchPurchase(this.modalIdForPurchase);
+      this.dataPurchase.dataCompra = result.dataCompra;
+      this.dataPurchase.numeroNfe = result.numeroNfe;
+      this.dataPurchase.modeloNfe = result.modeloNfe;
+      this.dataPurchase.serieNfe = result.serieNfe;
     },
     async dataEditPurchase() {
       Object.assign(this.dataPurchase, this.dataEditPurchase);

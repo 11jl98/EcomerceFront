@@ -135,9 +135,11 @@ export default {
         const { data } = await ServiceImportMovimentPurchase.save(
           dataAllPurchase
         );
+
         this.$emit("idProductsForSelectBox", data.idProduct);
         this.$emit("idSupplierForSelectBox", data.idProvider);
         this.$emit("modalIdForPurchase", data.idPurchase);
+        this.$emit("idMovimentPurchase", data.id);
       } catch (error) {
         console.log(error);
       }
