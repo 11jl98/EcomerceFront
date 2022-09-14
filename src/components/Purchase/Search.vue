@@ -244,16 +244,13 @@ export default {
 
     nextPage() {
       this.filterPurchase((this.page += 1));
-      console.log("nextPage");
     },
 
     previousPage() {
       if (this.page === 1) {
-        console.log("meio");
         return;
       } else {
         this.filterPurchase((this.page -= 1));
-        console.log("previousPage");
       }
     },
   },
