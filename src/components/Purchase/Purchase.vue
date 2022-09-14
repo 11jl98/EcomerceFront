@@ -329,7 +329,7 @@ export default {
         });
       } catch (error) {
         return this.$toast.open({
-          message: `${error.response}`,
+          message: "Insira DATA COMPRA e FORNECEDOR",
           type: "error",
         });
       }

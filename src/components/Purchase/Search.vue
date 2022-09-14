@@ -142,7 +142,7 @@
           size="sm"
           class="buttonPageNext"
           @click="nextPage"
-          :disabled="this.dataLength === 0 ? true : false"
+          :disabled="this.dataLength === 1 ? true : false"
         >
           <b-icon-arrow-right-square-fill
             scale="1.5"
@@ -243,14 +243,17 @@ export default {
     },
 
     nextPage() {
-      this.readPurchase((this.page += 1));
+      this.filterPurchase((this.page += 1));
+      console.log("nextPage");
     },
 
     previousPage() {
       if (this.page === 1) {
+        console.log("meio");
         return;
       } else {
-        this.readPurchase((this.page -= 1));
+        this.filterPurchase((this.page -= 1));
+        console.log("previousPage");
       }
     },
   },
