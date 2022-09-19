@@ -55,8 +55,10 @@
       >
         <b-form-select
           size="sm"
-          v-model="dataNfe.idCstomer"
+          v-model="dataNfe.idCustomer"
           :options="customers"
+          value="id"
+          text-field="nome"
         ></b-form-select>
       </b-form-group>
 
@@ -293,8 +295,8 @@
                   >
                     <b-form-select
                       size="sm"
-                      value-field="value"
-                      text-field="text"
+                      value-field="id"
+                      text-field="nome"
                       v-model="dataNfe.products"
                       :options="products"
                     ></b-form-select>
@@ -429,6 +431,9 @@
 
 <script>
 import moment from "moment";
+import ServiceCustomer from "../../services/serviceCustomer";
+import ServiceProducts from "../../services/serviceProducts";
+
 export default {
   data() {
     return {
@@ -444,7 +449,7 @@ export default {
         products: "",
         noteNumber: "",
         seriesNumber: "",
-        idCstomer: "",
+        idCustomer: "",
         finalityNfe: "",
         modalityFreightage: 9,
         idShippingCompany: "",
@@ -479,18 +484,31 @@ export default {
         this.textTypeEmiss = "Entrada";
       }
     },
+
     enableFreightage() {
       this.dataNfe.modalityFreightage === 9
         ? (this.isDisabled = true)
         : (this.isDisabled = false);
     },
+
     changeValueUsingKeyUpEvent() {
       this.dataNfe.totalPrice =
         this.dataNfe.amountProduct *
         parseFloat(this.dataNfe.unitPrice.replace(",", "."));
     },
+
     sendNfeByEmail() {
-      console.log(this.dataNfe);
+      console.log("Enviado email");
+    },
+
+    async getCustomer() {
+      const data = await ServiceCustomer.getCustomersForSelectBox();
+      this.customers = data.data;
+    },
+
+    async getProducts() {
+      const data = await ServiceProducts.getProductsForSelectBox();
+      this.products = data.data;
     },
   },
   computed: {
@@ -522,6 +540,10 @@ export default {
         return "";
       }
     },
+  },
+  mounted() {
+    this.getCustomer();
+    this.getProducts();
   },
 };
 </script>
