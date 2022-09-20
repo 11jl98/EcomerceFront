@@ -38,9 +38,8 @@
                       :aria-describedby="ariaDescribedby"
                       name="checado"
                       value="Venda"
-                      disabled
                       unchecked-value="Orçamento"
-                      class="chkVendaOrçamento"
+                      class="chkVendaOrcamento"
                       v-model="dataSale.status"
                       size="sm"
                       switch
@@ -720,6 +719,8 @@
 import api from "../../services/axios";
 import moment from "moment";
 import ModalPagamento from "../Sale/Modal-Forma-Pagamento.vue";
+import ServiceCustomer from "../../services/serviceCustomer";
+
 export default {
   components: {
     ModalPagamento,
@@ -947,9 +948,9 @@ export default {
         });
       }
     },
-    async listCustomersSelectBox() {
+    async getCustomersForSelectBox() {
       try {
-        const { data } = await api.get("/customers/combobox");
+        const data = await ServiceCustomer.getCustomersForSelectBox();
         this.dataCustomers = data.data;
       } catch (error) {
         console.log(error.response);
@@ -1065,7 +1066,7 @@ export default {
     },
   },
   mounted() {
-    this.listCustomersSelectBox();
+    this.getCustomersForSelectBox();
     this.listEmployeesSelectBox();
     this.getProdutos();
     this.getProviders();
@@ -1151,7 +1152,7 @@ export default {
   padding-left: 15px !important;
 }
 
-.chkVendaOrçamento {
+.chkVendaOrcamento {
   margin-top: 18px;
 }
 
