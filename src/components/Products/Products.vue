@@ -200,7 +200,7 @@ export default {
   methods: {
     saveOrUpdateProducts() {
       this.dataProducts.id === "" || this.dataProducts.id === null
-        ? this.SaveProducts()
+        ? this.saveProducts()
         : this.updateProducts();
     },
 
@@ -220,7 +220,7 @@ export default {
       }
     },
 
-    async SaveProducts() {
+    async saveProducts() {
       try {
         const id = await ServiceProducts.saveProducts(this.dataProducts);
         this.dataProducts.id = id;

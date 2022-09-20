@@ -59,7 +59,7 @@
         </li>
 
         <li>
-          <b-button to="/nfce" :class="iconsCenter">
+          <b-button to="/notafiscal" :class="iconsCenter">
             <i> <b-icon-reply-all></b-icon-reply-all></i>
             <span :class="sizeText">NF-e / NFc-e</span>
           </b-button>
