@@ -99,7 +99,12 @@
         class="col-sm-7 col-md-5 col-lg-5 col-xl-3"
         size="sm"
       >
-        <b-form-input disabled type="text" size="sm"></b-form-input>
+        <b-form-input
+          v-model="dadosNfe.natureza_operacao"
+          disabled
+          type="text"
+          size="sm"
+        ></b-form-input>
       </b-form-group>
 
       <b-form-group
@@ -125,7 +130,12 @@
         class="col-sm-3 col-md-2 col-lg-2 col-xl-2"
         size="sm"
       >
-        <b-form-input disabled type="text" size="sm"></b-form-input>
+        <b-form-input
+          disabled
+          v-model="dadosNfe.nfe"
+          type="text"
+          size="sm"
+        ></b-form-input>
       </b-form-group>
 
       <b-form-group
@@ -135,7 +145,12 @@
         class="col-sm-3 col-md-2 col-lg-2 col-xl-1"
         size="sm"
       >
-        <b-form-input disabled type="text" size="sm"></b-form-input>
+        <b-form-input
+          disabled
+          v-model="dadosNfe.serie"
+          type="text"
+          size="sm"
+        ></b-form-input>
       </b-form-group>
 
       <b-form-group
@@ -145,7 +160,12 @@
         class="col-sm-12 col-md-6 col-lg-6 col-xl-5"
         size="sm"
       >
-        <b-form-input disabled type="text" size="sm"></b-form-input>
+        <b-form-input
+          disabled
+          v-model="dadosNfe.chave"
+          type="text"
+          size="sm"
+        ></b-form-input>
       </b-form-group>
 
       <b-form-group
@@ -155,7 +175,12 @@
         class="col-sm-6 col-md-3 col-lg-3 col-xl-2"
         size="sm"
       >
-        <b-form-input disabled type="text" size="sm"></b-form-input>
+        <b-form-input
+          disabled
+          v-model="dadosNfe.recibo"
+          type="text"
+          size="sm"
+        ></b-form-input>
       </b-form-group>
 
       <b-form-group
@@ -165,7 +190,12 @@
         class="col-sm-6 col-md-3 col-lg-3 col-xl-2"
         size="sm"
       >
-        <b-form-input disabled type="text" size="sm"></b-form-input>
+        <b-form-input
+          disabled
+          v-model="dadosNfe.status"
+          type="text"
+          size="sm"
+        ></b-form-input>
       </b-form-group>
     </b-row>
 
@@ -503,8 +533,8 @@
                       value-field="value"
                       text-field="text"
                       size="sm"
-                      v-model="dadosNfe.idShippingCompany"
-                      :options="shippingCompany"
+                      v-model="dadosNfe.idTransportadora"
+                      :options="transportadora"
                     ></b-form-select>
                   </b-form-group>
                 </b-row>
@@ -533,21 +563,21 @@ export default {
     return {
       dadosNfe: {
         id: "",
-        amountProduct: 0,
         codRed: "",
         data_emissao: moment().format("YYYY-MM-DD"),
         data_entrada_saida: moment().format("YYYY-MM-DD"),
         operacao: "1",
         natureza_operacao: "Venda de produção do estabelecimento",
         modelo: "1", //2 para NFC-e
-        ambiente: "1", //2 para Homologação
+        ambiente: "2", //2 para Homologação
         nfe: "",
         serie: "",
         idCliente: "",
-        finalidade: "",
-        modalityFreightage: 9,
-        idShippingCompany: "",
-        modelNfe: "nfe",
+        finalidade: "1",
+        idTransportadora: "",
+        chave: "",
+        recibo: "",
+        status: "",
       },
       produtosNotaFiscal: {
         id: "",
@@ -640,7 +670,7 @@ export default {
         { value: 4, text: "Transporte Próprio do Destinatário" },
         { value: 9, text: "Sem Frete" },
       ],
-      shippingCompany: [],
+      transportadora: [],
       isDisabled: true,
       textTypeEmiss: "Saída",
     };
