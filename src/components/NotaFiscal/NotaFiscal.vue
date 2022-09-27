@@ -19,10 +19,10 @@
             v-model="dadosNfe.operacao"
             size="sm"
             switch
-            @change="alterTextTypeEmiss"
+            @change="changeEmissionTypeText"
           >
             <div style="width: 90px">
-              {{ textTypeEmiss }}
+              {{ textoTipoEmissao }}
             </div>
           </b-form-checkbox>
         </b-form-group>
@@ -218,7 +218,7 @@
                   <b-icon v-else icon="plus-square-fill" variant="info">
                   </b-icon>
                 </div>
-                <div style="margin-left: 10px">Dados Produto</div>
+                <div style="margin-left: 10px">Adicionar Produto</div>
               </div>
             </template>
           </b-navbar-toggle>
@@ -241,6 +241,7 @@
                       text-field="nome"
                       v-model="produtosNotaFiscal.id"
                       :options="produtos"
+                      @change="assignValuesToTheSelectedProduct"
                     ></b-form-select>
                   </b-form-group>
 
@@ -250,7 +251,7 @@
                   >
                     <b-form-input
                       size="sm"
-                      v-model="dadosNfe.codRef"
+                      v-model="produtosNotaFiscal.codigo"
                       disabled
                     />
                   </b-form-group>
@@ -263,6 +264,8 @@
                       size="sm"
                       v-model="produtosNotaFiscal.quantidade"
                       type="number"
+                      @keyup="formatTotalValue"
+                      @change="alterTotalValue"
                     />
                   </b-form-group>
 
@@ -271,11 +274,11 @@
                     class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
                   >
                     <b-form-input
-                      size="sm"
-                      v-mask="maskMoney"
                       placeholder="R$ 0,00"
-                      @keyup="changeValueUsingKeyUpEvent"
-                      @change="alterValueTotal"
+                      size="sm"
+                      v-mask="maskMoney(produtosNotaFiscal.subtotal)"
+                      @keyup="formatTotalValue"
+                      @change="alterTotalValue"
                       v-model="produtosNotaFiscal.subtotal"
                     />
                   </b-form-group>
@@ -305,10 +308,24 @@
                   </b-form-group>
 
                   <b-form-group
-                    label="Dados adicionais"
-                    class="col-sm-12 col-md-8 col-lg-9 col-xl-5"
+                    label="Unidade"
+                    class="col-sm-12 col-md-3 col-lg-2 col-xl-2"
                   >
-                    <b-form-input size="sm" />
+                    <b-form-input
+                      v-model="produtosNotaFiscal.unidade"
+                      size="sm"
+                    />
+                  </b-form-group>
+
+                  <b-form-group
+                    label="Peso"
+                    class="col-sm-12 col-md-3 col-lg-2 col-xl-2"
+                  >
+                    <b-form-input
+                      placeholder="Peso (KG)"
+                      v-model="produtosNotaFiscal.peso"
+                      size="sm"
+                    />
                   </b-form-group>
 
                   <b-form-group
@@ -323,6 +340,7 @@
                         border: none !important;
                         background-color: #56aafe !important;
                       "
+                      @click="saveProductInNote"
                       >Adicionar
                       <b-icon-cart-check class="ml-1"></b-icon-cart-check
                     ></b-button>
@@ -423,11 +441,22 @@
                     <b-form-select
                       value-field="value"
                       text-field="text"
-                      @change="habilitarFrete"
+                      @change="enableFreightage"
                       size="sm"
                       v-model="pedido.modalidade_frete"
                       :options="modalidade_frete"
                     ></b-form-select>
+                  </b-form-group>
+
+                  <b-form-group
+                    label="Valor frete"
+                    class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
+                  >
+                    <b-form-input
+                      v-mask="maskMoney(pedido.frete)"
+                      v-model="pedido.frete"
+                      size="sm"
+                    />
                   </b-form-group>
 
                   <b-form-group
@@ -449,7 +478,7 @@
                     id="input-group-1"
                     label="Presença"
                     label-for="input-1"
-                    class="col-sm-6 col-md-3 col-lg-3 col-xl-3"
+                    class="col-sm-6 col-md-3 col-lg-4 col-xl-4"
                   >
                     <b-form-select
                       size="sm"
@@ -464,7 +493,22 @@
                     label="% Desc"
                     class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
                   >
-                    <b-form-input size="sm" placeholder="R$ 0,00" />
+                    <b-form-input
+                      v-model="pedido.desconto"
+                      size="sm"
+                      placeholder="R$ 0,00"
+                    />
+                  </b-form-group>
+
+                  <b-form-group
+                    label="Vl. Total NFe"
+                    class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
+                  >
+                    <b-form-input
+                      v-mask="maskMoney(pedido.total)"
+                      v-model="pedido.total"
+                      size="sm"
+                    />
                   </b-form-group>
                 </b-row>
               </b-card>
@@ -563,7 +607,6 @@ export default {
     return {
       dadosNfe: {
         id: "",
-        codRed: "",
         data_emissao: moment().format("YYYY-MM-DD"),
         data_entrada_saida: moment().format("YYYY-MM-DD"),
         operacao: "1",
@@ -581,24 +624,24 @@ export default {
       },
       produtosNotaFiscal: {
         id: "",
-        codigo: "nome-do-produto",
+        codigo: "",
         ncm: "6109.10.00",
         cest: "28.038.00",
         quantidade: 0,
-        unidade: "UN",
-        peso: "0.800",
+        unidade: "",
+        peso: "",
         origem: 0,
         subtotal: "",
-        total: 0.0,
+        total: "",
         classe_imposto: "REF1000",
       },
       pedido: {
         pagamento: 0,
         presenca: 1,
         modalidade_frete: 9,
-        frete: 0.0,
-        desconto: 0.0,
-        total: 0.0,
+        frete: "0,00",
+        desconto: "0,00",
+        total: "0,00",
       },
       cliente: [],
       produtos: [],
@@ -672,86 +715,108 @@ export default {
       ],
       transportadora: [],
       isDisabled: true,
-      textTypeEmiss: "Saída",
+      textoTipoEmissao: "Saída",
     };
   },
   methods: {
-    alterTextTypeEmiss() {
+    async saveProductInNote() {
+      console.log("salvando produtos", this.produtosNotaFiscal);
+    },
+
+    async assignValuesToTheSelectedProduct() {
+      const result = this.produtos.filter(
+        (idProduto) => idProduto.id == this.produtosNotaFiscal.id
+      );
+
+      this.produtosNotaFiscal.unidade = result[0].unidade;
+      this.produtosNotaFiscal.codigo = result[0].codReferencia;
+    },
+
+    changeEmissionTypeText() {
       if (this.dadosNfe.operacao === "1") {
-        this.textTypeEmiss = "Saída";
+        this.textoTipoEmissao = "Saída";
       } else {
-        this.textTypeEmiss = "Entrada";
+        this.textoTipoEmissao = "Entrada";
       }
     },
 
-    habilitarFrete() {
+    enableFreightage() {
       this.pedido.modalidade_frete === 9
         ? (this.isDisabled = true)
         : (this.isDisabled = false);
     },
 
-    alterValueTotal() {
+    alterTotalValue() {
       this.produtosNotaFiscal.total =
         this.produtosNotaFiscal.total.toLocaleString("pt-br", {
           minimumFractionDigits: 2,
         });
     },
 
-    changeValueUsingKeyUpEvent() {
-      this.produtosNotaFiscal.total =
-        this.produtosNotaFiscal.quantidade *
-        parseFloat(
-          this.produtosNotaFiscal.subtotal.replace(".", "").replace(",", ".")
-        );
+    formatTotalValue() {
+      if (this.produtosNotaFiscal.subtotal !== "") {
+        this.produtosNotaFiscal.total =
+          this.produtosNotaFiscal.quantidade *
+          parseFloat(
+            this.produtosNotaFiscal.subtotal.replace(".", "").replace(",", ".")
+          );
+      }
     },
 
     sendNfeByEmail() {
       console.log("Enviado email");
     },
 
-    async getCustomer() {
+    async getCliente() {
       const data = await ServiceCustomer.getCustomersForSelectBox();
       this.cliente = data.data;
     },
 
-    async getProducts() {
+    async getProductsForSelectBox() {
       const data = await ServiceProducts.getProductsForSelectBox();
       this.produtos = data.data;
     },
-  },
-  computed: {
-    maskMoney() {
-      if (this.produtosNotaFiscal.subtotal.length === 3) {
+
+    async getProductsById() {
+      const data = await ServiceProducts.getProductById(
+        this.produtosNotaFiscal.id
+      );
+      return data;
+    },
+
+    maskMoney(value) {
+      if (value.length === 3) {
         return "#,##";
       }
-      if (this.produtosNotaFiscal.subtotal.length === 5) {
+      if (value.length === 5) {
         return "##,##";
       }
-      if (this.produtosNotaFiscal.subtotal.length === 6) {
+      if (value.length === 6) {
         return "###,##";
       }
-      if (this.produtosNotaFiscal.subtotal.length === 7) {
+      if (value.length === 7) {
         return "#.###,##";
       }
-      if (this.produtosNotaFiscal.subtotal.length === 9) {
+      if (value.length === 9) {
         return "##.###,##";
       }
-      if (this.produtosNotaFiscal.subtotal.length === 10) {
+      if (value.length === 10) {
         return "###.###,##";
       }
-      if (this.produtosNotaFiscal.subtotal.length === 11) {
+      if (value.length === 11) {
         return "#.###.###,##";
       }
-      if (this.produtosNotaFiscal.subtotal.length === 12) {
+      if (value.length === 12) {
         return "##.###.###,##";
       } else {
         return "";
       }
     },
   },
+
   mounted() {
-    this.getCustomer();
-    this.getProducts();
+    this.getCliente();
+    this.getProductsForSelectBox();
   },
 };
 </script>
