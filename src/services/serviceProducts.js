@@ -40,6 +40,11 @@ class ServiceProducts {
 
     await api.post('/products', adjustedProducts)
   }
+
+  async getProductById(idProduct){
+    const { data } = await api.get(`/products/${idProduct}`);
+    return data
+  }
 }
 
 export default new ServiceProducts

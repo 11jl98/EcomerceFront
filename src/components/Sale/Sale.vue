@@ -720,6 +720,7 @@ import api from "../../services/axios";
 import moment from "moment";
 import ModalPagamento from "../Sale/Modal-Forma-Pagamento.vue";
 import ServiceCustomer from "../../services/serviceCustomer";
+import ServiceProducts from "../../services/serviceProducts"
 
 export default {
   components: {
@@ -847,7 +848,7 @@ export default {
     },
 
     async getProductById(idProduct) {
-      const { data } = await api.get(`/products/${idProduct}`);
+      const { data } = await ServiceProducts.getProductById(idProduct);
       this.productsSelected = data;
       return data;
     },
