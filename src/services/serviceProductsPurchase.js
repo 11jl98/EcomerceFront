@@ -2,6 +2,7 @@ import api from "./axios";
 
 class ServiceProductsPurchase{
   async save(productsPurchase) {
+    console.log(productsPurchase, "22221111")
     return await api.post("/moviment-purchase", productsPurchase)
   }
 
