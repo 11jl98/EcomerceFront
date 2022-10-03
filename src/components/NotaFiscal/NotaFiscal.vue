@@ -57,7 +57,7 @@
           size="sm"
           v-model="dadosNfe.idCliente"
           :options="cliente"
-          value="id"
+          value-field="id"
           text-field="nome"
         ></b-form-select>
       </b-form-group>
@@ -264,8 +264,18 @@
                       size="sm"
                       v-model="produtosNotaFiscal.quantidade"
                       type="number"
-                      @keyup="formatTotalValue"
-                      @change="alterTotalValue"
+                      @keyup="formatTotalProductValue"
+                      @change="alterTotalProductValue"
+                    />
+                  </b-form-group>
+
+                  <b-form-group
+                    label="Dados Adicionais"
+                    class="col-sm-6 col-md-4 col-lg-4 col-xl-4"
+                  >
+                    <b-form-input
+                      size="sm"
+                      v-model="produtosNotaFiscal.informacoes_adicionais"
                     />
                   </b-form-group>
 
@@ -277,8 +287,8 @@
                       placeholder="R$ 0,00"
                       size="sm"
                       v-mask="maskMoney(produtosNotaFiscal.subtotal)"
-                      @keyup="formatTotalValue"
-                      @change="alterTotalValue"
+                      @keyup="formatTotalProductValue"
+                      @change="alterTotalProductValue"
                       v-model="produtosNotaFiscal.subtotal"
                     />
                   </b-form-group>
@@ -288,6 +298,7 @@
                     class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
                   >
                     <b-form-input
+                      disabled
                       size="sm"
                       placeholder="R$ 0,00"
                       v-model="produtosNotaFiscal.total"
@@ -308,8 +319,8 @@
                   </b-form-group>
 
                   <b-form-group
-                    label="Unidade"
-                    class="col-sm-12 col-md-3 col-lg-2 col-xl-2"
+                    label="und"
+                    class="col-sm-12 col-md-3 col-lg-2 col-xl-1"
                   >
                     <b-form-input
                       v-model="produtosNotaFiscal.unidade"
@@ -319,7 +330,7 @@
 
                   <b-form-group
                     label="Peso"
-                    class="col-sm-12 col-md-3 col-lg-2 col-xl-2"
+                    class="col-sm-12 col-md-3 col-lg-3 col-xl-2"
                   >
                     <b-form-input
                       placeholder="Peso (KG)"
@@ -494,6 +505,9 @@
                     class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
                   >
                     <b-form-input
+                      maxlength="6"
+                      @change="alterTotalPedidoValue"
+                      v-mask="maskDiscount"
                       v-model="pedido.desconto"
                       size="sm"
                       placeholder="R$ 0,00"
@@ -504,11 +518,7 @@
                     label="Vl. Total NFe"
                     class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
                   >
-                    <b-form-input
-                      v-mask="maskMoney(pedido.total)"
-                      v-model="pedido.total"
-                      size="sm"
-                    />
+                    <b-form-input disabled v-model="pedido.total" size="sm" />
                   </b-form-group>
                 </b-row>
               </b-card>
@@ -634,14 +644,15 @@ export default {
         subtotal: "",
         total: "",
         classe_imposto: "REF1000",
+        informacoes_adicionais: "",
       },
       pedido: {
         pagamento: 0,
         presenca: 1,
         modalidade_frete: 9,
-        frete: "0,00",
-        desconto: "0,00",
-        total: "0,00",
+        frete: "",
+        desconto: "",
+        total: "",
       },
       cliente: [],
       produtos: [],
@@ -721,6 +732,8 @@ export default {
   methods: {
     async saveProductInNote() {
       console.log("salvando produtos", this.produtosNotaFiscal);
+      console.log("Salvando a nota", this.dadosNfe);
+      //ja está com os dados corretos para serem enviados ao backend
     },
 
     async assignValuesToTheSelectedProduct() {
@@ -746,14 +759,14 @@ export default {
         : (this.isDisabled = false);
     },
 
-    alterTotalValue() {
+    alterTotalProductValue() {
       this.produtosNotaFiscal.total =
         this.produtosNotaFiscal.total.toLocaleString("pt-br", {
           minimumFractionDigits: 2,
         });
     },
 
-    formatTotalValue() {
+    formatTotalProductValue() {
       if (this.produtosNotaFiscal.subtotal !== "") {
         this.produtosNotaFiscal.total =
           this.produtosNotaFiscal.quantidade *
@@ -761,6 +774,14 @@ export default {
             this.produtosNotaFiscal.subtotal.replace(".", "").replace(",", ".")
           );
       }
+    },
+
+    alterTotalPedidoValue() {
+      const valorTotalProdutos = 200; // falta somar com o valor do frete e atribuir o valor total de todos os produto, porém falta o backend ter rotas para salvar as informações
+      const desconto = (valorTotalProdutos * this.pedido.desconto) / 100;
+
+      this.pedido.total = valorTotalProdutos - desconto;
+      console.log(this.pedido.total);
     },
 
     sendNfeByEmail() {
@@ -813,7 +834,19 @@ export default {
       }
     },
   },
-
+  computed: {
+    maskDiscount() {
+      if (this.pedido.desconto.length === 3) {
+        return "##.#";
+      } else if (this.pedido.desconto.length === 4) {
+        return "##.##";
+      } else if (this.pedido.desconto.length === 6) {
+        return "###.##";
+      } else {
+        return "";
+      }
+    },
+  },
   mounted() {
     this.getCliente();
     this.getProductsForSelectBox();
