@@ -7,6 +7,7 @@ class ServicePurchase {
 
   async getProductsForGrid(id) {
     const { data } = await api.get(`/moviment-purchase/${id}`)
+    console.log(data)
     return data
   }
 
@@ -31,6 +32,12 @@ class ServicePurchase {
   async findPurchaseById(id){
     const {data} = await api.get(`purchase/edit/purchase/${id}`)
     return data.data
+  }
+
+  async stockAddOrRemove() {
+    const { data } = await api.post('/products/stock')
+    console.log(data, "to por aqui 1313")
+    return data
   }
 }
 

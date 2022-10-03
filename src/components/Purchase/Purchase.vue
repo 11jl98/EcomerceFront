@@ -107,7 +107,6 @@
                 v-model="idProductForSelectBox"
                 size="sm"
                 :options="productsForSelectBox"
-                @change="onChange(idProductForSelectBox)"
               ></b-form-select>
             </b-form-group>
 
@@ -348,7 +347,6 @@ export default {
         });
         return data;
       } catch (error) {
-        console.log(error.response.data.message);
         return this.$toast.open({
           message: `${error.response.data.message}`,
           type: "warning",
@@ -442,6 +440,7 @@ export default {
     async deleteMovimentPurchase(id) {
       try {
         await ServiceProductsPurchase.delete(id);
+        console.log(id);
         this.getProductsForGrid();
         return this.$toast.open({
           message: "Produto Excluido",
