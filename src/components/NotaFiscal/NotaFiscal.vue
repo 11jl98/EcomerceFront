@@ -467,6 +467,7 @@
                       v-mask="maskMoney(pedido.frete)"
                       v-model="pedido.frete"
                       size="sm"
+                      placeholder="R$ 0,00"
                     />
                   </b-form-group>
 
@@ -500,6 +501,43 @@
                     ></b-form-select>
                   </b-form-group>
 
+                  <template v-if="exibirDadosIntermediador">
+                    <b-form-group
+                      id="input-group-1"
+                      label="Intermediador"
+                      label-for="input-1"
+                      class="col-sm-6 col-md-3 col-lg-3 col-xl-3"
+                    >
+                      <b-form-select
+                        size="sm"
+                        value-field="value"
+                        text-field="text"
+                        v-model="pedido.intermediador"
+                        :options="intermediador"
+                      ></b-form-select>
+                    </b-form-group>
+
+                    <b-form-group
+                      label="Nome intermed"
+                      class="col-sm-6 col-md-4 col-lg-4 col-xl-3"
+                    >
+                      <b-form-input
+                        v-model="pedido.id_intermediador"
+                        size="sm"
+                      />
+                    </b-form-group>
+
+                    <b-form-group
+                      label="CNPJ intermed"
+                      class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
+                    >
+                      <b-form-input
+                        v-model="pedido.cnpj_intermediador"
+                        size="sm"
+                      />
+                    </b-form-group>
+                  </template>
+
                   <b-form-group
                     label="% Desc"
                     class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
@@ -518,7 +556,12 @@
                     label="Vl. Total NFe"
                     class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
                   >
-                    <b-form-input disabled v-model="pedido.total" size="sm" />
+                    <b-form-input
+                      disabled
+                      placeholder="R$ 0,00"
+                      v-model="pedido.total"
+                      size="sm"
+                    />
                   </b-form-group>
                 </b-row>
               </b-card>
@@ -575,7 +618,10 @@
                         <label>Transportadora</label>
                       </div>
 
-                      <div class="btnCadTransportadora mr-1">
+                      <div
+                        class="btnCadTransportadora mr-1"
+                        @click="openModalShippingCompany"
+                      >
                         <b-icon-plus-square-fill
                           scale="1.5"
                           size="sm"
@@ -601,9 +647,12 @@
 
     <b-row class="mt-5 ml-0 col-sm-12 col-md-12 col-lg-12 col-xl-12">
       <b-form-group class="m-0">
-        <b-button variant="success" size="sm">Salvar NF-e</b-button>
+        <b-button variant="success" @click="teste" size="sm"
+          >Salvar NF-e</b-button
+        >
       </b-form-group>
     </b-row>
+    <ModalShippingCompany />
   </div>
 </template>
 
@@ -611,8 +660,12 @@
 import moment from "moment";
 import ServiceCustomer from "../../services/serviceCustomer";
 import ServiceProducts from "../../services/serviceProducts";
+import ModalShippingCompany from "./ModalShippingCompany.vue";
 
 export default {
+  components: {
+    ModalShippingCompany,
+  },
   data() {
     return {
       dadosNfe: {
@@ -653,6 +706,9 @@ export default {
         frete: "",
         desconto: "",
         total: "",
+        intermediador: "",
+        cnpj_intermediador: "",
+        id_intermediador: "",
       },
       cliente: [],
       produtos: [],
@@ -663,14 +719,14 @@ export default {
       presenca: [
         {
           value: 0,
-          text: "Não se aplica (por exemplo, Nota Fiscal complementar ou de ajuste)",
+          text: "0 - Não se aplica (por exemplo, Nota Fiscal complementar ou de ajuste)",
         },
-        { value: 1, text: "Operação presencial" },
-        { value: 2, text: "Operação não presencial, pela Internet" },
-        { value: 3, text: "Operação não presencial, Teleatendimento" },
-        { value: 4, text: "NFC-e em operação com entrega a domicílio" },
-        { value: 5, text: "Operação presencial, fora do estabelecimento" },
-        { value: 9, text: "Operação não presencial, outros" },
+        { value: 1, text: "1 - Operação presencial" },
+        { value: 2, text: "2 - Operação não presencial, pela Internet" },
+        { value: 3, text: "3 - Operação não presencial, Teleatendimento" },
+        { value: 4, text: "4 - NFC-e em operação com entrega a domicílio" },
+        { value: 5, text: "5 - Operação presencial, fora do estabelecimento" },
+        { value: 9, text: "9 - Operação não presencial, outros" },
       ],
       finalidade: [
         { value: 1, text: "Normal" },
@@ -727,6 +783,16 @@ export default {
       transportadora: [],
       isDisabled: true,
       textoTipoEmissao: "Saída",
+      intermediador: [
+        {
+          value: 0,
+          text: "0 - Operação sem intermediador (em site ou plataforma própria)",
+        },
+        {
+          value: 1,
+          text: "1 - Operação em site ou plataforma de terceiros (intermediadores/marketplace)",
+        },
+      ],
     };
   },
   methods: {
@@ -746,7 +812,7 @@ export default {
     },
 
     changeEmissionTypeText() {
-      if (this.dadosNfe.operacao === "1") {
+      if (this.dadosNfe.operacao == 1) {
         this.textoTipoEmissao = "Saída";
       } else {
         this.textoTipoEmissao = "Entrada";
@@ -805,6 +871,14 @@ export default {
       return data;
     },
 
+    openModalShippingCompany() {
+      this.$bvModal.show("modalShippingCompany");
+    },
+
+    teste() {
+      console.log(this.dadosNfe.operacao, "teste:", this.pedido.presenca);
+    },
+
     maskMoney(value) {
       if (value.length === 3) {
         return "#,##";
@@ -835,6 +909,27 @@ export default {
     },
   },
   computed: {
+    exibirDadosIntermediador() {
+      return (
+        this.retornaTipoOperacao &&
+        this.retornaTipoFinalizade &&
+        this.retorntaTipoPresenca
+      );
+    },
+    retornaTipoOperacao() {
+      return this.dadosNfe.operacao == 1;
+    },
+    retornaTipoFinalizade() {
+      return this.dadosNfe.finalidade == 1;
+    },
+    retorntaTipoPresenca() {
+      return (
+        this.pedido.presenca == 2 ||
+        this.pedido.presenca == 3 ||
+        this.pedido.presenca == 4 ||
+        this.pedido.presenca == 9
+      );
+    },
     maskDiscount() {
       if (this.pedido.desconto.length === 3) {
         return "##.#";

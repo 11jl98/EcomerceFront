@@ -1,25 +1,19 @@
 <template>
   <div>
     <b-modal
-      id="modalFormaPagamento"
-      size="md"
+      id="modalShippingCompany"
+      size="lg"
       title="Cadastro forma de pagamento"
       ok-title="Salvar"
       centered
     >
       <template #modal-footer>
-        <b-button variant="info" size="sm" @click="savePayment"
-          >Salvar</b-button
-        >
+        <b-button variant="info" size="sm">Salvar</b-button>
       </template>
       <b-tabs v-model="tabIndexSected" content-class="mt-3">
         <b-tab title="Cadastro Tipo" active>
           <b-row class="d-flex justify-content-between">
-            <b-form-input
-              hidden
-              class="col-sm-1"
-              v-model="dataPayment.id"
-            ></b-form-input>
+            <b-form-input hidden class="col-sm-1"></b-form-input>
 
             <b-form-group
               id="input-group-1"
@@ -28,10 +22,7 @@
               class="col-sm-12"
               size="sm"
             >
-              <b-form-input
-                v-model="dataPayment.tipo"
-                placeholder="Ex: Cartão de crédito"
-              ></b-form-input>
+              <b-form-input placeholder="Ex: Cartão de crédito"></b-form-input>
             </b-form-group> </b-row
         ></b-tab>
         <b-tab title="Pesquisar">
@@ -43,8 +34,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="typePayment in dataAllType" :key="typePayment.id">
-                <td>{{ typePayment.tipo }}</td>
+              <tr>
                 <td>
                   <b-button
                     size="sm"
@@ -54,7 +44,6 @@
                       variant: 'info',
                       content: 'Editar',
                     }"
-                    @click="getPaymentFindById(typePayment.id)"
                   >
                     <b-icon-check scale="2"></b-icon-check>
                   </b-button>
@@ -81,46 +70,11 @@
 </template>
 
 <script>
-import api from "../../services/axios";
 export default {
   data() {
     return {
-      dataPayment: {
-        id: "",
-        tipo: "",
-      },
-      dataAllType: [],
       tabIndexSected: 0,
     };
-  },
-  methods: {
-    async savePayment() {
-      try {
-        const { data } = await api.post("/payments", this.dataPayment);
-        this.dataPayment.id = data.id;
-        return this.$toast.open({
-          message: "Salvo com sucesso!",
-          type: "success",
-        });
-      } catch (error) {
-        console.log(error.response);
-      }
-    },
-
-    async getPaymentFindById(idTipoPagamento) {
-      const { data } = await api.get(`/payments/${idTipoPagamento}`);
-      console.log(idTipoPagamento);
-      return data;
-    },
-
-    async getAllPayment() {
-      const { data } = await api.get(`/payments/combobox`);
-      this.dataAllType = data;
-      return data;
-    },
-  },
-  mounted() {
-    this.getAllPayment();
   },
 };
 </script>
