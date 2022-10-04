@@ -3,7 +3,7 @@
     <b-modal
       id="modalShippingCompany"
       size="lg"
-      title="Cadastro forma de pagamento"
+      title="Cadastror Transportadora"
       ok-title="Salvar"
       centered
     >
@@ -11,18 +11,100 @@
         <b-button variant="info" size="sm">Salvar</b-button>
       </template>
       <b-tabs v-model="tabIndexSected" content-class="mt-3">
-        <b-tab title="Cadastro Tipo" active>
-          <b-row class="d-flex justify-content-between">
+        <b-tab title="Cadastro" active>
+          <b-row class="d-flex">
             <b-form-input hidden class="col-sm-1"></b-form-input>
 
             <b-form-group
               id="input-group-1"
-              label="Tipo:"
+              label="Nome"
               label-for="input-1"
-              class="col-sm-12"
+              class="col-sm-5"
               size="sm"
             >
-              <b-form-input placeholder="Ex: Cartão de crédito"></b-form-input>
+              <b-form-input></b-form-input>
+            </b-form-group>
+
+            <b-form-group
+              id="input-group-1"
+              label="Nome"
+              label-for="input-1"
+              class="col-sm-5"
+              size="sm"
+            >
+              <b-form-input></b-form-input>
+            </b-form-group>
+            <b-form-group
+              id="input-group-1"
+              label="Nome"
+              label-for="input-1"
+              class="col-sm-5"
+              size="sm"
+            >
+              <b-form-input></b-form-input>
+            </b-form-group>
+            <b-form-group
+              id="input-group-1"
+              label="Nome"
+              label-for="input-1"
+              class="col-sm-5"
+              size="sm"
+            >
+              <b-form-input></b-form-input>
+            </b-form-group>
+            <b-form-group
+              id="input-group-1"
+              label="Nome"
+              label-for="input-1"
+              class="col-sm-5"
+              size="sm"
+            >
+              <b-form-input></b-form-input>
+            </b-form-group>
+            <b-form-group
+              id="input-group-1"
+              label="Nome"
+              label-for="input-1"
+              class="col-sm-5"
+              size="sm"
+            >
+              <b-form-input></b-form-input>
+            </b-form-group>
+            <b-form-group
+              id="input-group-1"
+              label="Nome"
+              label-for="input-1"
+              class="col-sm-5"
+              size="sm"
+            >
+              <b-form-input></b-form-input>
+            </b-form-group>
+            <b-form-group
+              id="input-group-1"
+              label="Nome"
+              label-for="input-1"
+              class="col-sm-5"
+              size="sm"
+            >
+              <b-form-input></b-form-input>
+            </b-form-group>
+            <b-form-group
+              id="input-group-1"
+              label="Nome"
+              label-for="input-1"
+              class="col-sm-5"
+              size="sm"
+            >
+              <b-form-input></b-form-input>
+            </b-form-group>
+            <b-form-group
+              id="input-group-1"
+              label="Nome"
+              label-for="input-1"
+              class="col-sm-5"
+              size="sm"
+            >
+              <b-form-input></b-form-input>
             </b-form-group> </b-row
         ></b-tab>
         <b-tab title="Pesquisar">
