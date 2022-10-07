@@ -1,8 +1,9 @@
 import api from './axios'
 
 class ServiceNotaFiscal{
-  async saveNote(dataNotaFiscal){
-    return await api.post('/nota', dataNotaFiscal)
+  async saveNote(dataNote){
+    const {data} = await api.post('/nota', dataNote)
+    return data
   }
 }
 

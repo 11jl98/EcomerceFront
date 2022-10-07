@@ -71,7 +71,7 @@
       >
         <b-form-input
           text-field="nome"
-          v-model="dadosNfe.data_emissao"
+          v-model="data_emissao"
           type="date"
           size="sm"
         ></b-form-input>
@@ -86,7 +86,7 @@
       >
         <b-form-input
           text-field="nome"
-          v-model="dadosNfe.data_entrada_saida"
+          v-model="data_entrada_saida"
           type="date"
           size="sm"
         ></b-form-input>
@@ -132,7 +132,7 @@
       >
         <b-form-input
           disabled
-          v-model="dadosNfe.nfe"
+          v-model="nfe"
           type="text"
           size="sm"
         ></b-form-input>
@@ -147,7 +147,7 @@
       >
         <b-form-input
           disabled
-          v-model="dadosNfe.serie"
+          v-model="serie"
           type="text"
           size="sm"
         ></b-form-input>
@@ -162,7 +162,7 @@
       >
         <b-form-input
           disabled
-          v-model="dadosNfe.chave"
+          v-model="chave"
           type="text"
           size="sm"
         ></b-form-input>
@@ -177,7 +177,7 @@
       >
         <b-form-input
           disabled
-          v-model="dadosNfe.recibo"
+          v-model="recibo"
           type="text"
           size="sm"
         ></b-form-input>
@@ -192,7 +192,7 @@
       >
         <b-form-input
           disabled
-          v-model="dadosNfe.status"
+          v-model="status"
           type="text"
           size="sm"
         ></b-form-input>
@@ -646,10 +646,14 @@
     </b-card-text>
 
     <b-row class="mt-5 ml-0 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-      <b-form-group class="m-0">
-        <b-button variant="success" @click="saveNotaFiscal" size="sm"
+      <b-form-group class="mb-0 mr-2">
+        <b-button variant="success" @click="updateOrSaveNotaFiscal" size="sm"
           >Salvar NF-e</b-button
         >
+      </b-form-group>
+
+      <b-form-group class="mb-0">
+        <b-button variant="light" @click="clearInputs" size="sm">Novo</b-button>
       </b-form-group>
     </b-row>
     <ModalShippingCompany />
@@ -672,21 +676,23 @@ export default {
     return {
       dadosNfe: {
         id: "",
-        data_emissao: moment().format("YYYY-MM-DD"),
-        data_entrada_saida: moment().format("YYYY-MM-DD"),
+        ID: "", // Controle das solicitações de emissão por pedido ou ID de processamento.
         operacao: "1",
         natureza_operacao: "Venda de produção do estabelecimento",
         modelo: "1", //2 para NFC-e
         ambiente: "2", //2 para Homologação
-        nfe: "",
-        serie: "",
         idCliente: "",
         finalidade: "1",
-        idTransportadora: "",
-        chave: "",
-        recibo: "",
-        status: "",
+        url_notificacao: "teste",
       },
+      nfe: "",
+      serie: "",
+      chave: "",
+      recibo: "",
+      status: "",
+      data_emissao: moment().format("YYYY-MM-DD"),
+      data_entrada_saida: moment().format("YYYY-MM-DD"),
+      idTransportadora: "",
       produtosNotaFiscal: {
         id: "",
         codigo: "",
@@ -798,19 +804,34 @@ export default {
     };
   },
   methods: {
-    async saveProductInNote() {
-      console.log("salvando produtos", this.produtosNotaFiscal);
-      console.log("Salvando a nota", this.dadosNfe);
-      //ja está com os dados corretos para serem enviados ao backend
-    },
+    clearInputs() {
+      this.dadosNfe.id = "";
+      this.dadosNfe.ID = ""; // Controle das solicitações de emissão por pedido ou ID de processamento
+      this.dadosNfe.natureza_operacao = "Venda de produção do estabelecimento";
+      this.dadosNfe.modelo = "1"; //2 para NFC-e
+      this.dadosNfe.ambiente = "2"; //2 para Homologação
+      this.dadosNfe.idCliente = "";
+      this.dadosNfe.url_notificacao = "teste";
 
-    async assignValuesToTheSelectedProduct() {
-      const result = this.produtos.filter(
-        (idProduto) => idProduto.id == this.produtosNotaFiscal.id
-      );
+      this.produtosNotaFiscal.id = "";
+      this.produtosNotaFiscal.codigo = "";
+      this.produtosNotaFiscal.quantidade = "";
+      this.produtosNotaFiscal.informacoes_adicionais = "";
+      this.produtosNotaFiscal.subtotal = "";
+      this.produtosNotaFiscal.total = "";
+      this.produtosNotaFiscal.unidade = "";
+      this.produtosNotaFiscal.peso = "";
+      this.produtosNotaFiscal.origem = 0;
 
-      this.produtosNotaFiscal.unidade = result[0].unidade;
-      this.produtosNotaFiscal.codigo = result[0].codReferencia;
+      this.pedido.modalidade_frete = 9;
+      this.pedido.frete = "";
+      this.pedido.pagamento = 0;
+      this.pedido.presenca = 1;
+      this.pedido.desconto = "";
+      this.pedido.total = "";
+      this.pedido.intermediador = "";
+      this.pedido.id_intermediador = "";
+      this.pedido.cnpj_intermediador = "";
     },
 
     changeEmissionTypeText() {
@@ -854,6 +875,20 @@ export default {
 
     sendNfeByEmail() {
       console.log("Enviado email");
+    },
+
+    async saveProductInNote() {
+      console.log("salvando produtos", this.produtosNotaFiscal);
+      //ja está com os dados corretos para serem enviados ao backend
+    },
+
+    async assignValuesToTheSelectedProduct() {
+      const result = this.produtos.filter(
+        (idProduto) => idProduto.id == this.produtosNotaFiscal.id
+      );
+
+      this.produtosNotaFiscal.unidade = result[0].unidade;
+      this.produtosNotaFiscal.codigo = result[0].codReferencia;
     },
 
     async getCliente() {
@@ -900,7 +935,8 @@ export default {
 
     async saveNotaFiscal() {
       try {
-        this.dadosNfe.id = await ServiceNotaFiscal.saveNote(this.dadosNfe);
+        const result = await ServiceNotaFiscal.saveNote(this.dadosNfe);
+        this.dadosNfe.id = result.id;
 
         return this.$toast.open({
           message: "Nota Fiscal salva!",
@@ -912,6 +948,21 @@ export default {
           this.$toast
         );
       }
+    },
+
+    async updateNotaFiscal() {
+      try {
+        console.log("nota atualizando algum dia");
+      } catch (error) {
+        return this.$toast.open({
+          message: "Erro ao atualizar a nota",
+          type: "success",
+        });
+      }
+    },
+
+    async updateOrSaveNotaFiscal() {
+      this.dadosNfe.id !== "" ? this.updateNotaFiscal() : this.saveNotaFiscal();
     },
 
     maskMoney(value) {
