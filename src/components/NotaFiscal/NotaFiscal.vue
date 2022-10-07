@@ -647,7 +647,7 @@
 
     <b-row class="mt-5 ml-0 col-sm-12 col-md-12 col-lg-12 col-xl-12">
       <b-form-group class="m-0">
-        <b-button variant="success" @click="teste" size="sm"
+        <b-button variant="success" @click="saveNotaFiscal" size="sm"
           >Salvar NF-e</b-button
         >
       </b-form-group>
@@ -661,6 +661,8 @@ import moment from "moment";
 import ServiceCustomer from "../../services/serviceCustomer";
 import ServiceProducts from "../../services/serviceProducts";
 import ModalShippingCompany from "./ModalShippingCompany.vue";
+import toastAlertErros from "../../utils/toastAlertErros";
+import ServiceNotaFiscal from "../../services/serviceNotaFiscal";
 
 export default {
   components: {
@@ -855,28 +857,61 @@ export default {
     },
 
     async getCliente() {
-      const data = await ServiceCustomer.getCustomersForSelectBox();
-      this.cliente = data.data;
+      try {
+        const data = await ServiceCustomer.getCustomersForSelectBox();
+        this.cliente = data.data;
+      } catch (error) {
+        return this.$toast.open({
+          message: "Não foi possível listar os clientes",
+          type: "warning",
+        });
+      }
     },
 
     async getProductsForSelectBox() {
-      const data = await ServiceProducts.getProductsForSelectBox();
-      this.produtos = data.data;
+      try {
+        const data = await ServiceProducts.getProductsForSelectBox();
+        this.produtos = data.data;
+      } catch (error) {
+        return this.$toast.open({
+          message: "Não foi possível listar os produtos",
+          type: "warning",
+        });
+      }
     },
 
     async getProductsById() {
-      const data = await ServiceProducts.getProductById(
-        this.produtosNotaFiscal.id
-      );
-      return data;
+      try {
+        const data = await ServiceProducts.getProductById(
+          this.produtosNotaFiscal.id
+        );
+        return data;
+      } catch (error) {
+        return this.$toast.open({
+          message: "Não foi possível buscar o produto",
+          type: "warning",
+        });
+      }
     },
 
     openModalShippingCompany() {
       this.$bvModal.show("modalShippingCompany");
     },
 
-    teste() {
-      console.log(this.dadosNfe.operacao, "teste:", this.pedido.presenca);
+    async saveNotaFiscal() {
+      try {
+        this.dadosNfe.id = await ServiceNotaFiscal.saveNote(this.dadosNfe);
+
+        return this.$toast.open({
+          message: "Nota Fiscal salva!",
+          type: "success",
+        });
+      } catch (error) {
+        return toastAlertErros.validateErroDoesNotContainFor(
+          error,
+          this.$toast
+        );
+      }
     },
 
     maskMoney(value) {
