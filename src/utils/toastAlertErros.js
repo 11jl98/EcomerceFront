@@ -21,7 +21,17 @@ class toastAlertErros {
 
   validateErroDoesNotContainFor(error, toast) {
     const erro = error.response.data.erros;
+   
+    toast.open({
+      message: erro,
+      type: "error",
+    });
+  }
 
+  
+validateErrorRemoveUnwantedCharacters(error, toast) {
+    const erro = error.response.data.erros.replace('_', ' ').replace('id', '');
+   
     toast.open({
       message: erro,
       type: "error",

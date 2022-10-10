@@ -720,7 +720,7 @@ import api from "../../services/axios";
 import moment from "moment";
 import ModalPagamento from "../Sale/Modal-Forma-Pagamento.vue";
 import ServiceCustomer from "../../services/serviceCustomer";
-import ServiceProducts from "../../services/serviceProducts"
+import ServiceProducts from "../../services/serviceProducts";
 
 export default {
   components: {
@@ -886,11 +886,14 @@ export default {
           valorTotal:
             this.productsSales.quantidade * this.productsSales.valorTotal,
         });
+
         this.productsSales.id = data.id;
+
         if (this.dataSale.id !== "") {
           this.getProductSale();
           this.clearDataProductsSale();
         }
+
         return this.$toast.open({
           message: "Produto adicionado na venda!",
           type: "success",

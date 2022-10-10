@@ -239,7 +239,7 @@
                       size="sm"
                       value-field="id"
                       text-field="nome"
-                      v-model="produtosNotaFiscal.id"
+                      v-model="produtosNotaFiscal.idProduto"
                       :options="produtos"
                       @change="assignValuesToTheSelectedProduct"
                     ></b-form-select>
@@ -320,7 +320,7 @@
 
                   <b-form-group
                     label="und"
-                    class="col-sm-12 col-md-3 col-lg-2 col-xl-1"
+                    class="col-sm-12 col-md-3 col-lg-2 col-xl-2"
                   >
                     <b-form-input
                       v-model="produtosNotaFiscal.unidade"
@@ -335,6 +335,17 @@
                     <b-form-input
                       placeholder="Peso (KG)"
                       v-model="produtosNotaFiscal.peso"
+                      size="sm"
+                    />
+                  </b-form-group>
+
+                  <b-form-group
+                    label="% Desc"
+                    class="col-sm-12 col-md-3 col-lg-2 col-xl-1"
+                  >
+                    <b-form-input
+                      placeholder="%"
+                      v-model="produtosNotaFiscal.desconto"
                       size="sm"
                     />
                   </b-form-group>
@@ -376,11 +387,11 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>teste</td>
-                        <td>teste</td>
-                        <td>teste</td>
-                        <td>teste</td>
+                      <tr v-for="produto in produtosForTable" :key="produto.id">
+                        <td>{{ produto.nome }}</td>
+                        <td>{{ produto.quantidade }}</td>
+                        <td>{{ produto.subtotal }}</td>
+                        <td>{{ produto.total }}</td>
                         <td>
                           <b-button
                             size="sm"
@@ -548,7 +559,7 @@
                       v-mask="maskDiscount"
                       v-model="pedido.desconto"
                       size="sm"
-                      placeholder="R$ 0,00"
+                      placeholder="%"
                     />
                   </b-form-group>
 
@@ -667,6 +678,7 @@ import ServiceProducts from "../../services/serviceProducts";
 import ModalShippingCompany from "./ModalShippingCompany.vue";
 import toastAlertErros from "../../utils/toastAlertErros";
 import ServiceNotaFiscal from "../../services/serviceNotaFiscal";
+import serviceNotaFiscal from "../../services/serviceNotaFiscal";
 
 export default {
   components: {
@@ -694,14 +706,16 @@ export default {
       data_entrada_saida: moment().format("YYYY-MM-DD"),
       idTransportadora: "",
       produtosNotaFiscal: {
-        id: "",
+        idProduto: "",
+        idNota: "",
         codigo: "",
         ncm: "6109.10.00",
         cest: "28.038.00",
-        quantidade: 0,
+        quantidade: "",
         unidade: "",
         peso: "",
         origem: 0,
+        desconto: "",
         subtotal: "",
         total: "",
         classe_imposto: "REF1000",
@@ -720,6 +734,7 @@ export default {
       },
       cliente: [],
       produtos: [],
+      produtosForTable: [],
       pagamento: [
         { value: 0, text: "Pagamento à vista" },
         { value: 1, text: "Pagamento à prazo" },
@@ -806,14 +821,14 @@ export default {
   methods: {
     clearInputs() {
       this.dadosNfe.id = "";
-      this.dadosNfe.ID = ""; // Controle das solicitações de emissão por pedido ou ID de processamento
+      this.dadosNfe.ID = "";
       this.dadosNfe.natureza_operacao = "Venda de produção do estabelecimento";
-      this.dadosNfe.modelo = "1"; //2 para NFC-e
-      this.dadosNfe.ambiente = "2"; //2 para Homologação
+      this.dadosNfe.modelo = "1";
+      this.dadosNfe.ambiente = "2";
       this.dadosNfe.idCliente = "";
       this.dadosNfe.url_notificacao = "teste";
 
-      this.produtosNotaFiscal.id = "";
+      this.produtosNotaFiscal.idProduto = "";
       this.produtosNotaFiscal.codigo = "";
       this.produtosNotaFiscal.quantidade = "";
       this.produtosNotaFiscal.informacoes_adicionais = "";
@@ -822,6 +837,7 @@ export default {
       this.produtosNotaFiscal.unidade = "";
       this.produtosNotaFiscal.peso = "";
       this.produtosNotaFiscal.origem = 0;
+      this.produtosNotaFiscal.desconto = "";
 
       this.pedido.modalidade_frete = 9;
       this.pedido.frete = "";
@@ -878,13 +894,49 @@ export default {
     },
 
     async saveProductInNote() {
-      console.log("salvando produtos", this.produtosNotaFiscal);
-      //ja está com os dados corretos para serem enviados ao backend
+      try {
+        if (this.dadosNfe.id === "") {
+          return this.$toast.open({
+            message: "É necessário salvar a nota para adicionar o produto!",
+            type: "warning",
+          });
+        } else {
+          const formatedSubTotal = this.produtosNotaFiscal.subtotal.replace(
+            /[^0-9.-]+/g,
+            ""
+          );
+          const formatedTotal = this.produtosNotaFiscal.total.replace(
+            /[^0-9.-]+/g,
+            ""
+          );
+
+          await serviceNotaFiscal.saveNoteItem({
+            ...this.produtosNotaFiscal,
+            idNota: this.dadosNfe.id,
+            subtotal: formatedSubTotal,
+            total: formatedTotal,
+          });
+
+          await this.getProductsByIdNota();
+        }
+      } catch (error) {
+        return toastAlertErros.validateErrorRemoveUnwantedCharacters(
+          error,
+          this.$toast
+        );
+      }
+    },
+
+    async getProductsByIdNota() {
+      const result = await serviceNotaFiscal.getProductsByIdNota(
+        this.dadosNfe.id
+      );
+      this.produtosForTable = result.noteItem;
     },
 
     async assignValuesToTheSelectedProduct() {
       const result = this.produtos.filter(
-        (idProduto) => idProduto.id == this.produtosNotaFiscal.id
+        (idProduto) => idProduto.id == this.produtosNotaFiscal.idProduto
       );
 
       this.produtosNotaFiscal.unidade = result[0].unidade;
@@ -918,7 +970,7 @@ export default {
     async getProductsById() {
       try {
         const data = await ServiceProducts.getProductById(
-          this.produtosNotaFiscal.id
+          this.produtosNotaFiscal.idProduto
         );
         return data;
       } catch (error) {
@@ -943,7 +995,7 @@ export default {
           type: "success",
         });
       } catch (error) {
-        return toastAlertErros.validateErroDoesNotContainFor(
+        return toastAlertErros.validateErrorRemoveUnwantedCharacters(
           error,
           this.$toast
         );
