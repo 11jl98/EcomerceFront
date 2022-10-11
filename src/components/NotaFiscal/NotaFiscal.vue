@@ -50,7 +50,7 @@
         id="input-group-1"
         label="Cliente"
         label-for="input-1"
-        class="col-sm-7 col-md-6 col-lg-6 col-xl-3"
+        class="col-sm-7 col-md-6 col-lg-6 col-xl-4"
         size="sm"
       >
         <b-form-select
@@ -64,31 +64,17 @@
 
       <b-form-group
         id="input-group-1"
-        label="Data Emissão"
+        label="Data NF-e"
         label-for="input-1"
         class="col-sm-5 col-md-3 col-lg-3 col-xl-2"
         size="sm"
       >
         <b-form-input
           text-field="nome"
-          v-model="data_emissao"
+          v-model="dadosNfe.data_nfe"
           type="date"
           size="sm"
-        ></b-form-input>
-      </b-form-group>
-
-      <b-form-group
-        id="input-group-1"
-        label="Data Saída"
-        label-for="input-1"
-        class="col-sm-5 col-md-3 col-lg-3 col-xl-2"
-        size="sm"
-      >
-        <b-form-input
-          text-field="nome"
-          v-model="data_entrada_saida"
-          type="date"
-          size="sm"
+          disabled
         ></b-form-input>
       </b-form-group>
 
@@ -96,7 +82,7 @@
         id="input-group-1"
         label="Natureza operação"
         label-for="input-1"
-        class="col-sm-7 col-md-5 col-lg-5 col-xl-3"
+        class="col-sm-7 col-md-5 col-lg-5 col-xl-4"
         size="sm"
       >
         <b-form-input
@@ -390,8 +376,22 @@
                       <tr v-for="produto in produtosForTable" :key="produto.id">
                         <td>{{ produto.nome }}</td>
                         <td>{{ produto.quantidade }}</td>
-                        <td>{{ produto.subtotal }}</td>
-                        <td>{{ produto.total }}</td>
+                        <td>
+                          {{
+                            produto.subtotal.toLocaleString("pt-br", {
+                              style: "currency",
+                              currency: "BRL",
+                            })
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            produto.total.toLocaleString("pt-br", {
+                              style: "currency",
+                              currency: "BRL",
+                            })
+                          }}
+                        </td>
                         <td>
                           <b-button
                             size="sm"
@@ -684,6 +684,11 @@ export default {
   components: {
     ModalShippingCompany,
   },
+  props: {
+    propsIdNota: {
+      type: String,
+    },
+  },
   data() {
     return {
       dadosNfe: {
@@ -694,16 +699,17 @@ export default {
         modelo: "1", //2 para NFC-e
         ambiente: "2", //2 para Homologação
         idCliente: "",
-        finalidade: "1",
+        finalidade: 1,
         url_notificacao: "teste",
+        data_nfe: moment().format("YYYY-MM-DD"),
+        id_webmania: "",
+        response: "",
       },
       nfe: "",
       serie: "",
       chave: "",
       recibo: "",
       status: "",
-      data_emissao: moment().format("YYYY-MM-DD"),
-      data_entrada_saida: moment().format("YYYY-MM-DD"),
       idTransportadora: "",
       produtosNotaFiscal: {
         idProduto: "",
@@ -827,6 +833,7 @@ export default {
       this.dadosNfe.ambiente = "2";
       this.dadosNfe.idCliente = "";
       this.dadosNfe.url_notificacao = "teste";
+      this.dadosNfe.data_nfe = moment().format("YYYY-MM-DD");
 
       this.produtosNotaFiscal.idProduto = "";
       this.produtosNotaFiscal.codigo = "";
@@ -848,6 +855,8 @@ export default {
       this.pedido.intermediador = "";
       this.pedido.id_intermediador = "";
       this.pedido.cnpj_intermediador = "";
+
+      this.produtosForTable = [];
     },
 
     changeEmissionTypeText() {
@@ -886,7 +895,6 @@ export default {
       const desconto = (valorTotalProdutos * this.pedido.desconto) / 100;
 
       this.pedido.total = valorTotalProdutos - desconto;
-      console.log(this.pedido.total);
     },
 
     sendNfeByEmail() {
@@ -901,25 +909,24 @@ export default {
             type: "warning",
           });
         } else {
-          const formatedSubTotal = this.produtosNotaFiscal.subtotal.replace(
-            /[^0-9.-]+/g,
-            ""
-          );
-          const formatedTotal = this.produtosNotaFiscal.total.replace(
-            /[^0-9.-]+/g,
-            ""
-          );
+          const formatedSubTotal = this.produtosNotaFiscal.subtotal
+            .replace(".", "")
+            .replace(",", ".");
+          const formatedTotal = this.produtosNotaFiscal.total
+            .replace(".", "")
+            .replace(",", ".");
 
-          await serviceNotaFiscal.saveNoteItem({
+          await serviceNotaFiscal.saveNotaItem({
             ...this.produtosNotaFiscal,
             idNota: this.dadosNfe.id,
             subtotal: formatedSubTotal,
             total: formatedTotal,
           });
 
-          await this.getProductsByIdNota();
+          await this.findProductsByIdNota();
         }
       } catch (error) {
+        console.log(error);
         return toastAlertErros.validateErrorRemoveUnwantedCharacters(
           error,
           this.$toast
@@ -927,10 +934,11 @@ export default {
       }
     },
 
-    async getProductsByIdNota() {
-      const result = await serviceNotaFiscal.getProductsByIdNota(
+    async findProductsByIdNota() {
+      const result = await serviceNotaFiscal.findProductsByIdNota(
         this.dadosNfe.id
       );
+
       this.produtosForTable = result.noteItem;
     },
 
@@ -987,7 +995,8 @@ export default {
 
     async saveNotaFiscal() {
       try {
-        const result = await ServiceNotaFiscal.saveNote(this.dadosNfe);
+        console.log(this.dadosNfe);
+        const result = await ServiceNotaFiscal.saveNota(this.dadosNfe);
         this.dadosNfe.id = result.id;
 
         return this.$toast.open({
@@ -1004,17 +1013,28 @@ export default {
 
     async updateNotaFiscal() {
       try {
-        console.log("nota atualizando algum dia");
+        await ServiceNotaFiscal.updateNota(this.dadosNfe);
+
+        return this.$toast.open({
+          message: "Nota Fiscal salva!",
+          type: "success",
+        });
       } catch (error) {
         return this.$toast.open({
           message: "Erro ao atualizar a nota",
-          type: "success",
+          type: "error",
         });
       }
     },
 
     async updateOrSaveNotaFiscal() {
       this.dadosNfe.id !== "" ? this.updateNotaFiscal() : this.saveNotaFiscal();
+    },
+
+    async findNotaById() {
+      const result = await serviceNotaFiscal.findNotaById(this.dadosNfe.id);
+      delete result["idEmpresa"];
+      Object.assign(this.dadosNfe, result);
     },
 
     maskMoney(value) {
@@ -1083,6 +1103,13 @@ export default {
   mounted() {
     this.getCliente();
     this.getProductsForSelectBox();
+  },
+  watch: {
+    propsIdNota() {
+      this.dadosNfe.id = this.propsIdNota;
+      this.findProductsByIdNota();
+      this.findNotaById();
+    },
   },
 };
 </script>

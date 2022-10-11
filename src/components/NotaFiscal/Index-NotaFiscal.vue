@@ -7,15 +7,18 @@
       :style="{ width: width }"
     >
       <b-card no-body>
-        <b-tabs card>
+        <b-tabs card v-model="tabIndex">
           <b-tab title="Nota fiscal">
             <b-card-text>
-              <NotaFiscal />
+              <NotaFiscal :propsIdNota="idNota" />
             </b-card-text>
           </b-tab>
           <b-tab title="Pesquisa">
             <b-card-text>
-              <Search />
+              <Search
+                @alterTabIndex="tabIndex = $event"
+                @idNota="idNota = $event"
+              />
             </b-card-text>
           </b-tab>
         </b-tabs>
@@ -33,6 +36,12 @@ export default {
   components: {
     NotaFiscal,
     Search,
+  },
+  data() {
+    return {
+      tabIndex: 1,
+      idNota: "",
+    };
   },
   computed: {
     ...mapState({
