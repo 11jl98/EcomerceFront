@@ -208,7 +208,7 @@ export default {
       }
     },
 
-    async openModalDeletePurchase(id) {
+    openModalDeletePurchase(id) {
       this.$bvModal.show("modalConfirmDeletePurchase");
       this.idPurchaseFromModal = id;
     },

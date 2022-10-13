@@ -25,6 +25,14 @@ class ServiceNotaFiscal {
     const { data } = await api.put(`/nota/${dataNota.id}`, dataNota)
     return data
   }
+
+  async deleteItemFromNote(id){
+    await api.delete(`/nota-item/${id}`)
+  }
+
+  async deleteNotaAndItem(id){
+    await api.delete(`/nota-item/delete-all/${id}`)
+  }
 }
 
 export default new ServiceNotaFiscal()

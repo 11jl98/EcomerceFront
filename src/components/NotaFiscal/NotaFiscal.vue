@@ -280,6 +280,19 @@
                   </b-form-group>
 
                   <b-form-group
+                    label="% Desc"
+                    class="col-sm-12 col-md-3 col-lg-2 col-xl-1"
+                  >
+                    <b-form-input
+                      maxlength="5"
+                      placeholder="%"
+                      @change="calculateDiscount"
+                      v-model="produtosNotaFiscal.desconto"
+                      size="sm"
+                    />
+                  </b-form-group>
+
+                  <b-form-group
                     label="Vl. Total"
                     class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
                   >
@@ -326,17 +339,6 @@
                   </b-form-group>
 
                   <b-form-group
-                    label="% Desc"
-                    class="col-sm-12 col-md-3 col-lg-2 col-xl-1"
-                  >
-                    <b-form-input
-                      placeholder="%"
-                      v-model="produtosNotaFiscal.desconto"
-                      size="sm"
-                    />
-                  </b-form-group>
-
-                  <b-form-group
                     class="col-sm-6 col-md-4 col-lg-3 col-xl-2"
                     label="."
                     style="color: transparent !important"
@@ -362,23 +364,33 @@
                 >
                   <table class="table table-sm">
                     <thead
-                      style="background-color: #56aafe !important; color: white"
+                      style="
+                        background-color: #56aafe !important;
+                        color: white;
+                        text-align: center;
+                      "
                     >
                       <tr>
                         <th>Nome Produto</th>
                         <th>Quantidade</th>
-                        <th>Valor unitario</th>
-                        <th>Valor Total</th>
+                        <th>Vl. unitario</th>
+                        <th>Vl. total</th>
+                        <th>% Desconto</th>
+                        <th>Vl. desc</th>
                         <th>Ações</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="produto in produtosForTable" :key="produto.id">
-                        <td>{{ produto.nome }}</td>
-                        <td>{{ produto.quantidade }}</td>
+                      <tr
+                        v-for="notaItem in produtosForTable"
+                        :key="notaItem.id"
+                        style="text-align: center"
+                      >
+                        <td>{{ notaItem.nome }}</td>
+                        <td>{{ notaItem.quantidade }}</td>
                         <td>
                           {{
-                            produto.subtotal.toLocaleString("pt-br", {
+                            notaItem.subtotal.toLocaleString("pt-br", {
                               style: "currency",
                               currency: "BRL",
                             })
@@ -386,7 +398,14 @@
                         </td>
                         <td>
                           {{
-                            produto.total.toLocaleString("pt-br", {
+                            (notaItem.quantidade * notaItem.subtotal)
+                              | formatValueMonetary
+                          }}
+                        </td>
+                        <td>{{ notaItem.desconto }}</td>
+                        <td>
+                          {{
+                            notaItem.total.toLocaleString("pt-br", {
                               style: "currency",
                               currency: "BRL",
                             })
@@ -396,6 +415,7 @@
                           <b-button
                             size="sm"
                             variant="secondary"
+                            @click="deleteProductFromNote(notaItem.id)"
                             v-b-popover.hover.right="{
                               variant: 'secondary',
                               content: 'Excluir',
@@ -556,7 +576,7 @@
                     <b-form-input
                       maxlength="6"
                       @change="alterTotalPedidoValue"
-                      v-mask="maskDiscount"
+                      v-mask="maskDiscount(pedido.desconto)"
                       v-model="pedido.desconto"
                       size="sm"
                       placeholder="%"
@@ -878,6 +898,8 @@ export default {
         this.produtosNotaFiscal.total.toLocaleString("pt-br", {
           minimumFractionDigits: 2,
         });
+
+      this.calculateDiscount();
     },
 
     formatTotalProductValue() {
@@ -895,6 +917,69 @@ export default {
       const desconto = (valorTotalProdutos * this.pedido.desconto) / 100;
 
       this.pedido.total = valorTotalProdutos - desconto;
+    },
+
+    calculateDiscount() {
+      const valorTotalProdutos =
+        this.produtosNotaFiscal.quantidade *
+        this.produtosNotaFiscal.subtotal.replace(".", "").replace(",", ".");
+
+      const desconto =
+        (valorTotalProdutos *
+          this.produtosNotaFiscal.desconto.replace(",", ".")) /
+        100;
+
+      const valorDesconto = valorTotalProdutos - desconto;
+
+      this.produtosNotaFiscal.total = valorDesconto.toLocaleString("pt-br", {
+        minimumFractionDigits: 2,
+      });
+    },
+
+    maskMoney(value) {
+      if (value.length === 3) {
+        return "#,##";
+      }
+      if (value.length === 5) {
+        return "##,##";
+      }
+      if (value.length === 6) {
+        return "###,##";
+      }
+      if (value.length === 7) {
+        return "#.###,##";
+      }
+      if (value.length === 9) {
+        return "##.###,##";
+      }
+      if (value.length === 10) {
+        return "###.###,##";
+      }
+      if (value.length === 11) {
+        return "#.###.###,##";
+      }
+      if (value.length === 12) {
+        return "##.###.###,##";
+      } else {
+        return "";
+      }
+    },
+    maskDiscount(value) {
+      if (value.length === 2) {
+        return "#.#";
+      } else if (value.length === 4) {
+        return "##.#";
+      } else if (value.length === 5) {
+        return "##.##";
+      } else if (value.length === 6) {
+        return "###.##";
+      } else {
+        return "";
+      }
+    },
+
+    openModalShippingCompany() {
+      this.$bvModal.show("modalShippingCompany");
     },
 
     sendNfeByEmail() {
@@ -915,12 +1000,17 @@ export default {
           const formatedTotal = this.produtosNotaFiscal.total
             .replace(".", "")
             .replace(",", ".");
+          const formatedDesconto = this.produtosNotaFiscal.desconto.replace(
+            ",",
+            "."
+          );
 
           await serviceNotaFiscal.saveNotaItem({
             ...this.produtosNotaFiscal,
             idNota: this.dadosNfe.id,
             subtotal: formatedSubTotal,
             total: formatedTotal,
+            desconto: formatedDesconto,
           });
 
           await this.findProductsByIdNota();
@@ -931,6 +1021,15 @@ export default {
           error,
           this.$toast
         );
+      }
+    },
+
+    async deleteProductFromNote(id) {
+      try {
+        await serviceNotaFiscal.deleteItemFromNote(id);
+        await this.findProductsByIdNota();
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -989,13 +1088,8 @@ export default {
       }
     },
 
-    openModalShippingCompany() {
-      this.$bvModal.show("modalShippingCompany");
-    },
-
     async saveNotaFiscal() {
       try {
-        console.log(this.dadosNfe);
         const result = await ServiceNotaFiscal.saveNota(this.dadosNfe);
         this.dadosNfe.id = result.id;
 
@@ -1016,7 +1110,7 @@ export default {
         await ServiceNotaFiscal.updateNota(this.dadosNfe);
 
         return this.$toast.open({
-          message: "Nota Fiscal salva!",
+          message: "Nota Fiscal atualizada!",
           type: "success",
         });
       } catch (error) {
@@ -1035,35 +1129,6 @@ export default {
       const result = await serviceNotaFiscal.findNotaById(this.dadosNfe.id);
       delete result["idEmpresa"];
       Object.assign(this.dadosNfe, result);
-    },
-
-    maskMoney(value) {
-      if (value.length === 3) {
-        return "#,##";
-      }
-      if (value.length === 5) {
-        return "##,##";
-      }
-      if (value.length === 6) {
-        return "###,##";
-      }
-      if (value.length === 7) {
-        return "#.###,##";
-      }
-      if (value.length === 9) {
-        return "##.###,##";
-      }
-      if (value.length === 10) {
-        return "###.###,##";
-      }
-      if (value.length === 11) {
-        return "#.###.###,##";
-      }
-      if (value.length === 12) {
-        return "##.###.###,##";
-      } else {
-        return "";
-      }
     },
   },
   computed: {
@@ -1088,16 +1153,13 @@ export default {
         this.pedido.presenca == 9
       );
     },
-    maskDiscount() {
-      if (this.pedido.desconto.length === 3) {
-        return "##.#";
-      } else if (this.pedido.desconto.length === 4) {
-        return "##.##";
-      } else if (this.pedido.desconto.length === 6) {
-        return "###.##";
-      } else {
-        return "";
-      }
+  },
+  filters: {
+    formatValueMonetary: function (value) {
+      return value.toLocaleString("pt-br", {
+        style: "currency",
+        currency: "BRL",
+      });
     },
   },
   mounted() {

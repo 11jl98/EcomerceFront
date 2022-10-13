@@ -105,6 +105,7 @@
                 <b-button
                   size="sm"
                   variant="secondary"
+                  @click="openModalDeleteNota(dataSearchNota.id)"
                   style="border: none !important"
                   v-b-popover.hover.right="{
                     variant: 'secondary',
@@ -146,12 +147,23 @@
         ></b-icon-arrow-right-square-fill>
       </b-button>
     </b-card>
+    <b-modal id="modalConfirmDeleteNota">
+      <h3>Deseja realmente deletar a nota fiscal e os intens nela ?</h3>
+
+      <template #modal-footer="{ cancel }">
+        <b-button size="sm" variant="danger" @click="deleteNotaAndItem">
+          Deletar
+        </b-button>
+        <b-button size="sm" variant="info" @click="cancel()"> Fechar </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import api from "../../services/axios";
 import moment from "moment";
+import serviceNotaFiscal from "../../services/serviceNotaFiscal";
 
 export default {
   data() {
@@ -168,6 +180,7 @@ export default {
       tabIndex: 0,
       page: 1,
       dataLength: 0,
+      idNotaFromModal: null,
     };
   },
   methods: {
@@ -182,6 +195,22 @@ export default {
         } else {
           return;
         }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async deleteNotaAndItem() {
+      try {
+        await serviceNotaFiscal.deleteNotaAndItem(this.idNotaFromModal);
+        await this.filterNota(1);
+        this.idNotaFromModal = null;
+
+        this.$bvModal.hide("modalConfirmDeleteNota");
+        return this.$toast.open({
+          message: "Nota Fiscal deletada",
+          type: "success",
+        });
       } catch (error) {
         console.log(error);
       }
@@ -202,6 +231,11 @@ export default {
       } else {
         this.filterNota((this.page -= 1));
       }
+    },
+
+    openModalDeleteNota(id) {
+      this.$bvModal.show("modalConfirmDeleteNota");
+      this.idNotaFromModal = id;
     },
   },
 
