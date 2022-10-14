@@ -286,7 +286,7 @@
                     <b-form-input
                       maxlength="5"
                       placeholder="%"
-                      @change="calculateDiscount"
+                      @change="calculateDiscountProdutos"
                       v-model="produtosNotaFiscal.desconto"
                       size="sm"
                     />
@@ -485,7 +485,7 @@
                       text-field="text"
                       @change="enableFreightage"
                       size="sm"
-                      v-model="pedido.modalidade_frete"
+                      v-model="dadosNfe.modalidade_frete"
                       :options="modalidade_frete"
                     ></b-form-select>
                   </b-form-group>
@@ -495,8 +495,8 @@
                     class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
                   >
                     <b-form-input
-                      v-mask="maskMoney(pedido.frete)"
-                      v-model="pedido.frete"
+                      v-mask="maskMoney(dadosNfe.frete)"
+                      v-model="dadosNfe.frete"
                       size="sm"
                       placeholder="R$ 0,00"
                     />
@@ -512,7 +512,7 @@
                       size="sm"
                       value-field="value"
                       text-field="text"
-                      v-model="pedido.pagamento"
+                      v-model="dadosNfe.pagamento"
                       :options="pagamento"
                     ></b-form-select>
                   </b-form-group>
@@ -527,7 +527,7 @@
                       size="sm"
                       value-field="value"
                       text-field="text"
-                      v-model="pedido.presenca"
+                      v-model="dadosNfe.presenca"
                       :options="presenca"
                     ></b-form-select>
                   </b-form-group>
@@ -543,7 +543,7 @@
                         size="sm"
                         value-field="value"
                         text-field="text"
-                        v-model="pedido.intermediador"
+                        v-model="dadosNfe.intermediador"
                         :options="intermediador"
                       ></b-form-select>
                     </b-form-group>
@@ -553,7 +553,7 @@
                       class="col-sm-6 col-md-4 col-lg-4 col-xl-3"
                     >
                       <b-form-input
-                        v-model="pedido.id_intermediador"
+                        v-model="dadosNfe.id_intermediador"
                         size="sm"
                       />
                     </b-form-group>
@@ -563,7 +563,7 @@
                       class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
                     >
                       <b-form-input
-                        v-model="pedido.cnpj_intermediador"
+                        v-model="dadosNfe.cnpj_intermediador"
                         size="sm"
                       />
                     </b-form-group>
@@ -575,9 +575,9 @@
                   >
                     <b-form-input
                       maxlength="6"
-                      @change="alterTotalPedidoValue"
-                      v-mask="maskDiscount(pedido.desconto)"
-                      v-model="pedido.desconto"
+                      @change="calculateDiscountPedido"
+                      v-mask="maskDiscount(dadosNfe.desconto)"
+                      v-model="dadosNfe.desconto"
                       size="sm"
                       placeholder="%"
                     />
@@ -590,7 +590,7 @@
                     <b-form-input
                       disabled
                       placeholder="R$ 0,00"
-                      v-model="pedido.total"
+                      v-model="dadosNfe.total"
                       size="sm"
                     />
                   </b-form-group>
@@ -676,16 +676,35 @@
       </div>
     </b-card-text>
 
-    <b-row class="mt-5 ml-0 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-      <b-form-group class="mb-0 mr-2">
-        <b-button variant="success" @click="updateOrSaveNotaFiscal" size="sm"
-          >Salvar NF-e</b-button
-        >
-      </b-form-group>
+    <b-row
+      class="mt-5 ml-0 col-sm-6 col-md-12 col-lg-12 col-xl-12"
+      style="display: flex; justify-content: space-between"
+    >
+      <b-row style="margin-left: 0px">
+        <b-form-group class="mb-0 mr-2">
+          <b-button variant="success" @click="updateOrSaveNotaFiscal" size="sm"
+            >Salvar NF-e</b-button
+          >
+        </b-form-group>
 
-      <b-form-group class="mb-0">
-        <b-button variant="light" @click="clearInputs" size="sm">Novo</b-button>
-      </b-form-group>
+        <b-form-group class="mb-0">
+          <b-button variant="light" @click="clearInputs" size="sm"
+            >Novo</b-button
+          >
+        </b-form-group>
+      </b-row>
+
+      <b-row style="margin-right: 0px">
+        <b-form-group class="mb-0 ml-5">
+          <b-button
+            :disabled="dadosNfe.id !== '' ? false : true"
+            variant="info"
+            size="sm"
+            @click="sendNota"
+            >Emitir NF-e</b-button
+          >
+        </b-form-group>
+      </b-row>
     </b-row>
     <ModalShippingCompany />
   </div>
@@ -724,6 +743,15 @@ export default {
         data_nfe: moment().format("YYYY-MM-DD"),
         id_webmania: "",
         response: "",
+        pagamento: 0,
+        presenca: 1,
+        modalidade_frete: 9,
+        frete: "",
+        desconto: "",
+        total: "",
+        intermediador: "",
+        cnpj_intermediador: "",
+        id_intermediador: "",
       },
       nfe: "",
       serie: "",
@@ -747,20 +775,10 @@ export default {
         classe_imposto: "REF1000",
         informacoes_adicionais: "",
       },
-      pedido: {
-        pagamento: 0,
-        presenca: 1,
-        modalidade_frete: 9,
-        frete: "",
-        desconto: "",
-        total: "",
-        intermediador: "",
-        cnpj_intermediador: "",
-        id_intermediador: "",
-      },
       cliente: [],
       produtos: [],
       produtosForTable: [],
+      valorTotalProdutosComDesc: "",
       pagamento: [
         { value: 0, text: "Pagamento à vista" },
         { value: 1, text: "Pagamento à prazo" },
@@ -866,15 +884,15 @@ export default {
       this.produtosNotaFiscal.origem = 0;
       this.produtosNotaFiscal.desconto = "";
 
-      this.pedido.modalidade_frete = 9;
-      this.pedido.frete = "";
-      this.pedido.pagamento = 0;
-      this.pedido.presenca = 1;
-      this.pedido.desconto = "";
-      this.pedido.total = "";
-      this.pedido.intermediador = "";
-      this.pedido.id_intermediador = "";
-      this.pedido.cnpj_intermediador = "";
+      this.dadosNfe.modalidade_frete = 9;
+      this.dadosNfe.frete = "";
+      this.dadosNfe.pagamento = 0;
+      this.dadosNfe.presenca = 1;
+      this.dadosNfe.desconto = "";
+      this.dadosNfe.total = "";
+      this.dadosNfe.intermediador = "";
+      this.dadosNfe.id_intermediador = "";
+      this.dadosNfe.cnpj_intermediador = "";
 
       this.produtosForTable = [];
     },
@@ -888,7 +906,7 @@ export default {
     },
 
     enableFreightage() {
-      this.pedido.modalidade_frete === 9
+      this.dadosNfe.modalidade_frete === 9
         ? (this.isDisabled = true)
         : (this.isDisabled = false);
     },
@@ -899,7 +917,7 @@ export default {
           minimumFractionDigits: 2,
         });
 
-      this.calculateDiscount();
+      this.calculateDiscountProdutos();
     },
 
     formatTotalProductValue() {
@@ -912,14 +930,16 @@ export default {
       }
     },
 
-    alterTotalPedidoValue() {
-      const valorTotalProdutos = 200; // falta somar com o valor do frete e atribuir o valor total de todos os produto, porém falta o backend ter rotas para salvar as informações
-      const desconto = (valorTotalProdutos * this.pedido.desconto) / 100;
+    calculateDiscountPedido() {
+      const valorTotalNota =
+        this.valorTotalProdutosComDesc +
+        this.dadosNfe.frete.replace(".", "").replace(",", ".");
 
-      this.pedido.total = valorTotalProdutos - desconto;
+      const desconto = (valorTotalNota * this.dadosNfe.desconto) / 100;
+      this.dadosNfe.total = valorTotalNota - desconto;
     },
 
-    calculateDiscount() {
+    calculateDiscountProdutos() {
       const valorTotalProdutos =
         this.produtosNotaFiscal.quantidade *
         this.produtosNotaFiscal.subtotal.replace(".", "").replace(",", ".");
@@ -937,41 +957,41 @@ export default {
     },
 
     maskMoney(value) {
-      if (value.length === 3) {
+      if (value?.length === 3) {
         return "#,##";
       }
-      if (value.length === 5) {
+      if (value?.length === 5) {
         return "##,##";
       }
-      if (value.length === 6) {
+      if (value?.length === 6) {
         return "###,##";
       }
-      if (value.length === 7) {
+      if (value?.length === 7) {
         return "#.###,##";
       }
-      if (value.length === 9) {
+      if (value?.length === 9) {
         return "##.###,##";
       }
-      if (value.length === 10) {
+      if (value?.length === 10) {
         return "###.###,##";
       }
-      if (value.length === 11) {
+      if (value?.length === 11) {
         return "#.###.###,##";
       }
-      if (value.length === 12) {
+      if (value?.length === 12) {
         return "##.###.###,##";
       } else {
         return "";
       }
     },
     maskDiscount(value) {
-      if (value.length === 2) {
+      if (value?.length === 2) {
         return "#.#";
-      } else if (value.length === 4) {
+      } else if (value?.length === 4) {
         return "##.#";
-      } else if (value.length === 5) {
+      } else if (value?.length === 5) {
         return "##.##";
-      } else if (value.length === 6) {
+      } else if (value?.length === 6) {
         return "###.##";
       } else {
         return "";
@@ -984,6 +1004,10 @@ export default {
 
     sendNfeByEmail() {
       console.log("Enviado email");
+    },
+
+    async sendNota() {
+      await ServiceNotaFiscal.updateNota(this.dadosNfe);
     },
 
     async saveProductInNote() {
@@ -1039,6 +1063,9 @@ export default {
       );
 
       this.produtosForTable = result.noteItem;
+      this.dadosNfe.total = result?.noteItem
+        .map((item) => item.total)
+        .reduce((total, preco) => total + preco);
     },
 
     async assignValuesToTheSelectedProduct() {
@@ -1090,7 +1117,10 @@ export default {
 
     async saveNotaFiscal() {
       try {
-        const result = await ServiceNotaFiscal.saveNota(this.dadosNfe);
+        const result = await ServiceNotaFiscal.saveNota({
+          ...this.dadosNfe,
+          frete: this.dadosNfe.frete.replace(".", "").replace(",", "."),
+        });
         this.dadosNfe.id = result.id;
 
         return this.$toast.open({
@@ -1147,10 +1177,10 @@ export default {
     },
     retorntaTipoPresenca() {
       return (
-        this.pedido.presenca == 2 ||
-        this.pedido.presenca == 3 ||
-        this.pedido.presenca == 4 ||
-        this.pedido.presenca == 9
+        this.dadosNfe.presenca == 2 ||
+        this.dadosNfe.presenca == 3 ||
+        this.dadosNfe.presenca == 4 ||
+        this.dadosNfe.presenca == 9
       );
     },
   },
