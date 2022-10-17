@@ -497,6 +497,7 @@
                     <b-form-input
                       v-mask="maskMoney(dadosNfe.frete)"
                       v-model="dadosNfe.frete"
+                      @change="calculateDiscountPedido"
                       size="sm"
                       placeholder="R$ 0,00"
                     />
@@ -574,9 +575,8 @@
                     class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
                   >
                     <b-form-input
-                      maxlength="6"
+                      maxlength="5"
                       @change="calculateDiscountPedido"
-                      v-mask="maskDiscount(dadosNfe.desconto)"
                       v-model="dadosNfe.desconto"
                       size="sm"
                       placeholder="%"
@@ -772,7 +772,7 @@ export default {
         desconto: "",
         subtotal: "",
         total: "",
-        classe_imposto: "REF1000",
+        classe_imposto: "REF15467394",
         informacoes_adicionais: "",
       },
       cliente: [],
@@ -920,6 +920,12 @@ export default {
       this.calculateDiscountProdutos();
     },
 
+    alterTotalNotaValue() {
+      this.dadosNfe.total = this.dadosNfe.total.toLocaleString("pt-br", {
+        minimumFractionDigits: 2,
+      });
+    },
+
     formatTotalProductValue() {
       if (this.produtosNotaFiscal.subtotal !== "") {
         this.produtosNotaFiscal.total =
@@ -933,10 +939,13 @@ export default {
     calculateDiscountPedido() {
       const valorTotalNota =
         this.valorTotalProdutosComDesc +
-        this.dadosNfe.frete.replace(".", "").replace(",", ".");
+        Number(this.dadosNfe.frete.replace(".", "").replace(",", "."));
 
-      const desconto = (valorTotalNota * this.dadosNfe.desconto) / 100;
+      const desconto =
+        (valorTotalNota * this.dadosNfe.desconto.replace(",", ".")) / 100;
       this.dadosNfe.total = valorTotalNota - desconto;
+
+      this.alterTotalNotaValue();
     },
 
     calculateDiscountProdutos() {
@@ -1006,8 +1015,8 @@ export default {
       console.log("Enviado email");
     },
 
-    async sendNota() {
-      await ServiceNotaFiscal.updateNota(this.dadosNfe);
+    sendNota() {
+      this.updateNotaFiscal();
     },
 
     async saveProductInNote() {
@@ -1038,6 +1047,7 @@ export default {
           });
 
           await this.findProductsByIdNota();
+          this.calculateDiscountPedido();
         }
       } catch (error) {
         console.log(error);
@@ -1063,7 +1073,7 @@ export default {
       );
 
       this.produtosForTable = result.noteItem;
-      this.dadosNfe.total = result?.noteItem
+      this.valorTotalProdutosComDesc = result?.noteItem
         .map((item) => item.total)
         .reduce((total, preco) => total + preco);
     },
@@ -1120,6 +1130,7 @@ export default {
         const result = await ServiceNotaFiscal.saveNota({
           ...this.dadosNfe,
           frete: this.dadosNfe.frete.replace(".", "").replace(",", "."),
+          total: this.dadosNfe.total.replace(".", "").replace(",", "."),
         });
         this.dadosNfe.id = result.id;
 
@@ -1137,7 +1148,11 @@ export default {
 
     async updateNotaFiscal() {
       try {
-        await ServiceNotaFiscal.updateNota(this.dadosNfe);
+        await ServiceNotaFiscal.updateNota({
+          ...this.dadosNfe,
+          frete: this.dadosNfe.frete.replace(".", "").replace(",", "."),
+          total: this.dadosNfe.total.replace(".", "").replace(",", "."),
+        });
 
         return this.$toast.open({
           message: "Nota Fiscal atualizada!",
