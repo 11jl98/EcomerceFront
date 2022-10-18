@@ -11,13 +11,13 @@ class ServiceNotaFiscal {
     return data
   }
 
-  async findProductsByIdNota(id) {
-    const { data } = await api.get(`/nota-item/${id}`)
+  async findProductsByIdNota(idNota) {
+    const { data } = await api.get(`/nota-item/${idNota}`)
     return data
   }
 
-  async findNotaById(id) {
-    const { data } = await api.get(`/nota/${id}`)
+  async findNotaById(idNota) {
+    const { data } = await api.get(`/nota/${idNota}`)
     return data
   }
 
@@ -26,12 +26,17 @@ class ServiceNotaFiscal {
     return data
   }
 
-  async deleteItemFromNote(id){
-    await api.delete(`/nota-item/${id}`)
+  async deleteItemFromNote(idItem){
+    await api.delete(`/nota-item/${idItem}`)
   }
 
-  async deleteNotaAndItem(id){
-    await api.delete(`/nota-item/delete-all/${id}`)
+  async deleteNotaAndItem(idNota){
+    await api.delete(`/nota-item/delete-all/${idNota}`)
+  }
+
+  async sendNota(idNota) {
+    const { data } = await api.get(`/nota/send/${idNota}`)
+    return data
   }
 }
 

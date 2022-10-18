@@ -575,9 +575,10 @@
                     class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
                   >
                     <b-form-input
-                      maxlength="5"
                       @change="calculateDiscountPedido"
+                      @keypress="defineMaxLengthDiscount"
                       v-model="dadosNfe.desconto"
+                      type="number"
                       size="sm"
                       placeholder="%"
                     />
@@ -888,7 +889,7 @@ export default {
       this.dadosNfe.frete = "";
       this.dadosNfe.pagamento = 0;
       this.dadosNfe.presenca = 1;
-      this.dadosNfe.desconto = "";
+      this.dadosNfe.desconto = 0.0;
       this.dadosNfe.total = "";
       this.dadosNfe.intermediador = "";
       this.dadosNfe.id_intermediador = "";
@@ -941,11 +942,23 @@ export default {
         this.valorTotalProdutosComDesc +
         Number(this.dadosNfe.frete.replace(".", "").replace(",", "."));
 
-      const desconto =
-        (valorTotalNota * this.dadosNfe.desconto.replace(",", ".")) / 100;
+      const desconto = (valorTotalNota * this.dadosNfe.desconto) / 100;
+
       this.dadosNfe.total = valorTotalNota - desconto;
 
       this.alterTotalNotaValue();
+    },
+
+    async handleDiscountAndFindNoteAndItems() {
+      await this.findNotaById();
+      await this.findProductsByIdNota();
+      this.calculateDiscountPedido();
+    },
+
+    defineMaxLengthDiscount() {
+      if (this.dadosNfe.desconto?.length > 4) {
+        this.dadosNfe.desconto = this.dadosNfe.desconto.slice(0, 4);
+      }
     },
 
     calculateDiscountProdutos() {
@@ -1015,8 +1028,22 @@ export default {
       console.log("Enviado email");
     },
 
-    sendNota() {
-      this.updateNotaFiscal();
+    async sendNota() {
+      try {
+        await ServiceNotaFiscal.updateNota({
+          ...this.dadosNfe,
+          frete: this.dadosNfe.frete.replace(".", "").replace(",", "."),
+          total: this.dadosNfe.total.replace(".", "").replace(",", "."),
+        });
+
+        await ServiceNotaFiscal.sendNota(this.dadosNfe.id);
+      } catch (error) {
+        console.log(error);
+        return this.$toast.open({
+          message: error.response.data.message,
+          type: "error",
+        });
+      }
     },
 
     async saveProductInNote() {
@@ -1047,7 +1074,7 @@ export default {
           });
 
           await this.findProductsByIdNota();
-          this.calculateDiscountPedido();
+          await this.updateNotaFiscal();
         }
       } catch (error) {
         console.log(error);
@@ -1076,6 +1103,15 @@ export default {
       this.valorTotalProdutosComDesc = result?.noteItem
         .map((item) => item.total)
         .reduce((total, preco) => total + preco);
+
+      this.dadosNfe.total = this.valorTotalProdutosComDesc.toLocaleString(
+        "pt-br",
+        {
+          minimumFractionDigits: 2,
+        }
+      );
+
+      this.calculateDiscountPedido();
     },
 
     async assignValuesToTheSelectedProduct() {
@@ -1150,7 +1186,10 @@ export default {
       try {
         await ServiceNotaFiscal.updateNota({
           ...this.dadosNfe,
-          frete: this.dadosNfe.frete.replace(".", "").replace(",", "."),
+          frete:
+            this.dadosNfe.frete === ""
+              ? null
+              : this.dadosNfe.frete.replace(".", "").replace(",", "."),
           total: this.dadosNfe.total.replace(".", "").replace(",", "."),
         });
 
@@ -1159,6 +1198,7 @@ export default {
           type: "success",
         });
       } catch (error) {
+        console.log(error);
         return this.$toast.open({
           message: "Erro ao atualizar a nota",
           type: "error",
@@ -1173,7 +1213,15 @@ export default {
     async findNotaById() {
       const result = await serviceNotaFiscal.findNotaById(this.dadosNfe.id);
       delete result["idEmpresa"];
-      Object.assign(this.dadosNfe, result);
+
+      Object.assign(this.dadosNfe, result, {
+        frete: result?.frete?.toLocaleString("pt-br", {
+          minimumFractionDigits: 2,
+        }),
+        total: result?.total?.toLocaleString("pt-br", {
+          minimumFractionDigits: 2,
+        }),
+      });
     },
   },
   computed: {
@@ -1214,8 +1262,7 @@ export default {
   watch: {
     propsIdNota() {
       this.dadosNfe.id = this.propsIdNota;
-      this.findProductsByIdNota();
-      this.findNotaById();
+      this.handleDiscountAndFindNoteAndItems();
     },
   },
 };
