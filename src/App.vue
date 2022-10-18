@@ -20,7 +20,7 @@ export default {
 
 <style>
 *::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
   height: 8px;
 }
 
@@ -30,7 +30,7 @@ export default {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #c2c1c1;
+  background-color: #e8e8e8;
   border-radius: 2px;
 }
 

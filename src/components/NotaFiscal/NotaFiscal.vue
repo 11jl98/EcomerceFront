@@ -280,12 +280,11 @@
                   </b-form-group>
 
                   <b-form-group
-                    label="% Desc"
+                    label="Desc"
                     class="col-sm-12 col-md-3 col-lg-2 col-xl-1"
                   >
                     <b-form-input
                       maxlength="5"
-                      placeholder="%"
                       @change="calculateDiscountProdutos"
                       v-model="produtosNotaFiscal.desconto"
                       size="sm"
@@ -773,7 +772,7 @@ export default {
         desconto: "",
         subtotal: "",
         total: "",
-        classe_imposto: "REF15467394",
+        classe_imposto: "REF15466069", //  ref pessoa fisica REF15467394
         informacoes_adicionais: "",
       },
       cliente: [],
@@ -942,7 +941,7 @@ export default {
         this.valorTotalProdutosComDesc +
         Number(this.dadosNfe.frete.replace(".", "").replace(",", "."));
 
-      const desconto = (valorTotalNota * this.dadosNfe.desconto) / 100;
+      const desconto = this.dadosNfe.desconto;
 
       this.dadosNfe.total = valorTotalNota - desconto;
 
@@ -966,10 +965,7 @@ export default {
         this.produtosNotaFiscal.quantidade *
         this.produtosNotaFiscal.subtotal.replace(".", "").replace(",", ".");
 
-      const desconto =
-        (valorTotalProdutos *
-          this.produtosNotaFiscal.desconto.replace(",", ".")) /
-        100;
+      const desconto = this.produtosNotaFiscal.desconto.replace(",", ".");
 
       const valorDesconto = valorTotalProdutos - desconto;
 
