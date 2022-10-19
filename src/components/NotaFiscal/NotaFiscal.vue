@@ -118,7 +118,7 @@
       >
         <b-form-input
           disabled
-          v-model="nfe"
+          v-model="responseNfeWebMania.nfe"
           type="text"
           size="sm"
         ></b-form-input>
@@ -133,7 +133,7 @@
       >
         <b-form-input
           disabled
-          v-model="serie"
+          v-model="responseNfeWebMania.serie"
           type="text"
           size="sm"
         ></b-form-input>
@@ -143,27 +143,12 @@
         id="input-group-1"
         label="Chave NFe"
         label-for="input-1"
-        class="col-sm-12 col-md-6 col-lg-6 col-xl-5"
+        class="col-sm-12 col-md-6 col-lg-7 col-xl-6"
         size="sm"
       >
         <b-form-input
           disabled
-          v-model="chave"
-          type="text"
-          size="sm"
-        ></b-form-input>
-      </b-form-group>
-
-      <b-form-group
-        id="input-group-1"
-        label="Recibo"
-        label-for="input-1"
-        class="col-sm-6 col-md-3 col-lg-3 col-xl-2"
-        size="sm"
-      >
-        <b-form-input
-          disabled
-          v-model="recibo"
+          v-model="responseNfeWebMania.chave"
           type="text"
           size="sm"
         ></b-form-input>
@@ -178,7 +163,7 @@
       >
         <b-form-input
           disabled
-          v-model="status"
+          v-model="responseNfeWebMania.status"
           type="text"
           size="sm"
         ></b-form-input>
@@ -374,7 +359,7 @@
                         <th>Quantidade</th>
                         <th>Vl. unitario</th>
                         <th>Vl. total</th>
-                        <th>% Desconto</th>
+                        <th>Desconto</th>
                         <th>Vl. desc</th>
                         <th>Ações</th>
                       </tr>
@@ -401,7 +386,14 @@
                               | formatValueMonetary
                           }}
                         </td>
-                        <td>{{ notaItem.desconto }}</td>
+                        <td>
+                          {{
+                            notaItem.desconto.toLocaleString("pt-br", {
+                              style: "currency",
+                              currency: "BRL",
+                            })
+                          }}
+                        </td>
                         <td>
                           {{
                             notaItem.total.toLocaleString("pt-br", {
@@ -570,16 +562,15 @@
                   </template>
 
                   <b-form-group
-                    label="% Desc"
+                    label="Desc"
                     class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
                   >
                     <b-form-input
+                      disabled
                       @change="calculateDiscountPedido"
                       @keypress="defineMaxLengthDiscount"
                       v-model="dadosNfe.desconto"
-                      type="number"
                       size="sm"
-                      placeholder="%"
                     />
                   </b-form-group>
 
@@ -697,11 +688,25 @@
       <b-row style="margin-right: 0px">
         <b-form-group class="mb-0 ml-5">
           <b-button
-            :disabled="dadosNfe.id !== '' ? false : true"
+            :disabled="
+              produtosForTable.length > 0 &&
+              responseNfeWebMania.status !== 'aprovado'
+                ? false
+                : true
+            "
             variant="info"
             size="sm"
             @click="sendNota"
             >Emitir NF-e</b-button
+          >
+        </b-form-group>
+
+        <b-form-group
+          class="mb-0 ml-2"
+          v-if="responseNfeWebMania.status === 'aprovado'"
+        >
+          <b-button variant="info" size="sm" @click="visualizarNfe"
+            >Visualizar NF-e</b-button
           >
         </b-form-group>
       </b-row>
@@ -717,7 +722,6 @@ import ServiceProducts from "../../services/serviceProducts";
 import ModalShippingCompany from "./ModalShippingCompany.vue";
 import toastAlertErros from "../../utils/toastAlertErros";
 import ServiceNotaFiscal from "../../services/serviceNotaFiscal";
-import serviceNotaFiscal from "../../services/serviceNotaFiscal";
 
 export default {
   components: {
@@ -753,11 +757,20 @@ export default {
         cnpj_intermediador: "",
         id_intermediador: "",
       },
-      nfe: "",
-      serie: "",
-      chave: "",
-      recibo: "",
-      status: "",
+      responseNfeWebMania: {
+        chave: "",
+        danfe: "",
+        danfe_etiqueta: "",
+        danfe_simples: "",
+        log: "",
+        modelo: "",
+        motivo: "",
+        nfe: "",
+        serie: "",
+        status: "",
+        uuid: "",
+        xml: "",
+      },
       idTransportadora: "",
       produtosNotaFiscal: {
         idProduto: "",
@@ -779,6 +792,7 @@ export default {
       produtos: [],
       produtosForTable: [],
       valorTotalProdutosComDesc: "",
+      valorTotalDescontoProdutos: "",
       pagamento: [
         { value: 0, text: "Pagamento à vista" },
         { value: 1, text: "Pagamento à prazo" },
@@ -895,6 +909,19 @@ export default {
       this.dadosNfe.cnpj_intermediador = "";
 
       this.produtosForTable = [];
+
+      this.responseNfeWebMania.chave = "";
+      this.responseNfeWebMania.danfe = "";
+      this.responseNfeWebMania.danfe_etiqueta = "";
+      this.responseNfeWebMania.danfe_simples = "";
+      this.responseNfeWebMania.log = "";
+      this.responseNfeWebMania.modelo = "";
+      this.responseNfeWebMania.motivo = "";
+      this.responseNfeWebMania.nfe = "";
+      this.responseNfeWebMania.serie = "";
+      this.responseNfeWebMania.status = "";
+      this.responseNfeWebMania.uuid = "";
+      this.responseNfeWebMania.xml = "";
     },
 
     changeEmissionTypeText() {
@@ -939,11 +966,9 @@ export default {
     calculateDiscountPedido() {
       const valorTotalNota =
         this.valorTotalProdutosComDesc +
-        Number(this.dadosNfe.frete.replace(".", "").replace(",", "."));
+        Number(this.dadosNfe?.frete?.replace(".", "").replace(",", "."));
 
-      const desconto = this.dadosNfe.desconto;
-
-      this.dadosNfe.total = valorTotalNota - desconto;
+      this.dadosNfe.total = valorTotalNota;
 
       this.alterTotalNotaValue();
     },
@@ -951,7 +976,6 @@ export default {
     async handleDiscountAndFindNoteAndItems() {
       await this.findNotaById();
       await this.findProductsByIdNota();
-      this.calculateDiscountPedido();
     },
 
     defineMaxLengthDiscount() {
@@ -1024,15 +1048,28 @@ export default {
       console.log("Enviado email");
     },
 
+    visualizarNfe() {
+      window.open(
+        this.responseNfeWebMania.danfe,
+        "_blank",
+        "width=700, height=800, top=500, left=500"
+      );
+    },
+
     async sendNota() {
       try {
         await ServiceNotaFiscal.updateNota({
           ...this.dadosNfe,
-          frete: this.dadosNfe.frete.replace(".", "").replace(",", "."),
+          frete:
+            this.dadosNfe.frete === ""
+              ? 0
+              : this.dadosNfe.frete.replace(".", "").replace(",", "."),
           total: this.dadosNfe.total.replace(".", "").replace(",", "."),
+          desconto: this.dadosNfe.desconto.replace(".", "").replace(",", "."),
         });
 
         await ServiceNotaFiscal.sendNota(this.dadosNfe.id);
+        await this.findNotaById();
       } catch (error) {
         console.log(error);
         return this.$toast.open({
@@ -1061,7 +1098,7 @@ export default {
             "."
           );
 
-          await serviceNotaFiscal.saveNotaItem({
+          await ServiceNotaFiscal.saveNotaItem({
             ...this.produtosNotaFiscal,
             idNota: this.dadosNfe.id,
             subtotal: formatedSubTotal,
@@ -1083,7 +1120,7 @@ export default {
 
     async deleteProductFromNote(id) {
       try {
-        await serviceNotaFiscal.deleteItemFromNote(id);
+        await ServiceNotaFiscal.deleteItemFromNote(id);
         await this.findProductsByIdNota();
       } catch (error) {
         console.log(error);
@@ -1091,14 +1128,26 @@ export default {
     },
 
     async findProductsByIdNota() {
-      const result = await serviceNotaFiscal.findProductsByIdNota(
+      const result = await ServiceNotaFiscal.findProductsByIdNota(
         this.dadosNfe.id
       );
 
       this.produtosForTable = result.noteItem;
+
       this.valorTotalProdutosComDesc = result?.noteItem
-        .map((item) => item.total)
+        .map((produto) => produto.total)
         .reduce((total, preco) => total + preco);
+
+      this.valorTotalDescontoProdutos = result?.noteItem
+        .map((produto) => produto.desconto)
+        .reduce((total, desconto) => total + desconto);
+
+      this.dadosNfe.desconto = this.valorTotalDescontoProdutos.toLocaleString(
+        "pt-br",
+        {
+          minimumFractionDigits: 2,
+        }
+      );
 
       this.dadosNfe.total = this.valorTotalProdutosComDesc.toLocaleString(
         "pt-br",
@@ -1161,8 +1210,15 @@ export default {
       try {
         const result = await ServiceNotaFiscal.saveNota({
           ...this.dadosNfe,
-          frete: this.dadosNfe.frete.replace(".", "").replace(",", "."),
-          total: this.dadosNfe.total.replace(".", "").replace(",", "."),
+          frete:
+            this.dadosNfe.frete === ""
+              ? 0
+              : this.dadosNfe.frete.replace(".", "").replace(",", "."),
+
+          total:
+            this.dadosNfe.total === ""
+              ? 0
+              : this.dadosNfe.total.replace(".", "").replace(",", "."),
         });
         this.dadosNfe.id = result.id;
 
@@ -1184,9 +1240,10 @@ export default {
           ...this.dadosNfe,
           frete:
             this.dadosNfe.frete === ""
-              ? null
-              : this.dadosNfe.frete.replace(".", "").replace(",", "."),
-          total: this.dadosNfe.total.replace(".", "").replace(",", "."),
+              ? 0
+              : this.dadosNfe?.frete?.replace(".", "").replace(",", "."),
+          total: this.dadosNfe?.total?.replace(".", "").replace(",", "."),
+          desconto: this.dadosNfe?.desconto?.replace(".", "").replace(",", "."),
         });
 
         return this.$toast.open({
@@ -1207,8 +1264,9 @@ export default {
     },
 
     async findNotaById() {
-      const result = await serviceNotaFiscal.findNotaById(this.dadosNfe.id);
+      const result = await ServiceNotaFiscal.findNotaById(this.dadosNfe.id);
       delete result["idEmpresa"];
+      console.log(result);
 
       Object.assign(this.dadosNfe, result, {
         frete: result?.frete?.toLocaleString("pt-br", {
@@ -1218,6 +1276,8 @@ export default {
           minimumFractionDigits: 2,
         }),
       });
+
+      Object.assign(this.responseNfeWebMania, result.response);
     },
   },
   computed: {
