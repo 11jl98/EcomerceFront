@@ -406,6 +406,12 @@
                           <b-button
                             size="sm"
                             variant="secondary"
+                            :disabled="
+                              responseNfeWebMania.status === 'aprovado' ||
+                              responseNfeWebMania.status === 'processamento'
+                                ? true
+                                : false
+                            "
                             @click="deleteProductFromNote(notaItem.id)"
                             v-b-popover.hover.right="{
                               variant: 'secondary',
@@ -685,25 +691,32 @@
         </b-form-group>
       </b-row>
 
+      <b-row>
+        <div v-if="spinLoading">
+          <b-spinner
+            style="width: 3rem; height: 3rem"
+            variant="primary"
+          ></b-spinner>
+        </div>
+      </b-row>
+
       <b-row style="margin-right: 0px">
         <b-form-group class="mb-0 ml-5">
           <b-button
-            :disabled="
-              produtosForTable.length > 0 &&
-              responseNfeWebMania.status !== 'aprovado'
-                ? false
-                : true
-            "
+            :disabled="handleButtonEmitirNfe"
             variant="info"
             size="sm"
             @click="sendNota"
-            >Emitir NF-e</b-button
-          >
+            >Emitir NF-e
+          </b-button>
         </b-form-group>
 
         <b-form-group
           class="mb-0 ml-2"
-          v-if="responseNfeWebMania.status === 'aprovado'"
+          v-if="
+            responseNfeWebMania.status === 'aprovado' ||
+            responseNfeWebMania.status === 'processamento'
+          "
         >
           <b-button variant="info" size="sm" @click="visualizarNfe"
             >Visualizar NF-e</b-button
@@ -874,6 +887,7 @@ export default {
           text: "1 - Operação em site ou plataforma de terceiros (intermediadores/marketplace)",
         },
       ],
+      spinLoading: false,
     };
   },
   methods: {
@@ -1068,8 +1082,17 @@ export default {
           desconto: this.dadosNfe.desconto.replace(".", "").replace(",", "."),
         });
 
-        await ServiceNotaFiscal.sendNota(this.dadosNfe.id);
+        this.spinLoading = true;
+        const result = await ServiceNotaFiscal.sendNota(this.dadosNfe.id);
+        console.log(result);
+        this.spinLoading = false;
+
         await this.findNotaById();
+
+        return this.$toast.open({
+          message: "Nota emitida com sucesso!",
+          type: "success",
+        });
       } catch (error) {
         console.log(error);
         return this.$toast.open({
@@ -1093,10 +1116,10 @@ export default {
           const formatedTotal = this.produtosNotaFiscal.total
             .replace(".", "")
             .replace(",", ".");
-          const formatedDesconto = this.produtosNotaFiscal.desconto.replace(
-            ",",
-            "."
-          );
+          const formatedDesconto =
+            this.produtosNotaFiscal.desconto === ""
+              ? 0
+              : this.produtosNotaFiscal.desconto.replace(",", ".");
 
           await ServiceNotaFiscal.saveNotaItem({
             ...this.produtosNotaFiscal,
@@ -1134,13 +1157,18 @@ export default {
 
       this.produtosForTable = result.noteItem;
 
-      this.valorTotalProdutosComDesc = result?.noteItem
-        .map((produto) => produto.total)
-        .reduce((total, preco) => total + preco);
+      if (result?.noteItem.length > 0) {
+        this.valorTotalProdutosComDesc = result?.noteItem
+          .map((produto) => produto.total)
+          .reduce((total, preco) => total + preco);
 
-      this.valorTotalDescontoProdutos = result?.noteItem
-        .map((produto) => produto.desconto)
-        .reduce((total, desconto) => total + desconto);
+        this.valorTotalDescontoProdutos = result?.noteItem
+          .map((produto) => produto.desconto)
+          .reduce((total, desconto) => total + desconto);
+      } else {
+        this.valorTotalProdutosComDesc = 0;
+        this.valorTotalDescontoProdutos = 0;
+      }
 
       this.dadosNfe.desconto = this.valorTotalDescontoProdutos.toLocaleString(
         "pt-br",
@@ -1241,9 +1269,12 @@ export default {
           frete:
             this.dadosNfe.frete === ""
               ? 0
-              : this.dadosNfe?.frete?.replace(".", "").replace(",", "."),
-          total: this.dadosNfe?.total?.replace(".", "").replace(",", "."),
-          desconto: this.dadosNfe?.desconto?.replace(".", "").replace(",", "."),
+              : this.dadosNfe.frete.replace(".", "").replace(",", "."),
+          total: this.dadosNfe.total.replace(".", "").replace(",", "."),
+          desconto:
+            this.dadosNfe.desconto === ""
+              ? 0
+              : this.dadosNfe.desconto.replace(".", "").replace(",", "."),
         });
 
         return this.$toast.open({
@@ -1266,7 +1297,6 @@ export default {
     async findNotaById() {
       const result = await ServiceNotaFiscal.findNotaById(this.dadosNfe.id);
       delete result["idEmpresa"];
-      console.log(result);
 
       Object.assign(this.dadosNfe, result, {
         frete: result?.frete?.toLocaleString("pt-br", {
@@ -1301,6 +1331,16 @@ export default {
         this.dadosNfe.presenca == 4 ||
         this.dadosNfe.presenca == 9
       );
+    },
+    handleButtonEmitirNfe() {
+      if (
+        this.produtosForTable.length < 1 ||
+        this.responseNfeWebMania.chave !== ""
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   filters: {
