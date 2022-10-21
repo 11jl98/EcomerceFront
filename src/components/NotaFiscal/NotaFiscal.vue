@@ -679,13 +679,13 @@
     >
       <b-row style="margin-left: 0px">
         <b-form-group class="mb-0 mr-2">
-          <b-button variant="success" @click="updateOrSaveNotaFiscal" size="sm"
+          <b-button variant="info" @click="updateOrSaveNotaFiscal" size="sm"
             >Salvar NF-e</b-button
           >
         </b-form-group>
 
         <b-form-group class="mb-0">
-          <b-button variant="light" @click="clearInputs" size="sm"
+          <b-button variant="info" @click="clearInputs" size="sm"
             >Novo</b-button
           >
         </b-form-group>
@@ -721,6 +721,43 @@
           <b-button variant="info" size="sm" @click="visualizarNfe"
             >Visualizar NF-e</b-button
           >
+        </b-form-group>
+
+        <b-form-group class="mb-0 ml-2">
+          <b-dropdown
+            id="dropdown-right"
+            right
+            text="Ações"
+            class="m-md-2"
+            variant="info"
+            size="sm"
+            style="
+              margin: 0px 0px 0px 0px !important;
+              padding: 0px 0px 0px 0px !important;
+            "
+          >
+            <b-dropdown-item
+              :disabled="
+                responseNfeWebMania.status === 'aprovado' ||
+                responseNfeWebMania.status === 'processamento'
+                  ? false
+                  : true
+              "
+              >Cancelar NF-e</b-dropdown-item
+            >
+            <b-dropdown-divider></b-dropdown-divider>
+            <b-dropdown-item
+              :disabled="
+                responseNfeWebMania.status === 'aprovado' ||
+                responseNfeWebMania.status === 'processamento'
+                  ? true
+                  : false
+              "
+              >Inutilizar NF-e</b-dropdown-item
+            >
+            <b-dropdown-divider></b-dropdown-divider>
+            <b-dropdown-item>Carta de correção</b-dropdown-item>
+          </b-dropdown>
         </b-form-group>
       </b-row>
     </b-row>
@@ -1083,8 +1120,7 @@ export default {
         });
 
         this.spinLoading = true;
-        const result = await ServiceNotaFiscal.sendNota(this.dadosNfe.id);
-        console.log(result);
+        await ServiceNotaFiscal.sendNota(this.dadosNfe.id);
         this.spinLoading = false;
 
         await this.findNotaById();
