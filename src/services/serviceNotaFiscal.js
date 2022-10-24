@@ -38,6 +38,11 @@ class ServiceNotaFiscal {
     const { data } = await api.get(`/nota/send/${idNota}`)
     return data
   }
+
+  async cancelNota(dataNota) {
+    const { data } = await api.put(`/nota/cancel/nota/${dataNota.id}`, dataNota)
+    return data
+  }
 }
 
 export default new ServiceNotaFiscal()

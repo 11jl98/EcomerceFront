@@ -743,6 +743,7 @@
                   ? false
                   : true
               "
+              @click="openModalCancelNota"
               >Cancelar NF-e</b-dropdown-item
             >
             <b-dropdown-divider></b-dropdown-divider>
@@ -762,6 +763,7 @@
       </b-row>
     </b-row>
     <ModalShippingCompany />
+    <ModalCancelNota :idNota="{uuidNotaWebMania: responseNfeWebMania.uuid, idNota: dadosNfe.id }" />
   </div>
 </template>
 
@@ -770,12 +772,14 @@ import moment from "moment";
 import ServiceCustomer from "../../services/serviceCustomer";
 import ServiceProducts from "../../services/serviceProducts";
 import ModalShippingCompany from "./ModalShippingCompany.vue";
+import ModalCancelNota from "./ModalCancelNota.vue";
 import toastAlertErros from "../../utils/toastAlertErros";
 import ServiceNotaFiscal from "../../services/serviceNotaFiscal";
 
 export default {
   components: {
     ModalShippingCompany,
+    ModalCancelNota,
   },
   props: {
     propsIdNota: {
@@ -1093,6 +1097,10 @@ export default {
 
     openModalShippingCompany() {
       this.$bvModal.show("modalShippingCompany");
+    },
+
+    openModalCancelNota() {
+      this.$bvModal.show("modalCancelNota");
     },
 
     sendNfeByEmail() {
