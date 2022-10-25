@@ -26,6 +26,15 @@
           ></b-form-input>
         </b-form-group>
       </b-row>
+
+      <b-row>
+        <div v-if="spinLoading">
+          <b-spinner
+            style="width: 3rem; height: 3rem"
+            variant="primary"
+          ></b-spinner>
+        </div>
+      </b-row>
     </b-modal>
   </div>
 </template>
@@ -42,6 +51,7 @@ export default {
   data() {
     return {
       motivo: "",
+      spinLoading: false,
     };
   },
   methods: {
@@ -51,11 +61,9 @@ export default {
         motivo: this.motivo,
       };
 
-      const result = await serviceNotaFiscal.cancelNota(
-        dataCancelamento,
-        this.idNota.idNota
-      );
-      console.log(result);
+      this.spinLoading = true;
+      await serviceNotaFiscal.cancelNota(dataCancelamento, this.idNota.idNota);
+      this.spinLoading = false;
     },
   },
 };

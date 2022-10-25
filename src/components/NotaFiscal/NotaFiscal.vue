@@ -750,20 +750,34 @@
             <b-dropdown-item
               :disabled="
                 responseNfeWebMania.status === 'aprovado' ||
-                responseNfeWebMania.status === 'processamento'
+                responseNfeWebMania.status === 'processamento' ||
+                responseNfeWebMania.status === 'cancelado'
                   ? true
                   : false
               "
               >Inutilizar NF-e</b-dropdown-item
             >
             <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item>Carta de correção</b-dropdown-item>
+            <b-dropdown-item
+              :disabled="
+                responseNfeWebMania.status === 'aprovado' ||
+                responseNfeWebMania.status === 'processamento'
+                  ? false
+                  : true
+              "
+              >Carta de correção</b-dropdown-item
+            >
           </b-dropdown>
         </b-form-group>
       </b-row>
     </b-row>
     <ModalShippingCompany />
-    <ModalCancelNota :idNota="{uuidNotaWebMania: responseNfeWebMania.uuid, idNota: dadosNfe.id }" />
+    <ModalCancelNota
+      :idNota="{
+        uuidNotaWebMania: responseNfeWebMania.uuid,
+        idNota: dadosNfe.id,
+      }"
+    />
   </div>
 </template>
 

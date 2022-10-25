@@ -39,8 +39,8 @@ class ServiceNotaFiscal {
     return data
   }
 
-  async cancelNota(dataNota) {
-    const { data } = await api.put(`/nota/cancel/nota/${dataNota.id}`, dataNota)
+  async cancelNota(dataNota, idNota) {
+    const { data } = await api.put(`/nota/cancel/nota/${idNota}`, dataNota)
     return data
   }
 }
