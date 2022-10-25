@@ -8,9 +8,26 @@
       centered
     >
       <template #modal-footer>
-        <b-button variant="info" size="sm" @click="cancelNota"
-          >Prosseguir</b-button
+        <div
+          class="
+            col-sm-12 col-md-12 col-lg-12 col-xl-12
+            d-flex
+            justify-content-between
+          "
         >
+          <div>
+            <b-button variant="info" size="sm" @click="cancelNota"
+              >Prosseguir</b-button
+            >
+          </div>
+
+          <div v-if="spinLoading">
+            <b-spinner
+              style="width: 2rem; height: 2rem"
+              variant="primary"
+            ></b-spinner>
+          </div>
+        </div>
       </template>
       <b-row class="d-flex">
         <b-form-group
@@ -26,22 +43,12 @@
           ></b-form-input>
         </b-form-group>
       </b-row>
-
-      <b-row>
-        <div v-if="spinLoading">
-          <b-spinner
-            style="width: 3rem; height: 3rem"
-            variant="primary"
-          ></b-spinner>
-        </div>
-      </b-row>
     </b-modal>
   </div>
 </template>
 
 <script>
 import serviceNotaFiscal from "../../services/serviceNotaFiscal";
-
 export default {
   props: {
     idNota: {
@@ -56,14 +63,22 @@ export default {
   },
   methods: {
     async cancelNota() {
-      const dataCancelamento = {
-        uuid: this.idNota.uuidNotaWebMania,
-        motivo: this.motivo,
-      };
+      try {
+        const dataCancelamento = {
+          uuid: this.idNota.uuidNotaWebMania,
+          motivo: this.motivo,
+        };
 
-      this.spinLoading = true;
-      await serviceNotaFiscal.cancelNota(dataCancelamento, this.idNota.idNota);
-      this.spinLoading = false;
+        this.spinLoading = true;
+        await serviceNotaFiscal.cancelNota(
+          dataCancelamento,
+          this.idNota.idNota
+        );
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.spinLoading = false;
+      }
     },
   },
 };

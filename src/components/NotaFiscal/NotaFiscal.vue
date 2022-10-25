@@ -1143,7 +1143,6 @@ export default {
 
         this.spinLoading = true;
         await ServiceNotaFiscal.sendNota(this.dadosNfe.id);
-        this.spinLoading = false;
 
         await this.findNotaById();
 
@@ -1152,11 +1151,12 @@ export default {
           type: "success",
         });
       } catch (error) {
-        console.log(error);
         return this.$toast.open({
           message: error.response.data.message,
           type: "error",
         });
+      } finally {
+        this.spinLoading = false;
       }
     },
 
