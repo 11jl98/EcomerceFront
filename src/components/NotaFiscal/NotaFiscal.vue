@@ -162,8 +162,17 @@
         size="sm"
       >
         <b-form-input
+          v-if="!responseNfeWebManiaCancelamento.status"
           disabled
           v-model="responseNfeWebMania.status"
+          type="text"
+          size="sm"
+        ></b-form-input>
+
+        <b-form-input
+          v-else
+          disabled
+          v-model="responseNfeWebManiaCancelamento.status"
           type="text"
           size="sm"
         ></b-form-input>
@@ -738,10 +747,9 @@
           >
             <b-dropdown-item
               :disabled="
-                responseNfeWebMania.status === 'aprovado' ||
-                responseNfeWebMania.status === 'processamento'
-                  ? false
-                  : true
+                responseNfeWebManiaCancelamento.status === 'cancelado'
+                  ? true
+                  : false
               "
               @click="openModalCancelNota"
               >Cancelar NF-e</b-dropdown-item
@@ -815,6 +823,7 @@ export default {
         data_nfe: moment().format("YYYY-MM-DD"),
         id_webmania: "",
         response: "",
+        response_cancelamento: "",
         pagamento: 0,
         presenca: 1,
         modalidade_frete: 9,
@@ -837,6 +846,11 @@ export default {
         serie: "",
         status: "",
         uuid: "",
+        xml: "",
+      },
+      responseNfeWebManiaCancelamento: {
+        log: {},
+        status: "",
         xml: "",
       },
       idTransportadora: "",
@@ -1366,6 +1380,13 @@ export default {
       });
 
       Object.assign(this.responseNfeWebMania, result.response);
+
+      this.responseNfeWebManiaCancelamento.log =
+        result.response_cancelamento?.log;
+      this.responseNfeWebManiaCancelamento.status =
+        result.response_cancelamento?.status;
+      this.responseNfeWebManiaCancelamento.xml =
+        result.response_cancelamento?.xml;
     },
   },
   computed: {
