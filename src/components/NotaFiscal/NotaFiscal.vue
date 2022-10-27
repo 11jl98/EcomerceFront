@@ -162,20 +162,19 @@
         size="sm"
       >
         <b-form-input
-          v-if="!responseNfeWebManiaCancelamento.status"
           disabled
-          v-model="responseNfeWebMania.status"
+          v-model="dadosNfe.status"
           type="text"
           size="sm"
         ></b-form-input>
-
+        <!-- 
         <b-form-input
           v-else
           disabled
           v-model="responseNfeWebManiaCancelamento.status"
           type="text"
           size="sm"
-        ></b-form-input>
+        ></b-form-input> -->
       </b-form-group>
     </b-row>
 
@@ -747,7 +746,7 @@
           >
             <b-dropdown-item
               :disabled="
-                responseNfeWebManiaCancelamento.status === 'cancelado'
+                dadosNfe.status === 'Cancelada' || dadosNfe.status === ''
                   ? true
                   : false
               "
@@ -768,10 +767,9 @@
             <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-item
               :disabled="
-                responseNfeWebMania.status === 'aprovado' ||
-                responseNfeWebMania.status === 'processamento'
-                  ? false
-                  : true
+                dadosNfe.status === 'Cancelada' || dadosNfe.status === ''
+                  ? true
+                  : false
               "
               >Carta de correção</b-dropdown-item
             >
@@ -824,6 +822,7 @@ export default {
         id_webmania: "",
         response: "",
         response_cancelamento: "",
+        status: "",
         pagamento: 0,
         presenca: 1,
         modalidade_frete: 9,
@@ -969,6 +968,7 @@ export default {
       this.dadosNfe.idCliente = "";
       this.dadosNfe.url_notificacao = "teste";
       this.dadosNfe.data_nfe = moment().format("YYYY-MM-DD");
+      this.dadosNfe.status = "";
 
       this.produtosNotaFiscal.idProduto = "";
       this.produtosNotaFiscal.codigo = "";
@@ -1380,13 +1380,10 @@ export default {
       });
 
       Object.assign(this.responseNfeWebMania, result.response);
-
-      this.responseNfeWebManiaCancelamento.log =
-        result.response_cancelamento?.log;
-      this.responseNfeWebManiaCancelamento.status =
-        result.response_cancelamento?.status;
-      this.responseNfeWebManiaCancelamento.xml =
-        result.response_cancelamento?.xml;
+      Object.assign(
+        this.responseNfeWebManiaCancelamento,
+        result.response_cancelamento
+      );
     },
   },
   computed: {
