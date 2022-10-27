@@ -74,6 +74,8 @@ export default {
           dataCancelamento,
           this.idNota.idNota
         );
+
+        this.$emit("getNotaAfterCanceled", true);
       } catch (error) {
         console.log(error);
       } finally {
