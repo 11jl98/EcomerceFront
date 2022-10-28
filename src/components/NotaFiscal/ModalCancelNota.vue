@@ -59,6 +59,7 @@ export default {
     return {
       motivo: "",
       spinLoading: false,
+      alterValueEvent: false,
     };
   },
   methods: {
@@ -75,11 +76,16 @@ export default {
           this.idNota.idNota
         );
 
-        this.$emit("getNotaAfterCanceled", true);
+        this.$emit("getNotaAfterCanceled", !this.alterValueEvent);
       } catch (error) {
         console.log(error);
       } finally {
         this.spinLoading = false;
+        this.$bvModal.hide("modalCancelNota");
+        this.$toast.open({
+          message: "Nota Cancelada!",
+          type: "success",
+        });
       }
     },
   },

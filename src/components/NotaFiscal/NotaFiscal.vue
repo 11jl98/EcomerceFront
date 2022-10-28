@@ -783,6 +783,7 @@
         uuidNotaWebMania: responseNfeWebMania.uuid,
         idNota: dadosNfe.id,
       }"
+      @getNotaAfterCanceled="getNotaAfterCanceled = $event"
     />
   </div>
 </template>
@@ -874,6 +875,7 @@ export default {
       produtosForTable: [],
       valorTotalProdutosComDesc: "",
       valorTotalDescontoProdutos: "",
+      getNotaAfterCanceled: false,
       pagamento: [
         { value: 0, text: "Pagamento à vista" },
         { value: 1, text: "Pagamento à prazo" },
@@ -1435,6 +1437,9 @@ export default {
     propsIdNota() {
       this.dadosNfe.id = this.propsIdNota;
       this.handleDiscountAndFindNoteAndItems();
+    },
+    getNotaAfterCanceled() {
+      this.findNotaById();
     },
   },
 };
