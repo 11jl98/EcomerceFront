@@ -78,6 +78,8 @@
               <th>Cliente</th>
               <th>CPF</th>
               <th>Data NF-e</th>
+              <th>Nº NFe</th>
+              <th>Status</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -89,6 +91,11 @@
                 {{ dataSearchNota.cpfCnpj }}
               </td>
               <td>{{ dataSearchNota.data | moment }}</td>
+              <td v-if="dataSearchNota.response == null"></td>
+              <td v-else>{{ dataSearchNota.response.nfe }}</td>
+              <td>
+                {{ dataSearchNota.status }}
+              </td>
               <td>
                 <b-button
                   size="sm"
