@@ -21,6 +21,11 @@ class ServiceNotaFiscal {
     return data
   }
 
+  async findNotaByChaveReferenciada(chave) {
+    const { data } = await api.get(`/nota/buscar/chave/referenciada/${chave}`)
+    return data
+  } 
+
   async updateNota(dataNota) {
     const { data } = await api.put(`/nota/${dataNota.id}`, dataNota)
     return data
@@ -36,6 +41,11 @@ class ServiceNotaFiscal {
 
   async sendNota(idNota) {
     const { data } = await api.get(`/nota/send/${idNota}`)
+    return data
+  }
+
+  async sendDevolucao(idNota) {
+    const { data } = await api.get(`/nota/send/returnNota/${idNota}`)
     return data
   }
 

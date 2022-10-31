@@ -158,7 +158,7 @@
         id="input-group-1"
         label="Status"
         label-for="input-1"
-        class="col-sm-6 col-md-3 col-lg-3 col-xl-2"
+        class="col-sm-6 col-md-3 col-lg-3 col-xl-3"
         size="sm"
       >
         <b-form-input
@@ -167,18 +167,25 @@
           type="text"
           size="sm"
         ></b-form-input>
-        <!-- 
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-1"
+        label="Chave de Referência"
+        label-for="input-1"
+        class="col-sm-6 col-md-3 col-lg-3 col-xl-4"
+        size="sm"
+        v-if="dadosNfe.finalidade === 4"
+      >
         <b-form-input
-          v-else
-          disabled
-          v-model="responseNfeWebManiaCancelamento.status"
+          v-model="dadosNfe.chave_referenciada"
           type="text"
           size="sm"
-        ></b-form-input> -->
+        ></b-form-input>
       </b-form-group>
     </b-row>
 
-    <b-card-text class="mt-3">
+    <b-card-text class="mt-3" v-if="dadosNfe.finalidade == 1">
       <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <b-navbar toggleable class="cardDadosNfe">
           <b-navbar-toggle
@@ -440,7 +447,7 @@
       </div>
     </b-card-text>
 
-    <b-card-text class="mt-3">
+    <b-card-text class="mt-3" v-if="dadosNfe.finalidade == 1">
       <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <b-navbar toggleable class="cardDadosNfe">
           <b-navbar-toggle
@@ -714,7 +721,7 @@
             :disabled="handleButtonEmitirNfe"
             variant="info"
             size="sm"
-            @click="sendNota"
+            @click="handleEmitOrReturnNota"
             >Emitir NF-e
           </b-button>
         </b-form-group>
@@ -777,6 +784,49 @@
         </b-form-group>
       </b-row>
     </b-row>
+    <div>
+      <b-modal
+        id="modalDevolucaoNota"
+        size="lg"
+        title="Selecione os produtos para que vão ser devolvidos"
+        ok-title="Salvar"
+        centered
+      >
+        <template #modal-footer>
+          <div
+            class="
+              col-sm-12 col-md-12 col-lg-12 col-xl-12
+              d-flex
+              justify-content-between
+            "
+          >
+            <div>
+              <b-button variant="info" size="sm">Prosseguir</b-button>
+            </div>
+
+            <div v-if="spinLoading">
+              <b-spinner
+                style="width: 2rem; height: 2rem"
+                variant="primary"
+              ></b-spinner>
+            </div>
+          </div>
+        </template>
+        <b-row class="d-flex">
+          <b-form-group
+            id="input-group-1"
+            label="Motivo do cancelamento!"
+            label-for="input-1"
+            class="col-sm-12 col-md-12 col-lg-12 col-xl-12"
+          >
+            <b-form-input
+              placeholder="Min: 15 caracteres"
+              size="md"
+            ></b-form-input>
+          </b-form-group>
+        </b-row>
+      </b-modal>
+    </div>
     <ModalShippingCompany />
     <ModalCancelNota
       :idNota="{
@@ -796,6 +846,7 @@ import ModalShippingCompany from "./ModalShippingCompany.vue";
 import ModalCancelNota from "./ModalCancelNota.vue";
 import toastAlertErros from "../../utils/toastAlertErros";
 import ServiceNotaFiscal from "../../services/serviceNotaFiscal";
+import serviceNotaFiscal from "../../services/serviceNotaFiscal";
 
 export default {
   components: {
@@ -824,6 +875,7 @@ export default {
         response: "",
         response_cancelamento: "",
         status: "",
+        chave_referenciada: "",
         pagamento: 0,
         presenca: 1,
         modalidade_frete: 9,
@@ -867,7 +919,7 @@ export default {
         desconto: "",
         subtotal: "",
         total: "",
-        classe_imposto: "REF15466069", //  ref pessoa fisica REF15467394
+        classe_imposto: "REF15466069", //  ref emissão devolução REF7311252 pessoa fisica
         informacoes_adicionais: "",
       },
       cliente: [],
@@ -894,8 +946,6 @@ export default {
       ],
       finalidade: [
         { value: 1, text: "Normal" },
-        { value: 2, text: "Complementar" },
-        { value: 3, text: "Ajuste" },
         { value: 4, text: "Devolução" },
       ],
       origem: [
@@ -1176,6 +1226,19 @@ export default {
       }
     },
 
+    async sendDevolucao() {
+      try {
+        const result = await ServiceNotaFiscal.sendDevolucao(this.dadosNfe.id);
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    openModalDevolucao() {
+      this.$bvModal.show("modalDevolucaoNota");
+    },
+
     async saveProductInNote() {
       try {
         if (this.dadosNfe.id === "") {
@@ -1192,7 +1255,7 @@ export default {
             .replace(",", ".");
           const formatedDesconto =
             this.produtosNotaFiscal.desconto === ""
-              ? 0
+              ? "0"
               : this.produtosNotaFiscal.desconto.replace(",", ".");
 
           await ServiceNotaFiscal.saveNotaItem({
@@ -1368,6 +1431,12 @@ export default {
       this.dadosNfe.id !== "" ? this.updateNotaFiscal() : this.saveNotaFiscal();
     },
 
+    async handleEmitOrReturnNota() {
+      this.dadosNfe.finalidade == 1
+        ? this.sendNota()
+        : this.openModalDevolucao();
+    },
+
     async findNotaById() {
       const result = await ServiceNotaFiscal.findNotaById(this.dadosNfe.id);
       delete result["idEmpresa"];
@@ -1386,6 +1455,21 @@ export default {
         this.responseNfeWebManiaCancelamento,
         result.response_cancelamento
       );
+    },
+
+    async openModalToSelectReturnProducts() {
+      await this.getProductsForReturnNota();
+    },
+
+    async getProductsForReturnNota() {
+      try {
+        const result = await serviceNotaFiscal.findNotaByChaveReferenciada(
+          this.dadosNfe.chave_referenciada
+        );
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   computed: {
@@ -1412,6 +1496,11 @@ export default {
     },
     handleButtonEmitirNfe() {
       if (
+        this.dadosNfe.finalidade == "4" &&
+        this.dadosNfe.chave_referenciada !== ""
+      ) {
+        return false;
+      } else if (
         this.produtosForTable.length < 1 ||
         this.responseNfeWebMania.chave !== ""
       ) {
