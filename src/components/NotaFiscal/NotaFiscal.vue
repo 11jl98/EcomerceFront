@@ -173,9 +173,9 @@
         id="input-group-1"
         label="Chave de Referência"
         label-for="input-1"
-        class="col-sm-6 col-md-3 col-lg-3 col-xl-4"
+        class="col-sm-6 col-md-3 col-lg-3 col-xl-5"
         size="sm"
-        v-if="dadosNfe.finalidade === 4"
+        v-if="dadosNfe.finalidade == '4'"
       >
         <b-form-input
           v-model="dadosNfe.chave_referenciada"
@@ -185,7 +185,7 @@
       </b-form-group>
     </b-row>
 
-    <b-card-text class="mt-3" v-if="dadosNfe.finalidade == 1">
+    <b-card-text class="mt-3">
       <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <b-navbar toggleable class="cardDadosNfe">
           <b-navbar-toggle
@@ -447,7 +447,7 @@
       </div>
     </b-card-text>
 
-    <b-card-text class="mt-3" v-if="dadosNfe.finalidade == 1">
+    <b-card-text class="mt-3">
       <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <b-navbar toggleable class="cardDadosNfe">
           <b-navbar-toggle
@@ -784,49 +784,6 @@
         </b-form-group>
       </b-row>
     </b-row>
-    <div>
-      <b-modal
-        id="modalDevolucaoNota"
-        size="lg"
-        title="Selecione os produtos para que vão ser devolvidos"
-        ok-title="Salvar"
-        centered
-      >
-        <template #modal-footer>
-          <div
-            class="
-              col-sm-12 col-md-12 col-lg-12 col-xl-12
-              d-flex
-              justify-content-between
-            "
-          >
-            <div>
-              <b-button variant="info" size="sm">Prosseguir</b-button>
-            </div>
-
-            <div v-if="spinLoading">
-              <b-spinner
-                style="width: 2rem; height: 2rem"
-                variant="primary"
-              ></b-spinner>
-            </div>
-          </div>
-        </template>
-        <b-row class="d-flex">
-          <b-form-group
-            id="input-group-1"
-            label="Motivo do cancelamento!"
-            label-for="input-1"
-            class="col-sm-12 col-md-12 col-lg-12 col-xl-12"
-          >
-            <b-form-input
-              placeholder="Min: 15 caracteres"
-              size="md"
-            ></b-form-input>
-          </b-form-group>
-        </b-row>
-      </b-modal>
-    </div>
     <ModalShippingCompany />
     <ModalCancelNota
       :idNota="{
@@ -1235,10 +1192,6 @@ export default {
       }
     },
 
-    openModalDevolucao() {
-      this.$bvModal.show("modalDevolucaoNota");
-    },
-
     async saveProductInNote() {
       try {
         if (this.dadosNfe.id === "") {
@@ -1432,9 +1385,7 @@ export default {
     },
 
     async handleEmitOrReturnNota() {
-      this.dadosNfe.finalidade == 1
-        ? this.sendNota()
-        : this.openModalDevolucao();
+      this.dadosNfe.finalidade == 1 ? this.sendNota() : this.sendDevolucao();
     },
 
     async findNotaById() {
@@ -1496,11 +1447,6 @@ export default {
     },
     handleButtonEmitirNfe() {
       if (
-        this.dadosNfe.finalidade == "4" &&
-        this.dadosNfe.chave_referenciada !== ""
-      ) {
-        return false;
-      } else if (
         this.produtosForTable.length < 1 ||
         this.responseNfeWebMania.chave !== ""
       ) {

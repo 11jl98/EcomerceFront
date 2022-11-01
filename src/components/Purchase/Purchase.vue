@@ -182,7 +182,7 @@
         </b-col>
 
         <b-col class="col-sm-6">
-          <b-row class="col-sm-12 tableSearchPurchase">
+          <b-row class="col-sm-12 tableAddProducts">
             <table class="table table-sm">
               <thead>
                 <tr style="background-color: #56aafe; color: white">
@@ -193,16 +193,16 @@
                   <th>Ações</th>
                 </tr>
                 <tr v-for="item in productsListGrid" :key="item.id">
-                  <td class="tdSearchPurchase">
+                  <td class="tdAddProducts">
                     {{ item.nome }}
                   </td>
-                  <td class="tdSearchPurchase">
+                  <td class="tdAddProducts">
                     {{ item.quantidade }}
                   </td>
-                  <td class="tdSearchPurchase">
+                  <td class="tdAddProducts">
                     {{ item.valorUnitario }}
                   </td>
-                  <td class="tdSearchPurchase">
+                  <td class="tdAddProducts">
                     {{ item.valorUnitario * item.quantidade }}
                   </td>
                   <td>
@@ -503,13 +503,13 @@ export default {
 };
 </script>
 <style scoped>
-.tableSearchPurchase {
+.tableAddProducts {
   margin-top: 31px;
   overflow: auto !important;
   max-height: 300px;
 }
 
-.tdSearchPurchase {
+.tdAddProducts {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
