@@ -784,6 +784,86 @@
         </b-form-group>
       </b-row>
     </b-row>
+    <div>
+      <b-modal
+        id="modalReturnNota"
+        size="lg"
+        title="Selecione os produtos que deseja devolver!"
+        ok-title="Salvar"
+        centered
+      >
+        <template #modal-footer>
+          <div
+            class="
+              col-sm-12 col-md-12 col-lg-12 col-xl-12
+              d-flex
+              justify-content-between
+            "
+          >
+            <div>
+              <b-button variant="info" size="sm" @click="teste"
+                >Prosseguir</b-button
+              >
+            </div>
+
+            <div v-if="spinLoading">
+              <b-spinner
+                style="width: 2rem; height: 2rem"
+                variant="primary"
+              ></b-spinner>
+            </div>
+          </div>
+        </template>
+        <b-row class="col-sm-12 tableReturnProducts">
+          <table class="table table-sm">
+            <thead>
+              <tr style="background-color: #56aafe; color: white">
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Qnt. Devolvida</th>
+                <th>Vl. und</th>
+                <th>Vl. total</th>
+                <th>Selecionar</th>
+              </tr>
+              <tr
+                v-for="(products, index) in producsReferencedNota"
+                :key="products.ind"
+              >
+                <td class="tdReturnProducts">{{ products.nome }}</td>
+                <td class="tdReturnProducts">{{ products.quantidade }}</td>
+                <td class="tdReturnProducts">
+                  <div
+                    class="
+                      col-sm-12 col-md-12 col-lg-12 col-xl-12
+                      d-flex
+                      justify-content-center
+                    "
+                  >
+                    <b-form-input
+                      size="sm"
+                      type="number"
+                      v-model="quantidadeProdutosReturnNota[index]"
+                      class="col-sm-12 col-md-12 col-lg-5 col-xl-5"
+                    />
+                  </div>
+                </td>
+                <td class="tdReturnProducts">{{ products.subtotal }}</td>
+                <td class="tdReturnProducts">{{ products.total }}</td>
+                <td class="tdReturnProducts">
+                  <b-form-checkbox
+                    :id="products.id"
+                    name="checkbox-1"
+                    :value="index"
+                    v-model="indexProductReturnNota[index]"
+                    size="lg"
+                  />
+                </td>
+              </tr>
+            </thead>
+          </table>
+        </b-row>
+      </b-modal>
+    </div>
     <ModalShippingCompany />
     <ModalCancelNota
       :idNota="{
@@ -885,6 +965,9 @@ export default {
       valorTotalProdutosComDesc: "",
       valorTotalDescontoProdutos: "",
       getNotaAfterCanceled: false,
+      producsReferencedNota: [],
+      indexProductReturnNota: [],
+      quantidadeProdutosReturnNota: [],
       pagamento: [
         { value: 0, text: "Pagamento à vista" },
         { value: 1, text: "Pagamento à prazo" },
@@ -1045,6 +1128,13 @@ export default {
       });
     },
 
+    teste() {
+      console.log(
+        this.indexProductReturnNota,
+        this.quantidadeProdutosReturnNota
+      );
+    },
+
     formatTotalProductValue() {
       if (this.produtosNotaFiscal.subtotal !== "") {
         this.produtosNotaFiscal.total =
@@ -1185,10 +1275,21 @@ export default {
 
     async sendDevolucao() {
       try {
-        const result = await ServiceNotaFiscal.sendDevolucao(this.dadosNfe.id);
-        console.log(result);
+        this.spinLoading = true;
+        await ServiceNotaFiscal.sendDevolucao(this.dadosNfe.id);
+        await this.findNotaById();
+
+        return this.$toast.open({
+          message: "Nota devolvida com sucesso!",
+          type: "warning",
+        });
       } catch (error) {
-        console.log(error);
+        return this.$toast.open({
+          message: error.response.data.message,
+          type: "error",
+        });
+      } finally {
+        this.spinLoading = false;
       }
     },
 
@@ -1385,7 +1486,9 @@ export default {
     },
 
     async handleEmitOrReturnNota() {
-      this.dadosNfe.finalidade == 1 ? this.sendNota() : this.sendDevolucao();
+      this.dadosNfe.finalidade == 1
+        ? this.sendNota()
+        : this.findNotaByChaveReferenciada();
     },
 
     async findNotaById() {
@@ -1407,19 +1510,22 @@ export default {
         result.response_cancelamento
       );
     },
-
-    async openModalToSelectReturnProducts() {
-      await this.getProductsForReturnNota();
+    openModalReturnNota() {
+      this.$bvModal.show("modalReturnNota");
     },
-
-    async getProductsForReturnNota() {
+    async findNotaByChaveReferenciada() {
       try {
         const result = await serviceNotaFiscal.findNotaByChaveReferenciada(
           this.dadosNfe.chave_referenciada
         );
-        console.log(result);
+        this.producsReferencedNota = result;
+
+        this.openModalReturnNota();
       } catch (error) {
-        console.log(error);
+        return this.$toast.open({
+          message: `${error.response.data.message}`,
+          type: "error",
+        });
       }
     },
   },
@@ -1447,12 +1553,20 @@ export default {
     },
     handleButtonEmitirNfe() {
       if (
-        this.produtosForTable.length < 1 ||
-        this.responseNfeWebMania.chave !== ""
+        this.dadosNfe.finalidade == "4" &&
+        this.dadosNfe.chave_referenciada !== "" &&
+        this.dadosNfe.id !== ""
       ) {
-        return true;
-      } else {
         return false;
+      } else {
+        if (
+          this.produtosForTable.length < 1 ||
+          this.responseNfeWebMania.chave !== ""
+        ) {
+          return true;
+        } else {
+          return false;
+        }
       }
     },
   },
@@ -1568,6 +1682,19 @@ export default {
 
 .btnCadTransportadora {
   cursor: pointer;
+}
+
+.tableReturnProducts {
+  margin-top: 31px;
+  overflow: auto !important;
+  max-height: 300px;
+  text-align: center;
+}
+
+.tdReturnProducts {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 #dadosNfeStyle {

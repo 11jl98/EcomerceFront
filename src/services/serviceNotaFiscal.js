@@ -22,7 +22,7 @@ class ServiceNotaFiscal {
   }
 
   async findNotaByChaveReferenciada(chave) {
-    const { data } = await api.get(`/nota/buscar/chave/referenciada/${chave}`)
+    const { data } = await api.get(`/nota/buscar/nota/referenciada/${chave}`)
     return data
   } 
 
