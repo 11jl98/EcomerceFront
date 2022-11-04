@@ -801,7 +801,7 @@
             "
           >
             <div>
-              <b-button variant="info" size="sm" @click="teste"
+              <b-button variant="info" size="sm" @click="sendReturnNota"
                 >Prosseguir</b-button
               >
             </div>
@@ -1128,10 +1128,19 @@ export default {
       });
     },
 
-    teste() {
+    sendReturnNota() {
+      const data = {
+        produtos: this.indexProductReturnNota.filter(
+          (index) => index !== false
+        ),
+        quantidade: this.quantidadeProdutosReturnNota.filter(
+          (qnt) => qnt !== ""
+        ),
+      };
+
       console.log(
-        this.indexProductReturnNota,
-        this.quantidadeProdutosReturnNota
+        data
+        // this.quantidadeProdutosReturnNota
       );
     },
 
