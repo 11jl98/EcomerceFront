@@ -789,7 +789,6 @@
         id="modalReturnNota"
         size="lg"
         title="Selecione os produtos que deseja devolver!"
-        ok-title="Salvar"
         centered
       >
         <template #modal-footer>
@@ -801,12 +800,12 @@
             "
           >
             <div>
-              <b-button variant="info" size="sm" @click="sendReturnNota"
+              <b-button variant="info" size="sm" @click="sendDevolucao"
                 >Prosseguir</b-button
               >
             </div>
 
-            <div v-if="spinLoading">
+            <div v-if="spinLoadingDevolucao">
               <b-spinner
                 style="width: 2rem; height: 2rem"
                 variant="primary"
@@ -827,7 +826,7 @@
               </tr>
               <tr
                 v-for="(products, index) in producsReferencedNota"
-                :key="products.ind"
+                :key="products.id"
               >
                 <td class="tdReturnProducts">{{ products.nome }}</td>
                 <td class="tdReturnProducts">{{ products.quantidade }}</td>
@@ -842,7 +841,8 @@
                     <b-form-input
                       size="sm"
                       type="number"
-                      v-model="quantidadeProdutosReturnNota[index]"
+                      ref="quantidadeProd"
+                      v-model="dadosNotaDevolucao.quantidade[index]"
                       class="col-sm-12 col-md-12 col-lg-5 col-xl-5"
                     />
                   </div>
@@ -854,8 +854,9 @@
                     :id="products.id"
                     name="checkbox-1"
                     :value="index"
-                    v-model="indexProductReturnNota[index]"
+                    v-model="dadosNotaDevolucao.produtos[index]"
                     size="lg"
+                    @change="getProductsReturnNota(products.id, index)"
                   />
                 </td>
               </tr>
@@ -966,8 +967,10 @@ export default {
       valorTotalDescontoProdutos: "",
       getNotaAfterCanceled: false,
       producsReferencedNota: [],
-      indexProductReturnNota: [],
-      quantidadeProdutosReturnNota: [],
+      dadosNotaDevolucao: {
+        produtos: [],
+        quantidade: [],
+      },
       pagamento: [
         { value: 0, text: "Pagamento à vista" },
         { value: 1, text: "Pagamento à prazo" },
@@ -1048,6 +1051,7 @@ export default {
         },
       ],
       spinLoading: false,
+      spinLoadingDevolucao: false,
     };
   },
   methods: {
@@ -1128,22 +1132,6 @@ export default {
       });
     },
 
-    sendReturnNota() {
-      const data = {
-        produtos: this.indexProductReturnNota.filter(
-          (index) => index !== false
-        ),
-        quantidade: this.quantidadeProdutosReturnNota.filter(
-          (qnt) => qnt !== ""
-        ),
-      };
-
-      console.log(
-        data
-        // this.quantidadeProdutosReturnNota
-      );
-    },
-
     formatTotalProductValue() {
       if (this.produtosNotaFiscal.subtotal !== "") {
         this.produtosNotaFiscal.total =
@@ -1187,6 +1175,11 @@ export default {
       this.produtosNotaFiscal.total = valorDesconto.toLocaleString("pt-br", {
         minimumFractionDigits: 2,
       });
+    },
+
+    getProductsReturnNota(id, index) {
+      console.log(id, index);
+      this.dadosNotaDevolucao.quantidade[index] = 1;
     },
 
     maskMoney(value) {
@@ -1284,13 +1277,23 @@ export default {
 
     async sendDevolucao() {
       try {
-        this.spinLoading = true;
-        await ServiceNotaFiscal.sendDevolucao(this.dadosNfe.id);
+        this.spinLoadingDevolucao = true;
+        await ServiceNotaFiscal.sendDevolucao(
+          {
+            ...this.dadosNotaDevolucao,
+            classe_imposto: "REF7311252", //ref emissão devolução REF7311252 pessoa fisica
+            ambiente: this.dadosNfe.ambiente,
+            natureza_operacao:
+              "Devolução de venda de produção do estabelecimento",
+          },
+          this.dadosNfe.id
+        );
+
         await this.findNotaById();
 
         return this.$toast.open({
           message: "Nota devolvida com sucesso!",
-          type: "warning",
+          type: "success",
         });
       } catch (error) {
         return this.$toast.open({
@@ -1298,9 +1301,14 @@ export default {
           type: "error",
         });
       } finally {
-        this.spinLoading = false;
+        this.spinLoadingDevolucao = false;
+        this.$bvModal.hide("modalCancelNota");
       }
     },
+
+    // setValueReturnedAmount(index) {
+    //   this.dadosNotaDevolucao.quantidade[index] = 1;
+    // },
 
     async saveProductInNote() {
       try {

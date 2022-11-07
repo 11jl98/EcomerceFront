@@ -44,8 +44,8 @@ class ServiceNotaFiscal {
     return data
   }
 
-  async sendDevolucao(idNota) {
-    const { data } = await api.get(`/nota/send/returnNota/${idNota}`)
+  async sendDevolucao(dataReturnNota, id) {
+    const { data } = await api.put(`/nota/send/return/nota/${id}`, dataReturnNota)
     return data
   }
 
