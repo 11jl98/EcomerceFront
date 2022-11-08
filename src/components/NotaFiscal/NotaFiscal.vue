@@ -841,7 +841,6 @@
                     <b-form-input
                       size="sm"
                       type="number"
-                      ref="quantidadeProd"
                       v-model="dadosNotaDevolucao.quantidade[index]"
                       class="col-sm-12 col-md-12 col-lg-5 col-xl-5"
                     />
@@ -854,6 +853,7 @@
                     :id="products.id"
                     name="checkbox-1"
                     :value="index"
+                    ref="chkProdDevolucao"
                     v-model="dadosNotaDevolucao.produtos[index]"
                     size="lg"
                     @change="getProductsReturnNota(products.id, index)"
@@ -970,6 +970,7 @@ export default {
       dadosNotaDevolucao: {
         produtos: [],
         quantidade: [],
+        uuidItem: [],
       },
       pagamento: [
         { value: 0, text: "Pagamento à vista" },
@@ -1177,9 +1178,15 @@ export default {
       });
     },
 
-    getProductsReturnNota(id, index) {
-      console.log(id, index);
-      this.dadosNotaDevolucao.quantidade[index] = 1;
+    async getProductsReturnNota(id, index) {
+      if (this.$refs.chkProdDevolucao[index].$el.childNodes[0].checked) {
+        this.dadosNotaDevolucao.uuidItem[index] = id;
+        this.dadosNotaDevolucao.quantidade[index] = 1;
+      } else {
+        this.dadosNotaDevolucao.uuidItem.splice(index, 1);
+        this.dadosNotaDevolucao.quantidade.splice(index, 1);
+      }
+      console.log(this.dadosNotaDevolucao);
     },
 
     maskMoney(value) {
@@ -1290,6 +1297,7 @@ export default {
         );
 
         await this.findNotaById();
+        await this.findProductsByIdNota();
 
         return this.$toast.open({
           message: "Nota devolvida com sucesso!",
@@ -1302,13 +1310,9 @@ export default {
         });
       } finally {
         this.spinLoadingDevolucao = false;
-        this.$bvModal.hide("modalCancelNota");
+        this.$bvModal.hide("modalReturnNota");
       }
     },
-
-    // setValueReturnedAmount(index) {
-    //   this.dadosNotaDevolucao.quantidade[index] = 1;
-    // },
 
     async saveProductInNote() {
       try {
@@ -1471,6 +1475,7 @@ export default {
     },
 
     async updateNotaFiscal() {
+      console.log(this.responseNfeWebMania.status);
       try {
         await ServiceNotaFiscal.updateNota({
           ...this.dadosNfe,
@@ -1527,15 +1532,14 @@ export default {
         result.response_cancelamento
       );
     },
-    openModalReturnNota() {
-      this.$bvModal.show("modalReturnNota");
-    },
+
     async findNotaByChaveReferenciada() {
       try {
         const result = await serviceNotaFiscal.findNotaByChaveReferenciada(
           this.dadosNfe.chave_referenciada
         );
         this.producsReferencedNota = result;
+        console.log(this.producsReferencedNota)
 
         this.openModalReturnNota();
       } catch (error) {
@@ -1544,6 +1548,10 @@ export default {
           type: "error",
         });
       }
+    },
+
+    openModalReturnNota() {
+      this.$bvModal.show("modalReturnNota");
     },
   },
   computed: {
@@ -1570,9 +1578,11 @@ export default {
     },
     handleButtonEmitirNfe() {
       if (
-        this.dadosNfe.finalidade == "4" &&
-        this.dadosNfe.chave_referenciada !== "" &&
-        this.dadosNfe.id !== ""
+        (this.dadosNfe.finalidade == "4" &&
+          this.dadosNfe.chave_referenciada !== "" &&
+          this.dadosNfe.id !== "" &&
+          this.responseNfeWebMania.chave === "") ||
+        this.responseNfeWebMania.status === "reprovado"
       ) {
         return false;
       } else {
