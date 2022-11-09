@@ -825,7 +825,7 @@
                 <th>Selecionar</th>
               </tr>
               <tr
-                v-for="(products, index) in producsReferencedNota"
+                v-for="(products, index) in producsReferencedNotaFinal"
                 :key="products.id"
               >
                 <td class="tdReturnProducts">{{ products.nome }}</td>
@@ -841,7 +841,7 @@
                     <b-form-input
                       size="sm"
                       type="number"
-                      v-model="dadosNotaDevolucao.quantidade[index]"
+                      v-model="producsReferencedNotaFinal[index].qtdDevolvida"
                       class="col-sm-12 col-md-12 col-lg-5 col-xl-5"
                     />
                   </div>
@@ -850,13 +850,11 @@
                 <td class="tdReturnProducts">{{ products.total }}</td>
                 <td class="tdReturnProducts">
                   <b-form-checkbox
-                    :id="products.id"
                     name="checkbox-1"
-                    :value="index"
-                    ref="chkProdDevolucao"
-                    v-model="dadosNotaDevolucao.produtos[index]"
+                    v-model="producsReferencedNotaFinal[index].isDevolucao"
                     size="lg"
-                    @change="getProductsReturnNota(products.id, index)"
+                    @change="chekedProductsReturnNota(index)"
+                    id=""
                   />
                 </td>
               </tr>
@@ -967,6 +965,7 @@ export default {
       valorTotalDescontoProdutos: "",
       getNotaAfterCanceled: false,
       producsReferencedNota: [],
+      producsReferencedNotaFinal: [],
       dadosNotaDevolucao: {
         produtos: [],
         quantidade: [],
@@ -1178,15 +1177,31 @@ export default {
       });
     },
 
-    async getProductsReturnNota(id, index) {
-      if (this.$refs.chkProdDevolucao[index].$el.childNodes[0].checked) {
-        this.dadosNotaDevolucao.uuidItem[index] = id;
-        this.dadosNotaDevolucao.quantidade[index] = 1;
-      } else {
-        this.dadosNotaDevolucao.uuidItem.splice(index, 1);
-        this.dadosNotaDevolucao.quantidade.splice(index, 1);
+    chekedProductsReturnNota(index) {
+      if (this.producsReferencedNotaFinal[index].isDevolucao) {
+        if (!this.producsReferencedNotaFinal[index].qtdDevolvida)
+          this.producsReferencedNotaFinal[index].qtdDevolvida = 1;
+
+        this.producsReferencedNotaFinal[index].index = ++index;
+        return;
       }
-      console.log(this.dadosNotaDevolucao);
+      this.producsReferencedNotaFinal[index].qtdDevolvida = 0;
+      this.producsReferencedNotaFinal[index].index = null;
+    },
+
+    handleReturnedAmmoutAndAmmount() {
+      console.log(this.producsReferencedNotaFinal);
+      for (let i = 0; i < this.producsReferencedNotaFinal.length; i++) {
+        this.veirfyAmount(i);
+      }
+    },
+
+    veirfyAmount(index) {
+      return (
+        this.producsReferencedNotaFinal[index].qtdDevolvida < 0 ||
+        parseInt(this.producsReferencedNotaFinal[index].qtdDevolvida) >
+          this.producsReferencedNotaFinal[index].quantidade
+      );
     },
 
     maskMoney(value) {
@@ -1285,20 +1300,39 @@ export default {
     async sendDevolucao() {
       try {
         this.spinLoadingDevolucao = true;
-        await ServiceNotaFiscal.sendDevolucao(
-          {
-            ...this.dadosNotaDevolucao,
-            classe_imposto: "REF7311252", //ref emissão devolução REF7311252 pessoa fisica
-            ambiente: this.dadosNfe.ambiente,
-            natureza_operacao:
-              "Devolução de venda de produção do estabelecimento",
-          },
-          this.dadosNfe.id
-        );
 
-        await this.findNotaById();
-        await this.findProductsByIdNota();
+        this.dadosNotaDevolucao = {
+          produtos: [],
+          quantidade: [],
+          uuidItem: [],
+        };
 
+        this.handleValuesDataReturnNota();
+
+        if (this.handleReturnedAmmoutAndAmmount()) {
+          return this.$toast.open({
+            message:
+              "Quantidade DEVOLVIDA não pode ser maior nem menor que a QUANTIDADE!",
+            type: "warning",
+          });
+        }
+
+        // await ServiceNotaFiscal.sendDevolucao(
+        //   {
+        //     ...this.dadosNotaDevolucao,
+        //     classe_imposto: "REF7311252", //ref emissão devolução REF7311252 pessoa fisica
+        //     ambiente: this.dadosNfe.ambiente,
+        //     natureza_operacao:
+        //       "Devolução de venda de produção do estabelecimento",
+        //   },
+        //   this.dadosNfe.id
+        // );
+
+        // await this.findNotaById();
+        // await this.findProductsByIdNota();
+
+        // this.$bvModal.hide("modalReturnNota");
+        this.producsReferencedNotaFinal = [];
         return this.$toast.open({
           message: "Nota devolvida com sucesso!",
           type: "success",
@@ -1310,7 +1344,6 @@ export default {
         });
       } finally {
         this.spinLoadingDevolucao = false;
-        this.$bvModal.hide("modalReturnNota");
       }
     },
 
@@ -1539,9 +1572,8 @@ export default {
           this.dadosNfe.chave_referenciada
         );
         this.producsReferencedNota = result;
-        console.log(this.producsReferencedNota)
-
         this.openModalReturnNota();
+        this.handleDataProducsReferencedNota();
       } catch (error) {
         return this.$toast.open({
           message: `${error.response.data.message}`,
@@ -1552,6 +1584,33 @@ export default {
 
     openModalReturnNota() {
       this.$bvModal.show("modalReturnNota");
+      this.producsReferencedNotaFinal = [];
+    },
+
+    handleDataProducsReferencedNota() {
+      this.producsReferencedNota.forEach((prod) =>
+        this.producsReferencedNotaFinal.push({
+          ...prod,
+          qtdDevolvida: 0,
+          index: null,
+          isDevolucao: false,
+        })
+      );
+    },
+
+    handleValuesDataReturnNota() {
+      this.producsReferencedNotaFinal.forEach((element, index) => {
+        if (this.producsReferencedNotaFinal[index].isDevolucao)
+          this.dadosNotaDevolucao.quantidade.push(element.qtdDevolvida);
+      });
+      this.producsReferencedNotaFinal.forEach((element, index) => {
+        if (this.producsReferencedNotaFinal[index].isDevolucao)
+          this.dadosNotaDevolucao.produtos.push(element.index);
+      });
+      this.producsReferencedNotaFinal.forEach((element, index) => {
+        if (this.producsReferencedNotaFinal[index].isDevolucao)
+          this.dadosNotaDevolucao.uuidItem.push(element.id);
+      });
     },
   },
   computed: {
