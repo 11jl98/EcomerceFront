@@ -800,7 +800,11 @@
             "
           >
             <div>
-              <b-button variant="info" size="sm" @click="sendDevolucao"
+              <b-button
+                variant="info"
+                :disabled="handleReturnedAmmoutAndAmmount()"
+                size="sm"
+                @click="sendDevolucao"
                 >Prosseguir</b-button
               >
             </div>
@@ -1185,20 +1189,29 @@ export default {
         this.producsReferencedNotaFinal[index].index = ++index;
         return;
       }
-      this.producsReferencedNotaFinal[index].qtdDevolvida = 0;
+
+      this.producsReferencedNotaFinal[index].qtdDevolvida = 1;
       this.producsReferencedNotaFinal[index].index = null;
     },
 
     handleReturnedAmmoutAndAmmount() {
-      console.log(this.producsReferencedNotaFinal);
       for (let i = 0; i < this.producsReferencedNotaFinal.length; i++) {
-        this.veirfyAmount(i);
+        const result = this.veirfyAmount(i);
+        if (result) {
+          this.$toast.open({
+            message:
+              "Quantidade DEVOLVIDA não pode ser maior nem menor que a QUANTIDADE!",
+            type: "warning",
+          });
+          return result;
+        }
       }
     },
 
     veirfyAmount(index) {
       return (
-        this.producsReferencedNotaFinal[index].qtdDevolvida < 0 ||
+        this.producsReferencedNotaFinal[index].qtdDevolvida < 1 ||
+        this.producsReferencedNotaFinal[index].qtdDevolvida === "" ||
         parseInt(this.producsReferencedNotaFinal[index].qtdDevolvida) >
           this.producsReferencedNotaFinal[index].quantidade
       );
@@ -1232,6 +1245,7 @@ export default {
         return "";
       }
     },
+
     maskDiscount(value) {
       if (value?.length === 2) {
         return "#.#";
@@ -1309,29 +1323,21 @@ export default {
 
         this.handleValuesDataReturnNota();
 
-        if (this.handleReturnedAmmoutAndAmmount()) {
-          return this.$toast.open({
-            message:
-              "Quantidade DEVOLVIDA não pode ser maior nem menor que a QUANTIDADE!",
-            type: "warning",
-          });
-        }
+        await ServiceNotaFiscal.sendDevolucao(
+          {
+            ...this.dadosNotaDevolucao,
+            classe_imposto: "REF7311252", //ref emissão devolução REF7311252 pessoa fisica
+            ambiente: this.dadosNfe.ambiente,
+            natureza_operacao:
+              "Devolução de venda de produção do estabelecimento",
+          },
+          this.dadosNfe.id
+        );
 
-        // await ServiceNotaFiscal.sendDevolucao(
-        //   {
-        //     ...this.dadosNotaDevolucao,
-        //     classe_imposto: "REF7311252", //ref emissão devolução REF7311252 pessoa fisica
-        //     ambiente: this.dadosNfe.ambiente,
-        //     natureza_operacao:
-        //       "Devolução de venda de produção do estabelecimento",
-        //   },
-        //   this.dadosNfe.id
-        // );
+        await this.findNotaById();
+        await this.findProductsByIdNota();
 
-        // await this.findNotaById();
-        // await this.findProductsByIdNota();
-
-        // this.$bvModal.hide("modalReturnNota");
+        this.$bvModal.hide("modalReturnNota");
         this.producsReferencedNotaFinal = [];
         return this.$toast.open({
           message: "Nota devolvida com sucesso!",
@@ -1508,7 +1514,6 @@ export default {
     },
 
     async updateNotaFiscal() {
-      console.log(this.responseNfeWebMania.status);
       try {
         await ServiceNotaFiscal.updateNota({
           ...this.dadosNfe,
@@ -1591,7 +1596,7 @@ export default {
       this.producsReferencedNota.forEach((prod) =>
         this.producsReferencedNotaFinal.push({
           ...prod,
-          qtdDevolvida: 0,
+          qtdDevolvida: 1,
           index: null,
           isDevolucao: false,
         })
