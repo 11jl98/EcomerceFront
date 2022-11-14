@@ -19,7 +19,6 @@
             v-model="dadosNfe.operacao"
             size="sm"
             switch
-            @change="changeEmissionTypeText"
           >
             <div style="width: 90px">
               {{ textoTipoEmissao }}
@@ -959,7 +958,7 @@ export default {
         desconto: "",
         subtotal: "",
         total: "",
-        classe_imposto: "REF15466069", //  ref emissão devolução REF7311252 pessoa fisica
+        classe_imposto: "REF7311252", //  ref emissão devolução REF7311252 pessoa fisica
         informacoes_adicionais: "",
       },
       cliente: [],
@@ -1108,7 +1107,7 @@ export default {
     },
 
     changeEmissionTypeText() {
-      if (this.dadosNfe.operacao == 1) {
+      if (this.dadosNfe.operacao == "1") {
         this.textoTipoEmissao = "Saída";
       } else {
         this.textoTipoEmissao = "Entrada";
@@ -1302,6 +1301,7 @@ export default {
           type: "success",
         });
       } catch (error) {
+        console.log(error);
         return this.$toast.open({
           message: error.response.data.message,
           type: "error",
@@ -1547,8 +1547,8 @@ export default {
 
     async handleEmitOrReturnNota() {
       this.dadosNfe.finalidade == 1
-        ? this.sendNota()
-        : this.findNotaByChaveReferenciada();
+        ? await this.sendNota()
+        : await this.findNotaByChaveReferenciada();
     },
 
     async findNotaById() {
@@ -1645,7 +1645,8 @@ export default {
         (this.dadosNfe.finalidade == "4" &&
           this.dadosNfe.chave_referenciada !== "" &&
           this.dadosNfe.id !== "" &&
-          this.responseNfeWebMania.chave === "") ||
+          this.responseNfeWebMania.chave === "" &&
+          this.dadosNfe.operacao == "0") ||
         this.responseNfeWebMania.status === "reprovado"
       ) {
         return false;
@@ -1659,6 +1660,9 @@ export default {
           return false;
         }
       }
+    },
+    handleOperacao() {
+      return this.dadosNfe.operacao;
     },
   },
   filters: {
@@ -1680,6 +1684,9 @@ export default {
     },
     getNotaAfterCanceled() {
       this.findNotaById();
+    },
+    handleOperacao() {
+      this.changeEmissionTypeText();
     },
   },
 };
