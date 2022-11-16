@@ -177,7 +177,7 @@
         v-if="dadosNfe.finalidade == '4'"
       >
         <b-form-input
-          v-model="dadosNfe.chave_referenciada"
+          v-model="dadosNfe.nfe_referenciada"
           type="text"
           size="sm"
         ></b-form-input>
@@ -803,7 +803,7 @@
                 variant="info"
                 :disabled="handleReturnedAmmoutAndAmmount()"
                 size="sm"
-                @click="sendDevolucao"
+                @click="sendEntryNotaDevolution"
                 >Prosseguir</b-button
               >
             </div>
@@ -885,7 +885,6 @@ import ModalShippingCompany from "./ModalShippingCompany.vue";
 import ModalCancelNota from "./ModalCancelNota.vue";
 import toastAlertErros from "../../utils/toastAlertErros";
 import ServiceNotaFiscal from "../../services/serviceNotaFiscal";
-import serviceNotaFiscal from "../../services/serviceNotaFiscal";
 
 export default {
   components: {
@@ -914,7 +913,7 @@ export default {
         response: "",
         response_cancelamento: "",
         status: "",
-        chave_referenciada: "",
+        nfe_referenciada: "",
         pagamento: 0,
         presenca: 1,
         modalidade_frete: 9,
@@ -958,7 +957,7 @@ export default {
         desconto: "",
         subtotal: "",
         total: "",
-        classe_imposto: "REF7311252", //  ref emissão devolução REF7311252 pessoa fisica
+        classe_imposto: "REF15467394", // devolução ENTRADA REF7311252 pessoa fisica, devolução SAIDA REF15467394, saida normal REF15466069
         informacoes_adicionais: "",
       },
       cliente: [],
@@ -1280,6 +1279,14 @@ export default {
     },
 
     async sendNota() {
+      if (this.dadosNfe.operacao == "1" && this.dadosNfe.finalidade == "4") {
+        await this.sendExitNotaDevolution();
+      } else {
+        await this.sendExitNota();
+      }
+    },
+
+    async sendExitNota() {
       try {
         await ServiceNotaFiscal.updateNota({
           ...this.dadosNfe,
@@ -1292,7 +1299,7 @@ export default {
         });
 
         this.spinLoading = true;
-        await ServiceNotaFiscal.sendNota(this.dadosNfe.id);
+        await ServiceNotaFiscal.sendExitNota(this.dadosNfe.id);
 
         await this.findNotaById();
 
@@ -1311,7 +1318,39 @@ export default {
       }
     },
 
-    async sendDevolucao() {
+    async sendExitNotaDevolution() {
+      try {
+        await ServiceNotaFiscal.updateNota({
+          ...this.dadosNfe,
+          frete:
+            this.dadosNfe.frete === ""
+              ? 0
+              : this.dadosNfe.frete.replace(".", "").replace(",", "."),
+          total: this.dadosNfe.total.replace(".", "").replace(",", "."),
+          desconto: this.dadosNfe.desconto.replace(".", "").replace(",", "."),
+        });
+
+        this.spinLoading = true;
+        await ServiceNotaFiscal.sendExitNotaDevolution(this.dadosNfe.id);
+
+        await this.findNotaById();
+
+        return this.$toast.open({
+          message: "Nota emitida com sucesso!",
+          type: "success",
+        });
+      } catch (error) {
+        console.log(error);
+        return this.$toast.open({
+          message: error.response.data.message,
+          type: "error",
+        });
+      } finally {
+        this.spinLoading = false;
+      }
+    },
+
+    async sendEntryNotaDevolution() {
       try {
         this.spinLoadingDevolucao = true;
 
@@ -1321,12 +1360,12 @@ export default {
           uuidItem: [],
         };
 
-        this.handleValuesDataReturnNota();
+        this.handleValuesDataDevolutionNota();
 
-        await ServiceNotaFiscal.sendDevolucao(
+        await ServiceNotaFiscal.sendEntryNotaDevolution(
           {
             ...this.dadosNotaDevolucao,
-            classe_imposto: "REF7311252", //ref emissão devolução REF7311252 pessoa fisica
+            classe_imposto: "REF7311252", //ref emissão devolução de ENTRADA dentro do estado REF7311252 pessoa fisica
             ambiente: this.dadosNfe.ambiente,
             natureza_operacao:
               "Devolução de venda de produção do estabelecimento",
@@ -1407,6 +1446,7 @@ export default {
       );
 
       this.produtosForTable = result.noteItem;
+      console.log(this.produtosForTable);
 
       if (result?.noteItem.length > 0) {
         this.valorTotalProdutosComDesc = result?.noteItem
@@ -1546,7 +1586,7 @@ export default {
     },
 
     async handleEmitOrReturnNota() {
-      this.dadosNfe.finalidade == 1
+      this.dadosNfe.operacao == "1"
         ? await this.sendNota()
         : await this.findNotaByChaveReferenciada();
     },
@@ -1573,8 +1613,8 @@ export default {
 
     async findNotaByChaveReferenciada() {
       try {
-        const result = await serviceNotaFiscal.findNotaByChaveReferenciada(
-          this.dadosNfe.chave_referenciada
+        const result = await ServiceNotaFiscal.findNotaByChaveReferenciada(
+          this.dadosNfe.nfe_referenciada
         );
         this.producsReferencedNota = result;
         this.openModalReturnNota();
@@ -1603,7 +1643,7 @@ export default {
       );
     },
 
-    handleValuesDataReturnNota() {
+    handleValuesDataDevolutionNota() {
       this.producsReferencedNotaFinal.forEach((element, index) => {
         if (this.producsReferencedNotaFinal[index].isDevolucao)
           this.dadosNotaDevolucao.quantidade.push(element.qtdDevolvida);
@@ -1643,7 +1683,7 @@ export default {
     handleButtonEmitirNfe() {
       if (
         (this.dadosNfe.finalidade == "4" &&
-          this.dadosNfe.chave_referenciada !== "" &&
+          this.dadosNfe.nfe_referenciada !== "" &&
           this.dadosNfe.id !== "" &&
           this.responseNfeWebMania.chave === "" &&
           this.dadosNfe.operacao == "0") ||

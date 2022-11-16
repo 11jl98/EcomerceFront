@@ -77,15 +77,18 @@ export default {
         );
 
         this.$emit("getNotaAfterCanceled", !this.alterValueEvent);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        this.spinLoading = false;
-        this.$bvModal.hide("modalCancelNota");
         this.$toast.open({
           message: "Nota Cancelada!",
           type: "success",
         });
+      } catch (error) {
+        this.$toast.open({
+          message: error.response.data.message,
+          type: "error",
+        });
+      } finally {
+        this.spinLoading = false;
+        this.$bvModal.hide("modalCancelNota");
       }
     },
   },

@@ -39,13 +39,18 @@ class ServiceNotaFiscal {
     await api.delete(`/nota-item/delete-all/${idNota}`)
   }
 
-  async sendNota(idNota) {
+  async sendExitNota(idNota) {
     const { data } = await api.get(`/nota/send/${idNota}`)
     return data
   }
 
-  async sendDevolucao(dataReturnNota, id) {
-    const { data } = await api.put(`/nota/send/return/nota/${id}`, dataReturnNota)
+  async sendEntryNotaDevolution(dataReturnNota, id) {
+    const { data } = await api.put(`/nota/send/exit/nota/entry/${id}`, dataReturnNota)
+    return data
+  }
+  
+  async sendExitNotaDevolution(idNota) {
+    const { data } = await api.get(`/nota/send/devolution/nota/exit/provider/${idNota}`)
     return data
   }
 
