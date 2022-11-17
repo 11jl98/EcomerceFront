@@ -1,6 +1,20 @@
 <template>
   <b-card class="shadow">
-    <h3>Dados Cadastrais</h3>
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h3>Dados Cadastrais</h3>
+      </div>
+
+      <div>
+        <b-button
+          class="mr-4"
+          style="border: none !important; background-color: #56aafe !important"
+          size="sm"
+          @click="openModalTaxInformation"
+          >Infor. Fiscal <b-icon-stickies class="ml-1"></b-icon-stickies
+        ></b-button>
+      </div>
+    </div>
     <hr />
     <div class="mt-4">
       <b-row class="d-flex justify-content-around">
@@ -167,6 +181,7 @@
         </div>
       </div>
     </div>
+    <ModalTaxInformation />
   </b-card>
 </template>
 
@@ -174,12 +189,16 @@
 import api from "../../services/axios";
 import toastAlertErros from "../../utils/toastAlertErros";
 import ServiceProducts from "../../services/serviceProducts";
+import ModalTaxInformation from "../ModalTaxInformation/Index-TaxInformation.vue";
 
 export default {
   props: {
     readOrEditProducts: {
       type: Object,
     },
+  },
+  components: {
+    ModalTaxInformation,
   },
   data() {
     return {
@@ -249,6 +268,10 @@ export default {
         estoque: 0,
         estoqueMin: 0,
       };
+    },
+
+    openModalTaxInformation() {
+      this.$bvModal.show("modalTaxInformation");
     },
   },
   watch: {
