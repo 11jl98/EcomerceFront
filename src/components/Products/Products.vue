@@ -17,14 +17,14 @@
     </div>
     <hr />
     <div class="mt-4">
-      <b-row class="d-flex justify-content-around">
-        <b-form-input hidden class="col-sm-1"></b-form-input>
+      <b-row>
+        <b-form-input hidden></b-form-input>
 
         <b-form-group
           id="input-group-1"
           label="Nome Produto"
           label-for="input-1"
-          class="col-sm-5"
+          class="col-sm-12 col-md-6 col-lg-5 col-xl-4"
         >
           <b-form-input
             id="input-1"
@@ -39,7 +39,7 @@
           id="input-group-1"
           label="Valor"
           label-for="input-1"
-          class="col-sm-3"
+          class="col-sm-4 col-md-3 col-lg-2 col-xl-2"
         >
           <b-form-input
             id="input-1"
@@ -50,11 +50,12 @@
             type="number"
           ></b-form-input>
         </b-form-group>
+
         <b-form-group
           id="input-group-1"
-          label="Valor de venda"
+          label="Vl. venda"
           label-for="input-1"
-          class="col-sm-3"
+          class="col-sm-4 col-md-3 col-lg-2 col-xl-2"
         >
           <b-form-input
             id="input-1"
@@ -65,13 +66,12 @@
             type="number"
           ></b-form-input>
         </b-form-group>
-      </b-row>
-      <b-row class="d-flex justify-content-around">
+
         <b-form-group
           id="input-group-1"
           label="Unidade"
           label-for="input-1"
-          class="col-sm-3"
+          class="col-sm-4 col-md-3 col-lg-3 col-xl-2"
         >
           <b-form-input
             id="input-1"
@@ -81,42 +81,42 @@
             size="sm"
           ></b-form-input>
         </b-form-group>
+
         <b-form-group
           id="input-group-1"
-          label="Código de barras"
+          label="Cód. barras"
           label-for="input-1"
-          class="col-sm-4"
+          class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
         >
           <b-form-input
             id="input-1"
-            placeholder="Código de barras"
+            placeholder="Cód. barras"
             v-model="dataProducts.codBarras"
             size="sm"
             required
           ></b-form-input>
         </b-form-group>
+
         <b-form-group
           id="input-group-1"
-          label="Código de referencia"
+          label="Cód. referencia"
           label-for="input-1"
-          class="col-sm-4"
+          class="col-sm-6 col-md-5 col-lg-4 col-xl-2"
         >
           <b-form-input
             id="input-1"
-            placeholder="Código de referencia"
+            placeholder="Cód. referencia"
             v-model="dataProducts.codReferencia"
             size="sm"
             required
           ></b-form-input>
         </b-form-group>
-      </b-row>
 
-      <b-row class="d-flex justify-content-around">
         <b-form-group
           id="input-group-1"
           label="Estoque"
           label-for="input-1"
-          class="col-sm-2"
+          class="col-sm-6 col-md-2 col-lg-2 col-xl-2"
         >
           <b-form-input
             id="input-1"
@@ -128,11 +128,12 @@
             type="number"
           ></b-form-input>
         </b-form-group>
+
         <b-form-group
           id="input-group-1"
-          label="Estoque mínimo"
+          label="Estoque mín"
           label-for="input-1"
-          class="col-sm-2"
+          class="col-sm-6 col-md-3 col-lg-2 col-xl-2"
         >
           <b-form-input
             id="input-1"
@@ -143,11 +144,12 @@
             size="sm"
           ></b-form-input>
         </b-form-group>
+
         <b-form-group
           id="input-group-1"
           label="Descrição"
           label-for="input-1"
-          class="col-sm-7"
+          class="col-sm-12 col-md-7 col-lg-12 col-xl-5"
         >
           <b-form-textarea
             id="textarea"
@@ -159,7 +161,6 @@
         </b-form-group>
       </b-row>
 
-      <b-row class="d-flex justify-content-around"> </b-row>
       <div>
         <div class="d-flex justify-content-end">
           <div>
