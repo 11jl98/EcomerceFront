@@ -164,10 +164,10 @@
               ><b-card-text
                 ><b-card class="p-2">
                   <b-row>
-                    <b-input-group prepend="Tipo de Tributação" class="mb-3">
+                    <b-input-group prepend="Tipo pessoa" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.icms.tipo_tributacao"
-                        :options="dadosImposto.icms.tipo_tributacao"
+                        v-model="infoFiscal.pis.tipo_pessoa"
+                        :options="dadosImposto.pis.tipo_pessoa"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
@@ -175,52 +175,28 @@
 
                     <b-input-group prepend="Cenário" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.icms.cenario"
-                        :options="dadosImposto.icms.cenario"
+                        v-model="infoFiscal.pis.cenario"
+                        :options="dadosImposto.pis.cenario"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
                     ></b-input-group>
 
-                    <b-input-group prepend="Tipo pessoa" class="mb-3">
+                    <b-input-group prepend="Situação tributária" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.icms.tipo_pessoa"
-                        :options="dadosImposto.icms.tipo_pessoa"
+                        v-model="infoFiscal.pis.situacao_tributaria"
+                        :options="dadosImposto.pis.situacao_tributaria"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
                     ></b-input-group>
 
-                    <b-form-group
-                      :hidden="infoFiscal.icms.tipo_pessoa !== 'juridica'"
-                    >
-                      <b-form-checkbox
-                        id="checkbox-1"
-                        v-model="infoFiscal.icms.nao_contribuinte"
-                        name="checkbox-1"
-                      >
-                        Marque essa opção caso a configuração deste cenário seja
-                        específico para Pessoa Jurídica não contribuinte do ICMS
-                        ou Consumidor final.
-                      </b-form-checkbox>
-                    </b-form-group>
-
-                    <b-input-group prepend="Código CFOP" class="mb-3">
+                    <b-input-group prepend="Alíquota %">
                       <b-form-input
-                        v-model="infoFiscal.icms.codigo_cfop"
+                        v-model="infoFiscal.pis.aliquota"
                         text-field="text"
                         type="text"
-                        maxlength="4"
                       ></b-form-input
-                    ></b-input-group>
-
-                    <b-input-group prepend="Situação tributária">
-                      <b-form-select
-                        v-model="infoFiscal.icms.situacao_tributaria"
-                        :options="dadosImposto.icms.situacao_tributaria"
-                        value-field="value"
-                        text-field="text"
-                      ></b-form-select
                     ></b-input-group>
                   </b-row> </b-card></b-card-text
             ></b-tab>
@@ -228,10 +204,10 @@
               ><b-card-text
                 ><b-card class="p-2">
                   <b-row>
-                    <b-input-group prepend="Tipo de Tributação" class="mb-3">
+                    <b-input-group prepend="Tipo pessoa" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.icms.tipo_tributacao"
-                        :options="dadosImposto.icms.tipo_tributacao"
+                        v-model="infoFiscal.cofins.tipo_pessoa"
+                        :options="dadosImposto.cofins.tipo_pessoa"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
@@ -239,52 +215,28 @@
 
                     <b-input-group prepend="Cenário" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.icms.cenario"
-                        :options="dadosImposto.icms.cenario"
+                        v-model="infoFiscal.cofins.cenario"
+                        :options="dadosImposto.cofins.cenario"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
                     ></b-input-group>
 
-                    <b-input-group prepend="Tipo pessoa" class="mb-3">
+                    <b-input-group prepend="Situação tributária" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.icms.tipo_pessoa"
-                        :options="dadosImposto.icms.tipo_pessoa"
+                        v-model="infoFiscal.cofins.situacao_tributaria"
+                        :options="dadosImposto.cofins.situacao_tributaria"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
                     ></b-input-group>
 
-                    <b-form-group
-                      :hidden="infoFiscal.icms.tipo_pessoa !== 'juridica'"
-                    >
-                      <b-form-checkbox
-                        id="checkbox-1"
-                        v-model="infoFiscal.icms.nao_contribuinte"
-                        name="checkbox-1"
-                      >
-                        Marque essa opção caso a configuração deste cenário seja
-                        específico para Pessoa Jurídica não contribuinte do ICMS
-                        ou Consumidor final.
-                      </b-form-checkbox>
-                    </b-form-group>
-
-                    <b-input-group prepend="Código CFOP" class="mb-3">
+                    <b-input-group prepend="Alíquota %">
                       <b-form-input
-                        v-model="infoFiscal.icms.codigo_cfop"
+                        v-model="infoFiscal.cofins.aliquota"
                         text-field="text"
                         type="text"
-                        maxlength="4"
                       ></b-form-input
-                    ></b-input-group>
-
-                    <b-input-group prepend="Situação tributária">
-                      <b-form-select
-                        v-model="infoFiscal.icms.situacao_tributaria"
-                        :options="dadosImposto.icms.situacao_tributaria"
-                        value-field="value"
-                        text-field="text"
-                      ></b-form-select
                     ></b-input-group>
                   </b-row> </b-card></b-card-text
             ></b-tab>
@@ -354,67 +306,33 @@
             ></b-tab>
             <b-tab title="Informações"
               ><b-card-text
-                ><b-card class="p-2">
-                  <b-row>
-                    <b-input-group prepend="Tipo de Tributação" class="mb-3">
-                      <b-form-select
-                        v-model="infoFiscal.icms.tipo_tributacao"
-                        :options="dadosImposto.icms.tipo_tributacao"
-                        value-field="value"
-                        text-field="text"
-                      ></b-form-select
-                    ></b-input-group>
+                ><b-form-group
+                  id="input-group-1"
+                  label="Informações ao Fisco"
+                  label-for="textarea"
+                  size="sm"
+                >
+                  <b-form-textarea
+                    id="textarea"
+                    rows="6"
+                    no-resize
+                    v-model="infoFiscal.informacoes_fisco"
+                  ></b-form-textarea>
+                </b-form-group>
 
-                    <b-input-group prepend="Cenário" class="mb-3">
-                      <b-form-select
-                        v-model="infoFiscal.icms.cenario"
-                        :options="dadosImposto.icms.cenario"
-                        value-field="value"
-                        text-field="text"
-                      ></b-form-select
-                    ></b-input-group>
-
-                    <b-input-group prepend="Tipo pessoa" class="mb-3">
-                      <b-form-select
-                        v-model="infoFiscal.icms.tipo_pessoa"
-                        :options="dadosImposto.icms.tipo_pessoa"
-                        value-field="value"
-                        text-field="text"
-                      ></b-form-select
-                    ></b-input-group>
-
-                    <b-form-group
-                      :hidden="infoFiscal.icms.tipo_pessoa !== 'juridica'"
-                    >
-                      <b-form-checkbox
-                        id="checkbox-1"
-                        v-model="infoFiscal.icms.nao_contribuinte"
-                        name="checkbox-1"
-                      >
-                        Marque essa opção caso a configuração deste cenário seja
-                        específico para Pessoa Jurídica não contribuinte do ICMS
-                        ou Consumidor final.
-                      </b-form-checkbox>
-                    </b-form-group>
-
-                    <b-input-group prepend="Código CFOP" class="mb-3">
-                      <b-form-input
-                        v-model="infoFiscal.icms.codigo_cfop"
-                        text-field="text"
-                        type="text"
-                        maxlength="4"
-                      ></b-form-input
-                    ></b-input-group>
-
-                    <b-input-group prepend="Situação tributária">
-                      <b-form-select
-                        v-model="infoFiscal.icms.situacao_tributaria"
-                        :options="dadosImposto.icms.situacao_tributaria"
-                        value-field="value"
-                        text-field="text"
-                      ></b-form-select
-                    ></b-input-group>
-                  </b-row> </b-card></b-card-text
+                <b-form-group
+                  id="input-group-1"
+                  label="Informações Complementares ao Consumidor"
+                  label-for="textarea"
+                  size="sm"
+                >
+                  <b-form-textarea
+                    id="textarea"
+                    rows="6"
+                    no-resize
+                    v-model="infoFiscal.informacoes_complementares"
+                  ></b-form-textarea>
+                </b-form-group> </b-card-text
             ></b-tab>
           </b-tabs>
         </b-card>
@@ -444,6 +362,20 @@ export default {
           codigo_enquadramento: "999",
           aliquota: "0.00",
         },
+        pis: {
+          cenario: "padrao",
+          tipo_pessoa: "fisica",
+          situacao_tributaria: "99",
+          aliquota: "0.00",
+        },
+        cofins: {
+          cenario: "padrao",
+          tipo_pessoa: "fisica",
+          situacao_tributaria: "99",
+          aliquota: "0.00",
+        },
+        informacoes_fisco: "",
+        informacoes_complementares: "",
       },
       dadosImposto: {
         icms: {
@@ -471,7 +403,7 @@ export default {
           tipo_pessoa: [
             { value: "fisica", text: "Fisica" },
             { value: "juridica", text: "Juridica" },
-            { value: "estrangeira", text: "Estrangeiral" },
+            { value: "estrangeira", text: "Estrangeira" },
           ],
           situacao_tributaria: [
             { value: "101", text: "101 - Tributada com permissão de crédito" },
@@ -549,7 +481,7 @@ export default {
           tipo_pessoa: [
             { value: "fisica", text: "Fisica" },
             { value: "juridica", text: "Juridica" },
-            { value: "estrangeira", text: "Estrangeiral" },
+            { value: "estrangeira", text: "Estrangeira" },
           ],
           situacao_tributaria: [
             { value: "00", text: "00 - Entrada com recuperação de crédito" },
@@ -566,6 +498,330 @@ export default {
             { value: "54", text: "54 - Saída imune" },
             { value: "55", text: "55 - Saída com suspensão" },
             { value: "99", text: "99 - Outras saídas" },
+          ],
+        },
+        pis: {
+          cenario: [
+            { value: "padrao", text: "Padrão (Abrange todos os cenários)" },
+            {
+              value: "saida_dentro_estado",
+              text: "Saída dentro do estado",
+            },
+            {
+              value: "saida_fora_estado",
+              text: "Saída fora do estado",
+            },
+            {
+              value: "entrada_dentro_estado",
+              text: "Entrada dentro do estado",
+            },
+            {
+              value: "entrada_fora_estado",
+              text: "Entrada fora do estado",
+            },
+            { value: "saida_exterior", text: "Saída para o Exterior" },
+            { value: "entrada_exterior", text: "Entrada do Exterior" },
+          ],
+          tipo_pessoa: [
+            { value: "fisica", text: "Fisica" },
+            { value: "juridica", text: "Juridica" },
+            { value: "estrangeira", text: "Estrangeira" },
+          ],
+          situacao_tributaria: [
+            {
+              value: "01",
+              text: "01 - Operação Tributável - Base de Cálculo = Valor da Operação Alíquota Normal (Cumulativo/Não cumulativo)",
+            },
+            {
+              value: "02",
+              text: "02 - Operação Tributável - Base de Cálculo = Valor da Operação (Alíquota diferenciada)",
+            },
+            {
+              value: "03",
+              text: "03 - Operação Tributável - Base de Cálculo = Quantidade Vendida X Alíquota por Unidade de Produto",
+            },
+            {
+              value: "04",
+              text: "04 - Operação Tributável - Tributação Monofásica - (Alíquota Zero)",
+            },
+            {
+              value: "05",
+              text: "05 - Operação Tributável - (Substituição Tributária)",
+            },
+            {
+              value: "06",
+              text: "06 - Operação Tributável (Alíquota Zero)",
+            },
+            {
+              value: "07",
+              text: "07 - Operação Isenta de Contribuição",
+            },
+            {
+              value: "08",
+              text: "08 - Operação sem Incidência da Contribuição",
+            },
+            {
+              value: "09",
+              text: "09 - Operação com Suspensão da Contribuição",
+            },
+            {
+              value: "49",
+              text: "49 - Outras Operações de Saída",
+            },
+            {
+              value: "50",
+              text: "50 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita Tributada no Mercado Interno",
+            },
+            {
+              value: "51",
+              text: "51 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita Não Tributada no Mercado Interno",
+            },
+            {
+              value: "52",
+              text: "52 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita de Exportação",
+            },
+            {
+              value: "53",
+              text: "53 - Operação com Direito a Crédito - Vinculado a Receitas Tributadas e Não-Tributadas no Mercado Interno",
+            },
+            {
+              value: "54",
+              text: "54 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas no Mercado Interno e de Exportação",
+            },
+            {
+              value: "55",
+              text: "55 - Operação com Direito a Crédito - Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação",
+            },
+            {
+              value: "56",
+              text: "56 - Operação com Direito a Crédito - Vinculado a Receitas Tributadas e Não-Tributadas no Mercado Interno, e de Exportação",
+            },
+            {
+              value: "60",
+              text: "60 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Tributada no Mercado Interno",
+            },
+            {
+              value: "61",
+              text: "61 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Não-Tributada no Mercado Interno",
+            },
+            {
+              value: "62",
+              text: "62 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita de Exportação",
+            },
+            {
+              value: "63",
+              text: "63 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno",
+            },
+            {
+              value: "64",
+              text: "64 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas no Mercado Interno e de Exportação",
+            },
+            {
+              value: "65",
+              text: "65 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação",
+            },
+            {
+              value: "66",
+              text: "66 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno, e de Exportação",
+            },
+            {
+              value: "67",
+              text: "67 - Crédito Presumido - Outras Operações",
+            },
+            {
+              value: "70",
+              text: "70 - Operação de Aquisição sem Direito a Crédito",
+            },
+            {
+              value: "71",
+              text: "71 - Operação de Aquisição com Isenção",
+            },
+            {
+              value: "72",
+              text: "72 - Operação de Aquisição com Suspensão",
+            },
+            {
+              value: "73",
+              text: "73 - Operação de Aquisição a Alíquota Zero",
+            },
+            {
+              value: "74",
+              text: "74 - Operação de Aquisição sem Incidência da Contribuição",
+            },
+            {
+              value: "75",
+              text: "75 - Operação de Aquisição por Substituição Tributária",
+            },
+            {
+              value: "98",
+              text: "98 - Outras Operações de Entrada",
+            },
+            {
+              value: "99",
+              text: "99 - Outras Operações",
+            },
+          ],
+        },
+        cofins: {
+          cenario: [
+            { value: "padrao", text: "Padrão (Abrange todos os cenários)" },
+            {
+              value: "saida_dentro_estado",
+              text: "Saída dentro do estado",
+            },
+            {
+              value: "saida_fora_estado",
+              text: "Saída fora do estado",
+            },
+            {
+              value: "entrada_dentro_estado",
+              text: "Entrada dentro do estado",
+            },
+            {
+              value: "entrada_fora_estado",
+              text: "Entrada fora do estado",
+            },
+            { value: "saida_exterior", text: "Saída para o Exterior" },
+            { value: "entrada_exterior", text: "Entrada do Exterior" },
+          ],
+          tipo_pessoa: [
+            { value: "fisica", text: "Fisica" },
+            { value: "juridica", text: "Juridica" },
+            { value: "estrangeira", text: "Estrangeira" },
+          ],
+          situacao_tributaria: [
+            {
+              value: "01",
+              text: "01 - Operação Tributável - Base de Cálculo = Valor da Operação Alíquota Normal (Cumulativo/Não cumulativo)",
+            },
+            {
+              value: "02",
+              text: "02 - Operação Tributável - Base de Cálculo = Valor da Operação (Alíquota diferenciada)",
+            },
+            {
+              value: "03",
+              text: "03 - Operação Tributável - Base de Cálculo = Quantidade Vendida X Alíquota por Unidade de Produto",
+            },
+            {
+              value: "04",
+              text: "04 - Operação Tributável - Tributação Monofásica - (Alíquota Zero)",
+            },
+            {
+              value: "05",
+              text: "05 - Operação Tributável - (Substituição Tributária)",
+            },
+            {
+              value: "06",
+              text: "06 - Operação Tributável (Alíquota Zero)",
+            },
+            {
+              value: "07",
+              text: "07 - Operação Isenta de Contribuição",
+            },
+            {
+              value: "08",
+              text: "08 - Operação sem Incidência da Contribuição",
+            },
+            {
+              value: "09",
+              text: "09 - Operação com Suspensão da Contribuição",
+            },
+            {
+              value: "49",
+              text: "49 - Outras Operações de Saída",
+            },
+            {
+              value: "50",
+              text: "50 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita Tributada no Mercado Interno",
+            },
+            {
+              value: "51",
+              text: "51 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita Não Tributada no Mercado Interno",
+            },
+            {
+              value: "52",
+              text: "52 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita de Exportação",
+            },
+            {
+              value: "53",
+              text: "53 - Operação com Direito a Crédito - Vinculado a Receitas Tributadas e Não-Tributadas no Mercado Interno",
+            },
+            {
+              value: "54",
+              text: "54 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas no Mercado Interno e de Exportação",
+            },
+            {
+              value: "55",
+              text: "55 - Operação com Direito a Crédito - Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação",
+            },
+            {
+              value: "56",
+              text: "56 - Operação com Direito a Crédito - Vinculado a Receitas Tributadas e Não-Tributadas no Mercado Interno, e de Exportação",
+            },
+            {
+              value: "60",
+              text: "60 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Tributada no Mercado Interno",
+            },
+            {
+              value: "61",
+              text: "61 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Não-Tributada no Mercado Interno",
+            },
+            {
+              value: "62",
+              text: "62 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita de Exportação",
+            },
+            {
+              value: "63",
+              text: "63 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno",
+            },
+            {
+              value: "64",
+              text: "64 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas no Mercado Interno e de Exportação",
+            },
+            {
+              value: "65",
+              text: "65 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação",
+            },
+            {
+              value: "66",
+              text: "66 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno, e de Exportação",
+            },
+            {
+              value: "67",
+              text: "67 - Crédito Presumido - Outras Operações",
+            },
+            {
+              value: "70",
+              text: "70 - Operação de Aquisição sem Direito a Crédito",
+            },
+            {
+              value: "71",
+              text: "71 - Operação de Aquisição com Isenção",
+            },
+            {
+              value: "72",
+              text: "72 - Operação de Aquisição com Suspensão",
+            },
+            {
+              value: "73",
+              text: "73 - Operação de Aquisição a Alíquota Zero",
+            },
+            {
+              value: "74",
+              text: "74 - Operação de Aquisição sem Incidência da Contribuição",
+            },
+            {
+              value: "75",
+              text: "75 - Operação de Aquisição por Substituição Tributária",
+            },
+            {
+              value: "98",
+              text: "98 - Outras Operações de Entrada",
+            },
+            {
+              value: "99",
+              text: "99 - Outras Operações",
+            },
           ],
         },
       },
