@@ -86,7 +86,7 @@
           id="input-group-1"
           label="Cód. barras"
           label-for="input-1"
-          class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
+          class="col-sm-6 col-md-4 col-lg-3 col-xl-2"
         >
           <b-form-input
             id="input-1"
@@ -101,7 +101,7 @@
           id="input-group-1"
           label="Cód. referencia"
           label-for="input-1"
-          class="col-sm-6 col-md-5 col-lg-4 col-xl-2"
+          class="col-sm-6 col-md-5 col-lg-3 col-xl-2"
         >
           <b-form-input
             id="input-1"
@@ -110,6 +110,15 @@
             size="sm"
             required
           ></b-form-input>
+        </b-form-group>
+
+        <b-form-group
+          id="input-group-1"
+          label="REF Fiscal"
+          label-for="input-1"
+          class="col-sm-12 col-md-7 col-lg-6 col-xl-6"
+        >
+          <b-form-select size="sm"></b-form-select>
         </b-form-group>
 
         <b-form-group
@@ -149,7 +158,7 @@
           id="input-group-1"
           label="Descrição"
           label-for="input-1"
-          class="col-sm-12 col-md-7 col-lg-12 col-xl-5"
+          class="col-sm-12 col-md-12 col-lg-8 col-xl-12"
         >
           <b-form-textarea
             id="textarea"

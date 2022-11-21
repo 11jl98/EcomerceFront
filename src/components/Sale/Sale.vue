@@ -853,7 +853,7 @@ export default {
       return data;
     },
 
-    async saveOrUpdateSale() {
+    saveOrUpdateSale() {
       if (this.dataSale.id !== "") return this.UpdateSale();
       this.saveSale();
     },

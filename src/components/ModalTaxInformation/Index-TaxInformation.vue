@@ -16,7 +16,7 @@
           "
         >
           <div>
-            <b-button variant="info" size="sm" @click="testeeeee"
+            <b-button variant="info" size="sm" @click="handleSaveOrUpdate"
               >Salvar</b-button
             >
           </div>
@@ -38,17 +38,24 @@
                     placeholder="Descreva a classificação desse imposto para melhor gerenciamento. Ex: Classe de impostos para Saída de produtos de fabricação própria."
                     rows="6"
                     no-resize
-                    v-model="infoFiscal.geral"
+                    v-model="infoFiscal.descricao"
                   ></b-form-textarea>
                 </b-form-group> </b-card-text
             ></b-tab>
             <b-tab title="ICMS"
               ><b-card class="p-2">
                 <b-row>
+                  <b-form-input
+                    v-model="infoFiscal.id"
+                    text-field="text"
+                    type="text"
+                    hidden
+                  ></b-form-input>
+
                   <b-input-group prepend="Tipo de Tributação" class="mb-3">
                     <b-form-select
-                      v-model="infoFiscal.icms.tipo_tributacao"
-                      :options="dadosImposto.icms.tipo_tributacao"
+                      v-model="infoFiscal.icms[0].tipo_tributacao"
+                      :options="taxForSelectBoxes.icms.tipo_tributacao"
                       value-field="value"
                       text-field="text"
                     ></b-form-select
@@ -56,8 +63,8 @@
 
                   <b-input-group prepend="Cenário" class="mb-3">
                     <b-form-select
-                      v-model="infoFiscal.icms.cenario"
-                      :options="dadosImposto.icms.cenario"
+                      v-model="infoFiscal.icms[0].cenario"
+                      :options="taxForSelectBoxes.icms.cenario"
                       value-field="value"
                       text-field="text"
                     ></b-form-select
@@ -65,19 +72,19 @@
 
                   <b-input-group prepend="Tipo pessoa" class="mb-3">
                     <b-form-select
-                      v-model="infoFiscal.icms.tipo_pessoa"
-                      :options="dadosImposto.icms.tipo_pessoa"
+                      v-model="infoFiscal.icms[0].tipo_pessoa"
+                      :options="taxForSelectBoxes.icms.tipo_pessoa"
                       value-field="value"
                       text-field="text"
                     ></b-form-select
                   ></b-input-group>
 
                   <b-form-group
-                    :hidden="infoFiscal.icms.tipo_pessoa !== 'juridica'"
+                    :hidden="infoFiscal.icms[0].tipo_pessoa !== 'juridica'"
                   >
                     <b-form-checkbox
                       id="checkbox-1"
-                      v-model="infoFiscal.icms.nao_contribuinte"
+                      v-model="infoFiscal.icms[0].nao_contribuinte"
                       name="checkbox-1"
                     >
                       Marque essa opção caso a configuração deste cenário seja
@@ -88,7 +95,7 @@
 
                   <b-input-group prepend="Código CFOP" class="mb-3">
                     <b-form-input
-                      v-model="infoFiscal.icms.codigo_cfop"
+                      v-model="infoFiscal.icms[0].codigo_cfop"
                       text-field="text"
                       type="text"
                       maxlength="4"
@@ -97,8 +104,8 @@
 
                   <b-input-group prepend="Situação tributária">
                     <b-form-select
-                      v-model="infoFiscal.icms.situacao_tributaria"
-                      :options="dadosImposto.icms.situacao_tributaria"
+                      v-model="infoFiscal.icms[0].situacao_tributaria"
+                      :options="taxForSelectBoxes.icms.situacao_tributaria"
                       value-field="value"
                       text-field="text"
                     ></b-form-select
@@ -111,8 +118,8 @@
                   <b-row>
                     <b-input-group prepend="Tipo pessoa" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.ipi.tipo_pessoa"
-                        :options="dadosImposto.ipi.tipo_pessoa"
+                        v-model="infoFiscal.ipi[0].tipo_pessoa"
+                        :options="taxForSelectBoxes.ipi.tipo_pessoa"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
@@ -120,8 +127,8 @@
 
                     <b-input-group prepend="Cenário" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.ipi.cenario"
-                        :options="dadosImposto.ipi.cenario"
+                        v-model="infoFiscal.ipi[0].cenario"
+                        :options="taxForSelectBoxes.ipi.cenario"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
@@ -129,8 +136,8 @@
 
                     <b-input-group prepend="Situação tributária" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.ipi.situacao_tributaria"
-                        :options="dadosImposto.ipi.situacao_tributaria"
+                        v-model="infoFiscal.ipi[0].situacao_tributaria"
+                        :options="taxForSelectBoxes.ipi.situacao_tributaria"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
@@ -141,7 +148,7 @@
                       class="mb-3"
                     >
                       <b-form-input
-                        v-model="infoFiscal.ipi.codigo_enquadramento"
+                        v-model="infoFiscal.ipi[0].codigo_enquadramento"
                         text-field="text"
                         type="text"
                       ></b-form-input>
@@ -153,7 +160,7 @@
 
                     <b-input-group prepend="Alíquota %">
                       <b-form-input
-                        v-model="infoFiscal.ipi.aliquota"
+                        v-model="infoFiscal.ipi[0].aliquota"
                         text-field="text"
                         type="text"
                       ></b-form-input
@@ -166,8 +173,8 @@
                   <b-row>
                     <b-input-group prepend="Tipo pessoa" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.pis.tipo_pessoa"
-                        :options="dadosImposto.pis.tipo_pessoa"
+                        v-model="infoFiscal.pis[0].tipo_pessoa"
+                        :options="taxForSelectBoxes.pis.tipo_pessoa"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
@@ -175,8 +182,8 @@
 
                     <b-input-group prepend="Cenário" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.pis.cenario"
-                        :options="dadosImposto.pis.cenario"
+                        v-model="infoFiscal.pis[0].cenario"
+                        :options="taxForSelectBoxes.pis.cenario"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
@@ -184,8 +191,8 @@
 
                     <b-input-group prepend="Situação tributária" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.pis.situacao_tributaria"
-                        :options="dadosImposto.pis.situacao_tributaria"
+                        v-model="infoFiscal.pis[0].situacao_tributaria"
+                        :options="taxForSelectBoxes.pis.situacao_tributaria"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
@@ -193,7 +200,7 @@
 
                     <b-input-group prepend="Alíquota %">
                       <b-form-input
-                        v-model="infoFiscal.pis.aliquota"
+                        v-model="infoFiscal.pis[0].aliquota"
                         text-field="text"
                         type="text"
                       ></b-form-input
@@ -206,8 +213,8 @@
                   <b-row>
                     <b-input-group prepend="Tipo pessoa" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.cofins.tipo_pessoa"
-                        :options="dadosImposto.cofins.tipo_pessoa"
+                        v-model="infoFiscal.cofins[0].tipo_pessoa"
+                        :options="taxForSelectBoxes.cofins.tipo_pessoa"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
@@ -215,8 +222,8 @@
 
                     <b-input-group prepend="Cenário" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.cofins.cenario"
-                        :options="dadosImposto.cofins.cenario"
+                        v-model="infoFiscal.cofins[0].cenario"
+                        :options="taxForSelectBoxes.cofins.cenario"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
@@ -224,8 +231,8 @@
 
                     <b-input-group prepend="Situação tributária" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.cofins.situacao_tributaria"
-                        :options="dadosImposto.cofins.situacao_tributaria"
+                        v-model="infoFiscal.cofins[0].situacao_tributaria"
+                        :options="taxForSelectBoxes.cofins.situacao_tributaria"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
@@ -233,74 +240,103 @@
 
                     <b-input-group prepend="Alíquota %">
                       <b-form-input
-                        v-model="infoFiscal.cofins.aliquota"
+                        v-model="infoFiscal.cofins[0].aliquota"
                         text-field="text"
                         type="text"
                       ></b-form-input
                     ></b-input-group>
                   </b-row> </b-card></b-card-text
             ></b-tab>
-            <b-tab title="ISSQN"
-              ><b-card-text
+            <b-tab title="ISSQN" :hidden="habilitarISSQN ? true : false">
+              <template #title>
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                  "
+                >
+                  <div>ISSQN</div>
+
+                  <div class="chkIssqn" @click="handleChangeIssqn">
+                    <b-icon-check
+                      scale="2"
+                      :hidden="habilitarISSQN ? true : false"
+                    ></b-icon-check>
+                  </div>
+                </div>
+              </template>
+              <b-card-text
                 ><b-card class="p-2">
                   <b-row>
-                    <b-input-group prepend="Tipo de Tributação" class="mb-3">
+                    <b-input-group prepend="Tipo pessoa" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.icms.tipo_tributacao"
-                        :options="dadosImposto.icms.tipo_tributacao"
+                        v-model="infoFiscal.issqn[0].tipo_pessoa"
+                        :options="taxForSelectBoxes.issqn.tipo_pessoa"
                         value-field="value"
                         text-field="text"
-                      ></b-form-select
-                    ></b-input-group>
+                      ></b-form-select>
+                    </b-input-group>
 
                     <b-input-group prepend="Cenário" class="mb-3">
                       <b-form-select
-                        v-model="infoFiscal.icms.cenario"
-                        :options="dadosImposto.icms.cenario"
+                        v-model="infoFiscal.issqn[0].cenario"
+                        :options="taxForSelectBoxes.issqn.cenario"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
                     ></b-input-group>
-
-                    <b-input-group prepend="Tipo pessoa" class="mb-3">
-                      <b-form-select
-                        v-model="infoFiscal.icms.tipo_pessoa"
-                        :options="dadosImposto.icms.tipo_pessoa"
-                        value-field="value"
-                        text-field="text"
-                      ></b-form-select
-                    ></b-input-group>
-
-                    <b-form-group
-                      :hidden="infoFiscal.icms.tipo_pessoa !== 'juridica'"
-                    >
-                      <b-form-checkbox
-                        id="checkbox-1"
-                        v-model="infoFiscal.icms.nao_contribuinte"
-                        name="checkbox-1"
-                      >
-                        Marque essa opção caso a configuração deste cenário seja
-                        específico para Pessoa Jurídica não contribuinte do ICMS
-                        ou Consumidor final.
-                      </b-form-checkbox>
-                    </b-form-group>
 
                     <b-input-group prepend="Código CFOP" class="mb-3">
                       <b-form-input
-                        v-model="infoFiscal.icms.codigo_cfop"
+                        v-model="infoFiscal.issqn[0].codigo_cfop"
                         text-field="text"
                         type="text"
                         maxlength="4"
                       ></b-form-input
                     ></b-input-group>
 
-                    <b-input-group prepend="Situação tributária">
+                    <b-input-group
+                      prepend="Indicador da exigibilidade do ISS"
+                      class="mb-3"
+                    >
                       <b-form-select
-                        v-model="infoFiscal.icms.situacao_tributaria"
-                        :options="dadosImposto.icms.situacao_tributaria"
+                        v-model="infoFiscal.issqn[0].exigibilidade"
+                        :options="taxForSelectBoxes.issqn.exigibilidade"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
+                    ></b-input-group>
+
+                    <b-input-group
+                      prepend="Item da lista de serviços"
+                      class="mb-3"
+                    >
+                      <b-form-input
+                        v-model="infoFiscal.issqn[0].item_servico"
+                        text-field="text"
+                        type="text"
+                      ></b-form-input
+                    ></b-input-group>
+
+                    <b-input-group
+                      prepend="Indicador de incentivo Fiscal"
+                      class="mb-3"
+                    >
+                      <b-form-select
+                        v-model="infoFiscal.issqn[0].incentivo_fiscal"
+                        :options="taxForSelectBoxes.issqn.incentivo_fiscal"
+                        value-field="value"
+                        text-field="text"
+                      ></b-form-select
+                    ></b-input-group>
+
+                    <b-input-group prepend="Alíquota do ISSQN %">
+                      <b-form-input
+                        v-model="infoFiscal.issqn[0].aliquota"
+                        text-field="text"
+                        type="text"
+                      ></b-form-input
                     ></b-input-group>
                   </b-row> </b-card></b-card-text
             ></b-tab>
@@ -342,42 +378,65 @@
 </template>
 
 <script>
+import ServiceTax from "../../services/serviceTax";
+import toastAlertErros from "../../utils/toastAlertErros";
+
 export default {
   data() {
     return {
       infoFiscal: {
-        geral: "",
-        icms: {
-          tipo_tributacao: "simples_nacional",
-          cenario: "saida_dentro_estado",
-          tipo_pessoa: "fisica",
-          nao_contribuinte: false,
-          codigo_cfop: "5102",
-          situacao_tributaria: "102",
-        },
-        ipi: {
-          cenario: "padrao",
-          tipo_pessoa: "fisica",
-          situacao_tributaria: "99",
-          codigo_enquadramento: "999",
-          aliquota: "0.00",
-        },
-        pis: {
-          cenario: "padrao",
-          tipo_pessoa: "fisica",
-          situacao_tributaria: "99",
-          aliquota: "0.00",
-        },
-        cofins: {
-          cenario: "padrao",
-          tipo_pessoa: "fisica",
-          situacao_tributaria: "99",
-          aliquota: "0.00",
-        },
+        id: "",
+        descricao: "",
+        icms: [
+          {
+            tipo_tributacao: "simples_nacional",
+            cenario: "saida_dentro_estado",
+            tipo_pessoa: "fisica",
+            nao_contribuinte: false,
+            codigo_cfop: "5102",
+            situacao_tributaria: "102",
+          },
+        ],
+        ipi: [
+          {
+            cenario: "padrao",
+            tipo_pessoa: "fisica",
+            situacao_tributaria: "99",
+            codigo_enquadramento: "999",
+            aliquota: "0.00",
+          },
+        ],
+        pis: [
+          {
+            cenario: "padrao",
+            tipo_pessoa: "fisica",
+            situacao_tributaria: "99",
+            aliquota: "0.00",
+          },
+        ],
+        cofins: [
+          {
+            cenario: "padrao",
+            tipo_pessoa: "fisica",
+            situacao_tributaria: "99",
+            aliquota: "0.00",
+          },
+        ],
+        issqn: [
+          {
+            cenario: "",
+            tipo_pessoa: "",
+            codigo_cfop: "",
+            exigibilidade: "",
+            item_servico: "",
+            incentivo_fiscal: "",
+            aliquota: "",
+          },
+        ],
         informacoes_fisco: "",
         informacoes_complementares: "",
       },
-      dadosImposto: {
+      taxForSelectBoxes: {
         icms: {
           tipo_tributacao: [
             { value: "simples_nacional", text: "Simples Nacional" },
@@ -824,16 +883,110 @@ export default {
             },
           ],
         },
+        issqn: {
+          cenario: [
+            { value: "padrao", text: "Padrão (Abrange todos os cenários)" },
+            {
+              value: "saida_dentro_estado",
+              text: "Saída dentro do estado",
+            },
+            {
+              value: "saida_fora_estado",
+              text: "Saída fora do estado",
+            },
+            {
+              value: "entrada_dentro_estado",
+              text: "Entrada dentro do estado",
+            },
+            {
+              value: "entrada_fora_estado",
+              text: "Entrada fora do estado",
+            },
+            { value: "saida_exterior", text: "Saída para o Exterior" },
+            { value: "entrada_exterior", text: "Entrada do Exterior" },
+          ],
+          tipo_pessoa: [
+            { value: "fisica", text: "Fisica" },
+            { value: "juridica", text: "Juridica" },
+            { value: "estrangeira", text: "Estrangeira" },
+          ],
+          exigibilidade: [
+            { value: "1", text: "Exigível" },
+            { value: "2", text: "Não incidência" },
+            { value: "3", text: "Isenção" },
+            { value: "4", text: "Exportação" },
+            { value: "5", text: "Imunidade" },
+            { value: "6", text: "Exigibilidade Suspensa por Decisão Judicial" },
+            {
+              value: "7",
+              text: "Exigibilidade Suspensa por Processo Administrativo",
+            },
+          ],
+          incentivo_fiscal: [
+            { value: "1", text: "Sim" },
+            { value: "2", text: "Não" },
+          ],
+        },
       },
+      habilitarISSQN: true,
     };
   },
   methods: {
-    testeeeee() {
-      console.log(this.infoFiscal);
+    async save() {
+      try {
+        const handleSendInfoFiscal = { ...this.infoFiscal };
+        if (this.habilitarISSQN) {
+          delete handleSendInfoFiscal.issqn;
+        }
+
+        const result = await ServiceTax.save(handleSendInfoFiscal);
+        this.infoFiscal.id = result.id;
+
+        return this.$toast.open({
+          message: "REF gerado com sucesso!",
+          type: "success",
+        });
+      } catch (error) {
+        return toastAlertErros.validateErroDoesNotContainFor(
+          error,
+          this.$toast
+        );
+      }
+    },
+    async update() {
+      console.log("atualizando REF jaja");
+    },
+    handleSaveOrUpdate() {
+      this.infoFiscal.id !== "" ? this.update() : this.save();
+    },
+    handleChangeIssqn() {
+      this.habilitarISSQN = !this.habilitarISSQN;
+    },
+  },
+  watch: {
+    habilitarISSQN() {
+      this.infoFiscal.issqn = [
+        {
+          cenario: "",
+          tipo_pessoa: "",
+          exigibilidade: "",
+          item_servico: "",
+          incentivo_fiscal: "",
+          aliquota: "",
+        },
+      ];
     },
   },
 };
 </script>
 
 <style scoped>
+.chkIssqn {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: flex-end;
+  border: solid 2px #f7f7f7;
+  border-radius: 5px;
+}
 </style>
