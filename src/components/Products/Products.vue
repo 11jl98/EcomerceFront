@@ -118,7 +118,13 @@
           label-for="input-1"
           class="col-sm-12 col-md-7 col-lg-6 col-xl-6"
         >
-          <b-form-select size="sm"></b-form-select>
+          <b-form-select
+            size="sm"
+            v-model="dataProducts.refFiscal"
+            value-field="ref"
+            :options="refsFiscaisFromSelectBox"
+            text-field="descricao"
+          ></b-form-select>
         </b-form-group>
 
         <b-form-group
@@ -196,9 +202,9 @@
 </template>
 
 <script>
-import api from "../../services/axios";
 import toastAlertErros from "../../utils/toastAlertErros";
 import ServiceProducts from "../../services/serviceProducts";
+import ServiceTax from "../../services/serviceTax";
 import ModalTaxInformation from "../ModalTaxInformation/Index-TaxInformation.vue";
 
 export default {
@@ -223,7 +229,9 @@ export default {
         codReferencia: "",
         estoque: 0,
         estoqueMin: 0,
+        refFiscal: "",
       },
+      refsFiscaisFromSelectBox: [],
     };
   },
   methods: {
@@ -235,7 +243,7 @@ export default {
 
     async updateProducts() {
       try {
-        await api.put("/products/" + this.dataProducts.id, this.dataProducts);
+        await ServiceProducts.updateProducts(this.dataProducts);
         return this.$toast.open({
           message: "Produto Atualizado com Sucesso",
           type: "success",
@@ -253,6 +261,8 @@ export default {
       try {
         const id = await ServiceProducts.saveProducts(this.dataProducts);
         this.dataProducts.id = id;
+
+        this.clear();
         return this.$toast.open({
           message: "Produto Salvo com Sucesso",
           type: "success",
@@ -262,6 +272,22 @@ export default {
           error,
           this.$toast
         );
+      }
+    },
+
+    async findAllRefs() {
+      try {
+        const result = await ServiceTax.findAllRefs();
+        this.refsFiscaisFromSelectBox = result.data.map((e) => {
+          return {
+            id: e.id,
+            descricao: ` ${e.ref} - ${e.descricao}`,
+            ref: e.ref,
+            refObject: e.refObject,
+          };
+        });
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -277,6 +303,7 @@ export default {
         codReferencia: "",
         estoque: 0,
         estoqueMin: 0,
+        refFiscal: "",
       };
     },
 
@@ -288,6 +315,9 @@ export default {
     readOrEditProducts() {
       this.dataProducts = this.readOrEditProducts;
     },
+  },
+  mounted() {
+    this.findAllRefs();
   },
 };
 </script>

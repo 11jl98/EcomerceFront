@@ -16,9 +16,7 @@
           "
         >
           <div>
-            <b-button variant="info" size="sm" @click="handleSaveOrUpdate"
-              >Salvar</b-button
-            >
+            <b-button variant="info" size="sm" @click="save">Salvar</b-button>
           </div>
         </div>
       </template>
@@ -43,7 +41,7 @@
                 </b-form-group> </b-card-text
             ></b-tab>
             <b-tab title="ICMS"
-              ><b-card class="p-2">
+              ><b-card class="p-2 scrollIssqn">
                 <b-row>
                   <b-form-input
                     v-model="infoFiscal.id"
@@ -114,7 +112,7 @@
             ></b-tab>
             <b-tab title="IPI"
               ><b-card-text
-                ><b-card class="p-2">
+                ><b-card class="p-2 scrollIssqn">
                   <b-row>
                     <b-input-group prepend="Tipo pessoa" class="mb-3">
                       <b-form-select
@@ -169,7 +167,7 @@
             ></b-tab>
             <b-tab title="PIS"
               ><b-card-text
-                ><b-card class="p-2">
+                ><b-card class="p-2 scrollIssqn">
                   <b-row>
                     <b-input-group prepend="Tipo pessoa" class="mb-3">
                       <b-form-select
@@ -209,7 +207,7 @@
             ></b-tab>
             <b-tab title="COFINS"
               ><b-card-text
-                ><b-card class="p-2">
+                ><b-card class="p-2 scrollIssqn">
                   <b-row>
                     <b-input-group prepend="Tipo pessoa" class="mb-3">
                       <b-form-select
@@ -267,7 +265,7 @@
                 </div>
               </template>
               <b-card-text
-                ><b-card class="p-2">
+                ><b-card class="p-2 scrollIssqn">
                   <b-row>
                     <b-input-group prepend="Tipo pessoa" class="mb-3">
                       <b-form-select
@@ -341,34 +339,35 @@
                   </b-row> </b-card></b-card-text
             ></b-tab>
             <b-tab title="Informações"
-              ><b-card-text
-                ><b-form-group
-                  id="input-group-1"
-                  label="Informações ao Fisco"
-                  label-for="textarea"
-                  size="sm"
-                >
-                  <b-form-textarea
-                    id="textarea"
-                    rows="6"
-                    no-resize
-                    v-model="infoFiscal.informacoes_fisco"
-                  ></b-form-textarea>
-                </b-form-group>
+              ><b-card-text>
+                <b-card class="p-2 scrollIssqn">
+                  <b-form-group
+                    id="input-group-1"
+                    label="Informações ao Fisco"
+                    label-for="textarea"
+                    size="sm"
+                  >
+                    <b-form-textarea
+                      id="textarea"
+                      rows="6"
+                      no-resize
+                      v-model="infoFiscal.informacoes_fisco"
+                    ></b-form-textarea>
+                  </b-form-group>
 
-                <b-form-group
-                  id="input-group-1"
-                  label="Informações Complementares ao Consumidor"
-                  label-for="textarea"
-                  size="sm"
-                >
-                  <b-form-textarea
-                    id="textarea"
-                    rows="6"
-                    no-resize
-                    v-model="infoFiscal.informacoes_complementares"
-                  ></b-form-textarea>
-                </b-form-group> </b-card-text
+                  <b-form-group
+                    id="input-group-1"
+                    label="Informações Complementares ao Consumidor"
+                    label-for="textarea"
+                    size="sm"
+                  >
+                    <b-form-textarea
+                      id="textarea"
+                      rows="6"
+                      no-resize
+                      v-model="infoFiscal.informacoes_complementares"
+                    ></b-form-textarea>
+                  </b-form-group> </b-card></b-card-text
             ></b-tab>
           </b-tabs>
         </b-card>
@@ -947,10 +946,15 @@ export default {
           type: "success",
         });
       } catch (error) {
-        return toastAlertErros.validateErroDoesNotContainFor(
-          error,
-          this.$toast
-        );
+        if (error.response.data.erros.length > 0) {
+          console.log(error.response.data);
+          return toastAlertErros.validateErroDoesNotContainFor(
+            error,
+            this.$toast
+          );
+        } else {
+          return toastAlertErros.validateMessage(error, this.$toast);
+        }
       }
     },
     async update() {
@@ -988,5 +992,10 @@ export default {
   justify-content: flex-end;
   border: solid 2px #f7f7f7;
   border-radius: 5px;
+}
+
+.scrollIssqn {
+  max-height: 300px;
+  overflow-x: scroll;
 }
 </style>

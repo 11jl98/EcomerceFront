@@ -2,19 +2,12 @@ import api from "../services/axios";
 
 class ServiceProducts {
   async saveProducts(dataProducts) {
-    const { data } = await api.post('/products', {
-      id: "",
-      nome: dataProducts?.nome,
-      valor: dataProducts?.valor,
-      valorVenda: dataProducts?.valorVenda,
-      unidade: dataProducts?.unidade,
-      estoque: dataProducts.estoque,
-      descricao: dataProducts.descricao,
-      codBarras: dataProducts.codBarras,
-      codReferencia: dataProducts.codReferencia,
-      estoqueMin: dataProducts.estoqueMin
-    })
+    const { data } = await api.post('/products', dataProducts)
     return data.id
+  }
+
+  async updateProducts(dataProducts) {
+    await api.put(`/products/${dataProducts.id}`, dataProducts)
   }
 
   async getProductsForSelectBox() {
