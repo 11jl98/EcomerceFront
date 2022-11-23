@@ -564,7 +564,7 @@
 </template>
 
 <script>
-import modalTaxInformation from "../../mexins/ModalTaxInformation";
+import modalTaxInformation from "../../mixins/ModalTaxInformation/ModalTaxInformation";
 
 export default {
   mixins: [modalTaxInformation],
