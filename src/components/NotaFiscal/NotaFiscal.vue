@@ -1704,6 +1704,7 @@ export default {
     handleOperacao() {
       return this.dadosNfe.operacao;
     },
+    
   },
   filters: {
     formatValueMonetary: function (value) {
