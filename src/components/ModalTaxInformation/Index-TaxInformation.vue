@@ -20,9 +20,9 @@
           </div>
         </div>
       </template>
-      <div>
+      <div class="heigthModal">
         <b-card no-body>
-          <b-tabs pills card vertical>
+          <b-tabs pills card>
             <b-tab title="Geral" active
               ><b-card-text>
                 <b-form-group
@@ -30,6 +30,7 @@
                   label="Descrição"
                   label-for="textarea"
                   size="sm"
+                  class="styleLabel"
                 >
                   <b-form-textarea
                     id="textarea"
@@ -41,8 +42,8 @@
                 </b-form-group> </b-card-text
             ></b-tab>
             <b-tab title="ICMS"
-              ><b-card class="p-2 scrollIssqn">
-                <b-row>
+              ><b-card class="scrollIssqn">
+                <b-row class="col-sm-12 col-md-12 col-lg-12 col-xl-12 p-0">
                   <b-form-input
                     v-model="infoFiscal.id"
                     text-field="text"
@@ -50,34 +51,44 @@
                     hidden
                   ></b-form-input>
 
-                  <b-input-group prepend="Tipo de Tributação" class="mb-3">
+                  <b-form-group
+                    label="Tipo de Tributação"
+                    class="styleLabel col-sm-12 col-md-12 col-lg-6 col-xl-6"
+                  >
                     <b-form-select
                       v-model="infoFiscal.icms[0].tipo_tributacao"
                       :options="taxForSelectBoxes.icms.tipo_tributacao"
                       value-field="value"
                       text-field="text"
                     ></b-form-select
-                  ></b-input-group>
+                  ></b-form-group>
 
-                  <b-input-group prepend="Cenário" class="mb-3">
+                  <b-form-group
+                    label="Cenário"
+                    class="styleLabel col-sm-12 col-md-7 col-lg-6 col-xl-6"
+                  >
                     <b-form-select
                       v-model="infoFiscal.icms[0].cenario"
                       :options="taxForSelectBoxes.icms.cenario"
                       value-field="value"
                       text-field="text"
                     ></b-form-select
-                  ></b-input-group>
+                  ></b-form-group>
 
-                  <b-input-group prepend="Tipo pessoa" class="mb-3">
+                  <b-form-group
+                    label="Tipo pessoa"
+                    class="styleLabel col-sm-12 col-md-5 col-lg-3 col-xl-3"
+                  >
                     <b-form-select
                       v-model="infoFiscal.icms[0].tipo_pessoa"
                       :options="taxForSelectBoxes.icms.tipo_pessoa"
                       value-field="value"
                       text-field="text"
                     ></b-form-select
-                  ></b-input-group>
+                  ></b-form-group>
 
                   <b-form-group
+                    class="col-sm-12 col-md-12 col-lg-9 col-xl-9 mt-4"
                     :hidden="infoFiscal.icms[0].tipo_pessoa !== 'juridica'"
                   >
                     <b-form-checkbox
@@ -91,59 +102,97 @@
                     </b-form-checkbox>
                   </b-form-group>
 
-                  <b-input-group prepend="Código CFOP" class="mb-3">
+                  <b-form-group
+                    label="Código CFOP"
+                    class="styleLabel col-sm-12 col-md-5 col-lg-3 col-xl-3"
+                  >
                     <b-form-input
                       v-model="infoFiscal.icms[0].codigo_cfop"
                       text-field="text"
                       type="text"
                       maxlength="4"
                     ></b-form-input
-                  ></b-input-group>
+                  ></b-form-group>
 
-                  <b-input-group prepend="Situação tributária">
+                  <b-form-group
+                    label="Situação tributária"
+                    class="styleLabel col-sm-12 col-md-7 col-lg-6 col-xl-6"
+                  >
                     <b-form-select
                       v-model="infoFiscal.icms[0].situacao_tributaria"
                       :options="taxForSelectBoxes.icms.situacao_tributaria"
                       value-field="value"
                       text-field="text"
                     ></b-form-select
-                  ></b-input-group>
+                  ></b-form-group>
+
+                  <b-form-group
+                    label="Estado"
+                    class="styleLabel col-sm-4 col-md-4 col-lg-4 col-xl-6"
+                  >
+                    <b-form-select
+                      v-model="infoFiscal.icms[0].aliquota_mva[0].estado"
+                      :options="taxForSelectBoxes.icms.estados"
+                      value-field="value"
+                      text-field="text"
+                    ></b-form-select>
+                  </b-form-group>
+
+                  <b-form-group
+                    label="Alíquota %"
+                    class="styleLabel col-sm-8 col-md-8 col-lg-8 col-xl-6"
+                  >
+                    <b-form-input
+                      v-model="infoFiscal.ipi[0].aliquota"
+                      text-field="text"
+                      type="text"
+                    ></b-form-input
+                  ></b-form-group>
                 </b-row> </b-card
             ></b-tab>
             <b-tab title="IPI"
               ><b-card-text
-                ><b-card class="p-2 scrollIssqn">
-                  <b-row>
-                    <b-input-group prepend="Tipo pessoa" class="mb-3">
+                ><b-card class="scrollIssqn">
+                  <b-row class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <b-form-group
+                      label="Tipo pessoa"
+                      class="styleLabel col-sm-12 col-md-12 col-lg-4 col-xl-3"
+                    >
                       <b-form-select
                         v-model="infoFiscal.ipi[0].tipo_pessoa"
                         :options="taxForSelectBoxes.ipi.tipo_pessoa"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group prepend="Cenário" class="mb-3">
+                    <b-form-group
+                      label="Cenário"
+                      class="styleLabel col-sm-12 col-md-12 col-lg-8 col-xl-5"
+                    >
                       <b-form-select
                         v-model="infoFiscal.ipi[0].cenario"
                         :options="taxForSelectBoxes.ipi.cenario"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group prepend="Situação tributária" class="mb-3">
+                    <b-form-group
+                      label="Situação tributária"
+                      class="styleLabel col-sm-12 col-md-12 col-lg-12 col-xl-4"
+                    >
                       <b-form-select
                         v-model="infoFiscal.ipi[0].situacao_tributaria"
                         :options="taxForSelectBoxes.ipi.situacao_tributaria"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group
-                      prepend="Código de enquadramento"
-                      class="mb-3"
+                    <b-form-group
+                      label="Código de enquadramento"
+                      class="styleLabel col-sm-12 col-md-12 col-lg-12 col-xl-8"
                     >
                       <b-form-input
                         v-model="infoFiscal.ipi[0].codigo_enquadramento"
@@ -153,96 +202,123 @@
                       <p style="color: red; margin-bottom: 0 !important">
                         Caso não possua um código de enquadramento, mantenha o
                         valor padrão 999.
-                      </p></b-input-group
+                      </p></b-form-group
                     >
 
-                    <b-input-group prepend="Alíquota %">
+                    <b-form-group
+                      label="Alíquota %"
+                      class="styleLabel col-sm-12 col-md-12 col-lg-12 col-xl-4"
+                    >
                       <b-form-input
                         v-model="infoFiscal.ipi[0].aliquota"
                         text-field="text"
                         type="text"
                       ></b-form-input
-                    ></b-input-group>
+                    ></b-form-group>
                   </b-row> </b-card></b-card-text
             ></b-tab>
             <b-tab title="PIS"
               ><b-card-text
-                ><b-card class="p-2 scrollIssqn">
+                ><b-card class="scrollIssqn">
                   <b-row>
-                    <b-input-group prepend="Tipo pessoa" class="mb-3">
+                    <b-form-group
+                      label="Tipo pessoa"
+                      class="styleLabel col-sm-6 col-md-6 col-lg-6 col-xl-6"
+                    >
                       <b-form-select
                         v-model="infoFiscal.pis[0].tipo_pessoa"
                         :options="taxForSelectBoxes.pis.tipo_pessoa"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group prepend="Cenário" class="mb-3">
+                    <b-form-group
+                      label="Cenário"
+                      class="styleLabel col-sm-6 col-md-6 col-lg-6 col-xl-6"
+                    >
                       <b-form-select
                         v-model="infoFiscal.pis[0].cenario"
                         :options="taxForSelectBoxes.pis.cenario"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group prepend="Situação tributária" class="mb-3">
+                    <b-form-group
+                      label="Situação tributária"
+                      class="styleLabel col-sm-6 col-md-6 col-lg-6 col-xl-6"
+                    >
                       <b-form-select
                         v-model="infoFiscal.pis[0].situacao_tributaria"
                         :options="taxForSelectBoxes.pis.situacao_tributaria"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group prepend="Alíquota %">
+                    <b-form-group
+                      label="Alíquota %"
+                      class="styleLabel col-sm-6 col-md-6 col-lg-6 col-xl-6"
+                    >
                       <b-form-input
                         v-model="infoFiscal.pis[0].aliquota"
                         text-field="text"
                         type="text"
                       ></b-form-input
-                    ></b-input-group>
+                    ></b-form-group>
                   </b-row> </b-card></b-card-text
             ></b-tab>
             <b-tab title="COFINS"
               ><b-card-text
-                ><b-card class="p-2 scrollIssqn">
+                ><b-card class="scrollIssqn">
                   <b-row>
-                    <b-input-group prepend="Tipo pessoa" class="mb-3">
+                    <b-form-group
+                      label="Tipo pessoa"
+                      class="styleLabel col-sm-6 col-md-6 col-lg-6 col-xl-6"
+                    >
                       <b-form-select
                         v-model="infoFiscal.cofins[0].tipo_pessoa"
                         :options="taxForSelectBoxes.cofins.tipo_pessoa"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group prepend="Cenário" class="mb-3">
+                    <b-form-group
+                      label="Cenário"
+                      class="styleLabel col-sm-6 col-md-6 col-lg-6 col-xl-6"
+                    >
                       <b-form-select
                         v-model="infoFiscal.cofins[0].cenario"
                         :options="taxForSelectBoxes.cofins.cenario"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group prepend="Situação tributária" class="mb-3">
+                    <b-form-group
+                      label="Situação tributária"
+                      class="styleLabel col-sm-6 col-md-6 col-lg-6 col-xl-6"
+                    >
                       <b-form-select
                         v-model="infoFiscal.cofins[0].situacao_tributaria"
                         :options="taxForSelectBoxes.cofins.situacao_tributaria"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group prepend="Alíquota %">
+                    <b-form-group
+                      label="Alíquota %"
+                      class="styleLabel col-sm-6 col-md-6 col-lg-6 col-xl-6"
+                    >
                       <b-form-input
                         v-model="infoFiscal.cofins[0].aliquota"
                         text-field="text"
                         type="text"
                       ></b-form-input
-                    ></b-input-group>
+                    ></b-form-group>
                   </b-row> </b-card></b-card-text
             ></b-tab>
             <b-tab title="ISSQN" :hidden="habilitarISSQN ? true : false">
@@ -252,6 +328,7 @@
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+                    width: 90px;
                   "
                 >
                   <div>ISSQN</div>
@@ -265,38 +342,47 @@
                 </div>
               </template>
               <b-card-text
-                ><b-card class="p-2 scrollIssqn">
+                ><b-card class="scrollIssqn">
                   <b-row>
-                    <b-input-group prepend="Tipo pessoa" class="mb-3">
+                    <b-form-group
+                      label="Tipo pessoa"
+                      class="styleLabel col-sm-12 col-md-6 col-lg-3 col-xl-3"
+                    >
                       <b-form-select
                         v-model="infoFiscal.issqn[0].tipo_pessoa"
                         :options="taxForSelectBoxes.issqn.tipo_pessoa"
                         value-field="value"
                         text-field="text"
                       ></b-form-select>
-                    </b-input-group>
+                    </b-form-group>
 
-                    <b-input-group prepend="Cenário" class="mb-3">
+                    <b-form-group
+                      label="Cenário"
+                      class="styleLabel col-sm-12 col-md-6 col-lg-6 col-xl-6"
+                    >
                       <b-form-select
                         v-model="infoFiscal.issqn[0].cenario"
                         :options="taxForSelectBoxes.issqn.cenario"
                         value-field="value"
                         text-field="text"
                       ></b-form-select
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group prepend="Código CFOP" class="mb-3">
+                    <b-form-group
+                      label="Código CFOP"
+                      class="styleLabel col-sm-12 col-md-12 col-lg-3 col-xl-3"
+                    >
                       <b-form-input
                         v-model="infoFiscal.issqn[0].codigo_cfop"
                         text-field="text"
                         type="text"
                         maxlength="4"
                       ></b-form-input
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group
-                      prepend="Indicador da exigibilidade do ISS"
-                      class="mb-3"
+                    <b-form-group
+                      label="Indicador da exigibilidade do ISS"
+                      class="styleLabel col-sm-12 col-md-12 col-lg-6 col-xl-6"
                     >
                       <b-form-select
                         v-model="infoFiscal.issqn[0].exigibilidade"
@@ -304,22 +390,22 @@
                         value-field="value"
                         text-field="text"
                       ></b-form-select
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group
-                      prepend="Item da lista de serviços"
-                      class="mb-3"
+                    <b-form-group
+                      label="Item da lista de serviços"
+                      class="styleLabel col-sm-12 col-md-12 col-lg-6 col-xl-3"
                     >
                       <b-form-input
                         v-model="infoFiscal.issqn[0].item_servico"
                         text-field="text"
                         type="text"
                       ></b-form-input
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group
-                      prepend="Indicador de incentivo Fiscal"
-                      class="mb-3"
+                    <b-form-group
+                      label="Indicador de incentivo Fiscal"
+                      class="styleLabel col-sm-12 col-md-12 col-lg-6 col-xl-3"
                     >
                       <b-form-select
                         v-model="infoFiscal.issqn[0].incentivo_fiscal"
@@ -327,25 +413,29 @@
                         value-field="value"
                         text-field="text"
                       ></b-form-select
-                    ></b-input-group>
+                    ></b-form-group>
 
-                    <b-input-group prepend="Alíquota do ISSQN %">
+                    <b-form-group
+                      label="Alíquota do ISSQN %"
+                      class="styleLabel col-sm-12 col-md-12 col-lg-6 col-xl-3"
+                    >
                       <b-form-input
                         v-model="infoFiscal.issqn[0].aliquota"
                         text-field="text"
                         type="text"
                       ></b-form-input
-                    ></b-input-group>
+                    ></b-form-group>
                   </b-row> </b-card></b-card-text
             ></b-tab>
             <b-tab title="Informações"
               ><b-card-text>
-                <b-card class="p-2 scrollIssqn">
+                <b-card class="scrollIssqn">
                   <b-form-group
                     id="input-group-1"
                     label="Informações ao Fisco"
                     label-for="textarea"
                     size="sm"
+                    class="styleLabel"
                   >
                     <b-form-textarea
                       id="textarea"
@@ -360,6 +450,7 @@
                     label="Informações Complementares ao Consumidor"
                     label-for="textarea"
                     size="sm"
+                    class="styleLabel"
                   >
                     <b-form-textarea
                       id="textarea"
@@ -394,6 +485,25 @@ export default {
             nao_contribuinte: false,
             codigo_cfop: "5102",
             situacao_tributaria: "102",
+            aliquota_credito: "",
+            aliquota_mva: [
+              {
+                estado: "",
+                aliquota: "0.00",
+              },
+            ],
+            aliquota_diferimento: "0.00",
+            aliquota_diferimento_fcp: "0.00",
+            aliquota_reducao: "0.00",
+            aliquota_reducao_st: "0.00",
+            motivo_desoneracao: "9",
+            motivo_desoneracao_st: "9",
+            beneficio_fiscal: [
+              {
+                estado: "",
+                codigo: "",
+              },
+            ],
           },
         ],
         ipi: [
@@ -512,6 +622,51 @@ export default {
               text: "70 - Com redução de base de cálculo e cobrança do ICMS por substituição tributária",
             },
             { value: "90", text: "90 - Outros" },
+          ],
+          motivo_desoneracao: [
+            { value: "3", text: "3 - Uso na agropecuária" },
+            { value: "9", text: "9 - Outros" },
+            {
+              value: "12",
+              text: "12 - Órgão de fomento e desenvolvimento agropecuário",
+            },
+          ],
+          motivo_desoneracao_st: [
+            { value: "3", text: "3 - Uso na agropecuária" },
+            { value: "9", text: "9 - Outros" },
+            {
+              value: "12",
+              text: "12 - Órgão de fomento e desenvolvimento agropecuário",
+            },
+          ],
+          estados: [
+            { value: "AC", text: "AC" },
+            { value: "AL", text: "AL" },
+            { value: "AP", text: "AP" },
+            { value: "AM", text: "AM" },
+            { value: "BA", text: "BA" },
+            { value: "CE", text: "CE" },
+            { value: "ES", text: "ES" },
+            { value: "GO", text: "GO" },
+            { value: "MA", text: "MA" },
+            { value: "MT", text: "MT" },
+            { value: "MS", text: "MS" },
+            { value: "MG", text: "MG" },
+            { value: "PA", text: "PA" },
+            { value: "PB", text: "PB" },
+            { value: "PR", text: "PR" },
+            { value: "PE", text: "PE" },
+            { value: "PI", text: "PI" },
+            { value: "RJ", text: "RJ" },
+            { value: "RN", text: "RN" },
+            { value: "RS", text: "RS" },
+            { value: "RO", text: "RO" },
+            { value: "RR", text: "RR" },
+            { value: "SC", text: "SC" },
+            { value: "SP", text: "SP" },
+            { value: "SE", text: "SE" },
+            { value: "TO", text: "TO" },
+            { value: "DF", text: "DF" },
           ],
         },
         ipi: {
@@ -997,5 +1152,20 @@ export default {
 .scrollIssqn {
   max-height: 300px;
   overflow-x: scroll;
+}
+
+.styleLabel {
+  color: red;
+  font-size: 13px;
+}
+
+.heigthModal {
+  height: 400px !important;
+}
+
+@media screen and (max-width: 422px) {
+  .heigthModal {
+    height: auto !important;
+  }
 }
 </style>
