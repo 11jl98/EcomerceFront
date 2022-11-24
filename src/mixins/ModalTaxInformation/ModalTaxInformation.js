@@ -773,7 +773,7 @@ const mixinTaxInformations = {
           aliquota_reducao_st: true,
           motivo_desoneracao: false,
           motivo_desoneracao_st: false,
-          beneficio_fiscal: false,
+          beneficio_fiscal: true,
         },
         "40": {
           aliquota_credito: false,
@@ -828,7 +828,7 @@ const mixinTaxInformations = {
           aliquota_reducao_st: false,
           motivo_desoneracao: false,
           motivo_desoneracao_st: false,
-          beneficio_fiscal: false,
+          beneficio_fiscal: true,
         },
         "70": {
           aliquota_credito: false,
@@ -891,13 +891,7 @@ const mixinTaxInformations = {
     handleChangeIssqn() {
       this.enableISSQN = !this.enableISSQN;
     },
-    handleInputsIcms() {
-      if (this.infoFiscal.icms[0].tipo_tributacao === "simples_nacional") {
-        return true;
-      } else {
-        return false;
-      }
-    },
+        
   },
   watch: {
     enableISSQN() {

@@ -130,8 +130,9 @@
                     label="Alíquota aplicável de cálculo de crédito %"
                     class="styleLabel col-sm-12 col-md-7 col-lg-6 col-xl-6"
                     :hidden="
-                      infoFiscal.icms[0].situacao_tributaria !== '101' &&
-                      infoFiscal.icms[0].situacao_tributaria !== '201'
+                      !this.objectIcms[
+                        this.infoFiscal.icms[0].situacao_tributaria
+                      ].aliquota_credito
                     "
                   >
                     <b-form-input
@@ -142,8 +143,45 @@
                   ></b-form-group>
 
                   <b-form-group
+                    label="Alíquota do diferimento ICMS %"
+                    class="styleLabel col-sm-12 col-md-7 col-lg-6 col-xl-6"
+                    :hidden="
+                      !this.objectIcms[
+                        this.infoFiscal.icms[0].situacao_tributaria
+                      ].aliquota_diferimento
+                    "
+                  >
+                    <b-form-input
+                      v-model="infoFiscal.icms[0].aliquota_diferimento"
+                      value-field="value"
+                      text-field="text"
+                    ></b-form-input
+                  ></b-form-group>
+
+                  <b-form-group
+                    label="Alíquota do diferimento ICMS (FCP) %"
+                    class="styleLabel col-sm-12 col-md-7 col-lg-6 col-xl-6"
+                    :hidden="
+                      !this.objectIcms[
+                        this.infoFiscal.icms[0].situacao_tributaria
+                      ].aliquota_diferimento_fcp
+                    "
+                  >
+                    <b-form-input
+                      v-model="infoFiscal.icms[0].aliquota_diferimento_fcp"
+                      value-field="value"
+                      text-field="text"
+                    ></b-form-input
+                  ></b-form-group>
+
+                  <b-form-group
                     label="Alíquota MVA: Estado"
                     class="styleLabel col-sm-6 col-md-6 col-lg-4 col-xl-6"
+                    :hidden="
+                      !this.objectIcms[
+                        this.infoFiscal.icms[0].situacao_tributaria
+                      ].aliquota_mva
+                    "
                   >
                     <b-form-select
                       v-model="infoFiscal.icms[0].aliquota_mva[0].estado"
@@ -156,6 +194,11 @@
                   <b-form-group
                     label="Alíquota MVA: %"
                     class="styleLabel col-sm-6 col-md-6 col-lg-8 col-xl-6"
+                    :hidden="
+                      !this.objectIcms[
+                        this.infoFiscal.icms[0].situacao_tributaria
+                      ].aliquota_mva
+                    "
                   >
                     <b-form-input
                       v-model="infoFiscal.icms[0].aliquota_mva[0].aliquota"
@@ -167,6 +210,11 @@
                   <b-form-group
                     label="Alíquota da redução da base de cálculo ICMS %"
                     class="styleLabel col-sm-6 col-md-6 col-lg-8 col-xl-6"
+                    :hidden="
+                      !this.objectIcms[
+                        this.infoFiscal.icms[0].situacao_tributaria
+                      ].aliquota_reducao
+                    "
                   >
                     <b-form-input
                       v-model="infoFiscal.icms[0].aliquota_reducao"
@@ -178,6 +226,11 @@
                   <b-form-group
                     label="Alíquota da redução da base de cálculo ICMS-ST %"
                     class="styleLabel col-sm-6 col-md-6 col-lg-8 col-xl-6"
+                    :hidden="
+                      !this.objectIcms[
+                        this.infoFiscal.icms[0].situacao_tributaria
+                      ].aliquota_reducao_st
+                    "
                   >
                     <b-form-input
                       v-model="infoFiscal.icms[0].aliquota_reducao_st"
@@ -189,6 +242,11 @@
                   <b-form-group
                     label="Motivo da Desoneração do ICMS"
                     class="styleLabel col-sm-6 col-md-6 col-lg-8 col-xl-6"
+                    :hidden="
+                      !this.objectIcms[
+                        this.infoFiscal.icms[0].situacao_tributaria
+                      ].motivo_desoneracao
+                    "
                   >
                     <b-form-input
                       v-model="infoFiscal.icms[0].motivo_desoneracao"
@@ -200,6 +258,11 @@
                   <b-form-group
                     label="Motivo da Desoneração do ICMS-ST"
                     class="styleLabel col-sm-6 col-md-6 col-lg-8 col-xl-6"
+                    :hidden="
+                      !this.objectIcms[
+                        this.infoFiscal.icms[0].situacao_tributaria
+                      ].motivo_desoneracao_st
+                    "
                   >
                     <b-form-input
                       v-model="infoFiscal.icms[0].motivo_desoneracao_st"
@@ -210,6 +273,11 @@
 
                   <b-form-group
                     class="col-sm-12 col-md-12 col-lg-9 col-xl-9 mt-4"
+                    :hidden="
+                      !this.objectIcms[
+                        this.infoFiscal.icms[0].situacao_tributaria
+                      ].beneficio_fiscal
+                    "
                   >
                     <b-form-checkbox
                       id="checkbox-2"
