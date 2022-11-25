@@ -1,5 +1,6 @@
 import ServiceTax from "../../services/serviceTax";
 import toastAlertErros from "../../utils/toastAlertErros";
+import HandleTaxNotaFIscal from "../../utils/handleTaxData"
 
 const mixinTaxInformations = {
   data() {
@@ -721,15 +722,15 @@ const mixinTaxInformations = {
           beneficio_fiscal: false,
         },
         "900": {
-          aliquota_credito: true,
+          aliquota_credito: false,
           aliquota_mva: true,
-          aliquota_diferimento: true,
-          aliquota_diferimento_fcp: true,
+          aliquota_diferimento: false,
+          aliquota_diferimento_fcp: false,
           aliquota_reducao: true,
           aliquota_reducao_st: true,
-          motivo_desoneracao: true,
-          motivo_desoneracao_st: true,
-          beneficio_fiscal: true,
+          motivo_desoneracao: false,
+          motivo_desoneracao_st: false,
+          beneficio_fiscal: false,
         },
         "00": {
           aliquota_credito: false,
@@ -762,7 +763,7 @@ const mixinTaxInformations = {
           aliquota_reducao_st: false,
           motivo_desoneracao: true,
           motivo_desoneracao_st: true,
-          beneficio_fiscal: true,
+          beneficio_fiscal: false,
         },
         "30": {
           aliquota_credito: false,
@@ -773,7 +774,7 @@ const mixinTaxInformations = {
           aliquota_reducao_st: true,
           motivo_desoneracao: false,
           motivo_desoneracao_st: false,
-          beneficio_fiscal: true,
+          beneficio_fiscal: false,
         },
         "40": {
           aliquota_credito: false,
@@ -784,7 +785,7 @@ const mixinTaxInformations = {
           aliquota_reducao_st: false,
           motivo_desoneracao: true,
           motivo_desoneracao_st: true,
-          beneficio_fiscal: true,
+          beneficio_fiscal: false,
         },
         "41": {
           aliquota_credito: false,
@@ -795,7 +796,7 @@ const mixinTaxInformations = {
           aliquota_reducao_st: false,
           motivo_desoneracao: true,
           motivo_desoneracao_st: true,
-          beneficio_fiscal: true,
+          beneficio_fiscal: false,
         },
         "50": {
           aliquota_credito: false,
@@ -806,7 +807,7 @@ const mixinTaxInformations = {
           aliquota_reducao_st: false,
           motivo_desoneracao: true,
           motivo_desoneracao_st: true,
-          beneficio_fiscal: true,
+          beneficio_fiscal: false,
         },
         "51": {
           aliquota_credito: false,
@@ -817,7 +818,7 @@ const mixinTaxInformations = {
           aliquota_reducao_st: false,
           motivo_desoneracao: true,
           motivo_desoneracao_st: true,
-          beneficio_fiscal: true,
+          beneficio_fiscal: false,
         },
         "60": {
           aliquota_credito: false,
@@ -828,7 +829,7 @@ const mixinTaxInformations = {
           aliquota_reducao_st: false,
           motivo_desoneracao: false,
           motivo_desoneracao_st: false,
-          beneficio_fiscal: true,
+          beneficio_fiscal: false,
         },
         "70": {
           aliquota_credito: false,
@@ -839,7 +840,7 @@ const mixinTaxInformations = {
           aliquota_reducao_st: true,
           motivo_desoneracao: true,
           motivo_desoneracao_st: true,
-          beneficio_fiscal: true,
+          beneficio_fiscal: false,
         },
         "90": {
           aliquota_credito: false,
@@ -850,20 +851,22 @@ const mixinTaxInformations = {
           aliquota_reducao_st: true,
           motivo_desoneracao: true,
           motivo_desoneracao_st: true,
-          beneficio_fiscal: true,
+          beneficio_fiscal: false,
         },
       },
+      ovo: {},
     };
   },
   methods: {
     async save() {
       try {
-        const handleSendInfoFiscal = { ...this.infoFiscal };
+        const adjustedTaxObject = HandleTaxNotaFIscal.handleValues(this.infoFiscal, this.objectIcms)
+
         if (this.enableISSQN) {
-          delete handleSendInfoFiscal.issqn;
+          delete adjustedTaxObject.issqn;
         }
 
-        const result = await ServiceTax.save(handleSendInfoFiscal);
+        const result = await ServiceTax.save(adjustedTaxObject);
         this.infoFiscal.id = result.id;
 
         return this.$toast.open({
@@ -891,7 +894,6 @@ const mixinTaxInformations = {
     handleChangeIssqn() {
       this.enableISSQN = !this.enableISSQN;
     },
-        
   },
   watch: {
     enableISSQN() {
