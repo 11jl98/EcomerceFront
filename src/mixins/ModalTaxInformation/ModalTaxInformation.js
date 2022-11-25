@@ -33,7 +33,6 @@ const mixinModalTaxInformations = {
         this.infoFiscal.id = result.id;
 
         this.findAllRefs()
-        console.log(initialStateInfoFiscal)
 
         return this.$toast.open({
           message: "REF gerado com sucesso!",
