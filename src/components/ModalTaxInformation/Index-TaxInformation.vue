@@ -625,8 +625,51 @@
                   </b-form-group> </b-card></b-card-text
             ></b-tab>
 
-            <b-tab title="Pesquisar REFs"
-              ><b-card-text> <b-card class="scrollIssqn"> </b-card></b-card-text
+            <b-tab title="REFs Cadastrados"
+              ><b-card-text>
+                <b-card class="scrollIssqn">
+                  <div class="col-sm-12" style="margin-top: 31px">
+                    <table class="table table-sm">
+                      <thead
+                        style="
+                          background-color: #56aafe !important;
+                          color: white;
+                        "
+                      >
+                        <tr>
+                          <th>REF</th>
+                          <th>Descrição</th>
+                          <th>Ações</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="ref in this.refsFiscais" :key="ref.id">
+                          <td style="width: 20%">{{ ref.ref }}</td>
+                          <td style="width: 65%">{{ ref.descricao }}</td>
+                          <td style="width: 15%">
+                            <b-button
+                              size="sm"
+                              class="mr-2"
+                              style="
+                                background-color: #56aafe;
+                                border: none !important;
+                              "
+                              @click="editar"
+                            >
+                              <b-icon-check scale="2"></b-icon-check>
+                            </b-button>
+                            <b-button
+                              size="sm"
+                              variant="secondary"
+                              style="border: none !important"
+                            >
+                              <b-icon-trash scale="1.3"></b-icon-trash>
+                            </b-button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div> </b-card></b-card-text
             ></b-tab>
           </b-tabs>
         </b-card>
@@ -636,10 +679,10 @@
 </template>
 
 <script>
-import modalTaxInformation from "../../mixins/ModalTaxInformation/ModalTaxInformation";
+import mixinModalTaxInformations from "../../mixins/ModalTaxInformation/ModalTaxInformation";
 
 export default {
-  mixins: [modalTaxInformation],
+  mixins: [mixinModalTaxInformations],
 };
 </script>
 

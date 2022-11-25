@@ -2,7 +2,12 @@ import ServiceTax from "../../services/serviceTax";
 import toastAlertErros from "../../utils/toastAlertErros";
 import HandleTaxNotaFIscal from "../../utils/handleTaxData"
 
-const mixinTaxInformations = {
+const mixinModalTaxInformations = {
+  props: {
+    refsFiscais: {
+      type: Array ,
+    },
+  },
   data() {
     return {
       infoFiscal: {
@@ -854,7 +859,6 @@ const mixinTaxInformations = {
           beneficio_fiscal: false,
         },
       },
-      ovo: {},
     };
   },
   methods: {
@@ -894,6 +898,9 @@ const mixinTaxInformations = {
     handleChangeIssqn() {
       this.enableISSQN = !this.enableISSQN;
     },
+    editar(){
+      console.log(this.refsFiscais)
+    }
   },
   watch: {
     enableISSQN() {
@@ -911,4 +918,4 @@ const mixinTaxInformations = {
   },
 }
 
-export default mixinTaxInformations;
+export default mixinModalTaxInformations;
