@@ -261,11 +261,12 @@
                       ].motivo_desoneracao
                     "
                   >
-                    <b-form-input
+                    <b-form-select
                       v-model="infoFiscal.icms[0].motivo_desoneracao"
+                      :options="taxForSelectBoxes.icms.motivo_desoneracao"
+                      value-field="value"
                       text-field="text"
-                      type="text"
-                    ></b-form-input>
+                    ></b-form-select>
                   </b-form-group>
 
                   <b-form-group
@@ -277,11 +278,12 @@
                       ].motivo_desoneracao_st
                     "
                   >
-                    <b-form-input
+                    <b-form-select
                       v-model="infoFiscal.icms[0].motivo_desoneracao_st"
+                      :options="taxForSelectBoxes.icms.motivo_desoneracao_st"
+                      value-field="value"
                       text-field="text"
-                      type="text"
-                    ></b-form-input>
+                    ></b-form-select>
                   </b-form-group>
 
                   <b-form-group
