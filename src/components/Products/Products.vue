@@ -197,7 +197,10 @@
         </div>
       </div>
     </div>
-    <ModalTaxInformation :refsFiscais="refsFiscais" />
+    <ModalTaxInformation
+      :refsFiscais="refsFiscais"
+      @createdNewRef="createdNewRef = $event"
+    />
   </b-card>
 </template>
 

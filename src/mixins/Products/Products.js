@@ -29,6 +29,7 @@ const mixinProducts = {
       },
       refsFiscaisFromSelectBox: [],
       refsFiscais: [],
+      createdNewRef: false,
     };
   },
   methods: {
@@ -113,6 +114,9 @@ const mixinProducts = {
     readOrEditProducts() {
       this.dataProducts = this.readOrEditProducts;
     },
+    createdNewRef(){
+      this.findAllRefs();
+    }
   },
   async mounted() {
     await this.findAllRefs();

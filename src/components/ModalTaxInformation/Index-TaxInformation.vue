@@ -16,7 +16,20 @@
           "
         >
           <div>
-            <b-button variant="info" size="sm" @click="save">Salvar</b-button>
+            <b-button
+              class="mr-4"
+              style="
+                border: none !important;
+                background-color: #56aafe !important;
+              "
+              @click="save"
+              size="sm"
+              >Salvar <b-icon-person-check class="ml-1"></b-icon-person-check
+            ></b-button>
+            <b-button variant="light" size="sm" @click="clear"
+              >Novo
+              <b-icon-arrow-clockwise class="ml-1"></b-icon-arrow-clockwise
+            ></b-button>
           </div>
         </div>
       </template>
@@ -625,51 +638,47 @@
                   </b-form-group> </b-card></b-card-text
             ></b-tab>
 
-            <b-tab title="REFs Cadastrados"
-              ><b-card-text>
-                <b-card class="scrollIssqn">
-                  <div class="col-sm-12" style="margin-top: 31px">
-                    <table class="table table-sm">
-                      <thead
-                        style="
-                          background-color: #56aafe !important;
-                          color: white;
-                        "
-                      >
-                        <tr>
-                          <th>REF</th>
-                          <th>Descrição</th>
-                          <th>Ações</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="ref in this.refsFiscais" :key="ref.id">
-                          <td style="width: 20%">{{ ref.ref }}</td>
-                          <td style="width: 65%">{{ ref.descricao }}</td>
-                          <td style="width: 15%">
-                            <b-button
-                              size="sm"
-                              class="mr-2"
-                              style="
-                                background-color: #56aafe;
-                                border: none !important;
-                              "
-                              @click="editar"
-                            >
-                              <b-icon-check scale="2"></b-icon-check>
-                            </b-button>
-                            <b-button
-                              size="sm"
-                              variant="secondary"
-                              style="border: none !important"
-                            >
-                              <b-icon-trash scale="1.3"></b-icon-trash>
-                            </b-button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div> </b-card></b-card-text
+            <b-tab title="REFs Cadastrados">
+              <b-card class="scrollIssqn">
+                <div class="col-sm-12" style="margin-top: 31px">
+                  <table class="table table-sm">
+                    <thead
+                      style="background-color: #56aafe !important; color: white"
+                    >
+                      <tr>
+                        <th>REF</th>
+                        <th>Descrição</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="ref in this.refsFiscais" :key="ref.id">
+                        <td style="width: 20%">{{ ref.ref }}</td>
+                        <td style="width: 65%">{{ ref.descricao }}</td>
+                        <td style="width: 15%">
+                          <b-button
+                            size="sm"
+                            class="mr-2"
+                            style="
+                              background-color: #56aafe;
+                              border: none !important;
+                            "
+                            @click="editar"
+                          >
+                            <b-icon-check scale="2"></b-icon-check>
+                          </b-button>
+                          <b-button
+                            size="sm"
+                            variant="secondary"
+                            style="border: none !important"
+                          >
+                            <b-icon-trash scale="1.3"></b-icon-trash>
+                          </b-button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div> </b-card
             ></b-tab>
           </b-tabs>
         </b-card>
