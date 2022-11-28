@@ -218,7 +218,7 @@
                 <b-row sm="12">
                   <b-form-group
                     label="Produto"
-                    class="col-sm-12 col-md-7 col-lg-8 col-xl-5"
+                    class="col-sm-12 col-md-6 col-lg-8 col-xl-5"
                   >
                     <b-form-select
                       size="sm"
@@ -231,8 +231,19 @@
                   </b-form-group>
 
                   <b-form-group
+                    label="REF Fiscal"
+                    class="col-sm-5 col-md-6 col-lg-4 col-xl-4"
+                  >
+                    <b-form-select
+                      size="sm"
+                      value-field="id"
+                      text-field="nome"
+                    ></b-form-select>
+                  </b-form-group>
+
+                  <b-form-group
                     label="Cod. Ref"
-                    class="col-sm-6 col-md-5 col-lg-4 col-xl-2"
+                    class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
                   >
                     <b-form-input
                       size="sm"
@@ -242,8 +253,8 @@
                   </b-form-group>
 
                   <b-form-group
-                    label="Quant."
-                    class="col-sm-6 col-md-4 col-lg-4 col-xl-1"
+                    label="Qnt"
+                    class="col-sm-6 col-md-2 col-lg-4 col-xl-1"
                   >
                     <b-form-input
                       size="sm"
@@ -256,7 +267,7 @@
 
                   <b-form-group
                     label="Dados Adicionais"
-                    class="col-sm-6 col-md-4 col-lg-4 col-xl-4"
+                    class="col-sm-6 col-md-6 col-lg-4 col-xl-4"
                   >
                     <b-form-input
                       size="sm"
@@ -266,7 +277,7 @@
 
                   <b-form-group
                     label="Vl. Unitario"
-                    class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
+                    class="col-sm-6 col-md-4 col-lg-2 col-xl-2"
                   >
                     <b-form-input
                       placeholder="R$ 0,00"
@@ -280,7 +291,7 @@
 
                   <b-form-group
                     label="Desc"
-                    class="col-sm-12 col-md-3 col-lg-2 col-xl-1"
+                    class="col-sm-12 col-md-4 col-lg-2 col-xl-1"
                   >
                     <b-form-input
                       maxlength="5"
@@ -292,7 +303,7 @@
 
                   <b-form-group
                     label="Vl. Total"
-                    class="col-sm-6 col-md-4 col-lg-4 col-xl-2"
+                    class="col-sm-6 col-md-4 col-lg-2 col-xl-2"
                   >
                     <b-form-input
                       disabled
@@ -304,7 +315,7 @@
 
                   <b-form-group
                     label="Origem"
-                    class="col-sm-6 col-md-8 col-lg-8 col-xl-3"
+                    class="col-sm-6 col-md-6 col-lg-6 col-xl-3"
                   >
                     <b-form-select
                       size="sm"
@@ -337,7 +348,7 @@
                   </b-form-group>
 
                   <b-form-group
-                    class="col-sm-6 col-md-4 col-lg-3 col-xl-2"
+                    class="col-sm-6 col-md-4 col-lg-3 col-xl-4"
                     label="."
                     style="color: transparent !important"
                   >
@@ -1704,7 +1715,6 @@ export default {
     handleOperacao() {
       return this.dadosNfe.operacao;
     },
-    
   },
   filters: {
     formatValueMonetary: function (value) {
