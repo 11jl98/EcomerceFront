@@ -3,28 +3,45 @@
     <b-row
       class="conteudoBotaoEmail mt-2 col-sm-12 col-md-12 col-lg-12 col-xl-12"
     >
-      <b-form-group>
-        <b-button variant="info" size="sm" @click="sendNfeByEmail"
-          >Envio de E-mail</b-button
-        >
-      </b-form-group>
-
-      <div class="containerCheckBox">
-        <b-form-group v-slot="{ ariaDescribedby }">
-          <b-form-checkbox
-            :aria-describedby="ariaDescribedby"
-            value="0"
-            unchecked-value="1"
-            class="chkSaidaEntrada"
-            v-model="dadosNfe.operacao"
-            size="sm"
-            switch
+      <div>
+        <b-form-group style="width: 155px">
+          <b-button variant="info" size="sm" @click="sendNfeByEmail"
+            >Envio de E-mail</b-button
           >
-            <div style="width: 90px">
-              {{ textoTipoEmissao }}
-            </div>
-          </b-form-checkbox>
         </b-form-group>
+      </div>
+
+      <div class="additionalButtonContent d-flex justify-content-end">
+        <div style="width: 155px !important">
+          <b-button
+            style="
+              border: none !important;
+              background-color: #56aafe !important;
+              padding: 4px 8px 4px 8px;
+            "
+            size="sm"
+            @click="openModalTaxInformation"
+            >Infor. Fiscal <b-icon-stickies class="ml-1"></b-icon-stickies
+          ></b-button>
+        </div>
+
+        <div class="containerCheckBox ml-2">
+          <b-form-group v-slot="{ ariaDescribedby }">
+            <b-form-checkbox
+              :aria-describedby="ariaDescribedby"
+              value="0"
+              unchecked-value="1"
+              class="chkSaidaEntrada"
+              v-model="dadosNfe.operacao"
+              size="sm"
+              switch
+            >
+              <div style="width: 90px">
+                {{ textoTipoEmissao }}
+              </div>
+            </b-form-checkbox>
+          </b-form-group>
+        </div>
       </div>
     </b-row>
 
@@ -1789,7 +1806,7 @@ export default {
 }
 
 .conteudoBotaoEmail {
-  height: 50px;
+  height: auto;
   display: flex;
   justify-content: space-between;
 }
@@ -1850,7 +1867,8 @@ export default {
 
 .containerCheckBox {
   display: flex;
-  height: 32px !important;
+  height: 30.1px !important;
+  width: 125px !important;
   align-items: center !important;
   background-color: #e9ecef !important;
   border: solid 1px rgb(216, 215, 215);
@@ -1889,6 +1907,16 @@ export default {
   .contentDataNfeRow {
     display: flex;
     flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 388px) {
+  .additionalButtonContent {
+    display: flex;
+    flex-direction: column;
+  }
+  .conteudoBotaoEmail {
+    height: auto !important;
   }
 }
 </style>
