@@ -640,7 +640,7 @@
                   </b-form-group> </b-card></b-card-text
             ></b-tab>
 
-            <b-tab title="REFs Cadastrados">
+            <b-tab title="REFs Cadastrados" @click="findAllRefs">
               <b-card class="scrollIssqn">
                 <div class="col-sm-12" style="margin-top: 31px">
                   <table class="table table-sm">

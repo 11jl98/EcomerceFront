@@ -73,10 +73,9 @@ const mixinProducts = {
       }
     },
 
-    async findAllRefs() {
+    async findAllRefsFromSelectBox() {
       try {
         const result = await ServiceTax.findAllRefs();
-        this.refsFiscais = result.data;       
         this.refsFiscaisFromSelectBox = result.data.map((e) => {
           return {
             id: e.id,
@@ -115,11 +114,11 @@ const mixinProducts = {
       this.dataProducts = this.readOrEditProducts;
     },
     createdNewRef(){
-      this.findAllRefs();
+      this.findAllRefsFromSelectBox();
     }
   },
   async mounted() {
-    await this.findAllRefs();
+    await this.findAllRefsFromSelectBox();
   },
 }
 

@@ -5,11 +5,6 @@ import {initialStateInfoFiscal, initialStateTaxForSelectBoxes, initialStateObjec
 import handleTaxData from "../../utils/handleTaxData";
 
 const mixinModalTaxInformations = {
-  props: {
-    refsFiscais: {
-      type: Array ,
-    },
-  },
   data() {
     return {
       infoFiscal: initialStateInfoFiscal,
@@ -18,6 +13,7 @@ const mixinModalTaxInformations = {
       enableBeneficioFiscal: false,
       objectIcms: initialStateObjectIcms,
       createdNewRef: false,
+      refsFiscais: []
     };
   },
   methods: {
@@ -32,8 +28,9 @@ const mixinModalTaxInformations = {
         const result = await ServiceTax.save(adjustedTaxObject);
         this.infoFiscal.id = result.id;
 
-        this.findAllRefs()
+        await this.findAllRefs()
         this.clear()
+        this.findAllRefsFromSelectBox()
 
         return this.$toast.open({
           message: "REF gerado com sucesso!",
@@ -57,7 +54,8 @@ const mixinModalTaxInformations = {
     async excluir(dataRef){
       try {
         await ServiceTax.delete(dataRef)
-        this.findAllRefs()
+        await this.findAllRefs()
+        this.findAllRefsFromSelectBox()
         
         return this.$toast.open({
           message: "REF deletado com sucesso!",
@@ -70,25 +68,17 @@ const mixinModalTaxInformations = {
         });
       }
     },
-    findAllRefs() {
-     this.$emit('createdNewRef', !this.createdNewRef)
+    findAllRefsFromSelectBox() {
+     this.$emit('createdNewRef', this.createdNewRef = !this.createdNewRef)
     },
-    // async findAllRefsTeste() {
-    //   try {
-    //     const result = await ServiceTax.findAllRefs();
-    //     this.refsFiscais = result.data;
-    //     this.allRefsFiscaisFromSelectBox = result.data.map((e) => {
-    //       return {
-    //         id: e.id,
-    //         descricao: `${e.ref} - ${e.descricao}`,
-    //         ref: e.ref,
-    //         refObject: e.refObject,
-    //       };
-    //     });
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
+    async findAllRefs() {
+      try {
+        const result = await ServiceTax.findAllRefs();
+        this.refsFiscais = result.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     handleSaveOrUpdate() {
       this.infoFiscal.id !== "" ? this.update() : this.save();
     },

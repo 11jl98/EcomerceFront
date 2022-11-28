@@ -928,10 +928,7 @@
       }"
       @getNotaAfterCanceled="getNotaAfterCanceled = $event"
     />
-    <ModalTaxInformation
-      :refsFiscais="refsFiscais"
-      @createdNewRef="createdNewRef = $event"
-    />
+    <ModalTaxInformation @createdNewRef="createdNewRef = $event" />
   </div>
 </template>
 
@@ -1115,7 +1112,6 @@ export default {
       ],
       spinLoading: false,
       spinLoadingDevolucao: false,
-      refsFiscais: [],
       allRefsFiscaisFromSelectBox: [],
       classeImpostoDevolucao: "",
       createdNewRef: false,
@@ -1691,10 +1687,9 @@ export default {
       }
     },
 
-    async findAllRefs() {
+    async findAllRefsFromSelectBox() {
       try {
         const result = await ServiceTax.findAllRefs();
-        this.refsFiscais = result.data;
         this.allRefsFiscaisFromSelectBox = result.data.map((e) => {
           return {
             id: e.id,
@@ -1801,7 +1796,7 @@ export default {
   mounted() {
     this.getCliente();
     this.getProductsForSelectBox();
-    this.findAllRefs();
+    this.findAllRefsFromSelectBox();
   },
   watch: {
     propsIdNota() {
@@ -1815,7 +1810,7 @@ export default {
       this.changeEmissionTypeText();
     },
     createdNewRef() {
-      this.findAllRefs();
+      this.findAllRefsFromSelectBox();
     },
   },
 };
