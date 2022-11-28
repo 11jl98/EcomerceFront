@@ -172,7 +172,7 @@
         id="input-group-1"
         label="Chave de Referência"
         label-for="input-1"
-        class="col-sm-6 col-md-3 col-lg-3 col-xl-5"
+        class="col-sm-6 col-md-6 col-lg-6 col-xl-6"
         size="sm"
         v-if="dadosNfe.finalidade == '4'"
       >
@@ -181,6 +181,20 @@
           type="text"
           size="sm"
         ></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        label="REF Fiscal"
+        class="col-sm-6 col-md-6 col-lg-6 col-xl-6"
+        v-if="dadosNfe.finalidade == '4'"
+      >
+        <b-form-select
+          size="sm"
+          value-field="ref"
+          text-field="descricao"
+          v-model="classeImpostoDevolucao"
+          :options="allRefsFiscaisFromSelectBox"
+        ></b-form-select>
       </b-form-group>
     </b-row>
 
@@ -232,12 +246,14 @@
 
                   <b-form-group
                     label="REF Fiscal"
-                    class="col-sm-5 col-md-6 col-lg-4 col-xl-4"
+                    class="col-sm-6 col-md-6 col-lg-4 col-xl-4"
                   >
                     <b-form-select
                       size="sm"
-                      value-field="id"
-                      text-field="nome"
+                      value-field="ref"
+                      text-field="descricao"
+                      v-model="produtosNotaFiscal.classe_imposto"
+                      :options="allRefsFiscaisFromSelectBox"
                     ></b-form-select>
                   </b-form-group>
 
@@ -277,7 +293,7 @@
 
                   <b-form-group
                     label="Vl. Unitario"
-                    class="col-sm-6 col-md-4 col-lg-2 col-xl-2"
+                    class="col-sm-5 col-md-4 col-lg-2 col-xl-2"
                   >
                     <b-form-input
                       placeholder="R$ 0,00"
@@ -291,7 +307,7 @@
 
                   <b-form-group
                     label="Desc"
-                    class="col-sm-12 col-md-4 col-lg-2 col-xl-1"
+                    class="col-sm-2 col-md-4 col-lg-2 col-xl-1"
                   >
                     <b-form-input
                       maxlength="5"
@@ -303,7 +319,7 @@
 
                   <b-form-group
                     label="Vl. Total"
-                    class="col-sm-6 col-md-4 col-lg-2 col-xl-2"
+                    class="col-sm-5 col-md-4 col-lg-2 col-xl-2"
                   >
                     <b-form-input
                       disabled
@@ -315,7 +331,7 @@
 
                   <b-form-group
                     label="Origem"
-                    class="col-sm-6 col-md-6 col-lg-6 col-xl-3"
+                    class="col-sm-12 col-md-6 col-lg-6 col-xl-3"
                   >
                     <b-form-select
                       size="sm"
@@ -328,7 +344,7 @@
 
                   <b-form-group
                     label="und"
-                    class="col-sm-12 col-md-3 col-lg-2 col-xl-2"
+                    class="col-sm-6 col-md-3 col-lg-2 col-xl-2"
                   >
                     <b-form-input
                       v-model="produtosNotaFiscal.unidade"
@@ -338,7 +354,7 @@
 
                   <b-form-group
                     label="Peso"
-                    class="col-sm-12 col-md-3 col-lg-3 col-xl-2"
+                    class="col-sm-6 col-md-3 col-lg-3 col-xl-2"
                   >
                     <b-form-input
                       placeholder="Peso (KG)"
@@ -896,6 +912,7 @@ import ModalShippingCompany from "./ModalShippingCompany.vue";
 import ModalCancelNota from "./ModalCancelNota.vue";
 import toastAlertErros from "../../utils/toastAlertErros";
 import ServiceNotaFiscal from "../../services/serviceNotaFiscal";
+import ServiceTax from "../../services/serviceTax";
 
 export default {
   components: {
@@ -968,7 +985,7 @@ export default {
         desconto: "",
         subtotal: "",
         total: "",
-        classe_imposto: "REF15467394", // devolução ENTRADA REF7311252 pessoa fisica, devolução SAIDA REF15467394, saida normal REF15466069
+        classe_imposto: "", // devolução ENTRADA REF7311252 pessoa fisica, devolução SAIDA REF15467394, saida normal REF15466069
         informacoes_adicionais: "",
       },
       cliente: [],
@@ -1065,6 +1082,8 @@ export default {
       ],
       spinLoading: false,
       spinLoadingDevolucao: false,
+      allRefsFiscaisFromSelectBox: [],
+      classeImpostoDevolucao: "",
     };
   },
   methods: {
@@ -1376,14 +1395,14 @@ export default {
         await ServiceNotaFiscal.sendEntryNotaDevolution(
           {
             ...this.dadosNotaDevolucao,
-            classe_imposto: "REF7311252", //ref emissão devolução de ENTRADA dentro do estado REF7311252 pessoa fisica
             ambiente: this.dadosNfe.ambiente,
             natureza_operacao:
               "Devolução de venda de produção do estabelecimento",
+            classe_imposto: this.classeImpostoDevolucao,
           },
           this.dadosNfe.id
         );
-
+        //ref emissão devolução de ENTRADA dentro do estado REF7311252 pessoa fisica
         await this.findNotaById();
         await this.findProductsByIdNota();
 
@@ -1457,7 +1476,6 @@ export default {
       );
 
       this.produtosForTable = result.noteItem;
-      console.log(this.produtosForTable);
 
       if (result?.noteItem.length > 0) {
         this.valorTotalProdutosComDesc = result?.noteItem
@@ -1493,9 +1511,9 @@ export default {
       const result = this.produtos.filter(
         (idProduto) => idProduto.id == this.produtosNotaFiscal.idProduto
       );
-
       this.produtosNotaFiscal.unidade = result[0].unidade;
       this.produtosNotaFiscal.codigo = result[0].codReferencia;
+      this.produtosNotaFiscal.classe_imposto = result[0].refFiscal;
     },
 
     async getCliente() {
@@ -1638,6 +1656,22 @@ export default {
       }
     },
 
+    async findAllRefs() {
+      try {
+        const result = await ServiceTax.findAllRefs();
+        this.allRefsFiscaisFromSelectBox = result.data.map((e) => {
+          return {
+            id: e.id,
+            descricao: `${e.ref} - ${e.descricao}`,
+            ref: e.ref,
+            refObject: e.refObject,
+          };
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     openModalReturnNota() {
       this.$bvModal.show("modalReturnNota");
       this.producsReferencedNotaFinal = [];
@@ -1727,6 +1761,7 @@ export default {
   mounted() {
     this.getCliente();
     this.getProductsForSelectBox();
+    this.findAllRefs();
   },
   watch: {
     propsIdNota() {
