@@ -76,7 +76,8 @@ const mixinProducts = {
     async findAllRefs() {
       try {
         const result = await ServiceTax.findAllRefs();
-        this.refsFiscais = result.data;        this.refsFiscaisFromSelectBox = result.data.map((e) => {
+        this.refsFiscais = result.data;       
+        this.refsFiscaisFromSelectBox = result.data.map((e) => {
           return {
             id: e.id,
             descricao: ` ${e.ref} - ${e.descricao}`,

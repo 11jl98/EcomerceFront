@@ -215,7 +215,12 @@
       </b-form-group>
     </b-row>
 
-    <b-card-text class="mt-3">
+    <b-card-text
+      class="mt-3"
+      :hidden="
+        (dadosNfe.finalidade == '4') & (dadosNfe.operacao == '0') ? true : false
+      "
+    >
       <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <b-navbar toggleable class="cardDadosNfe">
           <b-navbar-toggle
@@ -490,7 +495,12 @@
       </div>
     </b-card-text>
 
-    <b-card-text class="mt-3">
+    <b-card-text
+      class="mt-3"
+      :hidden="
+        (dadosNfe.finalidade == '4') & (dadosNfe.operacao == '0') ? true : false
+      "
+    >
       <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <b-navbar toggleable class="cardDadosNfe">
           <b-navbar-toggle
@@ -918,6 +928,10 @@
       }"
       @getNotaAfterCanceled="getNotaAfterCanceled = $event"
     />
+    <ModalTaxInformation
+      :refsFiscais="refsFiscais"
+      @createdNewRef="createdNewRef = $event"
+    />
   </div>
 </template>
 
@@ -927,6 +941,7 @@ import ServiceCustomer from "../../services/serviceCustomer";
 import ServiceProducts from "../../services/serviceProducts";
 import ModalShippingCompany from "./ModalShippingCompany.vue";
 import ModalCancelNota from "./ModalCancelNota.vue";
+import ModalTaxInformation from "../ModalTaxInformation/Index-TaxInformation.vue";
 import toastAlertErros from "../../utils/toastAlertErros";
 import ServiceNotaFiscal from "../../services/serviceNotaFiscal";
 import ServiceTax from "../../services/serviceTax";
@@ -935,6 +950,7 @@ export default {
   components: {
     ModalShippingCompany,
     ModalCancelNota,
+    ModalTaxInformation,
   },
   props: {
     propsIdNota: {
@@ -1099,8 +1115,10 @@ export default {
       ],
       spinLoading: false,
       spinLoadingDevolucao: false,
+      refsFiscais: [],
       allRefsFiscaisFromSelectBox: [],
       classeImpostoDevolucao: "",
+      createdNewRef: false,
     };
   },
   methods: {
@@ -1676,6 +1694,7 @@ export default {
     async findAllRefs() {
       try {
         const result = await ServiceTax.findAllRefs();
+        this.refsFiscais = result.data;
         this.allRefsFiscaisFromSelectBox = result.data.map((e) => {
           return {
             id: e.id,
@@ -1718,6 +1737,10 @@ export default {
         if (this.producsReferencedNotaFinal[index].isDevolucao)
           this.dadosNotaDevolucao.uuidItem.push(element.id);
       });
+    },
+
+    openModalTaxInformation() {
+      this.$bvModal.show("modalTaxInformation");
     },
   },
   computed: {
@@ -1790,6 +1813,9 @@ export default {
     },
     handleOperacao() {
       this.changeEmissionTypeText();
+    },
+    createdNewRef() {
+      this.findAllRefs();
     },
   },
 };
