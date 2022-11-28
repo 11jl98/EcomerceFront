@@ -33,8 +33,8 @@ const mixinModalTaxInformations = {
         this.infoFiscal.id = result.id;
 
         this.findAllRefs()
-        this. clear()
-        
+        this.clear()
+
         return this.$toast.open({
           message: "REF gerado com sucesso!",
           type: "success",
@@ -53,6 +53,22 @@ const mixinModalTaxInformations = {
     },
     async update() {
       console.log("atualizando REF jaja");
+    },
+    async excluir(dataRef){
+      try {
+        await ServiceTax.delete(dataRef)
+        this.findAllRefs()
+        
+        return this.$toast.open({
+          message: "REF deletado com sucesso!",
+          type: "success",
+        });
+      } catch (error) {
+        return this.$toast.open({
+          message: error.response.data.message,
+          type: "error",
+        });
+      }
     },
     findAllRefs() {
      this.$emit('createdNewRef', !this.createdNewRef)

@@ -673,6 +673,7 @@
                             size="sm"
                             variant="secondary"
                             style="border: none !important"
+                            @click="excluir(ref)"
                           >
                             <b-icon-trash scale="1.3"></b-icon-trash>
                           </b-button>
