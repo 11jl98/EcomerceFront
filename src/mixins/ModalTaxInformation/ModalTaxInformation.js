@@ -73,6 +73,22 @@ const mixinModalTaxInformations = {
     findAllRefs() {
      this.$emit('createdNewRef', !this.createdNewRef)
     },
+    // async findAllRefsTeste() {
+    //   try {
+    //     const result = await ServiceTax.findAllRefs();
+    //     this.refsFiscais = result.data;
+    //     this.allRefsFiscaisFromSelectBox = result.data.map((e) => {
+    //       return {
+    //         id: e.id,
+    //         descricao: `${e.ref} - ${e.descricao}`,
+    //         ref: e.ref,
+    //         refObject: e.refObject,
+    //       };
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
     handleSaveOrUpdate() {
       this.infoFiscal.id !== "" ? this.update() : this.save();
     },
@@ -101,6 +117,9 @@ const mixinModalTaxInformations = {
       ];
     },
   },
+  created(){
+    this.clear()
+  }
 }
 
 export default mixinModalTaxInformations;
