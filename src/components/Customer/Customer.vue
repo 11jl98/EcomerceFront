@@ -44,6 +44,22 @@
 
         <b-form-group
           id="input-group-1"
+          label="Inscrição Estadual"
+          label-for="input-1"
+          class="col-sm-4"
+        >
+          <b-form-input
+            id="input-1"
+            placeholder="Inscrição Estadual"
+            required
+            v-model="dataCostumer.ie"
+            size="sm"
+          ></b-form-input>
+        </b-form-group>
+      </b-row>
+      <b-row class="d-flex justify-content-around">
+        <b-form-group
+          id="input-group-1"
           label="Endereço"
           label-for="input-1"
           class="col-sm-4"
@@ -56,13 +72,12 @@
             size="sm"
           ></b-form-input>
         </b-form-group>
-      </b-row>
-      <b-row class="d-flex justify-content-around">
+
         <b-form-group
           id="input-group-1"
           label="Número"
           label-for="input-1"
-          class="col-sm-4"
+          class="col-sm-2"
         >
           <b-form-input
             id="input-1"
@@ -76,7 +91,7 @@
           id="input-group-1"
           label="Complemento"
           label-for="input-1"
-          class="col-sm-4"
+          class="col-sm-3"
         >
           <b-form-input
             id="input-1"
@@ -90,7 +105,7 @@
           id="input-group-1"
           label="Bairro"
           label-for="input-1"
-          class="col-sm-4"
+          class="col-sm-3"
         >
           <b-form-input
             id="input-1"
@@ -266,6 +281,7 @@ export default {
         id: "",
         nome: "",
         cpfCnpj: "",
+        ie: "",
         endereco: "",
         numero: "",
         complemento: "",
@@ -299,6 +315,7 @@ export default {
       this.dataCostumer.celular = "";
       this.dataCostumer.dataNascimento = "";
       this.dataCostumer.observacao = "";
+      this.dataCostumer.ie = "";
     },
 
     saveOrUpdateCustomer() {
