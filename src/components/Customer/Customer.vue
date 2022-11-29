@@ -226,20 +226,49 @@
         </b-form-group>
       </b-row>
       <div>
-        <b-form-group
-          id="input-group-1"
-          label="Observação"
-          label-for="input-1"
-          class="col-sm-12"
-        >
-          <b-form-textarea
-            id="textarea"
-            rows="3"
-            max-rows="6"
-            v-model="dataCostumer.observacao"
-            size="sm"
-          ></b-form-textarea>
-        </b-form-group>
+        <b-row>
+          <b-form-group
+            id="input-group-1"
+            label="Observação"
+            label-for="input-1"
+            class="col-sm-6"
+          >
+            <b-form-textarea
+              id="textarea"
+              rows="3"
+              max-rows="6"
+              v-model="dataCostumer.observacao"
+              size="sm"
+            ></b-form-textarea>
+          </b-form-group>
+
+          <b-form-group
+            label="Tipo consumidor"
+            class="col-sm-2 col-md-2 col-lg-2 col-xl-2"
+          >
+            <b-form-select
+              size="sm"
+              :options="consumidorFinal"
+              text-field="text"
+              value="value"
+              v-model="dataCostumer.consumidor_final"
+            ></b-form-select>
+          </b-form-group>
+
+          <b-form-group
+            label="Contribuinte"
+            class="col-sm-4 col-md-4 col-lg-4 col-xl-4"
+          >
+            <b-form-select
+              size="sm"
+              :options="contribuinte"
+              text-field="text"
+              value="value"
+              v-model="dataCostumer.contribuinte"
+            ></b-form-select>
+          </b-form-group>
+        </b-row>
+
         <div class="d-flex justify-content-end">
           <div>
             <b-button
@@ -294,7 +323,24 @@ export default {
         email: "",
         dataNascimento: "",
         observacao: "",
+        consumidor_final: "0",
+        contribuinte: "9",
       },
+      consumidorFinal: [
+        { value: "0", text: "0 - Normal" },
+        { value: "1", text: "1 - Consumidor final" },
+      ],
+      contribuinte: [
+        { value: "1", text: "1 - Contribuinte ICMS" },
+        {
+          value: "2",
+          text: "2 - Contribuinte isento de Inscrição no cadastro de Contribuintes do ICMS",
+        },
+        {
+          value: "9",
+          text: "9 - Não Contribuinte, que pode ou não possuir Inscrição Estadual no Cadastro de Contribuintes do ICMS.",
+        },
+      ],
     };
   },
 
