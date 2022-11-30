@@ -103,7 +103,6 @@
       >
         <b-form-input
           v-model="dadosNfe.natureza_operacao"
-          disabled
           type="text"
           size="sm"
         ></b-form-input>
@@ -960,7 +959,7 @@ export default {
         id: "",
         ID: "", // Controle das solicitações de emissão por pedido ou ID de processamento.
         operacao: "1",
-        natureza_operacao: "Venda de produção do estabelecimento",
+        natureza_operacao: "Venda de mercadoria",
         modelo: "1", //2 para NFC-e
         ambiente: "2", //2 para Homologação
         idCliente: "",
