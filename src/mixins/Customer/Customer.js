@@ -29,7 +29,7 @@ const mixinCustomer = {
         email: "",
         dataNascimento: "",
         observacao: "",
-        consumidor_final: "0",
+        consumidor_final: "1",
         contribuinte: "9",
       },
       consumidorFinal: [
