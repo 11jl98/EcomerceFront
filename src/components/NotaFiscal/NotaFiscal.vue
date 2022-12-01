@@ -202,7 +202,7 @@
       <b-form-group
         label="REF Fiscal"
         class="col-sm-6 col-md-6 col-lg-6 col-xl-6"
-        v-if="dadosNfe.finalidade == '4'"
+        v-if="(dadosNfe.finalidade == '4') & (dadosNfe.operacao == '0')"
       >
         <b-form-select
           size="sm"
@@ -331,7 +331,6 @@
                     class="col-sm-2 col-md-4 col-lg-2 col-xl-1"
                   >
                     <b-form-input
-                      maxlength="5"
                       @change="calculateDiscountProdutos"
                       v-model="produtosNotaFiscal.desconto"
                       size="sm"
